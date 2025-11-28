@@ -65,7 +65,7 @@ flutter:
   assets :
     - assets/animations/splash.json
     - assets/images/logo_long_dark.png
-    - assets/images/logo_long_light.png
+    - assets/images/logo_long_white.png
     - assets/images/logo_dark.png
     - assets/images/logo_white.png
     - assets/images/title_black.png
