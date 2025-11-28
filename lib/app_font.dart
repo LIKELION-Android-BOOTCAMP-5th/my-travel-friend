@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 
+// [이재은] 앱 디자인에서 사용된 폰트 스타일을 파일화 함
 class AppFont {
   static const String _fontFamily = 'Pretendard';
 
+  // 스타일들
   // D1 : Pretendard semibold 24px
   static const TextStyle hugeBold = TextStyle(
     fontFamily: _fontFamily,
@@ -67,7 +69,7 @@ class AppFont {
     height: 16 / 12,
   );
 
-  // Material3 TextTheme으로 변환
+  // [이재은] Material3 TextTheme으로 변환
   static TextTheme get textTheme => const TextTheme(
     displayLarge: tiny,
     displayMedium: small,
