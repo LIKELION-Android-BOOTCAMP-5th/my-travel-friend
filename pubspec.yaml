@@ -64,8 +64,8 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets :
     - assets/animations/splash.json
-    - assets/images/logo_title_dark.png
-    - assets/images/logo_title_light.png
+    - assets/images/logo_long_dark.png
+    - assets/images/logo_long_light.png
     - assets/images/logo_dark.png
     - assets/images/logo_white.png
     - assets/images/title_black.png
