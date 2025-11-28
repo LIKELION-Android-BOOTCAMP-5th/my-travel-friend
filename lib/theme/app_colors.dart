@@ -23,4 +23,5 @@ class AppColors {
   static const Color lessLight = Color(0xFFF5F5F5);
   static const Color dark = Color(0xFF2E2E2E);
   static const Color lessDark = Color(0xFF5E5E5E);
+  static const Color lightGray = Color(0xFFF9FAFB);
 }
