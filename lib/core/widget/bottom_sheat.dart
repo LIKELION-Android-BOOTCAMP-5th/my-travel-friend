@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:my_travel_friend/theme/app_colors.dart';
 import 'package:my_travel_friend/theme/app_font.dart';
 
+//신강현
+//바텀시트 완성했습니다.
+
 class BottomSheetAction {
   final IconData icon;
   final Color iconBgColor;
