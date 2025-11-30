@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:my_travel_friend/core/widget/profile_img_default.dart';
 
 //[엄수빈] 프로필 원형 이미지 컴포넌트
 class ProfileImg extends StatelessWidget {
@@ -11,7 +10,7 @@ class ProfileImg extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final hasImage = imageUrl != null && imageUrl!.isNotEmpty;
-    final defaultImage = ProfileImgDefault.random();
+    final defaultImage = 'assets/images/profile_hearty.png';
 
     return CircleAvatar(
       radius: radius,
