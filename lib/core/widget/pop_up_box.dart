@@ -34,7 +34,7 @@ class PopUpBox extends StatelessWidget {
     this.icon = Icons.abc,
 
     // 버튼 색상 관련
-    this.leftButtonColor = const Color(0xffF5F5F5),
+    this.leftButtonColor = const Color(0xffF3F4F6),
     this.rightButtonColor = const Color(0xfff27b7b),
     this.leftTextColor = const Color(0xff030303),
     this.rightTextColor = const Color(0xff030303),
@@ -77,7 +77,7 @@ class PopUpBox extends StatelessWidget {
                   style: const TextStyle(
                     fontFamily: 'Pretendard',
                     fontWeight: FontWeight.w600,
-                    color: Colors.black,
+                    color: Color(0xff2e2e2e),
                   ),
                   textAlign: TextAlign.center,
                 ),
@@ -90,7 +90,7 @@ class PopUpBox extends StatelessWidget {
                   style: const TextStyle(
                     fontFamily: 'Pretendard',
                     height: 1.4,
-                    color: Colors.black,
+                    color: Color(0xff2e2e2e),
                   ),
                   textAlign: TextAlign.center,
                 ),
