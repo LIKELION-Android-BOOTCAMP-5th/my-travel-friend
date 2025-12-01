@@ -1,7 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'diary_entity.freezed.dart';
-part 'diary_entity.g.dart';
 
 // [이재은] : Diary Entity 생성
 
@@ -19,9 +18,6 @@ abstract class DiaryEntity with _$DiaryEntity {
     String? img,
     int? rating,
     String? content,
-    String? cost,
+    int? cost,
   }) = _DiaryEntity;
-
-  factory DiaryEntity.fromJson(Map<String, dynamic> json) =>
-      _$DiaryEntityFromJson(json);
 }

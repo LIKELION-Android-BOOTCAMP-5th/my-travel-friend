@@ -11,19 +11,16 @@ part of 'diary_entity.dart';
 
 // dart format off
 T _$identity<T>(T value) => value;
-
 /// @nodoc
 mixin _$DiaryEntity {
 
- int get id; String? get createdAt; int get tripId; int get userId; bool get isPublic; String get type; String? get title; int? get scheduleId; String? get img; int? get rating; String? get content; String? get cost;
+ int get id; String? get createdAt; int get tripId; int get userId; bool get isPublic; String get type; String? get title; int? get scheduleId; String? get img; int? get rating; String? get content; int? get cost;
 /// Create a copy of DiaryEntity
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
 @pragma('vm:prefer-inline')
 $DiaryEntityCopyWith<DiaryEntity> get copyWith => _$DiaryEntityCopyWithImpl<DiaryEntity>(this as DiaryEntity, _$identity);
 
-  /// Serializes this DiaryEntity to a JSON map.
-  Map<String, dynamic> toJson();
 
 
 @override
@@ -31,7 +28,7 @@ bool operator ==(Object other) {
   return identical(this, other) || (other.runtimeType == runtimeType&&other is DiaryEntity&&(identical(other.id, id) || other.id == id)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.tripId, tripId) || other.tripId == tripId)&&(identical(other.userId, userId) || other.userId == userId)&&(identical(other.isPublic, isPublic) || other.isPublic == isPublic)&&(identical(other.type, type) || other.type == type)&&(identical(other.title, title) || other.title == title)&&(identical(other.scheduleId, scheduleId) || other.scheduleId == scheduleId)&&(identical(other.img, img) || other.img == img)&&(identical(other.rating, rating) || other.rating == rating)&&(identical(other.content, content) || other.content == content)&&(identical(other.cost, cost) || other.cost == cost));
 }
 
-@JsonKey(includeFromJson: false, includeToJson: false)
+
 @override
 int get hashCode => Object.hash(runtimeType,id,createdAt,tripId,userId,isPublic,type,title,scheduleId,img,rating,content,cost);
 
@@ -48,7 +45,7 @@ abstract mixin class $DiaryEntityCopyWith<$Res>  {
   factory $DiaryEntityCopyWith(DiaryEntity value, $Res Function(DiaryEntity) _then) = _$DiaryEntityCopyWithImpl;
 @useResult
 $Res call({
- int id, String? createdAt, int tripId, int userId, bool isPublic, String type, String? title, int? scheduleId, String? img, int? rating, String? content, String? cost
+ int id, String? createdAt, int tripId, int userId, bool isPublic, String type, String? title, int? scheduleId, String? img, int? rating, String? content, int? cost
 });
 
 
@@ -79,7 +76,7 @@ as int?,img: freezed == img ? _self.img : img // ignore: cast_nullable_to_non_nu
 as String?,rating: freezed == rating ? _self.rating : rating // ignore: cast_nullable_to_non_nullable
 as int?,content: freezed == content ? _self.content : content // ignore: cast_nullable_to_non_nullable
 as String?,cost: freezed == cost ? _self.cost : cost // ignore: cast_nullable_to_non_nullable
-as String?,
+as int?,
   ));
 }
 
@@ -164,7 +161,7 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int id,  String? createdAt,  int tripId,  int userId,  bool isPublic,  String type,  String? title,  int? scheduleId,  String? img,  int? rating,  String? content,  String? cost)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int id,  String? createdAt,  int tripId,  int userId,  bool isPublic,  String type,  String? title,  int? scheduleId,  String? img,  int? rating,  String? content,  int? cost)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _DiaryEntity() when $default != null:
 return $default(_that.id,_that.createdAt,_that.tripId,_that.userId,_that.isPublic,_that.type,_that.title,_that.scheduleId,_that.img,_that.rating,_that.content,_that.cost);case _:
@@ -185,7 +182,7 @@ return $default(_that.id,_that.createdAt,_that.tripId,_that.userId,_that.isPubli
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int id,  String? createdAt,  int tripId,  int userId,  bool isPublic,  String type,  String? title,  int? scheduleId,  String? img,  int? rating,  String? content,  String? cost)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int id,  String? createdAt,  int tripId,  int userId,  bool isPublic,  String type,  String? title,  int? scheduleId,  String? img,  int? rating,  String? content,  int? cost)  $default,) {final _that = this;
 switch (_that) {
 case _DiaryEntity():
 return $default(_that.id,_that.createdAt,_that.tripId,_that.userId,_that.isPublic,_that.type,_that.title,_that.scheduleId,_that.img,_that.rating,_that.content,_that.cost);case _:
@@ -205,7 +202,7 @@ return $default(_that.id,_that.createdAt,_that.tripId,_that.userId,_that.isPubli
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int id,  String? createdAt,  int tripId,  int userId,  bool isPublic,  String type,  String? title,  int? scheduleId,  String? img,  int? rating,  String? content,  String? cost)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int id,  String? createdAt,  int tripId,  int userId,  bool isPublic,  String type,  String? title,  int? scheduleId,  String? img,  int? rating,  String? content,  int? cost)?  $default,) {final _that = this;
 switch (_that) {
 case _DiaryEntity() when $default != null:
 return $default(_that.id,_that.createdAt,_that.tripId,_that.userId,_that.isPublic,_that.type,_that.title,_that.scheduleId,_that.img,_that.rating,_that.content,_that.cost);case _:
@@ -217,24 +214,24 @@ return $default(_that.id,_that.createdAt,_that.tripId,_that.userId,_that.isPubli
 }
 
 /// @nodoc
-@JsonSerializable()
+
 
 class _DiaryEntity implements DiaryEntity {
-  const _DiaryEntity({required this.id, this.createdAt, required this.tripId, required this.userId, this.isPublic = true, required this.type, this.title, this.scheduleId, this.img, this.rating, this.content, this.cost});
-  factory _DiaryEntity.fromJson(Map<String, dynamic> json) => _$DiaryEntityFromJson(json);
+  const _DiaryEntity({required this.id, this.createdAt, required this.tripId, required this.userId, required this.isPublic, required this.type, this.title, this.scheduleId, this.img, this.rating, this.content, this.cost});
+  
 
 @override final  int id;
 @override final  String? createdAt;
 @override final  int tripId;
 @override final  int userId;
-@override@JsonKey() final  bool isPublic;
+@override final  bool isPublic;
 @override final  String type;
 @override final  String? title;
 @override final  int? scheduleId;
 @override final  String? img;
 @override final  int? rating;
 @override final  String? content;
-@override final  String? cost;
+@override final  int? cost;
 
 /// Create a copy of DiaryEntity
 /// with the given fields replaced by the non-null parameter values.
@@ -242,17 +239,14 @@ class _DiaryEntity implements DiaryEntity {
 @pragma('vm:prefer-inline')
 _$DiaryEntityCopyWith<_DiaryEntity> get copyWith => __$DiaryEntityCopyWithImpl<_DiaryEntity>(this, _$identity);
 
-@override
-Map<String, dynamic> toJson() {
-  return _$DiaryEntityToJson(this, );
-}
+
 
 @override
 bool operator ==(Object other) {
   return identical(this, other) || (other.runtimeType == runtimeType&&other is _DiaryEntity&&(identical(other.id, id) || other.id == id)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.tripId, tripId) || other.tripId == tripId)&&(identical(other.userId, userId) || other.userId == userId)&&(identical(other.isPublic, isPublic) || other.isPublic == isPublic)&&(identical(other.type, type) || other.type == type)&&(identical(other.title, title) || other.title == title)&&(identical(other.scheduleId, scheduleId) || other.scheduleId == scheduleId)&&(identical(other.img, img) || other.img == img)&&(identical(other.rating, rating) || other.rating == rating)&&(identical(other.content, content) || other.content == content)&&(identical(other.cost, cost) || other.cost == cost));
 }
 
-@JsonKey(includeFromJson: false, includeToJson: false)
+
 @override
 int get hashCode => Object.hash(runtimeType,id,createdAt,tripId,userId,isPublic,type,title,scheduleId,img,rating,content,cost);
 
@@ -269,7 +263,7 @@ abstract mixin class _$DiaryEntityCopyWith<$Res> implements $DiaryEntityCopyWith
   factory _$DiaryEntityCopyWith(_DiaryEntity value, $Res Function(_DiaryEntity) _then) = __$DiaryEntityCopyWithImpl;
 @override @useResult
 $Res call({
- int id, String? createdAt, int tripId, int userId, bool isPublic, String type, String? title, int? scheduleId, String? img, int? rating, String? content, String? cost
+ int id, String? createdAt, int tripId, int userId, bool isPublic, String type, String? title, int? scheduleId, String? img, int? rating, String? content, int? cost
 });
 
 
@@ -300,7 +294,7 @@ as int?,img: freezed == img ? _self.img : img // ignore: cast_nullable_to_non_nu
 as String?,rating: freezed == rating ? _self.rating : rating // ignore: cast_nullable_to_non_nullable
 as int?,content: freezed == content ? _self.content : content // ignore: cast_nullable_to_non_nullable
 as String?,cost: freezed == cost ? _self.cost : cost // ignore: cast_nullable_to_non_nullable
-as String?,
+as int?,
   ));
 }
 
