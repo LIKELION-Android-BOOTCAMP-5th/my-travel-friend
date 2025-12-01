@@ -2,6 +2,7 @@ import 'package:injectable/injectable.dart';
 
 import '../repositories/diary_repository.dart';
 
+// [이재은] 다아어리 삭제 usecase
 @LazySingleton()
 class DeleteDiaryUseCase {
   final DiaryRepository _diaryRepository;
