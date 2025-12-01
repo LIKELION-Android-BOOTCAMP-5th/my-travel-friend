@@ -8,11 +8,22 @@ class DiaryRepositoryImpl implements DiaryRepository {
   final DiaryDataSource _dataSource;
   DiaryRepositoryImpl(this._dataSource);
 
-  // 다이어리 목록 가져오기
+  // 공유 다이어리 목록 가져오기
   @override
-  Future<List<DiaryEntity>> getDiaries(int tripId) async {
+  Future<List<DiaryEntity>> getOurDiaries(int tripId) async {
     try {
-      final res = await _dataSource.getDiaries(tripId);
+      final res = await _dataSource.getOurDiaries(tripId);
+      return res.map((dto) => dto.toEntity()).toList();
+    } on Exception catch (e) {
+      throw Exception(e);
+    }
+  }
+
+  // 내 다이어리 목록 가져오기
+  @override
+  Future<List<DiaryEntity>> getMyDiaries(int tripId, int userId) async {
+    try {
+      final res = await _dataSource.getMyDiaries(tripId, userId);
       return res.map((dto) => dto.toEntity()).toList();
     } on Exception catch (e) {
       throw Exception(e);
