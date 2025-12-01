@@ -7,10 +7,10 @@ part 'diary_entity.g.dart';
 abstract class DiaryEntity with _$DiaryEntity {
   const factory DiaryEntity({
     required int id,
-    required String createdAt,
+    required String? createdAt,
     required int tripId,
     required int userId,
-    required bool isPublic,
+    @Default(true) bool isPublic,
     required String type,
     String? title,
     int? scheduleId,

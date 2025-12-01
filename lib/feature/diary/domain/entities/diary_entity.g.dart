@@ -8,10 +8,10 @@ part of 'diary_entity.dart';
 
 _DiaryEntity _$DiaryEntityFromJson(Map<String, dynamic> json) => _DiaryEntity(
   id: (json['id'] as num).toInt(),
-  createdAt: json['createdAt'] as String,
+  createdAt: json['createdAt'] as String?,
   tripId: (json['tripId'] as num).toInt(),
   userId: (json['userId'] as num).toInt(),
-  isPublic: json['isPublic'] as bool,
+  isPublic: json['isPublic'] as bool? ?? true,
   type: json['type'] as String,
   title: json['title'] as String?,
   scheduleId: (json['scheduleId'] as num?)?.toInt(),

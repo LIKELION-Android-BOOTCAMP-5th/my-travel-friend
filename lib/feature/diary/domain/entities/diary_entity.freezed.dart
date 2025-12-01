@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$DiaryEntity {
 
- int get id; String get createdAt; int get tripId; int get userId; bool get isPublic; String get type; String? get title; int? get scheduleId; String? get img; int? get rating; String? get content; String? get cost;
+ int get id; String? get createdAt; int get tripId; int get userId; bool get isPublic; String get type; String? get title; int? get scheduleId; String? get img; int? get rating; String? get content; String? get cost;
 /// Create a copy of DiaryEntity
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -48,7 +48,7 @@ abstract mixin class $DiaryEntityCopyWith<$Res>  {
   factory $DiaryEntityCopyWith(DiaryEntity value, $Res Function(DiaryEntity) _then) = _$DiaryEntityCopyWithImpl;
 @useResult
 $Res call({
- int id, String createdAt, int tripId, int userId, bool isPublic, String type, String? title, int? scheduleId, String? img, int? rating, String? content, String? cost
+ int id, String? createdAt, int tripId, int userId, bool isPublic, String type, String? title, int? scheduleId, String? img, int? rating, String? content, String? cost
 });
 
 
@@ -65,11 +65,11 @@ class _$DiaryEntityCopyWithImpl<$Res>
 
 /// Create a copy of DiaryEntity
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? createdAt = null,Object? tripId = null,Object? userId = null,Object? isPublic = null,Object? type = null,Object? title = freezed,Object? scheduleId = freezed,Object? img = freezed,Object? rating = freezed,Object? content = freezed,Object? cost = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? createdAt = freezed,Object? tripId = null,Object? userId = null,Object? isPublic = null,Object? type = null,Object? title = freezed,Object? scheduleId = freezed,Object? img = freezed,Object? rating = freezed,Object? content = freezed,Object? cost = freezed,}) {
   return _then(_self.copyWith(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
-as int,createdAt: null == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
-as String,tripId: null == tripId ? _self.tripId : tripId // ignore: cast_nullable_to_non_nullable
+as int,createdAt: freezed == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
+as String?,tripId: null == tripId ? _self.tripId : tripId // ignore: cast_nullable_to_non_nullable
 as int,userId: null == userId ? _self.userId : userId // ignore: cast_nullable_to_non_nullable
 as int,isPublic: null == isPublic ? _self.isPublic : isPublic // ignore: cast_nullable_to_non_nullable
 as bool,type: null == type ? _self.type : type // ignore: cast_nullable_to_non_nullable
@@ -164,7 +164,7 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int id,  String createdAt,  int tripId,  int userId,  bool isPublic,  String type,  String? title,  int? scheduleId,  String? img,  int? rating,  String? content,  String? cost)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int id,  String? createdAt,  int tripId,  int userId,  bool isPublic,  String type,  String? title,  int? scheduleId,  String? img,  int? rating,  String? content,  String? cost)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _DiaryEntity() when $default != null:
 return $default(_that.id,_that.createdAt,_that.tripId,_that.userId,_that.isPublic,_that.type,_that.title,_that.scheduleId,_that.img,_that.rating,_that.content,_that.cost);case _:
@@ -185,7 +185,7 @@ return $default(_that.id,_that.createdAt,_that.tripId,_that.userId,_that.isPubli
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int id,  String createdAt,  int tripId,  int userId,  bool isPublic,  String type,  String? title,  int? scheduleId,  String? img,  int? rating,  String? content,  String? cost)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int id,  String? createdAt,  int tripId,  int userId,  bool isPublic,  String type,  String? title,  int? scheduleId,  String? img,  int? rating,  String? content,  String? cost)  $default,) {final _that = this;
 switch (_that) {
 case _DiaryEntity():
 return $default(_that.id,_that.createdAt,_that.tripId,_that.userId,_that.isPublic,_that.type,_that.title,_that.scheduleId,_that.img,_that.rating,_that.content,_that.cost);case _:
@@ -205,7 +205,7 @@ return $default(_that.id,_that.createdAt,_that.tripId,_that.userId,_that.isPubli
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int id,  String createdAt,  int tripId,  int userId,  bool isPublic,  String type,  String? title,  int? scheduleId,  String? img,  int? rating,  String? content,  String? cost)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int id,  String? createdAt,  int tripId,  int userId,  bool isPublic,  String type,  String? title,  int? scheduleId,  String? img,  int? rating,  String? content,  String? cost)?  $default,) {final _that = this;
 switch (_that) {
 case _DiaryEntity() when $default != null:
 return $default(_that.id,_that.createdAt,_that.tripId,_that.userId,_that.isPublic,_that.type,_that.title,_that.scheduleId,_that.img,_that.rating,_that.content,_that.cost);case _:
@@ -220,14 +220,14 @@ return $default(_that.id,_that.createdAt,_that.tripId,_that.userId,_that.isPubli
 @JsonSerializable()
 
 class _DiaryEntity implements DiaryEntity {
-  const _DiaryEntity({required this.id, required this.createdAt, required this.tripId, required this.userId, required this.isPublic, required this.type, this.title, this.scheduleId, this.img, this.rating, this.content, this.cost});
+  const _DiaryEntity({required this.id, required this.createdAt, required this.tripId, required this.userId, this.isPublic = true, required this.type, this.title, this.scheduleId, this.img, this.rating, this.content, this.cost});
   factory _DiaryEntity.fromJson(Map<String, dynamic> json) => _$DiaryEntityFromJson(json);
 
 @override final  int id;
-@override final  String createdAt;
+@override final  String? createdAt;
 @override final  int tripId;
 @override final  int userId;
-@override final  bool isPublic;
+@override@JsonKey() final  bool isPublic;
 @override final  String type;
 @override final  String? title;
 @override final  int? scheduleId;
@@ -269,7 +269,7 @@ abstract mixin class _$DiaryEntityCopyWith<$Res> implements $DiaryEntityCopyWith
   factory _$DiaryEntityCopyWith(_DiaryEntity value, $Res Function(_DiaryEntity) _then) = __$DiaryEntityCopyWithImpl;
 @override @useResult
 $Res call({
- int id, String createdAt, int tripId, int userId, bool isPublic, String type, String? title, int? scheduleId, String? img, int? rating, String? content, String? cost
+ int id, String? createdAt, int tripId, int userId, bool isPublic, String type, String? title, int? scheduleId, String? img, int? rating, String? content, String? cost
 });
 
 
@@ -286,11 +286,11 @@ class __$DiaryEntityCopyWithImpl<$Res>
 
 /// Create a copy of DiaryEntity
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? createdAt = null,Object? tripId = null,Object? userId = null,Object? isPublic = null,Object? type = null,Object? title = freezed,Object? scheduleId = freezed,Object? img = freezed,Object? rating = freezed,Object? content = freezed,Object? cost = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? createdAt = freezed,Object? tripId = null,Object? userId = null,Object? isPublic = null,Object? type = null,Object? title = freezed,Object? scheduleId = freezed,Object? img = freezed,Object? rating = freezed,Object? content = freezed,Object? cost = freezed,}) {
   return _then(_DiaryEntity(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
-as int,createdAt: null == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
-as String,tripId: null == tripId ? _self.tripId : tripId // ignore: cast_nullable_to_non_nullable
+as int,createdAt: freezed == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
+as String?,tripId: null == tripId ? _self.tripId : tripId // ignore: cast_nullable_to_non_nullable
 as int,userId: null == userId ? _self.userId : userId // ignore: cast_nullable_to_non_nullable
 as int,isPublic: null == isPublic ? _self.isPublic : isPublic // ignore: cast_nullable_to_non_nullable
 as bool,type: null == type ? _self.type : type // ignore: cast_nullable_to_non_nullable
