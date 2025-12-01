@@ -1,0 +1,25 @@
+import 'package:freezed_annotation/freezed_annotation.dart';
+
+part 'diary_entity.freezed.dart';
+part 'diary_entity.g.dart';
+
+@freezed
+abstract class DiaryEntity with _$DiaryEntity {
+  const factory DiaryEntity({
+    required int id,
+    String? createdAt,
+    required int tripId,
+    required int userId,
+    @Default(true) bool isPublic,
+    required String type,
+    String? title,
+    int? scheduleId,
+    String? img,
+    int? rating,
+    String? content,
+    String? cost,
+  }) = _DiaryEntity;
+
+  factory DiaryEntity.fromJson(Map<String, dynamic> json) =>
+      _$DiaryEntityFromJson(json);
+}
