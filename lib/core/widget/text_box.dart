@@ -13,7 +13,7 @@ import 'package:flutter/material.dart';
 // 3. 글자수 제한 텍스트 필드 (ex: 닉네임)
 // TextBox(controller: 컨트롤러, hintText: '힌트 텍스트 내용', maxLength: 10)
 
-class TextBox extends StatelessWidget {
+class TextBox extends StatefulWidget {
   final TextEditingController? controller;
   final String? hintText;
 
@@ -86,83 +86,89 @@ class TextBox extends StatelessWidget {
   });
 
   @override
+  State<TextBox> createState() => _TextBoxState();
+}
+
+class _TextBoxState extends State<TextBox> {
+  @override
   Widget build(BuildContext context) {
     // 테마 색상 설정
     final colorScheme = Theme.of(context).colorScheme;
     final isDarkMode = colorScheme.brightness == Brightness.dark;
 
     // 모드에 따라 색상 변경
-    final bgColor = backgroundColor ?? colorScheme.surfaceContainerHighest;
-    final focusBorder = focusedBorderColor ?? colorScheme.primary;
-    final unfocusBorder = unfocusedBorderColor ?? Colors.transparent;
-    final txtColor = textColor ?? colorScheme.onSurface;
-    final hntColor = hintColor ?? colorScheme.onSurfaceVariant;
+    final bgColor =
+        widget.backgroundColor ?? colorScheme.surfaceContainerHighest;
+    final focusBorder = widget.focusedBorderColor ?? colorScheme.primary;
+    final unfocusBorder = widget.unfocusedBorderColor ?? Colors.transparent;
+    final txtColor = widget.textColor ?? colorScheme.onSurface;
+    final hntColor = widget.hintColor ?? colorScheme.onSurfaceVariant;
 
     // TextField 위젯 반환
     return TextField(
-      controller: controller,
-      focusNode: focusNode,
+      controller: widget.controller,
+      focusNode: widget.focusNode,
 
       // 줄 수 설정
-      maxLines: expands ? null : maxLines,
-      minLines: expands ? null : minLines,
+      maxLines: widget.expands ? null : widget.maxLines,
+      minLines: widget.expands ? null : widget.minLines,
 
-      maxLength: maxLength,
-      expands: expands,
-      enabled: enabled,
-      readOnly: readOnly,
-      obscureText: obscureText,
-      keyboardType: keyboardType,
-      textInputAction: textInputAction,
-      onChanged: onChanged,
-      onTap: onTap,
+      maxLength: widget.maxLength,
+      expands: widget.expands,
+      enabled: widget.enabled,
+      readOnly: widget.readOnly,
+      obscureText: widget.obscureText,
+      keyboardType: widget.keyboardType,
+      textInputAction: widget.textInputAction,
+      onChanged: widget.onChanged,
+      onTap: widget.onTap,
 
       // 텍스트 스타일
       style: TextStyle(color: txtColor, fontSize: 14),
 
       // 외관 설정
       decoration: InputDecoration(
-        hintText: hintText,
+        hintText: widget.hintText,
         hintStyle: TextStyle(color: hntColor),
 
         filled: true,
         fillColor: bgColor,
 
-        prefixIcon: prefixIcon,
-        suffixIcon: suffixIcon,
+        prefixIcon: widget.prefixIcon,
+        suffixIcon: widget.suffixIcon,
 
         counterStyle: TextStyle(color: hntColor),
 
         // 내부 여백
         contentPadding:
-            contentPadding ??
+            widget.contentPadding ??
             const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
 
         // 기본 테두리
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(borderRadius),
-          borderSide: showBorder
-              ? BorderSide(color: unfocusBorder, width: borderWidth)
+          borderRadius: BorderRadius.circular(widget.borderRadius),
+          borderSide: widget.showBorder
+              ? BorderSide(color: unfocusBorder, width: widget.borderWidth)
               : BorderSide.none,
         ),
 
         // 활성화 상태 테두리 (포커스 안 되었을 때)
         enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(borderRadius),
-          borderSide: showBorder
-              ? BorderSide(color: unfocusBorder, width: borderWidth)
+          borderRadius: BorderRadius.circular(widget.borderRadius),
+          borderSide: widget.showBorder
+              ? BorderSide(color: unfocusBorder, width: widget.borderWidth)
               : BorderSide.none,
         ),
 
         // 포커스 상태 테두리 (입력 중일 때)
         focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(borderRadius),
-          borderSide: BorderSide(color: focusBorder, width: borderWidth),
+          borderRadius: BorderRadius.circular(widget.borderRadius),
+          borderSide: BorderSide(color: focusBorder, width: widget.borderWidth),
         ),
 
         // 비활성화 상태 테두리
         disabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(borderRadius),
+          borderRadius: BorderRadius.circular(widget.borderRadius),
           borderSide: BorderSide.none,
         ),
       ),
