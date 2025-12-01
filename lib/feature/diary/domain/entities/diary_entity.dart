@@ -3,6 +3,8 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 part 'diary_entity.freezed.dart';
 part 'diary_entity.g.dart';
 
+// [이재은] : Diary Entity 생성
+
 @freezed
 abstract class DiaryEntity with _$DiaryEntity {
   const factory DiaryEntity({
