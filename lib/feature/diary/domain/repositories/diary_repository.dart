@@ -1,6 +1,6 @@
-import 'package:my_travel_friend/feature/diary/domain/entities/diary_entity.dart';
-
 // [이재은] 다이어리 관련
+import '../entities/diary_entity.dart';
+
 abstract class DiaryRepository {
   // 공유 다이어리 목록 조회(가져오기)
   // -> 여행 아이디로 다이어리 조회, 단 비공개 처리된 게시물은 가져오지 않음
@@ -15,10 +15,10 @@ abstract class DiaryRepository {
   Future<DiaryEntity> getDiaryById(String id);
 
   // 다이어리 생성
-  Future<DiaryEntity> createDiary(DiaryEntity DiaryEntity);
+  Future<DiaryEntity> createDiary(DiaryEntity diary);
 
   // 다이어리 수정
-  Future<DiaryEntity> updateDiary(DiaryEntity DiaryEntity);
+  Future<DiaryEntity> updateDiary(DiaryEntity diary);
 
   // 다이어리 삭제
   Future<void> deleteDiary(String id);
