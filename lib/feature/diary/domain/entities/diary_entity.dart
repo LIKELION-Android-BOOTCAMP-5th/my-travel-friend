@@ -12,7 +12,7 @@ abstract class DiaryEntity with _$DiaryEntity {
     String? createdAt,
     required int tripId,
     required int userId,
-    @Default(true) bool isPublic,
+    required bool isPublic,
     required String type,
     String? title,
     int? scheduleId,
