@@ -4,7 +4,7 @@ import '../entities/diary_entity.dart';
 abstract class DiaryRepository {
   // 다이어리 목록 조회(가져오기)
   // -> 여행 아이디로 다이어리 조회
-  Future<List<DiaryEntity>> getOurDiaries(String tripId);
+  Future<List<DiaryEntity>> getDiaries(String tripId);
 
   // 다이어리 상세 조회 (가져오기)
   // -> 다이어리 아이디로 조회
