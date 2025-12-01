@@ -2,12 +2,12 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'diary_entity.freezed.dart';
 
-// [이재은] : Diary Entity 생성
+// [이재은] : Diary Entity
 
 @freezed
 abstract class DiaryEntity with _$DiaryEntity {
   const factory DiaryEntity({
-    required int id,
+    int? id,
     String? createdAt,
     required int tripId,
     required int userId,

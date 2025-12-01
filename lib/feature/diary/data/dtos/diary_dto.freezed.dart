@@ -3,7 +3,7 @@
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
-part of 'diary_entity.dart';
+part of 'diary_dto.dart';
 
 // **************************************************************************
 // FreezedGenerator
@@ -11,41 +11,44 @@ part of 'diary_entity.dart';
 
 // dart format off
 T _$identity<T>(T value) => value;
-/// @nodoc
-mixin _$DiaryEntity {
 
- int? get id; String? get createdAt; int get tripId; int get userId; bool get isPublic; String get type; String? get title; int? get scheduleId; String? get img; int? get rating; String? get content; int? get cost;
-/// Create a copy of DiaryEntity
+/// @nodoc
+mixin _$DiaryDTO {
+
+ int? get id;@JsonKey(name: 'created_at') String? get createdAt;@JsonKey(name: 'trip_id') int get tripId;@JsonKey(name: 'user_id') int get userId;@JsonKey(name: 'is_public') bool get isPublic; String get type; String? get title;@JsonKey(name: 'schedule_id') int? get scheduleId; String? get img; int? get rating; String? get content; int? get cost;
+/// Create a copy of DiaryDTO
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
 @pragma('vm:prefer-inline')
-$DiaryEntityCopyWith<DiaryEntity> get copyWith => _$DiaryEntityCopyWithImpl<DiaryEntity>(this as DiaryEntity, _$identity);
+$DiaryDTOCopyWith<DiaryDTO> get copyWith => _$DiaryDTOCopyWithImpl<DiaryDTO>(this as DiaryDTO, _$identity);
 
+  /// Serializes this DiaryDTO to a JSON map.
+  Map<String, dynamic> toJson();
 
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is DiaryEntity&&(identical(other.id, id) || other.id == id)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.tripId, tripId) || other.tripId == tripId)&&(identical(other.userId, userId) || other.userId == userId)&&(identical(other.isPublic, isPublic) || other.isPublic == isPublic)&&(identical(other.type, type) || other.type == type)&&(identical(other.title, title) || other.title == title)&&(identical(other.scheduleId, scheduleId) || other.scheduleId == scheduleId)&&(identical(other.img, img) || other.img == img)&&(identical(other.rating, rating) || other.rating == rating)&&(identical(other.content, content) || other.content == content)&&(identical(other.cost, cost) || other.cost == cost));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is DiaryDTO&&(identical(other.id, id) || other.id == id)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.tripId, tripId) || other.tripId == tripId)&&(identical(other.userId, userId) || other.userId == userId)&&(identical(other.isPublic, isPublic) || other.isPublic == isPublic)&&(identical(other.type, type) || other.type == type)&&(identical(other.title, title) || other.title == title)&&(identical(other.scheduleId, scheduleId) || other.scheduleId == scheduleId)&&(identical(other.img, img) || other.img == img)&&(identical(other.rating, rating) || other.rating == rating)&&(identical(other.content, content) || other.content == content)&&(identical(other.cost, cost) || other.cost == cost));
 }
 
-
+@JsonKey(includeFromJson: false, includeToJson: false)
 @override
 int get hashCode => Object.hash(runtimeType,id,createdAt,tripId,userId,isPublic,type,title,scheduleId,img,rating,content,cost);
 
 @override
 String toString() {
-  return 'DiaryEntity(id: $id, createdAt: $createdAt, tripId: $tripId, userId: $userId, isPublic: $isPublic, type: $type, title: $title, scheduleId: $scheduleId, img: $img, rating: $rating, content: $content, cost: $cost)';
+  return 'DiaryDTO(id: $id, createdAt: $createdAt, tripId: $tripId, userId: $userId, isPublic: $isPublic, type: $type, title: $title, scheduleId: $scheduleId, img: $img, rating: $rating, content: $content, cost: $cost)';
 }
 
 
 }
 
 /// @nodoc
-abstract mixin class $DiaryEntityCopyWith<$Res>  {
-  factory $DiaryEntityCopyWith(DiaryEntity value, $Res Function(DiaryEntity) _then) = _$DiaryEntityCopyWithImpl;
+abstract mixin class $DiaryDTOCopyWith<$Res>  {
+  factory $DiaryDTOCopyWith(DiaryDTO value, $Res Function(DiaryDTO) _then) = _$DiaryDTOCopyWithImpl;
 @useResult
 $Res call({
- int? id, String? createdAt, int tripId, int userId, bool isPublic, String type, String? title, int? scheduleId, String? img, int? rating, String? content, int? cost
+ int? id,@JsonKey(name: 'created_at') String? createdAt,@JsonKey(name: 'trip_id') int tripId,@JsonKey(name: 'user_id') int userId,@JsonKey(name: 'is_public') bool isPublic, String type, String? title,@JsonKey(name: 'schedule_id') int? scheduleId, String? img, int? rating, String? content, int? cost
 });
 
 
@@ -53,14 +56,14 @@ $Res call({
 
 }
 /// @nodoc
-class _$DiaryEntityCopyWithImpl<$Res>
-    implements $DiaryEntityCopyWith<$Res> {
-  _$DiaryEntityCopyWithImpl(this._self, this._then);
+class _$DiaryDTOCopyWithImpl<$Res>
+    implements $DiaryDTOCopyWith<$Res> {
+  _$DiaryDTOCopyWithImpl(this._self, this._then);
 
-  final DiaryEntity _self;
-  final $Res Function(DiaryEntity) _then;
+  final DiaryDTO _self;
+  final $Res Function(DiaryDTO) _then;
 
-/// Create a copy of DiaryEntity
+/// Create a copy of DiaryDTO
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') @override $Res call({Object? id = freezed,Object? createdAt = freezed,Object? tripId = null,Object? userId = null,Object? isPublic = null,Object? type = null,Object? title = freezed,Object? scheduleId = freezed,Object? img = freezed,Object? rating = freezed,Object? content = freezed,Object? cost = freezed,}) {
   return _then(_self.copyWith(
@@ -83,8 +86,8 @@ as int?,
 }
 
 
-/// Adds pattern-matching-related methods to [DiaryEntity].
-extension DiaryEntityPatterns on DiaryEntity {
+/// Adds pattern-matching-related methods to [DiaryDTO].
+extension DiaryDTOPatterns on DiaryDTO {
 /// A variant of `map` that fallback to returning `orElse`.
 ///
 /// It is equivalent to doing:
@@ -97,10 +100,10 @@ extension DiaryEntityPatterns on DiaryEntity {
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeMap<TResult extends Object?>(TResult Function( _DiaryEntity value)?  $default,{required TResult orElse(),}){
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>(TResult Function( _DiaryDTO value)?  $default,{required TResult orElse(),}){
 final _that = this;
 switch (_that) {
-case _DiaryEntity() when $default != null:
+case _DiaryDTO() when $default != null:
 return $default(_that);case _:
   return orElse();
 
@@ -119,10 +122,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult map<TResult extends Object?>(TResult Function( _DiaryEntity value)  $default,){
+@optionalTypeArgs TResult map<TResult extends Object?>(TResult Function( _DiaryDTO value)  $default,){
 final _that = this;
 switch (_that) {
-case _DiaryEntity():
+case _DiaryDTO():
 return $default(_that);case _:
   throw StateError('Unexpected subclass');
 
@@ -140,10 +143,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>(TResult? Function( _DiaryEntity value)?  $default,){
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>(TResult? Function( _DiaryDTO value)?  $default,){
 final _that = this;
 switch (_that) {
-case _DiaryEntity() when $default != null:
+case _DiaryDTO() when $default != null:
 return $default(_that);case _:
   return null;
 
@@ -161,9 +164,9 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int? id,  String? createdAt,  int tripId,  int userId,  bool isPublic,  String type,  String? title,  int? scheduleId,  String? img,  int? rating,  String? content,  int? cost)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int? id, @JsonKey(name: 'created_at')  String? createdAt, @JsonKey(name: 'trip_id')  int tripId, @JsonKey(name: 'user_id')  int userId, @JsonKey(name: 'is_public')  bool isPublic,  String type,  String? title, @JsonKey(name: 'schedule_id')  int? scheduleId,  String? img,  int? rating,  String? content,  int? cost)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
-case _DiaryEntity() when $default != null:
+case _DiaryDTO() when $default != null:
 return $default(_that.id,_that.createdAt,_that.tripId,_that.userId,_that.isPublic,_that.type,_that.title,_that.scheduleId,_that.img,_that.rating,_that.content,_that.cost);case _:
   return orElse();
 
@@ -182,9 +185,9 @@ return $default(_that.id,_that.createdAt,_that.tripId,_that.userId,_that.isPubli
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int? id,  String? createdAt,  int tripId,  int userId,  bool isPublic,  String type,  String? title,  int? scheduleId,  String? img,  int? rating,  String? content,  int? cost)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int? id, @JsonKey(name: 'created_at')  String? createdAt, @JsonKey(name: 'trip_id')  int tripId, @JsonKey(name: 'user_id')  int userId, @JsonKey(name: 'is_public')  bool isPublic,  String type,  String? title, @JsonKey(name: 'schedule_id')  int? scheduleId,  String? img,  int? rating,  String? content,  int? cost)  $default,) {final _that = this;
 switch (_that) {
-case _DiaryEntity():
+case _DiaryDTO():
 return $default(_that.id,_that.createdAt,_that.tripId,_that.userId,_that.isPublic,_that.type,_that.title,_that.scheduleId,_that.img,_that.rating,_that.content,_that.cost);case _:
   throw StateError('Unexpected subclass');
 
@@ -202,9 +205,9 @@ return $default(_that.id,_that.createdAt,_that.tripId,_that.userId,_that.isPubli
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int? id,  String? createdAt,  int tripId,  int userId,  bool isPublic,  String type,  String? title,  int? scheduleId,  String? img,  int? rating,  String? content,  int? cost)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int? id, @JsonKey(name: 'created_at')  String? createdAt, @JsonKey(name: 'trip_id')  int tripId, @JsonKey(name: 'user_id')  int userId, @JsonKey(name: 'is_public')  bool isPublic,  String type,  String? title, @JsonKey(name: 'schedule_id')  int? scheduleId,  String? img,  int? rating,  String? content,  int? cost)?  $default,) {final _that = this;
 switch (_that) {
-case _DiaryEntity() when $default != null:
+case _DiaryDTO() when $default != null:
 return $default(_that.id,_that.createdAt,_that.tripId,_that.userId,_that.isPublic,_that.type,_that.title,_that.scheduleId,_that.img,_that.rating,_that.content,_that.cost);case _:
   return null;
 
@@ -214,56 +217,59 @@ return $default(_that.id,_that.createdAt,_that.tripId,_that.userId,_that.isPubli
 }
 
 /// @nodoc
+@JsonSerializable()
 
-
-class _DiaryEntity implements DiaryEntity {
-  const _DiaryEntity({this.id, this.createdAt, required this.tripId, required this.userId, required this.isPublic, required this.type, this.title, this.scheduleId, this.img, this.rating, this.content, this.cost});
-  
+class _DiaryDTO extends DiaryDTO {
+  const _DiaryDTO({this.id, @JsonKey(name: 'created_at') this.createdAt, @JsonKey(name: 'trip_id') required this.tripId, @JsonKey(name: 'user_id') required this.userId, @JsonKey(name: 'is_public') required this.isPublic, required this.type, this.title, @JsonKey(name: 'schedule_id') this.scheduleId, this.img, this.rating, this.content, this.cost}): super._();
+  factory _DiaryDTO.fromJson(Map<String, dynamic> json) => _$DiaryDTOFromJson(json);
 
 @override final  int? id;
-@override final  String? createdAt;
-@override final  int tripId;
-@override final  int userId;
-@override final  bool isPublic;
+@override@JsonKey(name: 'created_at') final  String? createdAt;
+@override@JsonKey(name: 'trip_id') final  int tripId;
+@override@JsonKey(name: 'user_id') final  int userId;
+@override@JsonKey(name: 'is_public') final  bool isPublic;
 @override final  String type;
 @override final  String? title;
-@override final  int? scheduleId;
+@override@JsonKey(name: 'schedule_id') final  int? scheduleId;
 @override final  String? img;
 @override final  int? rating;
 @override final  String? content;
 @override final  int? cost;
 
-/// Create a copy of DiaryEntity
+/// Create a copy of DiaryDTO
 /// with the given fields replaced by the non-null parameter values.
 @override @JsonKey(includeFromJson: false, includeToJson: false)
 @pragma('vm:prefer-inline')
-_$DiaryEntityCopyWith<_DiaryEntity> get copyWith => __$DiaryEntityCopyWithImpl<_DiaryEntity>(this, _$identity);
+_$DiaryDTOCopyWith<_DiaryDTO> get copyWith => __$DiaryDTOCopyWithImpl<_DiaryDTO>(this, _$identity);
 
-
+@override
+Map<String, dynamic> toJson() {
+  return _$DiaryDTOToJson(this, );
+}
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _DiaryEntity&&(identical(other.id, id) || other.id == id)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.tripId, tripId) || other.tripId == tripId)&&(identical(other.userId, userId) || other.userId == userId)&&(identical(other.isPublic, isPublic) || other.isPublic == isPublic)&&(identical(other.type, type) || other.type == type)&&(identical(other.title, title) || other.title == title)&&(identical(other.scheduleId, scheduleId) || other.scheduleId == scheduleId)&&(identical(other.img, img) || other.img == img)&&(identical(other.rating, rating) || other.rating == rating)&&(identical(other.content, content) || other.content == content)&&(identical(other.cost, cost) || other.cost == cost));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _DiaryDTO&&(identical(other.id, id) || other.id == id)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.tripId, tripId) || other.tripId == tripId)&&(identical(other.userId, userId) || other.userId == userId)&&(identical(other.isPublic, isPublic) || other.isPublic == isPublic)&&(identical(other.type, type) || other.type == type)&&(identical(other.title, title) || other.title == title)&&(identical(other.scheduleId, scheduleId) || other.scheduleId == scheduleId)&&(identical(other.img, img) || other.img == img)&&(identical(other.rating, rating) || other.rating == rating)&&(identical(other.content, content) || other.content == content)&&(identical(other.cost, cost) || other.cost == cost));
 }
 
-
+@JsonKey(includeFromJson: false, includeToJson: false)
 @override
 int get hashCode => Object.hash(runtimeType,id,createdAt,tripId,userId,isPublic,type,title,scheduleId,img,rating,content,cost);
 
 @override
 String toString() {
-  return 'DiaryEntity(id: $id, createdAt: $createdAt, tripId: $tripId, userId: $userId, isPublic: $isPublic, type: $type, title: $title, scheduleId: $scheduleId, img: $img, rating: $rating, content: $content, cost: $cost)';
+  return 'DiaryDTO(id: $id, createdAt: $createdAt, tripId: $tripId, userId: $userId, isPublic: $isPublic, type: $type, title: $title, scheduleId: $scheduleId, img: $img, rating: $rating, content: $content, cost: $cost)';
 }
 
 
 }
 
 /// @nodoc
-abstract mixin class _$DiaryEntityCopyWith<$Res> implements $DiaryEntityCopyWith<$Res> {
-  factory _$DiaryEntityCopyWith(_DiaryEntity value, $Res Function(_DiaryEntity) _then) = __$DiaryEntityCopyWithImpl;
+abstract mixin class _$DiaryDTOCopyWith<$Res> implements $DiaryDTOCopyWith<$Res> {
+  factory _$DiaryDTOCopyWith(_DiaryDTO value, $Res Function(_DiaryDTO) _then) = __$DiaryDTOCopyWithImpl;
 @override @useResult
 $Res call({
- int? id, String? createdAt, int tripId, int userId, bool isPublic, String type, String? title, int? scheduleId, String? img, int? rating, String? content, int? cost
+ int? id,@JsonKey(name: 'created_at') String? createdAt,@JsonKey(name: 'trip_id') int tripId,@JsonKey(name: 'user_id') int userId,@JsonKey(name: 'is_public') bool isPublic, String type, String? title,@JsonKey(name: 'schedule_id') int? scheduleId, String? img, int? rating, String? content, int? cost
 });
 
 
@@ -271,17 +277,17 @@ $Res call({
 
 }
 /// @nodoc
-class __$DiaryEntityCopyWithImpl<$Res>
-    implements _$DiaryEntityCopyWith<$Res> {
-  __$DiaryEntityCopyWithImpl(this._self, this._then);
+class __$DiaryDTOCopyWithImpl<$Res>
+    implements _$DiaryDTOCopyWith<$Res> {
+  __$DiaryDTOCopyWithImpl(this._self, this._then);
 
-  final _DiaryEntity _self;
-  final $Res Function(_DiaryEntity) _then;
+  final _DiaryDTO _self;
+  final $Res Function(_DiaryDTO) _then;
 
-/// Create a copy of DiaryEntity
+/// Create a copy of DiaryDTO
 /// with the given fields replaced by the non-null parameter values.
 @override @pragma('vm:prefer-inline') $Res call({Object? id = freezed,Object? createdAt = freezed,Object? tripId = null,Object? userId = null,Object? isPublic = null,Object? type = null,Object? title = freezed,Object? scheduleId = freezed,Object? img = freezed,Object? rating = freezed,Object? content = freezed,Object? cost = freezed,}) {
-  return _then(_DiaryEntity(
+  return _then(_DiaryDTO(
 id: freezed == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as int?,createdAt: freezed == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
 as String?,tripId: null == tripId ? _self.tripId : tripId // ignore: cast_nullable_to_non_nullable
