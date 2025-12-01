@@ -1,6 +1,6 @@
-// [이재은] 다이어리 관련 데이터 소스 인터페이스(추상)
 import '../dtos/diary_dto.dart';
 
+// [이재은] 다이어리 관련 데이터 소스 (추상)
 abstract class DiaryDataSource {
   // 다이어리 목록 조회 (여행 ID로)
   Future<List<DiaryDTO>> getDiaries(int tripId);
