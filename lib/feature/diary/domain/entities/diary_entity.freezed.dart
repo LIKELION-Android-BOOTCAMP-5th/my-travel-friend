@@ -220,7 +220,7 @@ return $default(_that.id,_that.createdAt,_that.tripId,_that.userId,_that.isPubli
 @JsonSerializable()
 
 class _DiaryEntity implements DiaryEntity {
-  const _DiaryEntity({required this.id, required this.createdAt, required this.tripId, required this.userId, this.isPublic = true, required this.type, this.title, this.scheduleId, this.img, this.rating, this.content, this.cost});
+  const _DiaryEntity({required this.id, this.createdAt, required this.tripId, required this.userId, this.isPublic = true, required this.type, this.title, this.scheduleId, this.img, this.rating, this.content, this.cost});
   factory _DiaryEntity.fromJson(Map<String, dynamic> json) => _$DiaryEntityFromJson(json);
 
 @override final  int id;
