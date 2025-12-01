@@ -1,7 +1,9 @@
+import 'package:injectable/injectable.dart';
 import 'package:my_travel_friend/feature/diary/domain/entities/diary_entity.dart';
 
 import '../repositories/diary_repository.dart';
 
+@LazySingleton()
 class CreateDiaryUseCase {
   final DiaryRepository _diaryRepository;
 

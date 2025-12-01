@@ -28,6 +28,14 @@ import '../../feature/auth/data/repositories/auth_repository_impl.dart'
 import '../../feature/auth/domain/repositories/auth_repository.dart' as _i488;
 import '../../feature/auth/domain/usecases/social_sign_in_usecase.dart'
     as _i420;
+import '../../feature/diary/domain/repositories/diary_repository.dart' as _i871;
+import '../../feature/diary/domain/usecases/create_diary_usecase.dart' as _i27;
+import '../../feature/diary/domain/usecases/delete_diary_usecase.dart' as _i699;
+import '../../feature/diary/domain/usecases/get_diaries_usecase.dart' as _i140;
+import '../../feature/diary/domain/usecases/get_diary_by_id_usecase.dart'
+    as _i236;
+import '../../feature/diary/domain/usecases/update_diary_usecase.dart'
+    as _i1039;
 import 'register_module.dart' as _i291;
 
 extension GetItInjectableX on _i174.GetIt {
@@ -60,6 +68,21 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i153.GoogleAuthDataSource>(),
         gh<_i1040.SupabaseAuthDataSource>(),
       ),
+    );
+    gh.lazySingleton<_i27.CreateDiaryUseCase>(
+      () => _i27.CreateDiaryUseCase(gh<_i871.DiaryRepository>()),
+    );
+    gh.lazySingleton<_i699.DeleteDiaryUseCase>(
+      () => _i699.DeleteDiaryUseCase(gh<_i871.DiaryRepository>()),
+    );
+    gh.lazySingleton<_i140.GetDiariesUseCase>(
+      () => _i140.GetDiariesUseCase(gh<_i871.DiaryRepository>()),
+    );
+    gh.lazySingleton<_i236.GetDiaryByIdUseCase>(
+      () => _i236.GetDiaryByIdUseCase(gh<_i871.DiaryRepository>()),
+    );
+    gh.lazySingleton<_i1039.UpdateDiaryUseCase>(
+      () => _i1039.UpdateDiaryUseCase(gh<_i871.DiaryRepository>()),
     );
     gh.lazySingleton<_i420.SocialSignInUseCase>(
       () => _i420.SocialSignInUseCase(gh<_i488.AuthRepository>()),

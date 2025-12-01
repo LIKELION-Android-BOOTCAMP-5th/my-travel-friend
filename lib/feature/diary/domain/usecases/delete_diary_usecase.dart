@@ -1,5 +1,8 @@
+import 'package:injectable/injectable.dart';
+
 import '../repositories/diary_repository.dart';
 
+@LazySingleton()
 class DeleteDiaryUseCase {
   final DiaryRepository _diaryRepository;
 

@@ -1,6 +1,9 @@
+import 'package:injectable/injectable.dart';
+
 import '../entities/diary_entity.dart';
 import '../repositories/diary_repository.dart';
 
+@LazySingleton()
 class GetDiariesUseCase {
   final DiaryRepository _diaryRepository;
 
