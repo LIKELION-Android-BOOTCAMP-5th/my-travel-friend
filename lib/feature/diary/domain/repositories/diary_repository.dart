@@ -1,6 +1,6 @@
-// [이재은] 다이어리 관련
 import '../entities/diary_entity.dart';
 
+// [이재은] 다이어리 관련 domain repository
 abstract class DiaryRepository {
   // 다이어리 목록 조회(가져오기)
   // -> 여행 아이디로 다이어리 조회

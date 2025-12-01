@@ -5,6 +5,9 @@ import '../../domain/entities/diary_entity.dart';
 part 'diary_dto.freezed.dart';
 part 'diary_dto.g.dart';
 
+// [이재은] 다이어리 DTO
+// -> 추후에 혹 다른 테이블에서 Join 해서 가져오는 데이터가 있을 경우, 편집 필요
+
 @freezed
 abstract class DiaryDTO with _$DiaryDTO {
   const DiaryDTO._();

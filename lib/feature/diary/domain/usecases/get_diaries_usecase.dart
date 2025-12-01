@@ -3,6 +3,7 @@ import 'package:injectable/injectable.dart';
 import '../entities/diary_entity.dart';
 import '../repositories/diary_repository.dart';
 
+// [이재은] 다아어리 목록 조회 usecase
 @LazySingleton()
 class GetDiariesUseCase {
   final DiaryRepository _diaryRepository;
