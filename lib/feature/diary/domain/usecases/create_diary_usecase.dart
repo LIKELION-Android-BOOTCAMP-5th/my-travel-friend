@@ -3,7 +3,7 @@ import 'package:my_travel_friend/feature/diary/domain/entities/diary_entity.dart
 
 import '../repositories/diary_repository.dart';
 
-// [이재은] 다아어리 생성 usecase
+// [이재은] 다이어리 생성 usecase
 @LazySingleton()
 class CreateDiaryUseCase {
   final DiaryRepository _diaryRepository;
