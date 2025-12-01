@@ -7,7 +7,7 @@ part 'diary_entity.g.dart';
 abstract class DiaryEntity with _$DiaryEntity {
   const factory DiaryEntity({
     required int id,
-    required String? createdAt,
+    String? createdAt,
     required int tripId,
     required int userId,
     @Default(true) bool isPublic,
