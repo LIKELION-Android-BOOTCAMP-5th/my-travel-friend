@@ -7,6 +7,7 @@ import '../../../../core/util/time_ago.dart';
 import '../../../../theme/app_font.dart';
 import '../../../../theme/app_icon.dart';
 import '../../domain/entities/diary_entity.dart';
+import 'image_with_actions.dart';
 
 // [이재은] 다이어리 상세보기 팝업 위젯
 class DiaryDetailPopUp extends StatelessWidget {
@@ -121,21 +122,11 @@ class DiaryDetailPopUp extends StatelessWidget {
 
               // 사진 (null이 아닐 때만 표시)
               if (photo != null) ...[
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(8),
-                  child: Image.network(
-                    photo,
-                    width: double.infinity,
-                    height: 200,
-                    fit: BoxFit.cover,
-                    errorBuilder: (context, error, stackTrace) {
-                      return Container(
-                        height: 200,
-                        color: colorScheme.surfaceVariant,
-                        child: const Center(child: Icon(Icons.broken_image)),
-                      );
-                    },
-                  ),
+                ImageWithActions(
+                  imageUrl: photo, // 이미지 URL
+                  heroTag: 'diary_image_${diary.id}', // 애니메이션 태그
+                  height: 200, // 높이
+                  borderRadius: BorderRadius.circular(12), // 모서리 둥글기
                 ),
                 const SizedBox(height: 12),
               ],
