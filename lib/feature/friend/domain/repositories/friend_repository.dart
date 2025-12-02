@@ -6,7 +6,7 @@ abstract class FriendRepository {
   Future<List<FriendEntity>> getFriends(int userId);
 
   // 두 유저 사이에 친구 관계가 있는지 확인
-  Future<FriendEntity> getFriendRelation(int userId1, int userId2);
+  Future<FriendEntity?> getFriendRelation(int userId1, int userId2);
 
   // 새로운 친구 관계 생성
   Future<FriendEntity> createFriendRelation(int userId1, int userId2);
