@@ -114,9 +114,9 @@ class _StarRatingState extends State<StarRating> {
     // 채워진 별 (full 또는 half)
     IconData? filledIcon;
     if (fill >= 1) {
-      filledIcon = AppIcon.fullStarIcon;
+      filledIcon = AppIcon.fullStar;
     } else if (fill >= 0.5) {
-      filledIcon = AppIcon.halfStarIcon;
+      filledIcon = AppIcon.halfStar;
     }
 
     return SizedBox(
@@ -126,7 +126,7 @@ class _StarRatingState extends State<StarRating> {
         children: [
           // 빈 별 (항상 배경에 깔림)
           Icon(
-            AppIcon.starIcon,
+            AppIcon.star,
             size: widget.starSize,
             color: widget.emptyColor.withOpacity(0.3),
           ),

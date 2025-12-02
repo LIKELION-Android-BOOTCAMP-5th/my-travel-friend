@@ -8,7 +8,7 @@ import '../../../../theme/app_icon.dart';
 import '../../domain/entities/diary_entity.dart';
 import 'image_with_actions.dart';
 
-// [이재은] 다이어리 상세보기 팝업 위젯
+// [이재은] 다이어리 리스트용 박스 위젯
 class DiaryDetailPopUp extends StatelessWidget {
   final DiaryEntity diary;
 
@@ -43,32 +43,26 @@ class DiaryDetailPopUp extends StatelessWidget {
                 children: [
                   ProfileBox(diary: diary),
                   IconButton(
-                    icon: Icon(AppIcon.close),
+                    icon: Icon(AppIcon.threeDots),
                     color: colorScheme.onSurface,
-                    onPressed: () => Navigator.of(context).pop(),
+                    onPressed: () {},
                   ),
                 ],
               ),
-              const SizedBox(height: 16),
+              const SizedBox(height: 8),
 
               // 제목 (null이 아닐 때만 표시)
               if (title != null) ...[
                 Text(
                   title,
-                  style: AppFont.regularBold.copyWith(
-                    color: colorScheme.onSurface,
-                  ),
+                  style: AppFont.regular.copyWith(color: colorScheme.onSurface),
                 ),
-                const SizedBox(height: 12),
+                const SizedBox(height: 8),
               ],
 
               // 별점 (null이 아닐 때만 표시)
               if (rating != null) ...[
-                StarRating(
-                  rating: rating.toDouble(),
-                  starSize: 20,
-                  starSpacing: 5,
-                ),
+                StarRating(rating: rating.toDouble()),
                 const SizedBox(height: 8),
               ],
 
@@ -76,7 +70,9 @@ class DiaryDetailPopUp extends StatelessWidget {
               if (content != null) ...[
                 Text(
                   content,
-                  style: AppFont.regular.copyWith(color: colorScheme.onSurface),
+                  style: AppFont.small.copyWith(color: colorScheme.onSurface),
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
                 ),
                 SizedBox(height: 8),
               ],
@@ -86,8 +82,9 @@ class DiaryDetailPopUp extends StatelessWidget {
                 ImageWithActions(
                   imageUrl: photo, // 이미지 URL
                   heroTag: 'diary_image_${diary.id}', // 애니메이션 태그
-                  height: 200, // 높이
-                  borderRadius: BorderRadius.circular(12), // 모서리 둥글기
+                  height: 80,
+                  width: 80,
+                  borderRadius: BorderRadius.circular(8), // 모서리 둥글기
                 ),
                 const SizedBox(height: 12),
               ],

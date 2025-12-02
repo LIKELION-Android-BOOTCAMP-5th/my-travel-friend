@@ -33,11 +33,11 @@ class BottomNavigation extends StatelessWidget {
       backgroundColor: colorScheme.surface,
       type: BottomNavigationBarType.fixed,
       items: const [
-        BottomNavigationBarItem(icon: AppIcon.home, label: '여행 홈'),
-        BottomNavigationBarItem(icon: AppIcon.calendar, label: '스케줄'),
-        BottomNavigationBarItem(icon: AppIcon.checklist, label: '체크리스트'),
-        BottomNavigationBarItem(icon: AppIcon.diary, label: '다이어리'),
-        BottomNavigationBarItem(icon: AppIcon.talk, label: '톡톡'),
+        BottomNavigationBarItem(icon: Icon(AppIcon.home), label: '여행 홈'),
+        BottomNavigationBarItem(icon: Icon(AppIcon.calendar), label: '스케줄'),
+        BottomNavigationBarItem(icon: Icon(AppIcon.checklist), label: '체크리스트'),
+        BottomNavigationBarItem(icon: Icon(AppIcon.diary), label: '다이어리'),
+        BottomNavigationBarItem(icon: Icon(AppIcon.talk), label: '톡톡'),
       ],
     );
   }

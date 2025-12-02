@@ -1,5 +1,7 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
+import '../../../auth/data/models/user_model.dart';
+import '../../../auth/domain/entities/user_entity.dart';
 import '../../domain/entities/diary_entity.dart';
 
 part 'diary_dto.freezed.dart';
@@ -17,6 +19,7 @@ abstract class DiaryDTO with _$DiaryDTO {
     @JsonKey(name: 'created_at') String? createdAt,
     @JsonKey(name: 'trip_id') required int tripId,
     @JsonKey(name: 'user_id') required int userId,
+    @JsonKey(name: 'user') Map<String, dynamic>? userJson,
     @JsonKey(name: 'is_public') required bool isPublic,
     required String type,
     String? title,
@@ -31,11 +34,17 @@ abstract class DiaryDTO with _$DiaryDTO {
       _$DiaryDTOFromJson(json);
 
   DiaryEntity toEntity() {
+    UserEntity? userEntity;
+    if (userJson != null) {
+      userEntity = UserDTO.fromJson(userJson!).toEntity();
+    }
+
     return DiaryEntity(
       id: id,
       createdAt: createdAt,
       tripId: tripId,
       userId: userId,
+      user: userEntity,
       isPublic: isPublic,
       type: type,
       title: title,
