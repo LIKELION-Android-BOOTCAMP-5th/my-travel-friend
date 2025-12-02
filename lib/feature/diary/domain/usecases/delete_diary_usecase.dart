@@ -1,5 +1,6 @@
 import 'package:injectable/injectable.dart';
 
+import '../../../../core/result/result.dart';
 import '../repositories/diary_repository.dart';
 
 // [이재은] 다이어리 삭제 usecase
@@ -10,7 +11,7 @@ class DeleteDiaryUseCase {
   DeleteDiaryUseCase(this._diaryRepository);
 
   // 다이어리 삭제
-  Future<void> call(int id) {
+  Future<Result<void>> call(int id) {
     return _diaryRepository.deleteDiary(id);
   }
 }

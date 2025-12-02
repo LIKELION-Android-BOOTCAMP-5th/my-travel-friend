@@ -1,5 +1,6 @@
 import 'package:injectable/injectable.dart';
 
+import '../../../../core/result/result.dart';
 import '../../domain/entities/diary_entity.dart';
 import '../../domain/repositories/diary_repository.dart';
 import '../datasources/diary_data_source.dart';
@@ -13,88 +14,81 @@ class DiaryRepositoryImpl implements DiaryRepository {
 
   // 공유 다이어리 목록 가져오기
   @override
-  Future<List<DiaryEntity>> getOurDiaries(int tripId) async {
-    try {
-      final res = await _dataSource.getOurDiaries(tripId);
-      return res.map((dto) => dto.toEntity()).toList();
-    } on Exception catch (e) {
-      throw Exception(e);
-    }
+  Future<Result<List<DiaryEntity>>> getOurDiaries(int tripId) async {
+    final res = await _dataSource.getOurDiaries(tripId);
+    return res.when(
+      success: (data) =>
+          Result.success(data.map((dto) => dto.toEntity()).toList()),
+      failure: (failure) => Result.failure(failure),
+    );
   }
 
   // 내 다이어리 목록 가져오기
   @override
-  Future<List<DiaryEntity>> getMyDiaries(int tripId, int userId) async {
-    try {
-      final res = await _dataSource.getMyDiaries(tripId, userId);
-      return res.map((dto) => dto.toEntity()).toList();
-    } on Exception catch (e) {
-      throw Exception(e);
-    }
+  Future<Result<List<DiaryEntity>>> getMyDiaries(int tripId, int userId) async {
+    final res = await _dataSource.getMyDiaries(tripId, userId);
+    return res.when(
+      success: (data) =>
+          Result.success(data.map((dto) => dto.toEntity()).toList()),
+      failure: (failure) => Result.failure(failure),
+    );
   }
 
   // 다이어리 상세 조회 (아이디로)
-  Future<DiaryEntity> getDiaryById(int id) async {
-    try {
-      final res = await _dataSource.getDiaryById(id);
-      return res.toEntity();
-    } on Exception catch (e) {
-      throw Exception(e);
-    }
+  Future<Result<DiaryEntity>> getDiaryById(int id) async {
+    final res = await _dataSource.getDiaryById(id);
+    return res.when(
+      success: (data) => Result.success(data.toEntity()),
+      failure: (failure) => Result.failure(failure),
+    );
   }
 
   // 다이어리 생성
-  Future<DiaryEntity> createDiary(DiaryEntity diary) async {
-    try {
-      final res = DiaryDTO(
-        tripId: diary.tripId,
-        userId: diary.userId,
-        isPublic: diary.isPublic,
-        type: diary.type,
-        title: diary.title,
-        scheduleId: diary.scheduleId,
-        img: diary.img,
-        rating: diary.rating,
-        content: diary.content,
-        cost: diary.cost,
-      );
+  Future<Result<DiaryEntity>> createDiary(DiaryEntity diary) async {
+    final dto = DiaryDTO(
+      tripId: diary.tripId,
+      userId: diary.userId,
+      isPublic: diary.isPublic,
+      type: diary.type,
+      title: diary.title,
+      scheduleId: diary.scheduleId,
+      img: diary.img,
+      rating: diary.rating,
+      content: diary.content,
+      cost: diary.cost,
+    );
 
-      final result = await _dataSource.createDiary(res);
-      return result.toEntity();
-    } on Exception catch (e) {
-      throw Exception(e);
-    }
+    final res = await _dataSource.createDiary(dto);
+    return res.when(
+      success: (data) => Result.success(data.toEntity()),
+      failure: (failure) => Result.failure(failure),
+    );
   }
 
   // 다이어리 수정
-  Future<DiaryEntity> updateDiary(DiaryEntity diary) async {
-    try {
-      final res = DiaryDTO(
-        tripId: diary.tripId,
-        userId: diary.userId,
-        isPublic: diary.isPublic,
-        type: diary.type,
-        title: diary.title,
-        scheduleId: diary.scheduleId,
-        img: diary.img,
-        rating: diary.rating,
-        content: diary.content,
-        cost: diary.cost,
-      );
+  Future<Result<DiaryEntity>> updateDiary(DiaryEntity diary) async {
+    final dto = DiaryDTO(
+      tripId: diary.tripId,
+      userId: diary.userId,
+      isPublic: diary.isPublic,
+      type: diary.type,
+      title: diary.title,
+      scheduleId: diary.scheduleId,
+      img: diary.img,
+      rating: diary.rating,
+      content: diary.content,
+      cost: diary.cost,
+    );
 
-      final result = await _dataSource.updateDiary(res);
-      return result.toEntity();
-    } on Exception catch (e) {
-      throw Exception(e);
-    }
+    final res = await _dataSource.updateDiary(dto);
+    return res.when(
+      success: (data) => Result.success(data.toEntity()),
+      failure: (failure) => Result.failure(failure),
+    );
   }
 
   // 다이어리 삭제
-  Future<void> deleteDiary(int id) async {
-    try {
-      await _dataSource.deleteDiary(id);
-    } on Exception catch (e) {
-      throw Exception(e);
-    }
+  Future<Result<void>> deleteDiary(int id) async {
+    return await _dataSource.deleteDiary(id);
   }
 }
