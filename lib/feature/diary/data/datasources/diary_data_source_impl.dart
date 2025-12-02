@@ -4,6 +4,7 @@ import '../dtos/diary_dto.dart';
 import 'diary_data_source.dart';
 
 // [이재은] 다이어리 관련 데이터 소스 (구현체)
+
 class DiaryDataSourceImpl implements DiaryDataSource {
   // Supabase 의존성 주입
   final SupabaseClient _supabaseClient;
