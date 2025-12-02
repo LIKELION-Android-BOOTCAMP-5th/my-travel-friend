@@ -13,7 +13,7 @@ class DiaryDataSourceImpl implements DiaryDataSource {
   final SupabaseClient _supabaseClient;
   DiaryDataSourceImpl(this._supabaseClient);
 
-  // user테이블이랑 조인
+  // user 테이블이랑 조인
   static const String _selectWithUser = '''
     *,
     user : user!user_id(
