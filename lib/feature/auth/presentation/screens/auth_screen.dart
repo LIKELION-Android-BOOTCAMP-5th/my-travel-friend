@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:my_travel_friend/theme/app_font.dart';
 
 import '../../../../theme/app_colors.dart';
-import '../widgets/login_button.dart';
+import '../widgets/google_login_button.dart';
+import '../widgets/kakao_login_button.dart';
 
 // [이재은] 로그인 화면 생성
 class AuthScreen extends StatelessWidget {
@@ -32,20 +33,12 @@ class AuthScreen extends StatelessWidget {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    LoginButton(
+                    GoogleLoginButton(
                       onTap: () {}, // 구글 로그인 액션 넣기
-                      logoImg: 'assets/images/google_logo_48.png',
-                      brandColor: Color(0xFF4285F4),
-                      brandName: 'Google',
-                      textColor: AppColors.light,
                     ),
                     SizedBox(height: 8.0),
-                    LoginButton(
+                    KakaoLoginButton(
                       onTap: () {}, // 카카오 로그인 액션 넣기
-                      logoImg: 'assets/images/kakao_logo_48.png',
-                      brandColor: Color(0xFFFEE500),
-                      brandName: 'Kakao',
-                      textColor: AppColors.dark,
                     ),
                   ],
                 ),
