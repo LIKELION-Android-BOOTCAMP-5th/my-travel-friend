@@ -14,10 +14,10 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$FriendEntity {
 
- String get id;// 친구 관계 id
- String? get user1Id;// 친구 1
- String? get user2Id;// 친구 2
- DateTime? get createdAt;
+ int get id;// 친구 관계 id
+ int? get user1Id;// 친구 1
+ int? get user2Id;// 친구 2
+ String? get createdAt;
 /// Create a copy of FriendEntity
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -48,7 +48,7 @@ abstract mixin class $FriendEntityCopyWith<$Res>  {
   factory $FriendEntityCopyWith(FriendEntity value, $Res Function(FriendEntity) _then) = _$FriendEntityCopyWithImpl;
 @useResult
 $Res call({
- String id, String? user1Id, String? user2Id, DateTime? createdAt
+ int id, int? user1Id, int? user2Id, String? createdAt
 });
 
 
@@ -68,10 +68,10 @@ class _$FriendEntityCopyWithImpl<$Res>
 @pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? user1Id = freezed,Object? user2Id = freezed,Object? createdAt = freezed,}) {
   return _then(_self.copyWith(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
-as String,user1Id: freezed == user1Id ? _self.user1Id : user1Id // ignore: cast_nullable_to_non_nullable
-as String?,user2Id: freezed == user2Id ? _self.user2Id : user2Id // ignore: cast_nullable_to_non_nullable
-as String?,createdAt: freezed == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
-as DateTime?,
+as int,user1Id: freezed == user1Id ? _self.user1Id : user1Id // ignore: cast_nullable_to_non_nullable
+as int?,user2Id: freezed == user2Id ? _self.user2Id : user2Id // ignore: cast_nullable_to_non_nullable
+as int?,createdAt: freezed == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
+as String?,
   ));
 }
 
@@ -156,7 +156,7 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String? user1Id,  String? user2Id,  DateTime? createdAt)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int id,  int? user1Id,  int? user2Id,  String? createdAt)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _FriendEntity() when $default != null:
 return $default(_that.id,_that.user1Id,_that.user2Id,_that.createdAt);case _:
@@ -177,7 +177,7 @@ return $default(_that.id,_that.user1Id,_that.user2Id,_that.createdAt);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String? user1Id,  String? user2Id,  DateTime? createdAt)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int id,  int? user1Id,  int? user2Id,  String? createdAt)  $default,) {final _that = this;
 switch (_that) {
 case _FriendEntity():
 return $default(_that.id,_that.user1Id,_that.user2Id,_that.createdAt);case _:
@@ -197,7 +197,7 @@ return $default(_that.id,_that.user1Id,_that.user2Id,_that.createdAt);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String? user1Id,  String? user2Id,  DateTime? createdAt)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int id,  int? user1Id,  int? user2Id,  String? createdAt)?  $default,) {final _that = this;
 switch (_that) {
 case _FriendEntity() when $default != null:
 return $default(_that.id,_that.user1Id,_that.user2Id,_that.createdAt);case _:
@@ -215,13 +215,13 @@ class _FriendEntity implements FriendEntity {
   const _FriendEntity({required this.id, this.user1Id, this.user2Id, this.createdAt});
   
 
-@override final  String id;
+@override final  int id;
 // 친구 관계 id
-@override final  String? user1Id;
+@override final  int? user1Id;
 // 친구 1
-@override final  String? user2Id;
+@override final  int? user2Id;
 // 친구 2
-@override final  DateTime? createdAt;
+@override final  String? createdAt;
 
 /// Create a copy of FriendEntity
 /// with the given fields replaced by the non-null parameter values.
@@ -253,7 +253,7 @@ abstract mixin class _$FriendEntityCopyWith<$Res> implements $FriendEntityCopyWi
   factory _$FriendEntityCopyWith(_FriendEntity value, $Res Function(_FriendEntity) _then) = __$FriendEntityCopyWithImpl;
 @override @useResult
 $Res call({
- String id, String? user1Id, String? user2Id, DateTime? createdAt
+ int id, int? user1Id, int? user2Id, String? createdAt
 });
 
 
@@ -273,10 +273,10 @@ class __$FriendEntityCopyWithImpl<$Res>
 @override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? user1Id = freezed,Object? user2Id = freezed,Object? createdAt = freezed,}) {
   return _then(_FriendEntity(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
-as String,user1Id: freezed == user1Id ? _self.user1Id : user1Id // ignore: cast_nullable_to_non_nullable
-as String?,user2Id: freezed == user2Id ? _self.user2Id : user2Id // ignore: cast_nullable_to_non_nullable
-as String?,createdAt: freezed == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
-as DateTime?,
+as int,user1Id: freezed == user1Id ? _self.user1Id : user1Id // ignore: cast_nullable_to_non_nullable
+as int?,user2Id: freezed == user2Id ? _self.user2Id : user2Id // ignore: cast_nullable_to_non_nullable
+as int?,createdAt: freezed == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
+as String?,
   ));
 }
 
