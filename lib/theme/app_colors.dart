@@ -11,6 +11,10 @@ class AppColors {
 
   static const Color tertiary = Color(0xFFF5C651);
 
+  static const Color memoContainer = Color(0xFFD6F5D6);
+  static const Color onMemoContainerLight = Color(0xFF213E10);
+  static const Color onMemoContainerDark = Color(0xFFA8E6A8);
+
   static const Color lightGreen = Color(0xFF8BC34A);
   static const Color lightPink = Color(0xFFFF87B0);
   static const Color lightPurple = Color(0xFFAA46BB);
