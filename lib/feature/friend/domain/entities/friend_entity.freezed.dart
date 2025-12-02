@@ -11,7 +11,6 @@ part of 'friend_entity.dart';
 
 // dart format off
 T _$identity<T>(T value) => value;
-
 /// @nodoc
 mixin _$FriendEntity {
 
@@ -25,8 +24,6 @@ mixin _$FriendEntity {
 @pragma('vm:prefer-inline')
 $FriendEntityCopyWith<FriendEntity> get copyWith => _$FriendEntityCopyWithImpl<FriendEntity>(this as FriendEntity, _$identity);
 
-  /// Serializes this FriendEntity to a JSON map.
-  Map<String, dynamic> toJson();
 
 
 @override
@@ -34,7 +31,7 @@ bool operator ==(Object other) {
   return identical(this, other) || (other.runtimeType == runtimeType&&other is FriendEntity&&(identical(other.id, id) || other.id == id)&&(identical(other.user1Id, user1Id) || other.user1Id == user1Id)&&(identical(other.user2Id, user2Id) || other.user2Id == user2Id)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt));
 }
 
-@JsonKey(includeFromJson: false, includeToJson: false)
+
 @override
 int get hashCode => Object.hash(runtimeType,id,user1Id,user2Id,createdAt);
 
@@ -212,11 +209,11 @@ return $default(_that.id,_that.user1Id,_that.user2Id,_that.createdAt);case _:
 }
 
 /// @nodoc
-@JsonSerializable()
+
 
 class _FriendEntity implements FriendEntity {
   const _FriendEntity({required this.id, this.user1Id, this.user2Id, this.createdAt});
-  factory _FriendEntity.fromJson(Map<String, dynamic> json) => _$FriendEntityFromJson(json);
+  
 
 @override final  String id;
 // 친구 관계 id
@@ -232,17 +229,14 @@ class _FriendEntity implements FriendEntity {
 @pragma('vm:prefer-inline')
 _$FriendEntityCopyWith<_FriendEntity> get copyWith => __$FriendEntityCopyWithImpl<_FriendEntity>(this, _$identity);
 
-@override
-Map<String, dynamic> toJson() {
-  return _$FriendEntityToJson(this, );
-}
+
 
 @override
 bool operator ==(Object other) {
   return identical(this, other) || (other.runtimeType == runtimeType&&other is _FriendEntity&&(identical(other.id, id) || other.id == id)&&(identical(other.user1Id, user1Id) || other.user1Id == user1Id)&&(identical(other.user2Id, user2Id) || other.user2Id == user2Id)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt));
 }
 
-@JsonKey(includeFromJson: false, includeToJson: false)
+
 @override
 int get hashCode => Object.hash(runtimeType,id,user1Id,user2Id,createdAt);
 
