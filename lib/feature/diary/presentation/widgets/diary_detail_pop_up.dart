@@ -4,6 +4,7 @@ import 'package:my_travel_friend/core/widget/profile_img.dart';
 import '../../../../theme/app_font.dart';
 import '../../../../theme/app_icon.dart';
 
+// [이재은] 다이어리 상세보기 팝업 위젯
 class DiaryDetailPopUp extends StatelessWidget {
   final int diaryId;
 
@@ -12,6 +13,7 @@ class DiaryDetailPopUp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
+
     return Center(
       child: Container(
         decoration: BoxDecoration(
