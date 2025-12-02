@@ -1,6 +1,7 @@
 import 'package:injectable/injectable.dart';
 import 'package:my_travel_friend/feature/diary/domain/entities/diary_entity.dart';
 
+import '../../../../core/result/result.dart';
 import '../repositories/diary_repository.dart';
 
 // [이재은] 다이어리 생성 usecase
@@ -11,7 +12,7 @@ class CreateDiaryUseCase {
   CreateDiaryUseCase(this._diaryRepository);
 
   // 다이어리 생성
-  Future<DiaryEntity> call(DiaryEntity diary) {
+  Future<Result<DiaryEntity>> call(DiaryEntity diary) {
     return _diaryRepository.createDiary(diary);
   }
 }

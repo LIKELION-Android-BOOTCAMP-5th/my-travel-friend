@@ -1,5 +1,6 @@
 import 'package:injectable/injectable.dart';
 
+import '../../../../core/result/result.dart';
 import '../entities/diary_entity.dart';
 import '../repositories/diary_repository.dart';
 
@@ -11,7 +12,7 @@ class GetMyDiariesUseCase {
   GetMyDiariesUseCase(this._diaryRepository);
 
   // 다이어리 목록 가져오기
-  Future<List<DiaryEntity>> call(int tripId, int userId) {
+  Future<Result<List<DiaryEntity>>> call(int tripId, int userId) {
     return _diaryRepository.getMyDiaries(tripId, userId);
   }
 }
