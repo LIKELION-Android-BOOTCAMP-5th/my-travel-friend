@@ -3,6 +3,7 @@ plugins {
     id("kotlin-android")
     // The Flutter Gradle Plugin must be applied after the Android and Kotlin Gradle plugins.
     id("dev.flutter.flutter-gradle-plugin")
+    id("com.google.gms.google-services")
 }
 
 android {
@@ -11,6 +12,8 @@ android {
     ndkVersion = flutter.ndkVersion
 
     compileOptions {
+        // Desugaring 활성화 추가
+        isCoreLibraryDesugaringEnabled = true
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
@@ -41,4 +44,14 @@ android {
 
 flutter {
     source = "../.."
+}
+
+// dependencies 블록에 Desugaring 라이브러리 추가
+dependencies {
+    // flutter_local_notifications Desugaring 지원을 위한 라이브러리
+    coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.1.4")
+
+    // Android 12L 이상 충돌 방지 (선택 사항이지만 추가 권장)
+    implementation("androidx.window:window:1.0.0")
+    implementation("androidx.window:window-java:1.0.0")
 }

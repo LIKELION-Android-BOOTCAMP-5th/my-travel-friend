@@ -12,5 +12,5 @@ abstract class FriendRequestRepository {
   Future<void> acceptRequest(int id);
 
   // 친구 요청 삭제 -> 친구 요청 아이디로 찾기
-  Future<void> removeRequest(int id);
+  Future<void> deleteRequest(int id);
 }

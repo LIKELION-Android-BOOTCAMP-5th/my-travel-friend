@@ -131,7 +131,7 @@ return error(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  initial,TResult Function()?  loading,TResult Function( String userId)?  authenticated,TResult Function()?  unauthenticated,TResult Function( String message)?  error,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  initial,TResult Function()?  loading,TResult Function( int userId)?  authenticated,TResult Function()?  unauthenticated,TResult Function( String message)?  error,required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case AuthInitial() when initial != null:
 return initial();case AuthLoading() when loading != null:
@@ -156,7 +156,7 @@ return error(_that.message);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  initial,required TResult Function()  loading,required TResult Function( String userId)  authenticated,required TResult Function()  unauthenticated,required TResult Function( String message)  error,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  initial,required TResult Function()  loading,required TResult Function( int userId)  authenticated,required TResult Function()  unauthenticated,required TResult Function( String message)  error,}) {final _that = this;
 switch (_that) {
 case AuthInitial():
 return initial();case AuthLoading():
@@ -180,7 +180,7 @@ return error(_that.message);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  initial,TResult? Function()?  loading,TResult? Function( String userId)?  authenticated,TResult? Function()?  unauthenticated,TResult? Function( String message)?  error,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  initial,TResult? Function()?  loading,TResult? Function( int userId)?  authenticated,TResult? Function()?  unauthenticated,TResult? Function( String message)?  error,}) {final _that = this;
 switch (_that) {
 case AuthInitial() when initial != null:
 return initial();case AuthLoading() when loading != null:
@@ -266,7 +266,7 @@ class AuthAuthenticated implements AuthState {
   const AuthAuthenticated({required this.userId});
   
 
- final  String userId;
+ final  int userId;
 
 /// Create a copy of AuthState
 /// with the given fields replaced by the non-null parameter values.
@@ -298,7 +298,7 @@ abstract mixin class $AuthAuthenticatedCopyWith<$Res> implements $AuthStateCopyW
   factory $AuthAuthenticatedCopyWith(AuthAuthenticated value, $Res Function(AuthAuthenticated) _then) = _$AuthAuthenticatedCopyWithImpl;
 @useResult
 $Res call({
- String userId
+ int userId
 });
 
 
@@ -318,7 +318,7 @@ class _$AuthAuthenticatedCopyWithImpl<$Res>
 @pragma('vm:prefer-inline') $Res call({Object? userId = null,}) {
   return _then(AuthAuthenticated(
 userId: null == userId ? _self.userId : userId // ignore: cast_nullable_to_non_nullable
-as String,
+as int,
   ));
 }
 

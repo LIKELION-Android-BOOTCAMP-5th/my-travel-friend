@@ -1,7 +1,9 @@
 import 'package:injectable/injectable.dart';
+import 'package:my_travel_friend/core/result/failures.dart';
 import 'package:my_travel_friend/feature/auth/data/models/user_model.dart';
 import 'package:my_travel_friend/feature/auth/domain/entities/user_entity.dart';
 
+import '../../../../core/result/result.dart';
 import '../../domain/repositories/auth_repository.dart';
 import '../datasources/google_auth_data_source.dart';
 import '../datasources/supabase_auth_data_source.dart';
@@ -13,7 +15,9 @@ class AuthRepositoryImpl implements AuthRepository {
   AuthRepositoryImpl(this.googleDataSource, this.supabaseAuthDataSource);
 
   @override
-  Future<UserEntity> socialSignIn({required SocialLoginType type}) async {
+  Future<Result<UserEntity>> socialSignIn({
+    required SocialLoginType type,
+  }) async {
     try {
       switch (type) {
         case SocialLoginType.google:
@@ -44,30 +48,26 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
-  Future<void> signOut() async {
-    try {
-      await supabaseAuthDataSource.signOut();
-    } on Exception catch (e) {
-      throw Exception(e);
-    }
-  }
-
-  @override
-  Future<UserEntity?> getCurrentUser() async {
+  Future<Result<UserEntity?>> getCurrentUser() async {
     // SupabaseClient에서 현재 사용자 정보를 직접 가져옵니다.
     final UserDTO? user = await supabaseAuthDataSource.getCurrentUser();
 
     if (user == null) {
-      return null;
+      return Result.failure(Failure.authFailure(message: "유저 정보가 없습니다."));
     }
 
     // Supabase User 객체를 DTO를 거쳐 Entity로 변환하여 반환
-    return user.toEntity();
+    return Result.success(user.toEntity());
   }
 
   @override
-  Stream<UserEntity?> authStateChanges() {
+  Stream<Result<UserEntity?>> authStateChanges() {
     // TODO: implement authStateChanges
     throw UnimplementedError();
+  }
+
+  @override
+  Future<Result<void>> signOut() async {
+    return await supabaseAuthDataSource.signOut();
   }
 }

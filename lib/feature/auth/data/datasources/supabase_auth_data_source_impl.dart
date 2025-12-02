@@ -1,4 +1,5 @@
 import 'package:injectable/injectable.dart';
+import 'package:my_travel_friend/core/result/result.dart';
 import 'package:my_travel_friend/feature/auth/data/datasources/supabase_auth_data_source.dart';
 import 'package:my_travel_friend/feature/auth/data/models/user_model.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -13,14 +14,28 @@ class SupabaseAuthDataSourceImpl implements SupabaseAuthDataSource {
 
   OAuthProvider _getProvider(SocialLoginType type) {
     // switch (type) { ... } 로직 구현
+    switch (type) {
+      case SocialLoginType.google:
+        // TODO: Handle this case.
+        throw UnimplementedError();
+      case SocialLoginType.kakao:
+        // TODO: Handle this case.
+        throw UnimplementedError();
+      case SocialLoginType.apple:
+        // TODO: Handle this case.
+        throw UnimplementedError();
+      case SocialLoginType.naver:
+        // TODO: Handle this case.
+        throw UnimplementedError();
+    }
     throw UnimplementedError();
   }
 
   @override
   Future<UserDTO> signInWithToken({
-    SocialLoginType type,
-    String idToken,
-    String accessToken,
+    required SocialLoginType type,
+    required String idToken,
+    required String accessToken,
   }) async {
     final provider = _getProvider(type);
 
@@ -45,7 +60,7 @@ class SupabaseAuthDataSourceImpl implements SupabaseAuthDataSource {
   }
 
   @override
-  Future<void> signOut() {
+  Future<Result<void>> signOut() {
     // TODO: implement signOut
     throw UnimplementedError();
   }

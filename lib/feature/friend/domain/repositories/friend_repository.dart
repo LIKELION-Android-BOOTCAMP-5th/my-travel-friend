@@ -12,5 +12,5 @@ abstract class FriendRepository {
   Future<FriendEntity> createFriendRelation(int userId1, int userId2);
 
   // 친구 삭제
-  Future<void> removeFriend(int userId1, int userId2);
+  Future<void> deleteFriend(int userId1, int userId2);
 }
