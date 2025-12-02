@@ -13,13 +13,26 @@ class DiaryDataSourceImpl implements DiaryDataSource {
   final SupabaseClient _supabaseClient;
   DiaryDataSourceImpl(this._supabaseClient);
 
+  // user테이블이랑 조인
+  static const String _selectWithUser = '''
+    *,
+    user : user!user_id(
+      id, 
+      uuid, 
+      nickname, 
+      email, 
+      profile_img, 
+      delete_at
+    ) 
+  ''';
+
   // 공유 다이어리 목록 조회 (여행 아이디로 전체 가져오기)
   @override
   Future<Result<List<DiaryDTO>>> getOurDiaries(int tripId) async {
     try {
       final res = await _supabaseClient
           .from('diary')
-          .select()
+          .select(_selectWithUser)
           .eq('trip_id', tripId)
           .eq('is_public', false)
           .order('created_at', ascending: false);
@@ -39,7 +52,7 @@ class DiaryDataSourceImpl implements DiaryDataSource {
     try {
       final res = await _supabaseClient
           .from('diary')
-          .select()
+          .select(_selectWithUser)
           .eq('trip_id', tripId)
           .eq('user_id', userId)
           .order('created_at', ascending: false);
@@ -59,7 +72,7 @@ class DiaryDataSourceImpl implements DiaryDataSource {
     try {
       final res = await _supabaseClient
           .from('diary')
-          .select()
+          .select(_selectWithUser)
           .eq('id', id)
           .single();
 
@@ -76,8 +89,8 @@ class DiaryDataSourceImpl implements DiaryDataSource {
     try {
       final res = await _supabaseClient
           .from('diary')
-          .insert(diary.toJson())
-          .select()
+          .insert(diary.toJson()..remove('user'))
+          .select(_selectWithUser)
           .single();
 
       final list = DiaryDTO.fromJson(res);
@@ -91,11 +104,16 @@ class DiaryDataSourceImpl implements DiaryDataSource {
   @override
   Future<Result<DiaryDTO>> updateDiary(DiaryDTO diary) async {
     try {
+      final updateData = diary.toJson()
+        ..remove('user')
+        ..remove('id')
+        ..remove('created_at');
+
       final res = await _supabaseClient
           .from('diary')
           .update(diary.toJson())
           .eq('id', diary.id!)
-          .select()
+          .select(_selectWithUser)
           .single();
 
       final list = DiaryDTO.fromJson(res);

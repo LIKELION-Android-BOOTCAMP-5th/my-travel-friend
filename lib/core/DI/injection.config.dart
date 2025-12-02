@@ -34,6 +34,8 @@ import '../../feature/auth/domain/usecases/watch_auth_state_usecase.dart'
     as _i456;
 import '../../feature/auth/presentation/viewmodel/auth_bloc.dart' as _i434;
 import '../../feature/diary/data/datasources/diary_data_source.dart' as _i881;
+import '../../feature/diary/data/datasources/diary_data_source_impl.dart'
+    as _i663;
 import '../../feature/diary/data/repositories/diary_repository_impl.dart'
     as _i148;
 import '../../feature/diary/domain/repositories/diary_repository.dart' as _i871;
@@ -47,6 +49,25 @@ import '../../feature/diary/domain/usecases/get_our_diaries_usecase.dart'
     as _i849;
 import '../../feature/diary/domain/usecases/update_diary_usecase.dart'
     as _i1039;
+import '../../feature/friend/domain/repositories/friend_repository.dart'
+    as _i359;
+import '../../feature/friend/domain/repositories/friend_request_repository.dart'
+    as _i255;
+import '../../feature/friend/domain/usecases/accept_request_usecase.dart'
+    as _i669;
+import '../../feature/friend/domain/usecases/create_friend_relation_usecase.dart'
+    as _i639;
+import '../../feature/friend/domain/usecases/create_friend_request_usecase.dart'
+    as _i611;
+import '../../feature/friend/domain/usecases/delete_friend_usecases.dart'
+    as _i285;
+import '../../feature/friend/domain/usecases/delete_request_usecase.dart'
+    as _i491;
+import '../../feature/friend/domain/usecases/get_friend_relation_usecase.dart'
+    as _i813;
+import '../../feature/friend/domain/usecases/get_friend_request_usecase.dart'
+    as _i739;
+import '../../feature/friend/domain/usecases/get_friends_usecase.dart' as _i806;
 import 'register_module.dart' as _i291;
 
 extension GetItInjectableX on _i174.GetIt {
@@ -75,9 +96,6 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i1040.SupabaseAuthDataSource>(
       () => _i436.SupabaseAuthDataSourceImpl(gh<_i454.SupabaseClient>()),
     );
-    gh.lazySingleton<_i871.DiaryRepository>(
-      () => _i148.DiaryRepositoryImpl(gh<_i881.DiaryDataSource>()),
-    );
     gh.lazySingleton<_i153.GoogleAuthDataSource>(
       () => _i795.SocialAuthDataSourceImpl(gh<_i116.GoogleSignIn>()),
     );
@@ -89,6 +107,43 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.singleton<_i456.WatchAuthStateUseCase>(
       () => _i456.WatchAuthStateUseCase(gh<_i488.AuthRepository>()),
+    );
+    gh.lazySingleton<_i881.DiaryDataSource>(
+      () => _i663.DiaryDataSourceImpl(gh<_i454.SupabaseClient>()),
+    );
+    gh.lazySingleton<_i669.AcceptRequestUsecase>(
+      () => _i669.AcceptRequestUsecase(gh<_i255.FriendRequestRepository>()),
+    );
+    gh.lazySingleton<_i611.CreateFriendRequestUsecase>(
+      () =>
+          _i611.CreateFriendRequestUsecase(gh<_i255.FriendRequestRepository>()),
+    );
+    gh.lazySingleton<_i491.DeleteRequestUsecase>(
+      () => _i491.DeleteRequestUsecase(gh<_i255.FriendRequestRepository>()),
+    );
+    gh.lazySingleton<_i739.GetFriendRequestUsecase>(
+      () => _i739.GetFriendRequestUsecase(gh<_i255.FriendRequestRepository>()),
+    );
+    gh.lazySingleton<_i639.CreateFriendRelationUsecase>(
+      () => _i639.CreateFriendRelationUsecase(gh<_i359.FriendRepository>()),
+    );
+    gh.lazySingleton<_i285.DeleteFriendUsecases>(
+      () => _i285.DeleteFriendUsecases(gh<_i359.FriendRepository>()),
+    );
+    gh.lazySingleton<_i813.GetFriendRelationUsecase>(
+      () => _i813.GetFriendRelationUsecase(gh<_i359.FriendRepository>()),
+    );
+    gh.lazySingleton<_i806.GetFriendsUsecase>(
+      () => _i806.GetFriendsUsecase(gh<_i359.FriendRepository>()),
+    );
+    gh.lazySingleton<_i871.DiaryRepository>(
+      () => _i148.DiaryRepositoryImpl(gh<_i881.DiaryDataSource>()),
+    );
+    gh.lazySingleton<_i858.SignOutUseCase>(
+      () => _i858.SignOutUseCase(gh<_i488.AuthRepository>()),
+    );
+    gh.lazySingleton<_i420.SocialSignInUseCase>(
+      () => _i420.SocialSignInUseCase(gh<_i488.AuthRepository>()),
     );
     gh.lazySingleton<_i27.CreateDiaryUseCase>(
       () => _i27.CreateDiaryUseCase(gh<_i871.DiaryRepository>()),
@@ -107,12 +162,6 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.lazySingleton<_i1039.UpdateDiaryUseCase>(
       () => _i1039.UpdateDiaryUseCase(gh<_i871.DiaryRepository>()),
-    );
-    gh.lazySingleton<_i858.SignOutUseCase>(
-      () => _i858.SignOutUseCase(gh<_i488.AuthRepository>()),
-    );
-    gh.lazySingleton<_i420.SocialSignInUseCase>(
-      () => _i420.SocialSignInUseCase(gh<_i488.AuthRepository>()),
     );
     gh.factory<_i434.AuthBloc>(
       () => _i434.AuthBloc(
