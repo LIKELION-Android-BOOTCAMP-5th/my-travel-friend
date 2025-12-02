@@ -11,10 +11,17 @@ class TypeTag extends StatelessWidget {
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
     final Color tagColor = switch (type) {
-      "MEMO" => AppColors.lightGreen.withOpacity(0.6),
-      "MONEY" => AppColors.secondary.withOpacity(0.6),
-      "PHOTO" => colorScheme.primary.withOpacity(0.6),
-      "REVIEW" => colorScheme.tertiary.withOpacity(0.6),
+      "MEMO" => AppColors.lightGreen.withOpacity(0.3),
+      "MONEY" => AppColors.secondary.withOpacity(0.3),
+      "PHOTO" => colorScheme.primary.withOpacity(0.3),
+      "REVIEW" => colorScheme.tertiary.withOpacity(0.3),
+      String() => throw UnimplementedError(),
+    };
+    final Color textColor = switch (type) {
+      "MEMO" => AppColors.lightGreen,
+      "MONEY" => colorScheme.secondary,
+      "PHOTO" => colorScheme.primary,
+      "REVIEW" => colorScheme.onTertiary,
       String() => throw UnimplementedError(),
     };
 
@@ -25,7 +32,7 @@ class TypeTag extends StatelessWidget {
       ),
       child: Padding(
         padding: EdgeInsetsGeometry.all(8.0),
-        child: Text(type, style: AppFont.tiny),
+        child: Text(type, style: AppFont.tiny.copyWith(color: textColor)),
       ),
     );
   }
