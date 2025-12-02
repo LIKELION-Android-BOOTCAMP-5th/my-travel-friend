@@ -9,13 +9,27 @@ class DiaryDataSourceImpl implements DiaryDataSource {
   final SupabaseClient _supabaseClient;
   DiaryDataSourceImpl(this._supabaseClient);
 
-  // 다이어리 목록 조회 (여행 아이디로 전체 가져오기)
+  // 공유 다이어리 목록 조회 (여행 아이디로 전체 가져오기)
   @override
-  Future<List<DiaryDTO>> getDiaries(int tripId) async {
+  Future<List<DiaryDTO>> getOurDiaries(int tripId) async {
     final res = await _supabaseClient
         .from('diary')
         .select()
         .eq('trip_id', tripId)
+        .eq('is_public', false)
+        .order('created_at', ascending: false);
+
+    return (res as List).map((json) => DiaryDTO.fromJson(json)).toList();
+  }
+
+  // 내 다이어리 목록 조회 (여행 아이디로 전체 가져오기)
+  @override
+  Future<List<DiaryDTO>> getMyDiaries(int tripId, int userId) async {
+    final res = await _supabaseClient
+        .from('diary')
+        .select()
+        .eq('trip_id', tripId)
+        .eq('user_id', userId)
         .order('created_at', ascending: false);
 
     return (res as List).map((json) => DiaryDTO.fromJson(json)).toList();
