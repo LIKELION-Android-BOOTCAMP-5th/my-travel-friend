@@ -17,11 +17,11 @@ class SupabaseAuthDataSourceImpl implements SupabaseAuthDataSource {
   }
 
   @override
-  Future<UserDTO> signInWithToken(
+  Future<UserDTO> signInWithToken({
     SocialLoginType type,
     String idToken,
     String accessToken,
-  ) async {
+  }) async {
     final provider = _getProvider(type);
 
     try {

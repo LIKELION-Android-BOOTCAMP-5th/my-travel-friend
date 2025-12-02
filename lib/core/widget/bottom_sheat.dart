@@ -6,7 +6,7 @@ import 'package:my_travel_friend/theme/app_font.dart';
 //바텀시트 완성했습니다.
 
 class BottomSheetAction {
-  final IconData icon;
+  final Widget icon;
   final Color iconBgColor;
   final String title;
   final VoidCallback onTap;
@@ -25,9 +25,10 @@ class CommonBottomSheet {
     required String sheetTitle,
     required List<BottomSheetAction> actions,
   }) {
+    final colorScheme = Theme.of(context).colorScheme;
     showModalBottomSheet(
       context: context,
-      backgroundColor: AppColors.light,
+      backgroundColor: colorScheme.surface,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),
@@ -53,11 +54,7 @@ class CommonBottomSheet {
 
             const SizedBox(height: 10),
 
-            Divider(
-              thickness: 1,
-              height: 1,
-              color: AppColors.dark.withOpacity(0.2),
-            ),
+            Divider(thickness: 1, height: 1, color: colorScheme.outline),
 
             const SizedBox(height: 12),
 
@@ -84,7 +81,12 @@ class CommonBottomSheet {
             color: action.iconBgColor,
             shape: BoxShape.circle,
           ),
-          child: Icon(action.icon, color: AppColors.light),
+          child: Center(
+            child: IconTheme(
+              data: const IconThemeData(color: AppColors.light),
+              child: action.icon,
+            ),
+          ),
         ),
         title: Padding(
           padding: const EdgeInsets.only(left: 4),

@@ -42,11 +42,12 @@ class PopUpBox extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
     return Center(
       child: ConstrainedBox(
         constraints: const BoxConstraints(maxWidth: 340, minWidth: 260),
         child: Material(
-          color: Color(0xfff5f5f5), //배경 컬러
+          color: colorScheme.surface, //배경 컬러
           elevation: 12,
           borderRadius: BorderRadius.circular(20),
           child: Padding(
@@ -74,10 +75,10 @@ class PopUpBox extends StatelessWidget {
                 /// 제목
                 Text(
                   title,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontFamily: 'Pretendard',
                     fontWeight: FontWeight.w600,
-                    color: Color(0xff2e2e2e),
+                    color: colorScheme.onSurface,
                   ),
                   textAlign: TextAlign.center,
                 ),
