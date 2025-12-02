@@ -2,23 +2,23 @@ import 'package:flutter/material.dart';
 import 'package:my_travel_friend/theme/app_font.dart';
 
 class Button extends StatelessWidget {
-  final String text;
+  final String? text;
   final VoidCallback? onTap;
   final double width;
   final double height;
-  final Color backgroundColor;
-  final Color textColor;
+  final Color? backgroundColor;
+  final Color contentColor;
   final double borderRadius;
-  final IconData? icon; // optional
+  final Widget? icon; // optional
 
   const Button({
     super.key,
-    required this.text,
+    this.text,
     required this.onTap,
     required this.width,
     required this.height,
-    required this.backgroundColor, // 기본 메인 색
-    required this.textColor,
+    this.backgroundColor, // 기본 메인 색
+    required this.contentColor,
     required this.borderRadius,
     this.icon,
   });
@@ -42,9 +42,14 @@ class Button extends StatelessWidget {
             if (icon != null)
               Padding(
                 padding: const EdgeInsets.only(right: 6.0),
-                child: Icon(icon, size: 20, color: textColor),
+                child: IconTheme(
+                  data: IconThemeData(color: contentColor),
+                  child: icon!,
+                ),
               ),
-            Text(text, style: AppFont.regular.copyWith(color: textColor)),
+
+            if (text != null)
+              Text(text!, style: AppFont.regular.copyWith(color: contentColor)),
           ],
         ),
       ),
