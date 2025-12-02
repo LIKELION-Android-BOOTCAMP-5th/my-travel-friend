@@ -25,9 +25,10 @@ class CommonBottomSheet {
     required String sheetTitle,
     required List<BottomSheetAction> actions,
   }) {
+    final colorScheme = Theme.of(context).colorScheme;
     showModalBottomSheet(
       context: context,
-      backgroundColor: AppColors.light,
+      backgroundColor: colorScheme.surface,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),
@@ -53,11 +54,7 @@ class CommonBottomSheet {
 
             const SizedBox(height: 10),
 
-            Divider(
-              thickness: 1,
-              height: 1,
-              color: AppColors.dark.withOpacity(0.2),
-            ),
+            Divider(thickness: 1, height: 1, color: colorScheme.outline),
 
             const SizedBox(height: 12),
 
