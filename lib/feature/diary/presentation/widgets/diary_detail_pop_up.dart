@@ -17,11 +17,7 @@ class DiaryDetailPopUp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
-    final isDark = colorScheme.brightness == Brightness.dark;
 
-    final writer = diary.user;
-    final writerName = writer?.nickname;
-    final writtenTime = diary.createdAt;
     final rating = diary.rating;
     final cost = diary.cost;
     final content = diary.content;

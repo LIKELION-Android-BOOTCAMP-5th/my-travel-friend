@@ -19,6 +19,7 @@ class ImageWithActions extends StatefulWidget {
   final String imageUrl; // 이미지 Url
   final String? heroTag; // 애니메이션 태그
   final double? height; // 이미지 높이 (기본값 : 200)
+  final double? width; // 이미지 가로
   final BorderRadius? borderRadius; // 이미지 모서리 곡률
 
   const ImageWithActions({
@@ -26,6 +27,7 @@ class ImageWithActions extends StatefulWidget {
     required this.imageUrl,
     this.heroTag,
     this.height = 200,
+    this.width,
     this.borderRadius,
   });
 
@@ -42,49 +44,54 @@ class _ImageWithActionsState extends State<ImageWithActions> {
     return ClipRRect(
       // 이미지 모서리 둥글게 처리
       borderRadius: widget.borderRadius ?? BorderRadius.circular(12),
-      child: Stack(
-        children: [
-          // 이미지
-          Hero(
-            // 전체 화면 전환 시 애니메이션 연결용
-            tag: widget.heroTag ?? widget.imageUrl,
-            child: Image.network(
-              widget.imageUrl,
-              width: double.infinity,
-              height: widget.height,
-              fit: BoxFit.cover, // 이미지가 영역을 꽉 채우도록
-              // 이미지 로드 실패시 대체 UI
-              errorBuilder: (context, error, stackTrace) {
-                return Container(
-                  height: widget.height,
-                  color: Theme.of(context).colorScheme.surfaceVariant,
-                  child: const Center(child: Icon(Icons.broken_image)),
-                );
-              },
+      child: SizedBox(
+        width: widget.width,
+        child: Stack(
+          children: [
+            // 이미지
+            Hero(
+              // 전체 화면 전환 시 애니메이션 연결용
+              tag: widget.heroTag ?? widget.imageUrl,
+              child: Image.network(
+                widget.imageUrl,
+                width: widget.width ?? double.infinity,
+                height: widget.height,
+                fit: BoxFit.cover, // 이미지가 영역을 꽉 채우도록
+                // 이미지 로드 실패시 대체 UI
+                errorBuilder: (context, error, stackTrace) {
+                  return Container(
+                    height: widget.height,
+                    color: Theme.of(context).colorScheme.surfaceVariant,
+                    child: const Center(child: Icon(Icons.broken_image)),
+                  );
+                },
+              ),
             ),
-          ),
 
-          // 버튼 오버레이
-          Positioned(
-            top: 8,
-            right: 8,
-            child: Row(
-              children: [
-                // 크게보기 버튼
-                _ActionButton(
-                  icon: Icons.open_in_full,
-                  onTap: () => _openFullScreen(context),
-                ),
-                const SizedBox(width: 8),
-                // 다운로드 버튼
-                _ActionButton(
-                  icon: _isDownloading ? AppIcon.hourGlass : AppIcon.download,
-                  onTap: _isDownloading ? null : _downloadImage,
-                ),
-              ],
+            // 버튼 오버레이
+            Positioned(
+              top: 8,
+              right: 8,
+              child: Row(
+                children: [
+                  // 크게보기 버튼
+                  _ActionButton(
+                    icon: Icons.open_in_full,
+                    size: widget.width != null && widget.width! < 150 ? 14 : 20,
+                    onTap: () => _openFullScreen(context),
+                  ),
+                  const SizedBox(width: 8),
+                  // 다운로드 버튼
+                  _ActionButton(
+                    icon: _isDownloading ? AppIcon.hourGlass : AppIcon.download,
+                    size: widget.width != null && widget.width! < 150 ? 14 : 20,
+                    onTap: _isDownloading ? null : _downloadImage,
+                  ),
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -160,15 +167,16 @@ class _ImageWithActionsState extends State<ImageWithActions> {
 class _ActionButton extends StatelessWidget {
   final IconData icon;
   final VoidCallback? onTap;
+  final double size;
 
-  const _ActionButton({required this.icon, this.onTap});
+  const _ActionButton({required this.icon, this.onTap, this.size = 20});
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        padding: const EdgeInsets.all(8),
+        padding: EdgeInsets.all(size < 18 ? 4 : 8),
         decoration: BoxDecoration(
           color: AppColors.dark,
           borderRadius: BorderRadius.circular(8),
