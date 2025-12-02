@@ -27,14 +27,13 @@ import '../../feature/auth/data/datasources/supabase_auth_data_source_impl.dart'
 import '../../feature/auth/data/repositories/auth_repository_impl.dart'
     as _i263;
 import '../../feature/auth/domain/repositories/auth_repository.dart' as _i488;
+import '../../feature/auth/domain/usecases/sign_out_usecase.dart' as _i858;
 import '../../feature/auth/domain/usecases/social_sign_in_usecase.dart'
     as _i420;
 import '../../feature/auth/domain/usecases/watch_auth_state_usecase.dart'
     as _i456;
 import '../../feature/auth/presentation/viewmodel/auth_bloc.dart' as _i434;
 import '../../feature/diary/data/datasources/diary_data_source.dart' as _i881;
-import '../../feature/diary/data/datasources/diary_data_source_impl.dart'
-    as _i663;
 import '../../feature/diary/data/repositories/diary_repository_impl.dart'
     as _i148;
 import '../../feature/diary/domain/repositories/diary_repository.dart' as _i871;
@@ -61,7 +60,6 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i892.FirebaseMessaging>(
       () => registerModule.firebaseMessaging,
     );
-    gh.lazySingleton<_i116.GoogleSignIn>(() => registerModule.googleSignIn);
     await gh.lazySingletonAsync<_i982.FirebaseApp>(
       () => registerModule.initializeFirebaseApp(),
       preResolve: true,
@@ -70,11 +68,18 @@ extension GetItInjectableX on _i174.GetIt {
       () => registerModule.initializeSupabaseClient(),
       preResolve: true,
     );
+    await gh.lazySingletonAsync<_i116.GoogleSignIn>(
+      () => registerModule.initializeGoogleSignIn(),
+      preResolve: true,
+    );
     gh.lazySingleton<_i1040.SupabaseAuthDataSource>(
       () => _i436.SupabaseAuthDataSourceImpl(gh<_i454.SupabaseClient>()),
     );
+    gh.lazySingleton<_i871.DiaryRepository>(
+      () => _i148.DiaryRepositoryImpl(gh<_i881.DiaryDataSource>()),
+    );
     gh.lazySingleton<_i153.GoogleAuthDataSource>(
-      () => _i795.SocialAuthDataSourceImpl(),
+      () => _i795.SocialAuthDataSourceImpl(gh<_i116.GoogleSignIn>()),
     );
     gh.singleton<_i488.AuthRepository>(
       () => _i263.AuthRepositoryImpl(
@@ -84,15 +89,6 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.singleton<_i456.WatchAuthStateUseCase>(
       () => _i456.WatchAuthStateUseCase(gh<_i488.AuthRepository>()),
-    );
-    gh.lazySingleton<_i881.DiaryDataSource>(
-      () => _i663.DiaryDataSourceImpl(gh<_i454.SupabaseClient>()),
-    );
-    gh.lazySingleton<_i871.DiaryRepository>(
-      () => _i148.DiaryRepositoryImpl(gh<_i881.DiaryDataSource>()),
-    );
-    gh.lazySingleton<_i420.SocialSignInUseCase>(
-      () => _i420.SocialSignInUseCase(gh<_i488.AuthRepository>()),
     );
     gh.lazySingleton<_i27.CreateDiaryUseCase>(
       () => _i27.CreateDiaryUseCase(gh<_i871.DiaryRepository>()),
@@ -112,8 +108,17 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i1039.UpdateDiaryUseCase>(
       () => _i1039.UpdateDiaryUseCase(gh<_i871.DiaryRepository>()),
     );
+    gh.lazySingleton<_i858.SignOutUseCase>(
+      () => _i858.SignOutUseCase(gh<_i488.AuthRepository>()),
+    );
+    gh.lazySingleton<_i420.SocialSignInUseCase>(
+      () => _i420.SocialSignInUseCase(gh<_i488.AuthRepository>()),
+    );
     gh.factory<_i434.AuthBloc>(
-      () => _i434.AuthBloc(gh<_i420.SocialSignInUseCase>()),
+      () => _i434.AuthBloc(
+        gh<_i420.SocialSignInUseCase>(),
+        gh<_i858.SignOutUseCase>(),
+      ),
     );
     return this;
   }
