@@ -1,18 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:my_travel_friend/feature/diary/presentation/widgets/cost_tag.dart';
-import 'package:my_travel_friend/feature/diary/presentation/widgets/profile_box.dart';
+import 'package:my_travel_friend/core/widget/profile_img.dart';
 import 'package:my_travel_friend/feature/diary/presentation/widgets/star_rating.dart';
+import 'package:my_travel_friend/feature/diary/presentation/widgets/type_tag.dart';
 
+import '../../../../core/util/time_ago.dart';
 import '../../../../theme/app_font.dart';
 import '../../../../theme/app_icon.dart';
 import '../../domain/entities/diary_entity.dart';
+import 'cost_tag.dart';
 import 'image_with_actions.dart';
 
-// [이재은] 다이어리 상세보기 팝업 위젯
-class DiaryDetailPopUp extends StatelessWidget {
+// [이재은] 다이어리 리스트용 박스 위젯
+class DiaryBox extends StatelessWidget {
   final DiaryEntity diary;
 
-  const DiaryDetailPopUp({super.key, required this.diary});
+  const DiaryBox({super.key, required this.diary});
 
   @override
   Widget build(BuildContext context) {
@@ -45,7 +47,40 @@ class DiaryDetailPopUp extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  ProfileBox(diary: diary),
+                  Row(
+                    children: [
+                      ProfileImg(imageUrl: writer?.profileImg!),
+                      SizedBox(width: 8.0),
+                      Column(
+                        children: [
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Text(
+                                writerName ?? "알 수 없음",
+                                style: AppFont.regular.copyWith(
+                                  color: colorScheme.onSurface,
+                                ),
+                              ),
+                              SizedBox(width: 8),
+                              TypeTag(diary: diary),
+                              SizedBox(width: 8),
+                              diary.isPublic
+                                  ? Icon(AppIcon.unlock)
+                                  : Icon(AppIcon.lock),
+                            ],
+                          ),
+                          if (writtenTime != null)
+                            Text(
+                              TimeAgo.getTimeAgo(writtenTime),
+                              style: AppFont.small.copyWith(
+                                color: colorScheme.onSurfaceVariant,
+                              ),
+                            ),
+                        ],
+                      ),
+                    ],
+                  ),
                   IconButton(
                     icon: Icon(AppIcon.close),
                     color: colorScheme.onSurface,
