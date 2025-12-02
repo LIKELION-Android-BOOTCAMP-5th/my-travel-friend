@@ -26,6 +26,13 @@ abstract class RegisterModule {
   @LazySingleton()
   FirebaseMessaging get firebaseMessaging => FirebaseMessaging.instance;
 
+  @preResolve
   @LazySingleton()
-  GoogleSignIn get googleSignIn => GoogleSignIn.instance;
+  Future<GoogleSignIn> initializeGoogleSignIn() async {
+    await GoogleSignIn.instance.initialize(
+      serverClientId: dotenv.get("Web_Client_Id"),
+      clientId: dotenv.get("Client_Id"),
+    );
+    return GoogleSignIn.instance;
+  }
 }

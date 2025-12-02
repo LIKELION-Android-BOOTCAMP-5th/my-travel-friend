@@ -11,7 +11,7 @@ abstract class AuthState with _$AuthState {
   const factory AuthState.loading() = AuthLoading;
 
   /// 인증된 상태 (로그인 성공, userId는 임시 사용자 식별자)
-  const factory AuthState.authenticated({required String userId}) =
+  const factory AuthState.authenticated({required int userId}) =
       AuthAuthenticated;
 
   /// 인증되지 않은 상태 (로그인 필요)

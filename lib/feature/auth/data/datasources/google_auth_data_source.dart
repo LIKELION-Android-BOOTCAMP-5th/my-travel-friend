@@ -1,5 +1,6 @@
-import '../../domain/entities/user_entity.dart';
+import 'package:my_travel_friend/core/result/result.dart';
+import 'package:my_travel_friend/feature/auth/domain/entities/google_token_entity.dart';
 
 abstract class GoogleAuthDataSource {
-  Future<String> getGoogleToken(SocialLoginType type);
+  Future<Result<GoogleTokenEntity>> getGoogleToken();
 }
