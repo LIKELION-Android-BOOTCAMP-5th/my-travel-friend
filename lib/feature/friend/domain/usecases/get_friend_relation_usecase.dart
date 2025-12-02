@@ -1,6 +1,7 @@
 import 'package:injectable/injectable.dart';
-import 'package:my_travel_friend/feature/friend/domain/entities/friend_entity.dart';
-import 'package:my_travel_friend/feature/friend/domain/repositories/friend_repository.dart';
+
+import '../entities/friend_entity.dart';
+import '../repositories/friend_repository.dart';
 
 // [엄수빈] 친구 관계가 있는지 확인
 @LazySingleton()
