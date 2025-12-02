@@ -11,7 +11,6 @@ part of 'user_entity.dart';
 
 // dart format off
 T _$identity<T>(T value) => value;
-
 /// @nodoc
 mixin _$UserEntity {
 
@@ -22,8 +21,6 @@ mixin _$UserEntity {
 @pragma('vm:prefer-inline')
 $UserEntityCopyWith<UserEntity> get copyWith => _$UserEntityCopyWithImpl<UserEntity>(this as UserEntity, _$identity);
 
-  /// Serializes this UserEntity to a JSON map.
-  Map<String, dynamic> toJson();
 
 
 @override
@@ -31,7 +28,7 @@ bool operator ==(Object other) {
   return identical(this, other) || (other.runtimeType == runtimeType&&other is UserEntity&&(identical(other.id, id) || other.id == id)&&(identical(other.uuid, uuid) || other.uuid == uuid)&&(identical(other.nickname, nickname) || other.nickname == nickname)&&(identical(other.email, email) || other.email == email)&&(identical(other.token, token) || other.token == token)&&(identical(other.profileImg, profileImg) || other.profileImg == profileImg)&&(identical(other.deletedAt, deletedAt) || other.deletedAt == deletedAt));
 }
 
-@JsonKey(includeFromJson: false, includeToJson: false)
+
 @override
 int get hashCode => Object.hash(runtimeType,id,uuid,nickname,email,token,profileImg,deletedAt);
 
@@ -212,11 +209,11 @@ return $default(_that.id,_that.uuid,_that.nickname,_that.email,_that.token,_that
 }
 
 /// @nodoc
-@JsonSerializable()
+
 
 class _UserEntity implements UserEntity {
   const _UserEntity({required this.id, this.uuid, this.nickname, this.email, this.token, this.profileImg, this.deletedAt});
-  factory _UserEntity.fromJson(Map<String, dynamic> json) => _$UserEntityFromJson(json);
+  
 
 @override final  int id;
 @override final  String? uuid;
@@ -232,17 +229,14 @@ class _UserEntity implements UserEntity {
 @pragma('vm:prefer-inline')
 _$UserEntityCopyWith<_UserEntity> get copyWith => __$UserEntityCopyWithImpl<_UserEntity>(this, _$identity);
 
-@override
-Map<String, dynamic> toJson() {
-  return _$UserEntityToJson(this, );
-}
+
 
 @override
 bool operator ==(Object other) {
   return identical(this, other) || (other.runtimeType == runtimeType&&other is _UserEntity&&(identical(other.id, id) || other.id == id)&&(identical(other.uuid, uuid) || other.uuid == uuid)&&(identical(other.nickname, nickname) || other.nickname == nickname)&&(identical(other.email, email) || other.email == email)&&(identical(other.token, token) || other.token == token)&&(identical(other.profileImg, profileImg) || other.profileImg == profileImg)&&(identical(other.deletedAt, deletedAt) || other.deletedAt == deletedAt));
 }
 
-@JsonKey(includeFromJson: false, includeToJson: false)
+
 @override
 int get hashCode => Object.hash(runtimeType,id,uuid,nickname,email,token,profileImg,deletedAt);
 

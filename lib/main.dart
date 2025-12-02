@@ -5,6 +5,7 @@ import 'package:my_travel_friend/feature/auth/presentation/screens/auth_screen.d
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  //dotenv는di 등록이 안되므로 먼저 여기서 초기화
   await dotenv.load(fileName: "assets/config/.env");
   //DI관련
   await configureDependencies();

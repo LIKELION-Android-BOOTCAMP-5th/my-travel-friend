@@ -6,7 +6,7 @@ import '../../domain/repositories/auth_repository.dart';
 import '../datasources/google_auth_data_source.dart';
 import '../datasources/supabase_auth_data_source.dart';
 
-@LazySingleton(as: AuthRepository)
+@Singleton(as: AuthRepository)
 class AuthRepositoryImpl implements AuthRepository {
   final GoogleAuthDataSource googleDataSource;
   final SupabaseAuthDataSource supabaseAuthDataSource;
@@ -15,7 +15,21 @@ class AuthRepositoryImpl implements AuthRepository {
   @override
   Future<UserEntity> socialSignIn({required SocialLoginType type}) async {
     try {
-      final socialToken = await googleDataSource.getSocialToken(type);
+      switch (type) {
+        case SocialLoginType.google:
+          // TODO: Handle this case.
+          throw UnimplementedError();
+        case SocialLoginType.kakao:
+          // TODO: Handle this case.
+          throw UnimplementedError();
+        case SocialLoginType.apple:
+          // TODO: Handle this case.
+          throw UnimplementedError();
+        case SocialLoginType.naver:
+          // TODO: Handle this case.
+          throw UnimplementedError();
+      }
+      /*final socialToken = await googleDataSource.getSocialToken(type);
       //Todo:해당 부분 토큰로그인가능하게
       final authDto = await supabaseAuthDataSource.signInWithToken(
         type,
@@ -23,7 +37,7 @@ class AuthRepositoryImpl implements AuthRepository {
         "",
       );
 
-      return authDto.toEntity();
+      return authDto.toEntity();*/
     } on Exception catch (e) {
       throw Exception(e);
     }
@@ -49,5 +63,11 @@ class AuthRepositoryImpl implements AuthRepository {
 
     // Supabase User 객체를 DTO를 거쳐 Entity로 변환하여 반환
     return user.toEntity();
+  }
+
+  @override
+  Stream<UserEntity?> authStateChanges() {
+    // TODO: implement authStateChanges
+    throw UnimplementedError();
   }
 }

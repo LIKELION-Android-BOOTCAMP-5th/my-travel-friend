@@ -15,4 +15,6 @@ abstract class AuthRepository {
 
   // 4. 현재 사용자 확인
   Future<UserEntity?> getCurrentUser();
+  //
+  Stream<UserEntity?> authStateChanges();
 }
