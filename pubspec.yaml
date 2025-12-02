@@ -89,11 +89,13 @@ flutter:
     - assets/images/logo_long_dark.png
     - assets/images/logo_long_white.png
     - assets/images/logo_dark.png
-    - assets/images/logo_white.png
+    - assets/images/logo_dark.svg
+    - assets/images/google_logo_96.png
+    - assets/images/google_logo_48.png
+    - assets/images/kakao_logo_96.png
+    - assets/images/kakao_logo_48.png
     - assets/images/title_black.png
     - assets/images/title_white.png
-    - assets/images/profile_airplane.png
-    - assets/images/profile_bag.png
     - assets/images/profile_hearty.png
 
 
