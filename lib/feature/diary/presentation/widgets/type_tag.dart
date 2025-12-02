@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:my_travel_friend/theme/app_colors.dart';
-import 'package:my_travel_friend/theme/app_font.dart';
+
+import '../../../../theme/app_colors.dart';
+import '../../../../theme/app_font.dart';
 
 class TypeTag extends StatelessWidget {
   final String type;
@@ -10,29 +11,44 @@ class TypeTag extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
-    final Color tagColor = switch (type) {
-      "MEMO" => AppColors.lightGreen.withOpacity(0.3),
-      "MONEY" => AppColors.secondary.withOpacity(0.3),
-      "PHOTO" => colorScheme.primary.withOpacity(0.3),
-      "REVIEW" => colorScheme.tertiary.withOpacity(0.3),
-      String() => throw UnimplementedError(),
-    };
-    final Color textColor = switch (type) {
-      "MEMO" => AppColors.lightGreen,
-      "MONEY" => colorScheme.secondary,
-      "PHOTO" => colorScheme.primary,
-      "REVIEW" => colorScheme.onTertiary,
-      String() => throw UnimplementedError(),
+    final isDark = colorScheme.brightness == Brightness.dark;
+
+    final (Color tagColor, Color textColor, String text) = switch (type) {
+      "MEMO" => (
+        AppColors.lightGreen.withOpacity(0.25),
+        isDark ? AppColors.onMemoContainerDark : AppColors.onMemoContainerLight,
+        "메모",
+      ),
+      "MONEY" => (
+        colorScheme.secondary.withOpacity(0.25),
+        isDark ? colorScheme.secondary : colorScheme.onSecondaryContainer,
+        "소비",
+      ),
+      "PHOTO" => (
+        colorScheme.primary.withOpacity(0.25),
+        isDark ? colorScheme.primary : colorScheme.onPrimaryContainer,
+        "사진",
+      ),
+      "REVIEW" => (
+        colorScheme.tertiary.withOpacity(0.25),
+        isDark ? colorScheme.tertiary : colorScheme.onTertiaryContainer,
+        "리뷰",
+      ),
+      _ => throw UnimplementedError(),
     };
 
     return Container(
       decoration: BoxDecoration(
         color: tagColor,
-        borderRadius: BorderRadius.all(Radius.circular(16)),
+        borderRadius: const BorderRadius.all(Radius.circular(8)),
       ),
-      child: Padding(
-        padding: EdgeInsetsGeometry.all(8.0),
-        child: Text(type, style: AppFont.tiny.copyWith(color: textColor)),
+      padding: const EdgeInsets.symmetric(vertical: 4.0, horizontal: 8.0),
+      child: Text(
+        text,
+        style: AppFont.tiny.copyWith(
+          color: textColor,
+          decoration: TextDecoration.none,
+        ),
       ),
     );
   }
