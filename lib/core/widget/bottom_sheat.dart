@@ -6,7 +6,7 @@ import 'package:my_travel_friend/theme/app_font.dart';
 //바텀시트 완성했습니다.
 
 class BottomSheetAction {
-  final IconData icon;
+  final Widget icon;
   final Color iconBgColor;
   final String title;
   final VoidCallback onTap;
@@ -81,7 +81,12 @@ class CommonBottomSheet {
             color: action.iconBgColor,
             shape: BoxShape.circle,
           ),
-          child: Icon(action.icon, color: AppColors.light),
+          child: Center(
+            child: IconTheme(
+              data: const IconThemeData(color: AppColors.light),
+              child: action.icon,
+            ),
+          ),
         ),
         title: Padding(
           padding: const EdgeInsets.only(left: 4),
