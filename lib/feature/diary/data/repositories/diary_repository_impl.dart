@@ -1,9 +1,12 @@
+import 'package:injectable/injectable.dart';
+
 import '../../domain/entities/diary_entity.dart';
 import '../../domain/repositories/diary_repository.dart';
 import '../datasources/diary_data_source.dart';
 import '../dtos/diary_dto.dart';
 
 // [이재은] 다이어리 repository
+@LazySingleton(as: DiaryRepository)
 class DiaryRepositoryImpl implements DiaryRepository {
   final DiaryDataSource _dataSource;
   DiaryRepositoryImpl(this._dataSource);

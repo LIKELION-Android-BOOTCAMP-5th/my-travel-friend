@@ -1,8 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 //freezed어노테이션 @ <= 이게 어노테이션입니다.
 part 'user_entity.freezed.dart';
-//json직렬화를 위한 코드
-part 'user_entity.g.dart';
 
 /*
 반드시 추상 클래스로 생성
@@ -27,9 +25,6 @@ abstract class UserEntity with _$UserEntity {
     String? profileImg,
     String? deletedAt,
   }) = _UserEntity;
-
-  factory UserEntity.fromJson(Map<String, Object?> json) =>
-      _$UserEntityFromJson(json);
 }
 
 enum SocialLoginType { google, kakao, apple, naver }

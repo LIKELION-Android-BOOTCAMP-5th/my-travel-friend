@@ -10,10 +10,7 @@ class SocialSignInUseCase {
   SocialSignInUseCase(this.repository);
 
   // 이 UseCase를 BLoC에서 호출할 때, 타입을 전달
-  Future<UserEntity> call({
-    required SocialLoginType type,
-    required String token,
-  }) async {
+  Future<UserEntity> call({required SocialLoginType type}) async {
     return await repository.socialSignIn(type: type);
   }
 }
