@@ -1,8 +1,6 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 import 'package:my_travel_friend/core/result/result.dart';
-import 'package:my_travel_friend/feature/auth/domain/entities/user_entity.dart';
 import 'package:my_travel_friend/feature/auth/domain/usecases/sign_out_usecase.dart';
 import 'package:my_travel_friend/feature/auth/domain/usecases/social_sign_in_usecase.dart';
 import 'package:my_travel_friend/feature/auth/presentation/viewmodel/auth_event.dart';

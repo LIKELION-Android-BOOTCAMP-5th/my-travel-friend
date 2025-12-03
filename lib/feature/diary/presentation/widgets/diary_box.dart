@@ -9,10 +9,10 @@ import '../../domain/entities/diary_entity.dart';
 import 'image_with_actions.dart';
 
 // [이재은] 다이어리 리스트용 박스 위젯
-class DiaryDetailPopUp extends StatelessWidget {
+class DiaryBox extends StatelessWidget {
   final DiaryEntity diary;
 
-  const DiaryDetailPopUp({super.key, required this.diary});
+  const DiaryBox({super.key, required this.diary});
 
   @override
   Widget build(BuildContext context) {
