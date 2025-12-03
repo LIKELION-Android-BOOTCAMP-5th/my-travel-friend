@@ -1,0 +1,328 @@
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:injectable/injectable.dart';
+import 'package:my_travel_friend/feature/diary/domain/usecases/create_diary_usecase.dart';
+import 'package:my_travel_friend/feature/diary/domain/usecases/delete_diary_usecase.dart';
+import 'package:my_travel_friend/feature/diary/domain/usecases/get_diary_by_id_usecase.dart';
+import 'package:my_travel_friend/feature/diary/domain/usecases/get_my_diaries_usecase.dart';
+import 'package:my_travel_friend/feature/diary/domain/usecases/get_our_diaries_usecase.dart';
+import 'package:my_travel_friend/feature/diary/domain/usecases/update_diary_usecase.dart';
+import 'package:my_travel_friend/feature/diary/presentation/viewmodels/diary_page_state.dart';
+
+import '../../../../core/result/result.dart';
+import 'diary_event.dart';
+import 'diary_state.dart';
+
+// [이재은] 다이어리 bloc
+@injectable
+class DiaryBloc extends Bloc<DiaryEvent, DiaryState> {
+  // usecase 주입
+  final GetOurDiariesUseCase _getOurDiariesUseCase;
+  final GetMyDiariesUseCase _getMyDiariesUseCase;
+  final GetDiaryByIdUseCase _getDiaryByIdUseCase;
+  final CreateDiaryUseCase _createDiaryUseCase;
+  final UpdateDiaryUseCase _updateDiaryUseCase;
+  final DeleteDiaryUseCase _deleteDiaryUseCase;
+
+  DiaryBloc(
+    this._getOurDiariesUseCase,
+    this._getMyDiariesUseCase,
+    this._getDiaryByIdUseCase,
+    this._createDiaryUseCase,
+    this._updateDiaryUseCase,
+    this._deleteDiaryUseCase,
+  ) : super(DiaryState.initial) {
+    on<GetOurDiaries>(_onGetOurDiaries);
+    on<GetMyDiaries>(_onGetMyDiaries);
+    on<GetDiaryById>(_onGetDiaryById);
+    on<CreateDiary>(_onCreateDiary);
+    on<UpdateDiary>(_onUpdateDiary);
+    on<DeleteDiary>(_onDeleteDiary);
+    on<FilterByType>(_onFilterByType);
+    on<Refresh>(_onRefresh);
+  }
+
+  // 핸들러
+  // 자동 새로고침
+  void _refreshList() {
+    if (state.tripId == 0) return;
+
+    if (state.isMyDiaries && state.userId != null) {
+      add(DiaryEvent.getMyDiaries(tripId: state.tripId, userId: state.userId!));
+    } else {
+      add(DiaryEvent.getOurDiaries(tripId: state.tripId));
+    }
+  }
+
+  // 에러타입 추출
+  String _getErrorType(dynamic failure) {
+    return failure.map(
+      serverFailure: (_) => 'server',
+      networkFailure: (_) => 'network',
+      authFailure: (_) => 'auth',
+      undefined: (_) => 'unknown',
+    );
+  }
+
+  // 공유 다이어리 가져오기
+  Future<void> _onGetOurDiaries(
+    GetOurDiaries event,
+    Emitter<DiaryState> emit,
+  ) async {
+    emit(
+      state.copyWith(
+        tripId: event.tripId,
+        userId: null,
+        isMyDiaries: false,
+        pageState: const DiaryPageState.loading(),
+      ),
+    );
+
+    final res = await _getOurDiariesUseCase.call(event.tripId);
+
+    res.when(
+      success: (diaries) {
+        emit(
+          state.copyWith(
+            pageState: DiaryPageState.loaded(
+              diaries: diaries,
+              allDiaries: diaries,
+            ),
+          ),
+        );
+      },
+      failure: (failure) {
+        emit(
+          state.copyWith(
+            pageState: DiaryPageState.error(
+              message: failure.message,
+              errorType: _getErrorType(failure),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  // 내 다이어리 가져오기
+  Future<void> _onGetMyDiaries(
+    GetMyDiaries event,
+    Emitter<DiaryState> emit,
+  ) async {
+    emit(
+      state.copyWith(
+        tripId: event.tripId,
+        userId: event.userId,
+        isMyDiaries: true,
+        pageState: const DiaryPageState.loading(),
+      ),
+    );
+
+    final res = await _getMyDiariesUseCase.call(event.tripId, event.userId);
+
+    res.when(
+      success: (diaries) {
+        emit(
+          state.copyWith(
+            pageState: DiaryPageState.loaded(
+              diaries: diaries,
+              allDiaries: diaries,
+            ),
+          ),
+        );
+      },
+      failure: (failure) {
+        emit(
+          state.copyWith(
+            pageState: DiaryPageState.error(
+              message: failure.message,
+              errorType: _getErrorType(failure),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  // 다이어리 상세보기
+  Future<void> _onGetDiaryById(
+    GetDiaryById event,
+    Emitter<DiaryState> emit,
+  ) async {
+    emit(state.copyWith(pageState: const DiaryPageState.loading()));
+
+    final res = await _getDiaryByIdUseCase.call(event.diaryId);
+
+    res.when(
+      success: (diary) {
+        emit(
+          state.copyWith(pageState: DiaryPageState.detailLoaded(diary: diary)),
+        );
+      },
+      failure: (failure) {
+        emit(
+          state.copyWith(
+            pageState: DiaryPageState.error(
+              message: failure.message,
+              errorType: _getErrorType(failure),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  // 다이어리 생성
+  Future<void> _onCreateDiary(
+    CreateDiary event,
+    Emitter<DiaryState> emit,
+  ) async {
+    emit(state.copyWith(pageState: const DiaryPageState.loading()));
+
+    final res = await _createDiaryUseCase.call(event.diary);
+
+    res.when(
+      success: (createdDiary) {
+        emit(
+          state.copyWith(
+            pageState: const DiaryPageState.success(
+              message: '다이어리를 작성했습니다',
+              actionType: 'create',
+            ),
+          ),
+        );
+        _refreshList();
+      },
+      failure: (failure) {
+        emit(
+          state.copyWith(
+            pageState: DiaryPageState.error(
+              message: '다이어리 작성 실패: ${failure.message}',
+              errorType: _getErrorType(failure),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  // 다이어리 수정
+  Future<void> _onUpdateDiary(
+    UpdateDiary event,
+    Emitter<DiaryState> emit,
+  ) async {
+    emit(state.copyWith(pageState: const DiaryPageState.loading()));
+
+    if (event.diary.id == null) {
+      emit(
+        state.copyWith(
+          pageState: const DiaryPageState.error(
+            message: '수정할 다이어리 ID가 없습니다',
+            errorType: 'validation',
+          ),
+        ),
+      );
+      return;
+    }
+
+    final res = await _updateDiaryUseCase.call(event.diary);
+
+    res.when(
+      success: (updatedDiary) {
+        emit(
+          state.copyWith(
+            pageState: const DiaryPageState.success(
+              message: '다이어리가 수정되었습니다',
+              actionType: 'update',
+            ),
+          ),
+        );
+        _refreshList();
+      },
+      failure: (failure) {
+        emit(
+          state.copyWith(
+            pageState: DiaryPageState.error(
+              message: '다이어리 수정 실패 : ${failure.message}',
+              errorType: _getErrorType(failure),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  // 다이어리 삭제
+  Future<void> _onDeleteDiary(
+    DeleteDiary event,
+    Emitter<DiaryState> emit,
+  ) async {
+    emit(state.copyWith(pageState: const DiaryPageState.loading()));
+
+    final res = await _deleteDiaryUseCase.call(event.diaryId);
+
+    res.when(
+      success: (_) {
+        emit(
+          state.copyWith(
+            pageState: const DiaryPageState.success(
+              message: '다이어리가 삭제되었습니다',
+              actionType: 'delete',
+            ),
+          ),
+        );
+        _refreshList();
+      },
+      failure: (failure) {
+        emit(
+          state.copyWith(
+            pageState: DiaryPageState.error(
+              message: '다이어리 삭제 실패 : ${failure.message}',
+              errorType: _getErrorType(failure),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  // 타입별 필터링
+  Future<void> _onFilterByType(
+    FilterByType event,
+    Emitter<DiaryState> emit,
+  ) async {
+    final pageState = state.pageState;
+    if (pageState is! DiaryPageLoaded) return;
+
+    final source = pageState.allDiaries;
+
+    if (event.type == null) {
+      emit(
+        state.copyWith(
+          pageState: DiaryPageState.loaded(
+            diaries: source,
+            allDiaries: source,
+            currentFilter: null,
+          ),
+        ),
+      );
+      return;
+    }
+
+    final filtered = source.where((diary) => diary.type == event.type).toList();
+
+    emit(
+      state.copyWith(
+        pageState: DiaryPageState.loaded(
+          diaries: filtered,
+          allDiaries: pageState.allDiaries,
+          currentFilter: event.type,
+        ),
+      ),
+    );
+  }
+
+  // 새로고침
+  Future<void> _onRefresh(Refresh event, Emitter<DiaryState> emit) async {
+    _refreshList();
+  }
+}
