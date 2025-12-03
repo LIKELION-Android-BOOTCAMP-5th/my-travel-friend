@@ -6,7 +6,7 @@ import 'package:my_travel_friend/feature/auth/domain/usecases/social_sign_in_use
 import 'package:my_travel_friend/feature/auth/presentation/viewmodel/auth_event.dart';
 import 'package:my_travel_friend/feature/auth/presentation/viewmodel/auth_state.dart';
 
-@injectable
+@lazySingleton
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
   //bloc에서 사용할 usercase 를 주입받아야함.
   final SocialSignInUseCase _signInUseCase;

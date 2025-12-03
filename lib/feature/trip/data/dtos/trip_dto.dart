@@ -4,6 +4,8 @@ import 'package:my_travel_friend/feature/trip/domain/entities/trip_entity.dart';
 part 'trip_dto.freezed.dart';
 part 'trip_dto.g.dart';
 
+//신강현
+//dto 파일에 fromEntity 추가
 @freezed
 abstract class TripDto with _$TripDto {
   const TripDto._();
@@ -36,6 +38,24 @@ abstract class TripDto with _$TripDto {
       coverType: coverType,
       userId: userId,
       country: country,
+      coverImg: coverImg,
+      deletedAt: deletedAt,
     );
   }
+
+  /*  TripDto formEntity(TripEntity entity) {
+    return TripDto(
+      id: entity.id,
+      createdAt: entity.createdAt,
+      title: entity.title,
+      place: entity.place,
+      startAt: entity.startAt,
+      endAt: entity.endAt,
+      coverType: entity.coverType,
+      userId: entity.userId,
+      country: entity.country,
+      coverImg: entity.coverImg,
+      deletedAt: entity.deletedAt,
+    );
+  }*/
 }

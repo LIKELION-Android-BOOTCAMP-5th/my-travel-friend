@@ -1,0 +1,22 @@
+import 'package:my_travel_friend/core/result/result.dart';
+import 'package:my_travel_friend/feature/trip/data/dtos/trip_dto.dart';
+
+abstract class TripDataSource {
+  //유저 아이디로 본인이 참가하고 있는 여행 목록 가져오기
+  Future<Result<List<TripDto>>> getMyTrips(int userId);
+
+  // 여행 생성
+  Future<Result<TripDto>> createTrip(TripDto trip);
+
+  // 여행 수정
+  Future<Result<TripDto>> editTrip(TripDto trip);
+
+  //여행 포기
+  Future<Result<void>> giveUpTrip(int userId, int id);
+
+  //트립 크루 인원수 (여행 삭제를 위한)
+  Future<Result<int>> countTripCrew(int tripId);
+
+  //여행 삭제
+  Future<Result<void>> deleteTrip(int tripId);
+}

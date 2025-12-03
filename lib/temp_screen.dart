@@ -1,0 +1,23 @@
+import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+
+///TODO:해당 페이지는 임시 페이지입니다. 개발 시작하면 지울겁니다.
+///라우팅 확인용 페이지
+class TempScreen extends StatelessWidget {
+  const TempScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return SafeArea(
+      child: Row(
+        children: [
+          Text("임시페이지"),
+          TextButton(
+            onPressed: () => context.push('/login'),
+            child: Text("로그인으로"),
+          ),
+        ],
+      ),
+    );
+  }
+}
