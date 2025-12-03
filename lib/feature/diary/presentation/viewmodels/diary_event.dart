@@ -24,8 +24,7 @@ abstract class DiaryEvent with _$DiaryEvent {
   // 다이어리 상세조회
   // - 다이어리 박스 클릭 시 상세 정보 가져오기
   // - DiaryDetailPopUp 띄우기 전에 호출
-  const factory DiaryEvent.getDiaryDetail({required int diaryId}) =
-      GetDiaryDetail;
+  const factory DiaryEvent.getDiaryById({required int diaryId}) = GetDiaryById;
 
   // 다이어리 생성
   // - 플로팅 버튼 -> 작성 화면 -> 저장 버튼 클릭시 호출
@@ -47,9 +46,5 @@ abstract class DiaryEvent with _$DiaryEvent {
   const factory DiaryEvent.filterByType({String? type}) = FilterByType;
 
   // 목록 새로고침
-  const factory DiaryEvent.refresh({
-    required int tripId,
-    int? userId,
-    required bool isMyDiaries,
-  }) = Refresh;
+  const factory DiaryEvent.refresh() = Refresh;
 }

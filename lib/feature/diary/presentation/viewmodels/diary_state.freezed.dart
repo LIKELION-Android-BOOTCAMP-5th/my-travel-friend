@@ -14,30 +14,75 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$DiaryState {
 
-
+// 조회 정보
+ int get tripId; int? get userId; bool get isMyDiaries;// 페이지 상태
+ DiaryPageState get pageState;
+/// Create a copy of DiaryState
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$DiaryStateCopyWith<DiaryState> get copyWith => _$DiaryStateCopyWithImpl<DiaryState>(this as DiaryState, _$identity);
 
 
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is DiaryState);
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is DiaryState&&(identical(other.tripId, tripId) || other.tripId == tripId)&&(identical(other.userId, userId) || other.userId == userId)&&(identical(other.isMyDiaries, isMyDiaries) || other.isMyDiaries == isMyDiaries)&&(identical(other.pageState, pageState) || other.pageState == pageState));
 }
 
 
 @override
-int get hashCode => runtimeType.hashCode;
+int get hashCode => Object.hash(runtimeType,tripId,userId,isMyDiaries,pageState);
 
 @override
 String toString() {
-  return 'DiaryState()';
+  return 'DiaryState(tripId: $tripId, userId: $userId, isMyDiaries: $isMyDiaries, pageState: $pageState)';
 }
 
 
 }
 
 /// @nodoc
-class $DiaryStateCopyWith<$Res>  {
-$DiaryStateCopyWith(DiaryState _, $Res Function(DiaryState) __);
+abstract mixin class $DiaryStateCopyWith<$Res>  {
+  factory $DiaryStateCopyWith(DiaryState value, $Res Function(DiaryState) _then) = _$DiaryStateCopyWithImpl;
+@useResult
+$Res call({
+ int tripId, int? userId, bool isMyDiaries, DiaryPageState pageState
+});
+
+
+$DiaryPageStateCopyWith<$Res> get pageState;
+
+}
+/// @nodoc
+class _$DiaryStateCopyWithImpl<$Res>
+    implements $DiaryStateCopyWith<$Res> {
+  _$DiaryStateCopyWithImpl(this._self, this._then);
+
+  final DiaryState _self;
+  final $Res Function(DiaryState) _then;
+
+/// Create a copy of DiaryState
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') @override $Res call({Object? tripId = null,Object? userId = freezed,Object? isMyDiaries = null,Object? pageState = null,}) {
+  return _then(_self.copyWith(
+tripId: null == tripId ? _self.tripId : tripId // ignore: cast_nullable_to_non_nullable
+as int,userId: freezed == userId ? _self.userId : userId // ignore: cast_nullable_to_non_nullable
+as int?,isMyDiaries: null == isMyDiaries ? _self.isMyDiaries : isMyDiaries // ignore: cast_nullable_to_non_nullable
+as bool,pageState: null == pageState ? _self.pageState : pageState // ignore: cast_nullable_to_non_nullable
+as DiaryPageState,
+  ));
+}
+/// Create a copy of DiaryState
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$DiaryPageStateCopyWith<$Res> get pageState {
+  
+  return $DiaryPageStateCopyWith<$Res>(_self.pageState, (value) {
+    return _then(_self.copyWith(pageState: value));
+  });
+}
 }
 
 
@@ -55,16 +100,11 @@ extension DiaryStatePatterns on DiaryState {
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( DiaryInitial value)?  initial,TResult Function( DiaryLoading value)?  loading,TResult Function( DiaryLoaded value)?  loaded,TResult Function( DiaryDetailLoaded value)?  detailLoaded,TResult Function( DiarySuccess value)?  success,TResult Function( DiaryError value)?  error,required TResult orElse(),}){
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>(TResult Function( _DiaryState value)?  $default,{required TResult orElse(),}){
 final _that = this;
 switch (_that) {
-case DiaryInitial() when initial != null:
-return initial(_that);case DiaryLoading() when loading != null:
-return loading(_that);case DiaryLoaded() when loaded != null:
-return loaded(_that);case DiaryDetailLoaded() when detailLoaded != null:
-return detailLoaded(_that);case DiarySuccess() when success != null:
-return success(_that);case DiaryError() when error != null:
-return error(_that);case _:
+case _DiaryState() when $default != null:
+return $default(_that);case _:
   return orElse();
 
 }
@@ -82,16 +122,11 @@ return error(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( DiaryInitial value)  initial,required TResult Function( DiaryLoading value)  loading,required TResult Function( DiaryLoaded value)  loaded,required TResult Function( DiaryDetailLoaded value)  detailLoaded,required TResult Function( DiarySuccess value)  success,required TResult Function( DiaryError value)  error,}){
+@optionalTypeArgs TResult map<TResult extends Object?>(TResult Function( _DiaryState value)  $default,){
 final _that = this;
 switch (_that) {
-case DiaryInitial():
-return initial(_that);case DiaryLoading():
-return loading(_that);case DiaryLoaded():
-return loaded(_that);case DiaryDetailLoaded():
-return detailLoaded(_that);case DiarySuccess():
-return success(_that);case DiaryError():
-return error(_that);case _:
+case _DiaryState():
+return $default(_that);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -108,16 +143,11 @@ return error(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( DiaryInitial value)?  initial,TResult? Function( DiaryLoading value)?  loading,TResult? Function( DiaryLoaded value)?  loaded,TResult? Function( DiaryDetailLoaded value)?  detailLoaded,TResult? Function( DiarySuccess value)?  success,TResult? Function( DiaryError value)?  error,}){
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>(TResult? Function( _DiaryState value)?  $default,){
 final _that = this;
 switch (_that) {
-case DiaryInitial() when initial != null:
-return initial(_that);case DiaryLoading() when loading != null:
-return loading(_that);case DiaryLoaded() when loaded != null:
-return loaded(_that);case DiaryDetailLoaded() when detailLoaded != null:
-return detailLoaded(_that);case DiarySuccess() when success != null:
-return success(_that);case DiaryError() when error != null:
-return error(_that);case _:
+case _DiaryState() when $default != null:
+return $default(_that);case _:
   return null;
 
 }
@@ -134,15 +164,10 @@ return error(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  initial,TResult Function()?  loading,TResult Function( List<DiaryEntity> diaries,  String? currentFilter)?  loaded,TResult Function( DiaryEntity diary)?  detailLoaded,TResult Function( String? message,  String? actionType)?  success,TResult Function( String message,  String? errorType)?  error,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int tripId,  int? userId,  bool isMyDiaries,  DiaryPageState pageState)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
-case DiaryInitial() when initial != null:
-return initial();case DiaryLoading() when loading != null:
-return loading();case DiaryLoaded() when loaded != null:
-return loaded(_that.diaries,_that.currentFilter);case DiaryDetailLoaded() when detailLoaded != null:
-return detailLoaded(_that.diary);case DiarySuccess() when success != null:
-return success(_that.message,_that.actionType);case DiaryError() when error != null:
-return error(_that.message,_that.errorType);case _:
+case _DiaryState() when $default != null:
+return $default(_that.tripId,_that.userId,_that.isMyDiaries,_that.pageState);case _:
   return orElse();
 
 }
@@ -160,15 +185,10 @@ return error(_that.message,_that.errorType);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  initial,required TResult Function()  loading,required TResult Function( List<DiaryEntity> diaries,  String? currentFilter)  loaded,required TResult Function( DiaryEntity diary)  detailLoaded,required TResult Function( String? message,  String? actionType)  success,required TResult Function( String message,  String? errorType)  error,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int tripId,  int? userId,  bool isMyDiaries,  DiaryPageState pageState)  $default,) {final _that = this;
 switch (_that) {
-case DiaryInitial():
-return initial();case DiaryLoading():
-return loading();case DiaryLoaded():
-return loaded(_that.diaries,_that.currentFilter);case DiaryDetailLoaded():
-return detailLoaded(_that.diary);case DiarySuccess():
-return success(_that.message,_that.actionType);case DiaryError():
-return error(_that.message,_that.errorType);case _:
+case _DiaryState():
+return $default(_that.tripId,_that.userId,_that.isMyDiaries,_that.pageState);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -185,15 +205,10 @@ return error(_that.message,_that.errorType);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  initial,TResult? Function()?  loading,TResult? Function( List<DiaryEntity> diaries,  String? currentFilter)?  loaded,TResult? Function( DiaryEntity diary)?  detailLoaded,TResult? Function( String? message,  String? actionType)?  success,TResult? Function( String message,  String? errorType)?  error,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int tripId,  int? userId,  bool isMyDiaries,  DiaryPageState pageState)?  $default,) {final _that = this;
 switch (_that) {
-case DiaryInitial() when initial != null:
-return initial();case DiaryLoading() when loading != null:
-return loading();case DiaryLoaded() when loaded != null:
-return loaded(_that.diaries,_that.currentFilter);case DiaryDetailLoaded() when detailLoaded != null:
-return detailLoaded(_that.diary);case DiarySuccess() when success != null:
-return success(_that.message,_that.actionType);case DiaryError() when error != null:
-return error(_that.message,_that.errorType);case _:
+case _DiaryState() when $default != null:
+return $default(_that.tripId,_that.userId,_that.isMyDiaries,_that.pageState);case _:
   return null;
 
 }
@@ -204,201 +219,71 @@ return error(_that.message,_that.errorType);case _:
 /// @nodoc
 
 
-class DiaryInitial implements DiaryState {
-  const DiaryInitial();
+class _DiaryState implements DiaryState {
+  const _DiaryState({this.tripId = 0, this.userId, this.isMyDiaries = false, this.pageState = const DiaryPageState.initial()});
   
 
-
-
-
-
-
-@override
-bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is DiaryInitial);
-}
-
-
-@override
-int get hashCode => runtimeType.hashCode;
-
-@override
-String toString() {
-  return 'DiaryState.initial()';
-}
-
-
-}
-
-
-
-
-/// @nodoc
-
-
-class DiaryLoading implements DiaryState {
-  const DiaryLoading();
-  
-
-
-
-
-
-
-@override
-bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is DiaryLoading);
-}
-
-
-@override
-int get hashCode => runtimeType.hashCode;
-
-@override
-String toString() {
-  return 'DiaryState.loading()';
-}
-
-
-}
-
-
-
-
-/// @nodoc
-
-
-class DiaryLoaded implements DiaryState {
-  const DiaryLoaded({required final  List<DiaryEntity> diaries, this.currentFilter}): _diaries = diaries;
-  
-
- final  List<DiaryEntity> _diaries;
- List<DiaryEntity> get diaries {
-  if (_diaries is EqualUnmodifiableListView) return _diaries;
-  // ignore: implicit_dynamic_type
-  return EqualUnmodifiableListView(_diaries);
-}
-
- final  String? currentFilter;
+// 조회 정보
+@override@JsonKey() final  int tripId;
+@override final  int? userId;
+@override@JsonKey() final  bool isMyDiaries;
+// 페이지 상태
+@override@JsonKey() final  DiaryPageState pageState;
 
 /// Create a copy of DiaryState
 /// with the given fields replaced by the non-null parameter values.
-@JsonKey(includeFromJson: false, includeToJson: false)
+@override @JsonKey(includeFromJson: false, includeToJson: false)
 @pragma('vm:prefer-inline')
-$DiaryLoadedCopyWith<DiaryLoaded> get copyWith => _$DiaryLoadedCopyWithImpl<DiaryLoaded>(this, _$identity);
+_$DiaryStateCopyWith<_DiaryState> get copyWith => __$DiaryStateCopyWithImpl<_DiaryState>(this, _$identity);
 
 
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is DiaryLoaded&&const DeepCollectionEquality().equals(other._diaries, _diaries)&&(identical(other.currentFilter, currentFilter) || other.currentFilter == currentFilter));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _DiaryState&&(identical(other.tripId, tripId) || other.tripId == tripId)&&(identical(other.userId, userId) || other.userId == userId)&&(identical(other.isMyDiaries, isMyDiaries) || other.isMyDiaries == isMyDiaries)&&(identical(other.pageState, pageState) || other.pageState == pageState));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(_diaries),currentFilter);
+int get hashCode => Object.hash(runtimeType,tripId,userId,isMyDiaries,pageState);
 
 @override
 String toString() {
-  return 'DiaryState.loaded(diaries: $diaries, currentFilter: $currentFilter)';
+  return 'DiaryState(tripId: $tripId, userId: $userId, isMyDiaries: $isMyDiaries, pageState: $pageState)';
 }
 
 
 }
 
 /// @nodoc
-abstract mixin class $DiaryLoadedCopyWith<$Res> implements $DiaryStateCopyWith<$Res> {
-  factory $DiaryLoadedCopyWith(DiaryLoaded value, $Res Function(DiaryLoaded) _then) = _$DiaryLoadedCopyWithImpl;
-@useResult
+abstract mixin class _$DiaryStateCopyWith<$Res> implements $DiaryStateCopyWith<$Res> {
+  factory _$DiaryStateCopyWith(_DiaryState value, $Res Function(_DiaryState) _then) = __$DiaryStateCopyWithImpl;
+@override @useResult
 $Res call({
- List<DiaryEntity> diaries, String? currentFilter
+ int tripId, int? userId, bool isMyDiaries, DiaryPageState pageState
 });
 
 
-
+@override $DiaryPageStateCopyWith<$Res> get pageState;
 
 }
 /// @nodoc
-class _$DiaryLoadedCopyWithImpl<$Res>
-    implements $DiaryLoadedCopyWith<$Res> {
-  _$DiaryLoadedCopyWithImpl(this._self, this._then);
+class __$DiaryStateCopyWithImpl<$Res>
+    implements _$DiaryStateCopyWith<$Res> {
+  __$DiaryStateCopyWithImpl(this._self, this._then);
 
-  final DiaryLoaded _self;
-  final $Res Function(DiaryLoaded) _then;
+  final _DiaryState _self;
+  final $Res Function(_DiaryState) _then;
 
 /// Create a copy of DiaryState
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') $Res call({Object? diaries = null,Object? currentFilter = freezed,}) {
-  return _then(DiaryLoaded(
-diaries: null == diaries ? _self._diaries : diaries // ignore: cast_nullable_to_non_nullable
-as List<DiaryEntity>,currentFilter: freezed == currentFilter ? _self.currentFilter : currentFilter // ignore: cast_nullable_to_non_nullable
-as String?,
-  ));
-}
-
-
-}
-
-/// @nodoc
-
-
-class DiaryDetailLoaded implements DiaryState {
-  const DiaryDetailLoaded({required this.diary});
-  
-
- final  DiaryEntity diary;
-
-/// Create a copy of DiaryState
-/// with the given fields replaced by the non-null parameter values.
-@JsonKey(includeFromJson: false, includeToJson: false)
-@pragma('vm:prefer-inline')
-$DiaryDetailLoadedCopyWith<DiaryDetailLoaded> get copyWith => _$DiaryDetailLoadedCopyWithImpl<DiaryDetailLoaded>(this, _$identity);
-
-
-
-@override
-bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is DiaryDetailLoaded&&(identical(other.diary, diary) || other.diary == diary));
-}
-
-
-@override
-int get hashCode => Object.hash(runtimeType,diary);
-
-@override
-String toString() {
-  return 'DiaryState.detailLoaded(diary: $diary)';
-}
-
-
-}
-
-/// @nodoc
-abstract mixin class $DiaryDetailLoadedCopyWith<$Res> implements $DiaryStateCopyWith<$Res> {
-  factory $DiaryDetailLoadedCopyWith(DiaryDetailLoaded value, $Res Function(DiaryDetailLoaded) _then) = _$DiaryDetailLoadedCopyWithImpl;
-@useResult
-$Res call({
- DiaryEntity diary
-});
-
-
-$DiaryEntityCopyWith<$Res> get diary;
-
-}
-/// @nodoc
-class _$DiaryDetailLoadedCopyWithImpl<$Res>
-    implements $DiaryDetailLoadedCopyWith<$Res> {
-  _$DiaryDetailLoadedCopyWithImpl(this._self, this._then);
-
-  final DiaryDetailLoaded _self;
-  final $Res Function(DiaryDetailLoaded) _then;
-
-/// Create a copy of DiaryState
-/// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') $Res call({Object? diary = null,}) {
-  return _then(DiaryDetailLoaded(
-diary: null == diary ? _self.diary : diary // ignore: cast_nullable_to_non_nullable
-as DiaryEntity,
+@override @pragma('vm:prefer-inline') $Res call({Object? tripId = null,Object? userId = freezed,Object? isMyDiaries = null,Object? pageState = null,}) {
+  return _then(_DiaryState(
+tripId: null == tripId ? _self.tripId : tripId // ignore: cast_nullable_to_non_nullable
+as int,userId: freezed == userId ? _self.userId : userId // ignore: cast_nullable_to_non_nullable
+as int?,isMyDiaries: null == isMyDiaries ? _self.isMyDiaries : isMyDiaries // ignore: cast_nullable_to_non_nullable
+as bool,pageState: null == pageState ? _self.pageState : pageState // ignore: cast_nullable_to_non_nullable
+as DiaryPageState,
   ));
 }
 
@@ -406,148 +291,12 @@ as DiaryEntity,
 /// with the given fields replaced by the non-null parameter values.
 @override
 @pragma('vm:prefer-inline')
-$DiaryEntityCopyWith<$Res> get diary {
+$DiaryPageStateCopyWith<$Res> get pageState {
   
-  return $DiaryEntityCopyWith<$Res>(_self.diary, (value) {
-    return _then(_self.copyWith(diary: value));
+  return $DiaryPageStateCopyWith<$Res>(_self.pageState, (value) {
+    return _then(_self.copyWith(pageState: value));
   });
 }
-}
-
-/// @nodoc
-
-
-class DiarySuccess implements DiaryState {
-  const DiarySuccess({this.message, this.actionType});
-  
-
- final  String? message;
- final  String? actionType;
-
-/// Create a copy of DiaryState
-/// with the given fields replaced by the non-null parameter values.
-@JsonKey(includeFromJson: false, includeToJson: false)
-@pragma('vm:prefer-inline')
-$DiarySuccessCopyWith<DiarySuccess> get copyWith => _$DiarySuccessCopyWithImpl<DiarySuccess>(this, _$identity);
-
-
-
-@override
-bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is DiarySuccess&&(identical(other.message, message) || other.message == message)&&(identical(other.actionType, actionType) || other.actionType == actionType));
-}
-
-
-@override
-int get hashCode => Object.hash(runtimeType,message,actionType);
-
-@override
-String toString() {
-  return 'DiaryState.success(message: $message, actionType: $actionType)';
-}
-
-
-}
-
-/// @nodoc
-abstract mixin class $DiarySuccessCopyWith<$Res> implements $DiaryStateCopyWith<$Res> {
-  factory $DiarySuccessCopyWith(DiarySuccess value, $Res Function(DiarySuccess) _then) = _$DiarySuccessCopyWithImpl;
-@useResult
-$Res call({
- String? message, String? actionType
-});
-
-
-
-
-}
-/// @nodoc
-class _$DiarySuccessCopyWithImpl<$Res>
-    implements $DiarySuccessCopyWith<$Res> {
-  _$DiarySuccessCopyWithImpl(this._self, this._then);
-
-  final DiarySuccess _self;
-  final $Res Function(DiarySuccess) _then;
-
-/// Create a copy of DiaryState
-/// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') $Res call({Object? message = freezed,Object? actionType = freezed,}) {
-  return _then(DiarySuccess(
-message: freezed == message ? _self.message : message // ignore: cast_nullable_to_non_nullable
-as String?,actionType: freezed == actionType ? _self.actionType : actionType // ignore: cast_nullable_to_non_nullable
-as String?,
-  ));
-}
-
-
-}
-
-/// @nodoc
-
-
-class DiaryError implements DiaryState {
-  const DiaryError({required this.message, this.errorType});
-  
-
- final  String message;
- final  String? errorType;
-
-/// Create a copy of DiaryState
-/// with the given fields replaced by the non-null parameter values.
-@JsonKey(includeFromJson: false, includeToJson: false)
-@pragma('vm:prefer-inline')
-$DiaryErrorCopyWith<DiaryError> get copyWith => _$DiaryErrorCopyWithImpl<DiaryError>(this, _$identity);
-
-
-
-@override
-bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is DiaryError&&(identical(other.message, message) || other.message == message)&&(identical(other.errorType, errorType) || other.errorType == errorType));
-}
-
-
-@override
-int get hashCode => Object.hash(runtimeType,message,errorType);
-
-@override
-String toString() {
-  return 'DiaryState.error(message: $message, errorType: $errorType)';
-}
-
-
-}
-
-/// @nodoc
-abstract mixin class $DiaryErrorCopyWith<$Res> implements $DiaryStateCopyWith<$Res> {
-  factory $DiaryErrorCopyWith(DiaryError value, $Res Function(DiaryError) _then) = _$DiaryErrorCopyWithImpl;
-@useResult
-$Res call({
- String message, String? errorType
-});
-
-
-
-
-}
-/// @nodoc
-class _$DiaryErrorCopyWithImpl<$Res>
-    implements $DiaryErrorCopyWith<$Res> {
-  _$DiaryErrorCopyWithImpl(this._self, this._then);
-
-  final DiaryError _self;
-  final $Res Function(DiaryError) _then;
-
-/// Create a copy of DiaryState
-/// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') $Res call({Object? message = null,Object? errorType = freezed,}) {
-  return _then(DiaryError(
-message: null == message ? _self.message : message // ignore: cast_nullable_to_non_nullable
-as String,errorType: freezed == errorType ? _self.errorType : errorType // ignore: cast_nullable_to_non_nullable
-as String?,
-  ));
-}
-
-
 }
 
 // dart format on
