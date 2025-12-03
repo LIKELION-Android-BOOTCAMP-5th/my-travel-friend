@@ -68,6 +68,11 @@ import '../../feature/friend/domain/usecases/get_friend_relation_usecase.dart'
 import '../../feature/friend/domain/usecases/get_friend_request_usecase.dart'
     as _i739;
 import '../../feature/friend/domain/usecases/get_friends_usecase.dart' as _i806;
+import '../../feature/trip/data/datasources/trip_data_source.dart' as _i1063;
+import '../../feature/trip/data/datasources/trip_data_source_impl.dart'
+    as _i386;
+import '../../feature/trip/data/repositories/trip_repository_impl.dart'
+    as _i840;
 import 'register_module.dart' as _i291;
 
 extension GetItInjectableX on _i174.GetIt {
@@ -108,6 +113,9 @@ extension GetItInjectableX on _i174.GetIt {
     gh.singleton<_i456.WatchAuthStateUseCase>(
       () => _i456.WatchAuthStateUseCase(gh<_i488.AuthRepository>()),
     );
+    gh.lazySingleton<_i386.TripDataSourceImpl>(
+      () => _i386.TripDataSourceImpl(gh<_i454.SupabaseClient>()),
+    );
     gh.lazySingleton<_i881.DiaryDataSource>(
       () => _i663.DiaryDataSourceImpl(gh<_i454.SupabaseClient>()),
     );
@@ -136,6 +144,9 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i806.GetFriendsUsecase>(
       () => _i806.GetFriendsUsecase(gh<_i359.FriendRepository>()),
     );
+    gh.lazySingleton<_i840.TripRepositoryImpl>(
+      () => _i840.TripRepositoryImpl(gh<_i1063.TripDataSource>()),
+    );
     gh.lazySingleton<_i871.DiaryRepository>(
       () => _i148.DiaryRepositoryImpl(gh<_i881.DiaryDataSource>()),
     );
@@ -163,7 +174,7 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i1039.UpdateDiaryUseCase>(
       () => _i1039.UpdateDiaryUseCase(gh<_i871.DiaryRepository>()),
     );
-    gh.factory<_i434.AuthBloc>(
+    gh.lazySingleton<_i434.AuthBloc>(
       () => _i434.AuthBloc(
         gh<_i420.SocialSignInUseCase>(),
         gh<_i858.SignOutUseCase>(),

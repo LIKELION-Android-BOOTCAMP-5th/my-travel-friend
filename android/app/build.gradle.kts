@@ -54,4 +54,7 @@ dependencies {
     // Android 12L 이상 충돌 방지 (선택 사항이지만 추가 권장)
     implementation("androidx.window:window:1.0.0")
     implementation("androidx.window:window-java:1.0.0")
+
+    //fcm android
+    implementation(platform("com.google.firebase:firebase-bom:34.6.0"))
 }
