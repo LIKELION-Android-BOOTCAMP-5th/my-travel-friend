@@ -8,7 +8,6 @@ part 'diary_dto.freezed.dart';
 part 'diary_dto.g.dart';
 
 // [이재은] 다이어리 DTO
-// -> 추후에 혹 다른 테이블에서 Join 해서 가져오는 데이터가 있을 경우, 편집 필요
 
 @freezed
 abstract class DiaryDTO with _$DiaryDTO {
@@ -33,6 +32,23 @@ abstract class DiaryDTO with _$DiaryDTO {
   factory DiaryDTO.fromJson(Map<String, dynamic> json) =>
       _$DiaryDTOFromJson(json);
 
+  factory DiaryDTO.fromEntity(DiaryEntity entity) {
+    return DiaryDTO(
+      id: entity.id,
+      createdAt: entity.createdAt,
+      tripId: entity.tripId,
+      userId: entity.userId,
+      isPublic: entity.isPublic,
+      type: entity.type,
+      title: entity.title,
+      scheduleId: entity.scheduleId,
+      img: entity.img,
+      rating: entity.rating,
+      content: entity.content,
+      cost: entity.cost,
+    );
+  }
+
   DiaryEntity toEntity() {
     UserEntity? userEntity;
     if (userJson != null) {
@@ -50,6 +66,7 @@ abstract class DiaryDTO with _$DiaryDTO {
       title: title,
       scheduleId: scheduleId,
       img: img,
+      rating: rating,
       content: content,
       cost: cost,
     );

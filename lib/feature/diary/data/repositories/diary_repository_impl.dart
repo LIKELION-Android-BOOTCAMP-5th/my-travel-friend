@@ -35,6 +35,7 @@ class DiaryRepositoryImpl implements DiaryRepository {
   }
 
   // 다이어리 상세 조회 (아이디로)
+  @override
   Future<Result<DiaryEntity>> getDiaryById(int id) async {
     final res = await _dataSource.getDiaryById(id);
     return res.when(
@@ -44,19 +45,9 @@ class DiaryRepositoryImpl implements DiaryRepository {
   }
 
   // 다이어리 생성
+  @override
   Future<Result<DiaryEntity>> createDiary(DiaryEntity diary) async {
-    final dto = DiaryDTO(
-      tripId: diary.tripId,
-      userId: diary.userId,
-      isPublic: diary.isPublic,
-      type: diary.type,
-      title: diary.title,
-      scheduleId: diary.scheduleId,
-      img: diary.img,
-      rating: diary.rating,
-      content: diary.content,
-      cost: diary.cost,
-    );
+    final dto = DiaryDTO.fromEntity(diary);
 
     final res = await _dataSource.createDiary(dto);
     return res.when(
@@ -66,19 +57,9 @@ class DiaryRepositoryImpl implements DiaryRepository {
   }
 
   // 다이어리 수정
+  @override
   Future<Result<DiaryEntity>> updateDiary(DiaryEntity diary) async {
-    final dto = DiaryDTO(
-      tripId: diary.tripId,
-      userId: diary.userId,
-      isPublic: diary.isPublic,
-      type: diary.type,
-      title: diary.title,
-      scheduleId: diary.scheduleId,
-      img: diary.img,
-      rating: diary.rating,
-      content: diary.content,
-      cost: diary.cost,
-    );
+    final dto = DiaryDTO.fromEntity(diary);
 
     final res = await _dataSource.updateDiary(dto);
     return res.when(
@@ -88,6 +69,7 @@ class DiaryRepositoryImpl implements DiaryRepository {
   }
 
   // 다이어리 삭제
+  @override
   Future<Result<void>> deleteDiary(int id) async {
     return await _dataSource.deleteDiary(id);
   }
