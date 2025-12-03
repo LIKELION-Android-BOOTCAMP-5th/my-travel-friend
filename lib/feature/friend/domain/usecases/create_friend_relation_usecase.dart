@@ -1,5 +1,6 @@
 import 'package:injectable/injectable.dart';
 
+import '../../../../core/result/result.dart';
 import '../entities/friend_entity.dart';
 import '../repositories/friend_repository.dart';
 
@@ -11,7 +12,7 @@ class CreateFriendRelationUsecase {
   CreateFriendRelationUsecase(this._friendRepository);
 
   // 친구 관계 생성
-  Future<FriendEntity> call(int userId1, int userId2) {
+  Future<Result<FriendEntity>> call(int userId1, int userId2) {
     return _friendRepository.createFriendRelation(userId1, userId2);
   }
 }

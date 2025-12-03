@@ -1,5 +1,6 @@
 import 'package:injectable/injectable.dart';
 
+import '../../../../core/result/result.dart';
 import '../entities/friend_entity.dart';
 import '../repositories/friend_repository.dart';
 
@@ -11,7 +12,7 @@ class GetFriendsUsecase {
   GetFriendsUsecase(this._friendRepository);
 
   // 다이어리 목록 가져오기
-  Future<List<FriendEntity>> call(int userId) {
+  Future<Result<List<FriendEntity>>> call(int userId) {
     return _friendRepository.getFriends(userId);
   }
 }

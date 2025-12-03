@@ -1,5 +1,6 @@
 import 'package:injectable/injectable.dart';
 
+import '../../../../core/result/result.dart';
 import '../entities/friend_entity.dart';
 import '../repositories/friend_repository.dart';
 
@@ -11,7 +12,7 @@ class GetFriendRelationUsecase {
   GetFriendRelationUsecase(this._friendRepository);
 
   // 아이디 두개로 친구관계인지 확인 (친구가 아닐 수 있으니 ?)
-  Future<FriendEntity?> call(int userId1, int userId2) {
+  Future<Result<FriendEntity?>> call(int userId1, int userId2) {
     return _friendRepository.getFriendRelation(userId1, userId2);
   }
 }

@@ -1,16 +1,10 @@
+import '../../../../core/result/result.dart';
 import '../dtos/friend_dto.dart';
 
-// [엄수빈] 친구 데이터 소스 (추상)
+//[엄수빈] 친구 데이터 소스
 abstract class FriendDataSource {
-  // userId의 친구 명단 다 가져오기
-  Future<List<FriendDTO>> getFriends(int userId);
-
-  // 두 유저 사이에 친구 관계가 있는지 확인
-  Future<FriendDTO?> getFriendRelation(int userId1, int userId2);
-
-  // 새로운 친구 관계 생성
-  Future<FriendDTO> createFriendRelation(int userId1, int userId2);
-
-  // 친구 삭제
-  Future<void> deleteFriend(int userId1, int userId2);
+  Future<Result<List<FriendDTO>>> getFriends(int userId);
+  Future<Result<FriendDTO?>> getFriendRelation(int userId1, int userId2);
+  Future<Result<FriendDTO>> createFriendRelation(int userId1, int userId2);
+  Future<Result<void>> deleteFriend(int userId1, int userId2);
 }
