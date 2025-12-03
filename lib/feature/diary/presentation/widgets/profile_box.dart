@@ -29,6 +29,7 @@ class ProfileBox extends StatelessWidget {
           children: [
             Row(
               crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 Text(
                   writerName ?? "알 수 없음",
@@ -36,17 +37,24 @@ class ProfileBox extends StatelessWidget {
                 ),
                 SizedBox(width: 8),
                 TypeTag(diary: diary),
+              ],
+            ),
+            SizedBox(height: 8),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                if (writtenTime != null)
+                  Text(
+                    TimeAgo.getTimeAgo(writtenTime),
+                    style: AppFont.small.copyWith(
+                      color: colorScheme.onSurfaceVariant,
+                    ),
+                  ),
                 SizedBox(width: 8),
                 diary.isPublic ? Icon(AppIcon.unlock) : Icon(AppIcon.lock),
               ],
             ),
-            if (writtenTime != null)
-              Text(
-                TimeAgo.getTimeAgo(writtenTime),
-                style: AppFont.small.copyWith(
-                  color: colorScheme.onSurfaceVariant,
-                ),
-              ),
           ],
         ),
       ],
