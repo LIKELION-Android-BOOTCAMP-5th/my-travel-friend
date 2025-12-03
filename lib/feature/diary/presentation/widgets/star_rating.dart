@@ -9,7 +9,7 @@ import '../../../../theme/app_icon.dart';
 
 class StarRating extends StatefulWidget {
   final double rating; // 별점 (0.0 - 5.0)
-  final ValueChanged<double>? onRatingChanged; // 별점 변경(null이면 읽기 전용)
+  final ValueChanged<double>? onRatingChanged; // 별점 변경(null 읽기 전용)
   final double starSize; // 별 하나 크기 : 기본값 15 (편집용으로는 40으로 잡을 예정)
   final int starCount; // 별 갯수 = 5
   final double starSpacing; // 별간 간격 : 기본값 4.0 (편집용으로는 11.0 잡아볼 예정)
