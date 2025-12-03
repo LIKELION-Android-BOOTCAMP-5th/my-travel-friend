@@ -43,7 +43,7 @@ abstract class TripDto with _$TripDto {
     );
   }
 
-  TripDto formEntity(TripEntity entity) {
+  /*  TripDto formEntity(TripEntity entity) {
     return TripDto(
       id: entity.id,
       createdAt: entity.createdAt,
@@ -57,5 +57,5 @@ abstract class TripDto with _$TripDto {
       coverImg: entity.coverImg,
       deletedAt: entity.deletedAt,
     );
-  }
+  }*/
 }

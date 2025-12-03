@@ -18,25 +18,16 @@ class TripDataSourceImpl implements TripDataSource {
   @override
   Future<Result<List<TripDto>>> getMyTrips(int userId) async {
     try {
-      // 유저가 참가한 트립id 가져오기
-      final crewRes = await _supabaseClient
-          .from('trip_crew')
-          .select('trip_id')
-          .eq('member_id', userId);
-      //트립id만 리스트로 정리
-      final List<int> tripIds = crewRes
-          .map<int>((row) => row['trip_id'] as int)
-          .toList();
-      if (tripIds.isEmpty) return Result.success([]);
-
-      // infilter로 tripIds 에 있는 id와 같은 id를 가진 여행테이블 테이블 가져오기
       final res = await _supabaseClient
-          .from('trip')
-          .select()
-          .inFilter('id', tripIds);
-      //가져온 데이터 TripDto로 반환해주기
-      final list = (res as List).map((json) => TripDto.fromJson(json)).toList();
-      return Result.success(list);
+          .from('trip_crew')
+          .select('trip(*)')
+          .eq('member_id', userId);
+
+      final trips = (res as List)
+          .map((row) => TripDto.fromJson(row['trip']))
+          .toList();
+
+      return Result.success(trips);
     } catch (e) {
       return Result.failure(Failure.serverFailure(message: e.toString()));
     }
