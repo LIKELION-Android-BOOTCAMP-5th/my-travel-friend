@@ -4,12 +4,10 @@ import 'package:my_travel_friend/feature/auth/presentation/viewmodel/auth_bloc.d
 import 'package:my_travel_friend/theme/app_font.dart';
 
 import '../../../../theme/app_colors.dart';
-
-import '../widgets/google_login_button.dart';
-import '../widgets/kakao_login_button.dart';
-
 import '../../domain/entities/user_entity.dart';
 import '../viewmodel/auth_event.dart';
+import '../widgets/google_login_button.dart';
+import '../widgets/kakao_login_button.dart';
 
 // [이재은] 로그인 화면 생성
 // [전재민] bloc적용
@@ -31,7 +29,11 @@ class AuthScreen extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                // ... (로고 및 UI 생략)
+                Container(
+                  width: 400,
+                  height: 200,
+                  child: Image.asset('assets/images/title_black.png'),
+                ),
                 SizedBox(height: 100),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -57,7 +59,7 @@ class AuthScreen extends StatelessWidget {
                     ),
                   ],
                 ),
-                SizedBox(height: 8.0),
+                SizedBox(height: 50.0),
                 Text(
                   "소셜 로그인으로 편리하게 시작해보세요",
                   style: AppFont.small.copyWith(color: AppColors.lessDark),

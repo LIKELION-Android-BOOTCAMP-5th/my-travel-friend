@@ -150,13 +150,6 @@ class _ImageWithActionsState extends State<ImageWithActions> {
       }
     }
   }
-
-  void _showSnackBar(String message) {
-    if (!mounted) return;
-    ScaffoldMessenger.of(
-      context,
-    ).showSnackBar(SnackBar(content: Text(message)));
-  }
 }
 
 // 액션 버튼 위젯
