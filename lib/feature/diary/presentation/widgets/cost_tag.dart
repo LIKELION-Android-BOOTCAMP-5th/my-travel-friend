@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../../core/extension/cost_format_extension.dart';
 import '../../../../theme/app_font.dart';
 
 // [이재은] 다이어리 소비 - 가격 표시 위젯
@@ -21,7 +22,7 @@ class CostTag extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 4.0, horizontal: 8.0),
         child: Text(
-          "${_formatCost(cost)}원",
+          cost.toWon(),
           style: AppFont.regular.copyWith(
             color: isDark
                 ? colorScheme.secondary
@@ -29,14 +30,6 @@ class CostTag extends StatelessWidget {
           ),
         ),
       ),
-    );
-  }
-
-  // 비용 포맷팅 (1000 → 1,000)
-  String _formatCost(int cost) {
-    return cost.toString().replaceAllMapped(
-      RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'),
-      (Match m) => '${m[1]},',
     );
   }
 }
