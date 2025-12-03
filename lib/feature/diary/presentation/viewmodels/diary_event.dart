@@ -11,15 +11,20 @@ abstract class DiaryEvent with _$DiaryEvent {
   // 공유다이어리 목록 조회
   // - 여행에 참여한 모든 멤버의 공개 다이어리 불러오기
   // - DiaryListScreen 진입 시 "공유다이어리" 탭에서 호출
+  // - 첫 페이지
   const factory DiaryEvent.getOurDiaries({required int tripId}) = GetOurDiaries;
 
   // 내 다이어리 목록 조회
   // - 해당 여행 다이어리 중 로그인한 사용자의 다이어리만(공개/비공개 모두)
   // - DiaryListScreen 진입 시 "내 다이어리" 탭에서 호출
+  // - 첫 페이지
   const factory DiaryEvent.getMyDiaries({
     required int tripId,
     required int userId,
   }) = GetMyDiaries;
+
+  // 다음 페이지 로드 (무한스크롤)
+  const factory DiaryEvent.loadMore() = LoadMore;
 
   // 다이어리 상세조회
   // - 다이어리 박스 클릭 시 상세 정보 가져오기

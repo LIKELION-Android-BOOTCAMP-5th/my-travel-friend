@@ -67,8 +67,15 @@ class _DiaryBlocConsumer extends StatelessWidget {
       builder: (context, state) {
         return state.pageState.when(
           initial: () => DiaryListScreen(tripId: tripId, userId: userId),
-          loaded: (diaries, allDiaries, currentFilter) =>
-              DiaryListScreen(tripId: tripId, userId: userId),
+          loaded:
+              (
+                diaries,
+                allDiaries,
+                currentFilter,
+                currentPage,
+                hasMore,
+                isLoadingMore,
+              ) => DiaryListScreen(tripId: tripId, userId: userId),
           success: (message, actionType) =>
               DiaryListScreen(tripId: tripId, userId: userId),
           error: (message, errorType) =>

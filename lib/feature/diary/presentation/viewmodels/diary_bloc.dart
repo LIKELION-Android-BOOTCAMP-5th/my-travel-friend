@@ -1,5 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
+import 'package:my_travel_friend/feature/diary/domain/entities/diary_entity.dart';
 import 'package:my_travel_friend/feature/diary/domain/usecases/create_diary_usecase.dart';
 import 'package:my_travel_friend/feature/diary/domain/usecases/delete_diary_usecase.dart';
 import 'package:my_travel_friend/feature/diary/domain/usecases/get_diary_by_id_usecase.dart';
@@ -22,6 +23,8 @@ class DiaryBloc extends Bloc<DiaryEvent, DiaryState> {
   final CreateDiaryUseCase _createDiaryUseCase;
   final UpdateDiaryUseCase _updateDiaryUseCase;
   final DeleteDiaryUseCase _deleteDiaryUseCase;
+
+  static const int _pageLimit = 7;
 
   DiaryBloc(
     this._getOurDiariesUseCase,
@@ -63,7 +66,7 @@ class DiaryBloc extends Bloc<DiaryEvent, DiaryState> {
     );
   }
 
-  // 공유 다이어리 가져오기
+  // 공유 다이어리 가져오기 (첫 페이지)
   Future<void> _onGetOurDiaries(
     GetOurDiaries event,
     Emitter<DiaryState> emit,
@@ -77,7 +80,11 @@ class DiaryBloc extends Bloc<DiaryEvent, DiaryState> {
       ),
     );
 
-    final res = await _getOurDiariesUseCase.call(event.tripId);
+    final res = await _getOurDiariesUseCase.call(
+      tripId: event.tripId,
+      page: 0,
+      limit: _pageLimit,
+    );
 
     res.when(
       success: (diaries) {
@@ -86,6 +93,9 @@ class DiaryBloc extends Bloc<DiaryEvent, DiaryState> {
             pageState: DiaryPageState.loaded(
               diaries: diaries,
               allDiaries: diaries,
+              currentPage: 0,
+              hasMore: diaries.length >= _pageLimit,
+              isLoadingMore: false,
             ),
           ),
         );
@@ -103,7 +113,7 @@ class DiaryBloc extends Bloc<DiaryEvent, DiaryState> {
     );
   }
 
-  // 내 다이어리 가져오기
+  // 내 다이어리 가져오기 (첫 페이지)
   Future<void> _onGetMyDiaries(
     GetMyDiaries event,
     Emitter<DiaryState> emit,
@@ -117,7 +127,12 @@ class DiaryBloc extends Bloc<DiaryEvent, DiaryState> {
       ),
     );
 
-    final res = await _getMyDiariesUseCase.call(event.tripId, event.userId);
+    final res = await _getMyDiariesUseCase.call(
+      tripId: event.tripId,
+      userId: event.userId,
+      page: 0,
+      limit: _pageLimit,
+    );
 
     res.when(
       success: (diaries) {
@@ -126,6 +141,9 @@ class DiaryBloc extends Bloc<DiaryEvent, DiaryState> {
             pageState: DiaryPageState.loaded(
               diaries: diaries,
               allDiaries: diaries,
+              currentPage: 0,
+              hasMore: diaries.length >= _pageLimit,
+              isLoadingMore: false,
             ),
           ),
         );
@@ -143,11 +161,70 @@ class DiaryBloc extends Bloc<DiaryEvent, DiaryState> {
     );
   }
 
+  // 다음 페이지 로드 (무한 스크롤)
+  Future<void> _onLoadMore(LoadMore event, Emitter<DiaryState> emit) async {
+    final pageState = state.pageState;
+    if (pageState is! DiaryPageLoaded) return;
+    if (pageState.isLoadingMore || !pageState.hasMore) return;
+
+    emit(state.copyWith(pageState: pageState.copyWith(isLoadingMore: true)));
+
+    final nextPage = pageState.currentPage + 1;
+
+    final res = state.isMyDiaries
+        ? await _getMyDiariesUseCase.call(
+            tripId: state.tripId,
+            userId: state.userId!,
+            page: nextPage,
+            limit: _pageLimit,
+          )
+        : await _getOurDiariesUseCase.call(
+            tripId: state.tripId,
+            page: nextPage,
+            limit: _pageLimit,
+          );
+
+    res.when(
+      success: (newDiaries) {
+        final updatedAllDiaries = [...pageState.allDiaries, ...newDiaries];
+
+        List<DiaryEntity> updatedDiaries;
+        if (pageState.currentFilter != null) {
+          updatedDiaries = updatedAllDiaries
+              .where((diary) => diary.type == pageState.currentFilter)
+              .toList();
+        } else {
+          updatedDiaries = updatedAllDiaries;
+        }
+
+        emit(
+          state.copyWith(
+            pageState: DiaryPageState.loaded(
+              diaries: updatedDiaries,
+              allDiaries: updatedAllDiaries,
+              currentFilter: pageState.currentFilter,
+              currentPage: nextPage,
+              hasMore: newDiaries.length >= _pageLimit,
+              isLoadingMore: false,
+            ),
+          ),
+        );
+      },
+      failure: (failure) {
+        emit(
+          state.copyWith(pageState: pageState.copyWith(isLoadingMore: false)),
+        );
+      },
+    );
+  }
+
   // 다이어리 상세보기
   Future<void> _onGetDiaryById(
     GetDiaryById event,
     Emitter<DiaryState> emit,
   ) async {
+    final previousState = state.pageState;
+
     emit(state.copyWith(pageState: const DiaryPageState.loading()));
 
     final res = await _getDiaryByIdUseCase.call(event.diaryId);

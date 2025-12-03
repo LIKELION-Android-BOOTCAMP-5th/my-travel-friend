@@ -134,12 +134,12 @@ return error(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  initial,TResult Function()?  loading,TResult Function( List<DiaryEntity> diaries,  List<DiaryEntity> allDiaries,  String? currentFilter)?  loaded,TResult Function( DiaryEntity diary)?  detailLoaded,TResult Function( String? message,  String? actionType)?  success,TResult Function( String message,  String? errorType)?  error,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  initial,TResult Function()?  loading,TResult Function( List<DiaryEntity> diaries,  List<DiaryEntity> allDiaries,  String? currentFilter,  int currentPage,  bool hasMore,  bool isLoadingMore)?  loaded,TResult Function( DiaryEntity diary)?  detailLoaded,TResult Function( String? message,  String? actionType)?  success,TResult Function( String message,  String? errorType)?  error,required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case DiaryPageInitial() when initial != null:
 return initial();case DiaryPageLoading() when loading != null:
 return loading();case DiaryPageLoaded() when loaded != null:
-return loaded(_that.diaries,_that.allDiaries,_that.currentFilter);case DiaryPageDetailLoaded() when detailLoaded != null:
+return loaded(_that.diaries,_that.allDiaries,_that.currentFilter,_that.currentPage,_that.hasMore,_that.isLoadingMore);case DiaryPageDetailLoaded() when detailLoaded != null:
 return detailLoaded(_that.diary);case DiaryPageSuccess() when success != null:
 return success(_that.message,_that.actionType);case DiaryPageError() when error != null:
 return error(_that.message,_that.errorType);case _:
@@ -160,12 +160,12 @@ return error(_that.message,_that.errorType);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  initial,required TResult Function()  loading,required TResult Function( List<DiaryEntity> diaries,  List<DiaryEntity> allDiaries,  String? currentFilter)  loaded,required TResult Function( DiaryEntity diary)  detailLoaded,required TResult Function( String? message,  String? actionType)  success,required TResult Function( String message,  String? errorType)  error,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  initial,required TResult Function()  loading,required TResult Function( List<DiaryEntity> diaries,  List<DiaryEntity> allDiaries,  String? currentFilter,  int currentPage,  bool hasMore,  bool isLoadingMore)  loaded,required TResult Function( DiaryEntity diary)  detailLoaded,required TResult Function( String? message,  String? actionType)  success,required TResult Function( String message,  String? errorType)  error,}) {final _that = this;
 switch (_that) {
 case DiaryPageInitial():
 return initial();case DiaryPageLoading():
 return loading();case DiaryPageLoaded():
-return loaded(_that.diaries,_that.allDiaries,_that.currentFilter);case DiaryPageDetailLoaded():
+return loaded(_that.diaries,_that.allDiaries,_that.currentFilter,_that.currentPage,_that.hasMore,_that.isLoadingMore);case DiaryPageDetailLoaded():
 return detailLoaded(_that.diary);case DiaryPageSuccess():
 return success(_that.message,_that.actionType);case DiaryPageError():
 return error(_that.message,_that.errorType);case _:
@@ -185,12 +185,12 @@ return error(_that.message,_that.errorType);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  initial,TResult? Function()?  loading,TResult? Function( List<DiaryEntity> diaries,  List<DiaryEntity> allDiaries,  String? currentFilter)?  loaded,TResult? Function( DiaryEntity diary)?  detailLoaded,TResult? Function( String? message,  String? actionType)?  success,TResult? Function( String message,  String? errorType)?  error,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  initial,TResult? Function()?  loading,TResult? Function( List<DiaryEntity> diaries,  List<DiaryEntity> allDiaries,  String? currentFilter,  int currentPage,  bool hasMore,  bool isLoadingMore)?  loaded,TResult? Function( DiaryEntity diary)?  detailLoaded,TResult? Function( String? message,  String? actionType)?  success,TResult? Function( String message,  String? errorType)?  error,}) {final _that = this;
 switch (_that) {
 case DiaryPageInitial() when initial != null:
 return initial();case DiaryPageLoading() when loading != null:
 return loading();case DiaryPageLoaded() when loaded != null:
-return loaded(_that.diaries,_that.allDiaries,_that.currentFilter);case DiaryPageDetailLoaded() when detailLoaded != null:
+return loaded(_that.diaries,_that.allDiaries,_that.currentFilter,_that.currentPage,_that.hasMore,_that.isLoadingMore);case DiaryPageDetailLoaded() when detailLoaded != null:
 return detailLoaded(_that.diary);case DiaryPageSuccess() when success != null:
 return success(_that.message,_that.actionType);case DiaryPageError() when error != null:
 return error(_that.message,_that.errorType);case _:
@@ -269,7 +269,7 @@ String toString() {
 
 
 class DiaryPageLoaded implements DiaryPageState {
-  const DiaryPageLoaded({required final  List<DiaryEntity> diaries, required final  List<DiaryEntity> allDiaries, this.currentFilter}): _diaries = diaries,_allDiaries = allDiaries;
+  const DiaryPageLoaded({required final  List<DiaryEntity> diaries, required final  List<DiaryEntity> allDiaries, this.currentFilter, this.currentPage = 0, this.hasMore = false, this.isLoadingMore = false}): _diaries = diaries,_allDiaries = allDiaries;
   
 
  final  List<DiaryEntity> _diaries;
@@ -287,6 +287,9 @@ class DiaryPageLoaded implements DiaryPageState {
 }
 
  final  String? currentFilter;
+@JsonKey() final  int currentPage;
+@JsonKey() final  bool hasMore;
+@JsonKey() final  bool isLoadingMore;
 
 /// Create a copy of DiaryPageState
 /// with the given fields replaced by the non-null parameter values.
@@ -298,16 +301,16 @@ $DiaryPageLoadedCopyWith<DiaryPageLoaded> get copyWith => _$DiaryPageLoadedCopyW
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is DiaryPageLoaded&&const DeepCollectionEquality().equals(other._diaries, _diaries)&&const DeepCollectionEquality().equals(other._allDiaries, _allDiaries)&&(identical(other.currentFilter, currentFilter) || other.currentFilter == currentFilter));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is DiaryPageLoaded&&const DeepCollectionEquality().equals(other._diaries, _diaries)&&const DeepCollectionEquality().equals(other._allDiaries, _allDiaries)&&(identical(other.currentFilter, currentFilter) || other.currentFilter == currentFilter)&&(identical(other.currentPage, currentPage) || other.currentPage == currentPage)&&(identical(other.hasMore, hasMore) || other.hasMore == hasMore)&&(identical(other.isLoadingMore, isLoadingMore) || other.isLoadingMore == isLoadingMore));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(_diaries),const DeepCollectionEquality().hash(_allDiaries),currentFilter);
+int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(_diaries),const DeepCollectionEquality().hash(_allDiaries),currentFilter,currentPage,hasMore,isLoadingMore);
 
 @override
 String toString() {
-  return 'DiaryPageState.loaded(diaries: $diaries, allDiaries: $allDiaries, currentFilter: $currentFilter)';
+  return 'DiaryPageState.loaded(diaries: $diaries, allDiaries: $allDiaries, currentFilter: $currentFilter, currentPage: $currentPage, hasMore: $hasMore, isLoadingMore: $isLoadingMore)';
 }
 
 
@@ -318,7 +321,7 @@ abstract mixin class $DiaryPageLoadedCopyWith<$Res> implements $DiaryPageStateCo
   factory $DiaryPageLoadedCopyWith(DiaryPageLoaded value, $Res Function(DiaryPageLoaded) _then) = _$DiaryPageLoadedCopyWithImpl;
 @useResult
 $Res call({
- List<DiaryEntity> diaries, List<DiaryEntity> allDiaries, String? currentFilter
+ List<DiaryEntity> diaries, List<DiaryEntity> allDiaries, String? currentFilter, int currentPage, bool hasMore, bool isLoadingMore
 });
 
 
@@ -335,12 +338,15 @@ class _$DiaryPageLoadedCopyWithImpl<$Res>
 
 /// Create a copy of DiaryPageState
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') $Res call({Object? diaries = null,Object? allDiaries = null,Object? currentFilter = freezed,}) {
+@pragma('vm:prefer-inline') $Res call({Object? diaries = null,Object? allDiaries = null,Object? currentFilter = freezed,Object? currentPage = null,Object? hasMore = null,Object? isLoadingMore = null,}) {
   return _then(DiaryPageLoaded(
 diaries: null == diaries ? _self._diaries : diaries // ignore: cast_nullable_to_non_nullable
 as List<DiaryEntity>,allDiaries: null == allDiaries ? _self._allDiaries : allDiaries // ignore: cast_nullable_to_non_nullable
 as List<DiaryEntity>,currentFilter: freezed == currentFilter ? _self.currentFilter : currentFilter // ignore: cast_nullable_to_non_nullable
-as String?,
+as String?,currentPage: null == currentPage ? _self.currentPage : currentPage // ignore: cast_nullable_to_non_nullable
+as int,hasMore: null == hasMore ? _self.hasMore : hasMore // ignore: cast_nullable_to_non_nullable
+as bool,isLoadingMore: null == isLoadingMore ? _self.isLoadingMore : isLoadingMore // ignore: cast_nullable_to_non_nullable
+as bool,
   ));
 }
 

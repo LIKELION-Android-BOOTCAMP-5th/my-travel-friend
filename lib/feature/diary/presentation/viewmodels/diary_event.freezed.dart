@@ -55,12 +55,13 @@ extension DiaryEventPatterns on DiaryEvent {
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( GetOurDiaries value)?  getOurDiaries,TResult Function( GetMyDiaries value)?  getMyDiaries,TResult Function( GetDiaryById value)?  getDiaryById,TResult Function( CreateDiary value)?  createDiary,TResult Function( UpdateDiary value)?  updateDiary,TResult Function( DeleteDiary value)?  deleteDiary,TResult Function( FilterByType value)?  filterByType,TResult Function( Refresh value)?  refresh,required TResult orElse(),}){
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( GetOurDiaries value)?  getOurDiaries,TResult Function( GetMyDiaries value)?  getMyDiaries,TResult Function( LoadMore value)?  loadMore,TResult Function( GetDiaryById value)?  getDiaryById,TResult Function( CreateDiary value)?  createDiary,TResult Function( UpdateDiary value)?  updateDiary,TResult Function( DeleteDiary value)?  deleteDiary,TResult Function( FilterByType value)?  filterByType,TResult Function( Refresh value)?  refresh,required TResult orElse(),}){
 final _that = this;
 switch (_that) {
 case GetOurDiaries() when getOurDiaries != null:
 return getOurDiaries(_that);case GetMyDiaries() when getMyDiaries != null:
-return getMyDiaries(_that);case GetDiaryById() when getDiaryById != null:
+return getMyDiaries(_that);case LoadMore() when loadMore != null:
+return loadMore(_that);case GetDiaryById() when getDiaryById != null:
 return getDiaryById(_that);case CreateDiary() when createDiary != null:
 return createDiary(_that);case UpdateDiary() when updateDiary != null:
 return updateDiary(_that);case DeleteDiary() when deleteDiary != null:
@@ -84,12 +85,13 @@ return refresh(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( GetOurDiaries value)  getOurDiaries,required TResult Function( GetMyDiaries value)  getMyDiaries,required TResult Function( GetDiaryById value)  getDiaryById,required TResult Function( CreateDiary value)  createDiary,required TResult Function( UpdateDiary value)  updateDiary,required TResult Function( DeleteDiary value)  deleteDiary,required TResult Function( FilterByType value)  filterByType,required TResult Function( Refresh value)  refresh,}){
+@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( GetOurDiaries value)  getOurDiaries,required TResult Function( GetMyDiaries value)  getMyDiaries,required TResult Function( LoadMore value)  loadMore,required TResult Function( GetDiaryById value)  getDiaryById,required TResult Function( CreateDiary value)  createDiary,required TResult Function( UpdateDiary value)  updateDiary,required TResult Function( DeleteDiary value)  deleteDiary,required TResult Function( FilterByType value)  filterByType,required TResult Function( Refresh value)  refresh,}){
 final _that = this;
 switch (_that) {
 case GetOurDiaries():
 return getOurDiaries(_that);case GetMyDiaries():
-return getMyDiaries(_that);case GetDiaryById():
+return getMyDiaries(_that);case LoadMore():
+return loadMore(_that);case GetDiaryById():
 return getDiaryById(_that);case CreateDiary():
 return createDiary(_that);case UpdateDiary():
 return updateDiary(_that);case DeleteDiary():
@@ -112,12 +114,13 @@ return refresh(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( GetOurDiaries value)?  getOurDiaries,TResult? Function( GetMyDiaries value)?  getMyDiaries,TResult? Function( GetDiaryById value)?  getDiaryById,TResult? Function( CreateDiary value)?  createDiary,TResult? Function( UpdateDiary value)?  updateDiary,TResult? Function( DeleteDiary value)?  deleteDiary,TResult? Function( FilterByType value)?  filterByType,TResult? Function( Refresh value)?  refresh,}){
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( GetOurDiaries value)?  getOurDiaries,TResult? Function( GetMyDiaries value)?  getMyDiaries,TResult? Function( LoadMore value)?  loadMore,TResult? Function( GetDiaryById value)?  getDiaryById,TResult? Function( CreateDiary value)?  createDiary,TResult? Function( UpdateDiary value)?  updateDiary,TResult? Function( DeleteDiary value)?  deleteDiary,TResult? Function( FilterByType value)?  filterByType,TResult? Function( Refresh value)?  refresh,}){
 final _that = this;
 switch (_that) {
 case GetOurDiaries() when getOurDiaries != null:
 return getOurDiaries(_that);case GetMyDiaries() when getMyDiaries != null:
-return getMyDiaries(_that);case GetDiaryById() when getDiaryById != null:
+return getMyDiaries(_that);case LoadMore() when loadMore != null:
+return loadMore(_that);case GetDiaryById() when getDiaryById != null:
 return getDiaryById(_that);case CreateDiary() when createDiary != null:
 return createDiary(_that);case UpdateDiary() when updateDiary != null:
 return updateDiary(_that);case DeleteDiary() when deleteDiary != null:
@@ -140,11 +143,12 @@ return refresh(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function( int tripId)?  getOurDiaries,TResult Function( int tripId,  int userId)?  getMyDiaries,TResult Function( int diaryId)?  getDiaryById,TResult Function( DiaryEntity diary)?  createDiary,TResult Function( DiaryEntity diary)?  updateDiary,TResult Function( int diaryId)?  deleteDiary,TResult Function( String? type)?  filterByType,TResult Function()?  refresh,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function( int tripId)?  getOurDiaries,TResult Function( int tripId,  int userId)?  getMyDiaries,TResult Function()?  loadMore,TResult Function( int diaryId)?  getDiaryById,TResult Function( DiaryEntity diary)?  createDiary,TResult Function( DiaryEntity diary)?  updateDiary,TResult Function( int diaryId)?  deleteDiary,TResult Function( String? type)?  filterByType,TResult Function()?  refresh,required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case GetOurDiaries() when getOurDiaries != null:
 return getOurDiaries(_that.tripId);case GetMyDiaries() when getMyDiaries != null:
-return getMyDiaries(_that.tripId,_that.userId);case GetDiaryById() when getDiaryById != null:
+return getMyDiaries(_that.tripId,_that.userId);case LoadMore() when loadMore != null:
+return loadMore();case GetDiaryById() when getDiaryById != null:
 return getDiaryById(_that.diaryId);case CreateDiary() when createDiary != null:
 return createDiary(_that.diary);case UpdateDiary() when updateDiary != null:
 return updateDiary(_that.diary);case DeleteDiary() when deleteDiary != null:
@@ -168,11 +172,12 @@ return refresh();case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function( int tripId)  getOurDiaries,required TResult Function( int tripId,  int userId)  getMyDiaries,required TResult Function( int diaryId)  getDiaryById,required TResult Function( DiaryEntity diary)  createDiary,required TResult Function( DiaryEntity diary)  updateDiary,required TResult Function( int diaryId)  deleteDiary,required TResult Function( String? type)  filterByType,required TResult Function()  refresh,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function( int tripId)  getOurDiaries,required TResult Function( int tripId,  int userId)  getMyDiaries,required TResult Function()  loadMore,required TResult Function( int diaryId)  getDiaryById,required TResult Function( DiaryEntity diary)  createDiary,required TResult Function( DiaryEntity diary)  updateDiary,required TResult Function( int diaryId)  deleteDiary,required TResult Function( String? type)  filterByType,required TResult Function()  refresh,}) {final _that = this;
 switch (_that) {
 case GetOurDiaries():
 return getOurDiaries(_that.tripId);case GetMyDiaries():
-return getMyDiaries(_that.tripId,_that.userId);case GetDiaryById():
+return getMyDiaries(_that.tripId,_that.userId);case LoadMore():
+return loadMore();case GetDiaryById():
 return getDiaryById(_that.diaryId);case CreateDiary():
 return createDiary(_that.diary);case UpdateDiary():
 return updateDiary(_that.diary);case DeleteDiary():
@@ -195,11 +200,12 @@ return refresh();case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function( int tripId)?  getOurDiaries,TResult? Function( int tripId,  int userId)?  getMyDiaries,TResult? Function( int diaryId)?  getDiaryById,TResult? Function( DiaryEntity diary)?  createDiary,TResult? Function( DiaryEntity diary)?  updateDiary,TResult? Function( int diaryId)?  deleteDiary,TResult? Function( String? type)?  filterByType,TResult? Function()?  refresh,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function( int tripId)?  getOurDiaries,TResult? Function( int tripId,  int userId)?  getMyDiaries,TResult? Function()?  loadMore,TResult? Function( int diaryId)?  getDiaryById,TResult? Function( DiaryEntity diary)?  createDiary,TResult? Function( DiaryEntity diary)?  updateDiary,TResult? Function( int diaryId)?  deleteDiary,TResult? Function( String? type)?  filterByType,TResult? Function()?  refresh,}) {final _that = this;
 switch (_that) {
 case GetOurDiaries() when getOurDiaries != null:
 return getOurDiaries(_that.tripId);case GetMyDiaries() when getMyDiaries != null:
-return getMyDiaries(_that.tripId,_that.userId);case GetDiaryById() when getDiaryById != null:
+return getMyDiaries(_that.tripId,_that.userId);case LoadMore() when loadMore != null:
+return loadMore();case GetDiaryById() when getDiaryById != null:
 return getDiaryById(_that.diaryId);case CreateDiary() when createDiary != null:
 return createDiary(_that.diary);case UpdateDiary() when updateDiary != null:
 return updateDiary(_that.diary);case DeleteDiary() when deleteDiary != null:
@@ -346,6 +352,38 @@ as int,
 
 
 }
+
+/// @nodoc
+
+
+class LoadMore implements DiaryEvent {
+  const LoadMore();
+  
+
+
+
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is LoadMore);
+}
+
+
+@override
+int get hashCode => runtimeType.hashCode;
+
+@override
+String toString() {
+  return 'DiaryEvent.loadMore()';
+}
+
+
+}
+
+
+
 
 /// @nodoc
 

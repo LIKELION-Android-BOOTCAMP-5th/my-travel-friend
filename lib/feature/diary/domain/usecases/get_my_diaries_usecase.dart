@@ -12,7 +12,12 @@ class GetMyDiariesUseCase {
   GetMyDiariesUseCase(this._diaryRepository);
 
   // 다이어리 목록 가져오기
-  Future<Result<List<DiaryEntity>>> call(int tripId, int userId) {
-    return _diaryRepository.getMyDiaries(tripId, userId);
+  Future<Result<List<DiaryEntity>>> call({
+    required int tripId,
+    required int userId,
+    required int page,
+    int limit = 7,
+  }) {
+    return _diaryRepository.getMyDiaries(tripId, userId, page, limit);
   }
 }

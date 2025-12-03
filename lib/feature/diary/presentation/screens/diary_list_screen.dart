@@ -18,7 +18,7 @@ import '../widgets/diary_filter_chip.dart';
 // - 리스트 내 박스 클릭 시 다이어리 상세보기 팝업 오픈
 // - 우측 하단 플로팅 버튼 클릭을 통해 작성 화면 오픈
 
-class DiaryListScreen extends StatelessWidget {
+class DiaryListScreen extends StatefulWidget {
   final int tripId;
   final int userId; // 로그인한 사용자 ID
 
@@ -28,6 +28,13 @@ class DiaryListScreen extends StatelessWidget {
     required this.userId,
   });
 
+  @override
+  State<DiaryListScreen> createState() => _DiaryListScreenState();
+}
+
+class _DiaryListScreenState extends State<DiaryListScreen> {
+  late ScrollController _scrollController;
+
   static const List<String?> _filterTypes = [
     null,
     'MEMO',
@@ -36,6 +43,34 @@ class DiaryListScreen extends StatelessWidget {
     'MONEY',
   ];
   static const List<String> _filterLabels = ['전체', '메모', '리뷰', '사진', '소비'];
+
+  @override
+  void initState() {
+    super.initState();
+    _scrollController = ScrollController();
+    _scrollController.addListener(_onScroll);
+  }
+
+  @override
+  void dispose() {
+    _scrollController.removeListener(_onScroll);
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  @override
+  void _onScroll() {
+    if (_isBottom) {
+      context.read<DiaryBloc>().add(const DiaryEvent.loadMore());
+    }
+  }
+
+  bool get _isBottom {
+    if (!_scrollController.hasClients) return false;
+    final maxScroll = _scrollController.position.maxScrollExtent;
+    final currentScroll = _scrollController.offset;
+    return currentScroll >= (maxScroll - 100);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -88,7 +123,9 @@ class DiaryListScreen extends StatelessWidget {
                   label: '공유 다이어리',
                   isSelected: !state.isMyDiaries,
                   onTap: () {
-                    diaryBloc.add(DiaryEvent.getOurDiaries(tripId: tripId));
+                    diaryBloc.add(
+                      DiaryEvent.getOurDiaries(tripId: widget.tripId),
+                    );
                   },
                 ),
               ),
@@ -100,7 +137,10 @@ class DiaryListScreen extends StatelessWidget {
                   isSelected: state.isMyDiaries,
                   onTap: () {
                     diaryBloc.add(
-                      DiaryEvent.getMyDiaries(tripId: tripId, userId: userId),
+                      DiaryEvent.getMyDiaries(
+                        tripId: widget.tripId,
+                        userId: widget.userId,
+                      ),
                     );
                   },
                 ),
@@ -200,7 +240,19 @@ class DiaryListScreen extends StatelessWidget {
     );
   }
 
-  // 다이어리 빈화면일 때 (목록에 들어있는 다이어리가 없을 때)
+  // 로딩 인디케이터
+  Widget _buildLoadingIndicator(bool isLoading) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 16.0),
+      child: Center(
+        child: isLoading
+            ? const CircularProgressIndicator()
+            : const SizedBox.shrink(),
+      ),
+    );
+  }
+
+  // 다이어리 빈 화면일 때 (목록에 들어있는 다이어리가 없을 때)
   Widget _buildEmptyView(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
 

@@ -19,6 +19,9 @@ abstract class DiaryPageState with _$DiaryPageState {
     required List<DiaryEntity> diaries,
     required List<DiaryEntity> allDiaries,
     String? currentFilter,
+    @Default(0) int currentPage,
+    @Default(false) bool hasMore,
+    @Default(false) bool isLoadingMore,
   }) = DiaryPageLoaded;
 
   // 상세 조회 성공 상태

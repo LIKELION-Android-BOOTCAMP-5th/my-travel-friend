@@ -28,14 +28,21 @@ class DiaryDataSourceImpl implements DiaryDataSource {
 
   // 공유 다이어리 목록 조회 (여행 아이디로 전체 가져오기)
   @override
-  Future<Result<List<DiaryDTO>>> getOurDiaries(int tripId) async {
+  Future<Result<List<DiaryDTO>>> getOurDiaries({
+    required int tripId,
+    required int page,
+    required int limit,
+  }) async {
     try {
+      final offset = page * limit;
+
       final res = await _supabaseClient
           .from('diary')
           .select(_selectWithUser)
           .eq('trip_id', tripId)
           .eq('is_public', false)
-          .order('created_at', ascending: false);
+          .order('created_at', ascending: false)
+          .range(offset, offset + limit - 1);
 
       final list = (res as List)
           .map((json) => DiaryDTO.fromJson(json))
@@ -48,14 +55,22 @@ class DiaryDataSourceImpl implements DiaryDataSource {
 
   // 내 다이어리 목록 조회 (여행 아이디로 전체 가져오기)
   @override
-  Future<Result<List<DiaryDTO>>> getMyDiaries(int tripId, int userId) async {
+  Future<Result<List<DiaryDTO>>> getMyDiaries({
+    required int tripId,
+    required int userId,
+    required int page,
+    required int limit,
+  }) async {
     try {
+      final offset = page * limit;
+
       final res = await _supabaseClient
           .from('diary')
           .select(_selectWithUser)
           .eq('trip_id', tripId)
           .eq('user_id', userId)
-          .order('created_at', ascending: false);
+          .order('created_at', ascending: false)
+          .range(offset, offset + limit - 1);
 
       final list = (res as List)
           .map((json) => DiaryDTO.fromJson(json))
