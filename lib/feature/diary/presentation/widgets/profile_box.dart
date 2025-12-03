@@ -25,37 +25,43 @@ class ProfileBox extends StatelessWidget {
       children: [
         ProfileImg(imageUrl: writer?.profileImg!),
         SizedBox(width: 8.0),
-        Column(
-          children: [
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Text(
-                  writerName ?? "알 수 없음",
-                  style: AppFont.regular.copyWith(color: colorScheme.onSurface),
-                ),
-                SizedBox(width: 8),
-                TypeTag(diary: diary),
-              ],
-            ),
-            SizedBox(height: 8),
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                if (writtenTime != null)
+        Expanded(
+          child: Column(
+            children: [
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
                   Text(
-                    TimeAgo.getTimeAgo(writtenTime),
-                    style: AppFont.small.copyWith(
-                      color: colorScheme.onSurfaceVariant,
+                    writerName ?? "알 수 없음",
+                    style: AppFont.regular.copyWith(
+                      color: colorScheme.onSurface,
                     ),
                   ),
-                SizedBox(width: 8),
-                diary.isPublic ? Icon(AppIcon.unlock) : Icon(AppIcon.lock),
-              ],
-            ),
-          ],
+                  SizedBox(width: 8),
+                  TypeTag(diary: diary),
+                ],
+              ),
+              SizedBox(height: 8),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  if (writtenTime != null)
+                    Text(
+                      TimeAgo.getTimeAgo(writtenTime),
+                      style: AppFont.small.copyWith(
+                        color: colorScheme.onSurfaceVariant,
+                      ),
+                    ),
+                  SizedBox(width: 8),
+                  diary.isPublic
+                      ? Icon(AppIcon.unlock, color: colorScheme.primary)
+                      : Icon(AppIcon.lock, color: colorScheme.secondary),
+                ],
+              ),
+            ],
+          ),
         ),
       ],
     );

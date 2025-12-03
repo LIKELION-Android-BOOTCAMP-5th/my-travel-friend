@@ -22,18 +22,18 @@ class DiaryFilterChip extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
         decoration: BoxDecoration(
           color: isSelected
               ? colorScheme.secondary
-              : colorScheme.surfaceContainerHighest,
-          borderRadius: BorderRadius.circular(20),
+              : colorScheme.outlineVariant,
+          borderRadius: BorderRadius.circular(13),
         ),
         child: Text(
           label,
           style: AppFont.regular.copyWith(
             color: isSelected
-                ? colorScheme.onSecondary
+                ? colorScheme.onSurface
                 : colorScheme.onSurfaceVariant,
           ),
         ),

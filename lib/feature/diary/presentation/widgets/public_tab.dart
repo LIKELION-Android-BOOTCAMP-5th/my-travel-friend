@@ -21,11 +21,11 @@ class PublicTab extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        padding: const EdgeInsets.symmetric(vertical: 4),
+        padding: const EdgeInsets.symmetric(vertical: 12),
         decoration: BoxDecoration(
           color: isSelected
               ? colorScheme.secondary
-              : colorScheme.surfaceContainerHighest,
+              : colorScheme.outlineVariant,
           borderRadius: BorderRadius.circular(12.0),
         ),
         child: Row(
@@ -36,7 +36,7 @@ class PublicTab extends StatelessWidget {
               label,
               style: AppFont.regular.copyWith(
                 color: isSelected
-                    ? colorScheme.onSecondary
+                    ? colorScheme.onSurface
                     : colorScheme.onSurfaceVariant,
               ),
             ),

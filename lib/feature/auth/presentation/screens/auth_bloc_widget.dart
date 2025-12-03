@@ -1,10 +1,10 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:my_travel_friend/feature/auth/presentation/screens/auth_screen.dart';
 import 'package:my_travel_friend/feature/auth/presentation/viewmodel/auth_bloc.dart';
 import 'package:my_travel_friend/feature/auth/presentation/viewmodel/auth_state.dart';
+
+import '../../../../core/widget/toast_pop.dart';
 
 // [전재민]
 /*
@@ -27,11 +27,11 @@ class AuthBlocWidget extends StatelessWidget {
           // 인증 성공 상태로 변경되면 홈 화면으로 이동
           authenticated: (userId) {
             // Navigator.of(context).pushReplacementNamed('/home');
-            Fluttertoast.showToast(msg: '로그인 성공! User ID: $userId');
+            ToastPop.show('로그인 성공! User ID: $userId');
           },
           // 오류 상태가 되면 알림/팝업 표시
           error: (message) {
-            Fluttertoast.showToast(msg: '오류 발생: $message');
+            ToastPop.show('오류 발생: $message');
           },
         );
       },

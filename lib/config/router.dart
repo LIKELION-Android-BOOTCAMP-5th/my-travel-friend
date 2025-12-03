@@ -6,6 +6,9 @@ import 'package:my_travel_friend/feature/auth/presentation/viewmodel/auth_bloc.d
 import 'package:my_travel_friend/splash.dart';
 import 'package:my_travel_friend/temp_screen.dart';
 
+import '../feature/diary/presentation/screens/diary_bloc_widget.dart';
+import '../feature/diary/presentation/viewmodels/diary_bloc.dart';
+
 class AppRouter {
   static final AppRouter _instance = AppRouter._internal();
   static AppRouter get instance => _instance;
@@ -67,6 +70,14 @@ class AppRouter {
           //bloc 제공자
           create: (context) => GetIt.instance<AuthBloc>(),
           child: const AuthBlocWidget(),
+        ),
+      ),
+      GoRoute(
+        path: '/diary',
+        builder: (context, state) => BlocProvider(
+          //bloc 제공자
+          create: (context) => GetIt.instance<DiaryBloc>(),
+          child: const DiaryBlocWidget(tripId: 1, userId: 1),
         ),
       ),
       /*

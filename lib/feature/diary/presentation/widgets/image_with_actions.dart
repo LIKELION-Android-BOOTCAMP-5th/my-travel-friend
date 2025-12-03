@@ -1,11 +1,9 @@
-import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:image_gallery_saver/image_gallery_saver.dart';
+import 'package:gal/gal.dart';
 import 'package:my_travel_friend/theme/app_colors.dart';
-import 'package:permission_handler/permission_handler.dart';
 
 import '../../../../core/widget/toast_pop.dart';
 import '../../../../theme/app_icon.dart';
@@ -119,10 +117,11 @@ class _ImageWithActionsState extends State<ImageWithActions> {
     setState(() => _isDownloading = true);
 
     try {
-      // 권한 요청
-      if (Platform.isAndroid) {
-        final status = await Permission.photos.request();
-        if (!status.isGranted) {
+      // 권한 요청 (Gal 내장 메서드 사용)
+      final hasAccess = await Gal.hasAccess(toAlbum: true);
+      if (!hasAccess) {
+        final granted = await Gal.requestAccess(toAlbum: true);
+        if (!granted) {
           ToastPop.show('갤러리 접근 권한이 필요합니다');
           return;
         }
@@ -135,17 +134,14 @@ class _ImageWithActionsState extends State<ImageWithActions> {
       );
 
       // 갤러리에 저장
-      final result = await ImageGallerySaver.saveImage(
+      await Gal.putImageBytes(
         Uint8List.fromList(response.data),
-        quality: 100,
-        name: 'diary_${DateTime.now().millisecondsSinceEpoch}',
+        name: 'diary_${DateTime.now().millisecondsSinceEpoch}.jpg',
       );
 
-      if (result['isSuccess'] == true) {
-        ToastPop.show('이미지가 갤러리에 저장되었습니다');
-      } else {
-        ToastPop.show('저장에 실패했습니다');
-      }
+      ToastPop.show('이미지가 갤러리에 저장되었습니다');
+    } on GalException catch (e) {
+      ToastPop.show('저장에 실패했습니다: ${e.type.name}');
     } catch (e) {
       ToastPop.show('다운로드 실패: $e');
     } finally {
