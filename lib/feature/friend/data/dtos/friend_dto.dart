@@ -12,7 +12,7 @@ abstract class FriendDTO with _$FriendDTO {
   const FriendDTO._();
 
   const factory FriendDTO({
-    required int id,
+    int? id,
     @JsonKey(name: 'user1_id') int? userId1,
     @JsonKey(name: 'user2_id') int? userId2,
     @JsonKey(name: 'create_at') String? createdAt,
