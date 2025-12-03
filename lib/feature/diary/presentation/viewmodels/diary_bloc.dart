@@ -33,7 +33,7 @@ class DiaryBloc extends Bloc<DiaryEvent, DiaryState> {
     this._createDiaryUseCase,
     this._updateDiaryUseCase,
     this._deleteDiaryUseCase,
-  ) : super(DiaryState.initial) {
+  ) : super(const DiaryState()) {
     on<GetOurDiaries>(_onGetOurDiaries);
     on<GetMyDiaries>(_onGetMyDiaries);
     on<GetDiaryById>(_onGetDiaryById);
@@ -76,7 +76,7 @@ class DiaryBloc extends Bloc<DiaryEvent, DiaryState> {
         tripId: event.tripId,
         userId: null,
         isMyDiaries: false,
-        pageState: const DiaryPageState.loading(),
+        pageState: DiaryPageState.loading,
       ),
     );
 
@@ -90,23 +90,22 @@ class DiaryBloc extends Bloc<DiaryEvent, DiaryState> {
       success: (diaries) {
         emit(
           state.copyWith(
-            pageState: DiaryPageState.loaded(
-              diaries: diaries,
-              allDiaries: diaries,
-              currentPage: 0,
-              hasMore: diaries.length >= _pageLimit,
-              isLoadingMore: false,
-            ),
+            pageState: DiaryPageState.loaded,
+            diaries: diaries,
+            allDiaries: diaries,
+            currentFilter: null,
+            currentPage: 0,
+            hasMore: diaries.length >= _pageLimit,
+            isLoadingMore: false,
           ),
         );
       },
       failure: (failure) {
         emit(
           state.copyWith(
-            pageState: DiaryPageState.error(
-              message: failure.message,
-              errorType: _getErrorType(failure),
-            ),
+            pageState: DiaryPageState.error,
+            message: failure.message,
+            errorType: _getErrorType(failure),
           ),
         );
       },
@@ -123,7 +122,7 @@ class DiaryBloc extends Bloc<DiaryEvent, DiaryState> {
         tripId: event.tripId,
         userId: event.userId,
         isMyDiaries: true,
-        pageState: const DiaryPageState.loading(),
+        pageState: DiaryPageState.loading,
       ),
     );
 
@@ -138,23 +137,22 @@ class DiaryBloc extends Bloc<DiaryEvent, DiaryState> {
       success: (diaries) {
         emit(
           state.copyWith(
-            pageState: DiaryPageState.loaded(
-              diaries: diaries,
-              allDiaries: diaries,
-              currentPage: 0,
-              hasMore: diaries.length >= _pageLimit,
-              isLoadingMore: false,
-            ),
+            pageState: DiaryPageState.loaded,
+            diaries: diaries,
+            allDiaries: diaries,
+            currentFilter: null,
+            currentPage: 0,
+            hasMore: diaries.length >= _pageLimit,
+            isLoadingMore: false,
           ),
         );
       },
       failure: (failure) {
         emit(
           state.copyWith(
-            pageState: DiaryPageState.error(
-              message: failure.message,
-              errorType: _getErrorType(failure),
-            ),
+            pageState: DiaryPageState.error,
+            message: failure.message,
+            errorType: _getErrorType(failure),
           ),
         );
       },
@@ -163,13 +161,12 @@ class DiaryBloc extends Bloc<DiaryEvent, DiaryState> {
 
   // 다음 페이지 로드 (무한 스크롤)
   Future<void> _onLoadMore(LoadMore event, Emitter<DiaryState> emit) async {
-    final pageState = state.pageState;
-    if (pageState is! DiaryPageLoaded) return;
-    if (pageState.isLoadingMore || !pageState.hasMore) return;
+    if (state.pageState != DiaryPageState.loaded) return;
+    if (state.isLoadingMore || !state.hasMore) return;
 
-    emit(state.copyWith(pageState: pageState.copyWith(isLoadingMore: true)));
+    emit(state.copyWith(isLoadingMore: true));
 
-    final nextPage = pageState.currentPage + 1;
+    final nextPage = state.currentPage + 1;
 
     final res = state.isMyDiaries
         ? await _getMyDiariesUseCase.call(
@@ -186,12 +183,14 @@ class DiaryBloc extends Bloc<DiaryEvent, DiaryState> {
 
     res.when(
       success: (newDiaries) {
-        final updatedAllDiaries = [...pageState.allDiaries, ...newDiaries];
+        final List<DiaryEntity> updatedAllDiaries = [];
+        updatedAllDiaries.addAll(state.allDiaries);
+        updatedAllDiaries.addAll(newDiaries);
 
         List<DiaryEntity> updatedDiaries;
-        if (pageState.currentFilter != null) {
+        if (state.currentFilter != null) {
           updatedDiaries = updatedAllDiaries
-              .where((diary) => diary.type == pageState.currentFilter)
+              .where((diary) => diary.type == state.currentFilter)
               .toList();
         } else {
           updatedDiaries = updatedAllDiaries;
@@ -199,21 +198,16 @@ class DiaryBloc extends Bloc<DiaryEvent, DiaryState> {
 
         emit(
           state.copyWith(
-            pageState: DiaryPageState.loaded(
-              diaries: updatedDiaries,
-              allDiaries: updatedAllDiaries,
-              currentFilter: pageState.currentFilter,
-              currentPage: nextPage,
-              hasMore: newDiaries.length >= _pageLimit,
-              isLoadingMore: false,
-            ),
+            diaries: updatedDiaries,
+            allDiaries: updatedAllDiaries,
+            currentPage: nextPage,
+            hasMore: newDiaries.length >= _pageLimit,
+            isLoadingMore: false,
           ),
         );
       },
       failure: (failure) {
-        emit(
-          state.copyWith(pageState: pageState.copyWith(isLoadingMore: false)),
-        );
+        emit(state.copyWith(isLoadingMore: false));
       },
     );
   }
@@ -223,25 +217,25 @@ class DiaryBloc extends Bloc<DiaryEvent, DiaryState> {
     GetDiaryById event,
     Emitter<DiaryState> emit,
   ) async {
-    final previousState = state.pageState;
-
-    emit(state.copyWith(pageState: const DiaryPageState.loading()));
+    emit(state.copyWith(pageState: DiaryPageState.loading));
 
     final res = await _getDiaryByIdUseCase.call(event.diaryId);
 
     res.when(
       success: (diary) {
         emit(
-          state.copyWith(pageState: DiaryPageState.detailLoaded(diary: diary)),
+          state.copyWith(
+            pageState: DiaryPageState.detailLoaded,
+            selectedDiary: diary,
+          ),
         );
       },
       failure: (failure) {
         emit(
           state.copyWith(
-            pageState: DiaryPageState.error(
-              message: failure.message,
-              errorType: _getErrorType(failure),
-            ),
+            pageState: DiaryPageState.error,
+            message: failure.message,
+            errorType: _getErrorType(failure),
           ),
         );
       },
@@ -253,7 +247,7 @@ class DiaryBloc extends Bloc<DiaryEvent, DiaryState> {
     CreateDiary event,
     Emitter<DiaryState> emit,
   ) async {
-    emit(state.copyWith(pageState: const DiaryPageState.loading()));
+    emit(state.copyWith(pageState: DiaryPageState.loading));
 
     final res = await _createDiaryUseCase.call(event.diary);
 
@@ -261,10 +255,9 @@ class DiaryBloc extends Bloc<DiaryEvent, DiaryState> {
       success: (createdDiary) {
         emit(
           state.copyWith(
-            pageState: const DiaryPageState.success(
-              message: '다이어리를 작성했습니다',
-              actionType: 'create',
-            ),
+            pageState: DiaryPageState.success,
+            message: '다이어리를 작성했습니다',
+            actionType: 'create',
           ),
         );
         _refreshList();
@@ -272,10 +265,9 @@ class DiaryBloc extends Bloc<DiaryEvent, DiaryState> {
       failure: (failure) {
         emit(
           state.copyWith(
-            pageState: DiaryPageState.error(
-              message: '다이어리 작성 실패: ${failure.message}',
-              errorType: _getErrorType(failure),
-            ),
+            pageState: DiaryPageState.error,
+            message: '다이어리 작성 실패: ${failure.message}',
+            errorType: _getErrorType(failure),
           ),
         );
       },
@@ -287,15 +279,14 @@ class DiaryBloc extends Bloc<DiaryEvent, DiaryState> {
     UpdateDiary event,
     Emitter<DiaryState> emit,
   ) async {
-    emit(state.copyWith(pageState: const DiaryPageState.loading()));
+    emit(state.copyWith(pageState: DiaryPageState.loading));
 
     if (event.diary.id == null) {
       emit(
         state.copyWith(
-          pageState: const DiaryPageState.error(
-            message: '수정할 다이어리 ID가 없습니다',
-            errorType: 'validation',
-          ),
+          pageState: DiaryPageState.error,
+          message: '수정할 다이어리 ID가 없습니다',
+          errorType: 'validation',
         ),
       );
       return;
@@ -307,10 +298,9 @@ class DiaryBloc extends Bloc<DiaryEvent, DiaryState> {
       success: (updatedDiary) {
         emit(
           state.copyWith(
-            pageState: const DiaryPageState.success(
-              message: '다이어리가 수정되었습니다',
-              actionType: 'update',
-            ),
+            pageState: DiaryPageState.success,
+            message: '다이어리가 수정되었습니다',
+            actionType: 'update',
           ),
         );
         _refreshList();
@@ -318,10 +308,9 @@ class DiaryBloc extends Bloc<DiaryEvent, DiaryState> {
       failure: (failure) {
         emit(
           state.copyWith(
-            pageState: DiaryPageState.error(
-              message: '다이어리 수정 실패 : ${failure.message}',
-              errorType: _getErrorType(failure),
-            ),
+            pageState: DiaryPageState.error,
+            message: '다이어리 수정 실패 : ${failure.message}',
+            errorType: _getErrorType(failure),
           ),
         );
       },
@@ -333,7 +322,7 @@ class DiaryBloc extends Bloc<DiaryEvent, DiaryState> {
     DeleteDiary event,
     Emitter<DiaryState> emit,
   ) async {
-    emit(state.copyWith(pageState: const DiaryPageState.loading()));
+    emit(state.copyWith(pageState: DiaryPageState.loading));
 
     final res = await _deleteDiaryUseCase.call(event.diaryId);
 
@@ -341,10 +330,9 @@ class DiaryBloc extends Bloc<DiaryEvent, DiaryState> {
       success: (_) {
         emit(
           state.copyWith(
-            pageState: const DiaryPageState.success(
-              message: '다이어리가 삭제되었습니다',
-              actionType: 'delete',
-            ),
+            pageState: DiaryPageState.success,
+            message: '다이어리가 삭제되었습니다',
+            actionType: 'delete',
           ),
         );
         _refreshList();
@@ -352,10 +340,9 @@ class DiaryBloc extends Bloc<DiaryEvent, DiaryState> {
       failure: (failure) {
         emit(
           state.copyWith(
-            pageState: DiaryPageState.error(
-              message: '다이어리 삭제 실패 : ${failure.message}',
-              errorType: _getErrorType(failure),
-            ),
+            pageState: DiaryPageState.error,
+            message: '다이어리 삭제 실패 : ${failure.message}',
+            errorType: _getErrorType(failure),
           ),
         );
       },
@@ -367,35 +354,18 @@ class DiaryBloc extends Bloc<DiaryEvent, DiaryState> {
     FilterByType event,
     Emitter<DiaryState> emit,
   ) async {
-    final pageState = state.pageState;
-    if (pageState is! DiaryPageLoaded) return;
+    if (state.pageState != DiaryPageState.loaded) return;
 
-    final source = pageState.allDiaries;
+    final source = state.allDiaries;
 
     if (event.type == null) {
-      emit(
-        state.copyWith(
-          pageState: DiaryPageState.loaded(
-            diaries: source,
-            allDiaries: source,
-            currentFilter: null,
-          ),
-        ),
-      );
+      emit(state.copyWith(diaries: source, currentFilter: null));
       return;
     }
 
     final filtered = source.where((diary) => diary.type == event.type).toList();
 
-    emit(
-      state.copyWith(
-        pageState: DiaryPageState.loaded(
-          diaries: filtered,
-          allDiaries: pageState.allDiaries,
-          currentFilter: event.type,
-        ),
-      ),
-    );
+    emit(state.copyWith(diaries: filtered, currentFilter: event.type));
   }
 
   // 새로고침

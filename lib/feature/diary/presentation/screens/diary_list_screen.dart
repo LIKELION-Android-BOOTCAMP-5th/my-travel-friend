@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:my_travel_friend/feature/diary/presentation/viewmodels/diary_page_state.dart';
 import 'package:my_travel_friend/feature/diary/presentation/widgets/public_tab.dart';
 import 'package:my_travel_friend/theme/app_colors.dart';
 
@@ -9,6 +8,7 @@ import '../../../../theme/app_font.dart';
 import '../../../../theme/app_icon.dart';
 import '../viewmodels/diary_bloc.dart';
 import '../viewmodels/diary_event.dart';
+import '../viewmodels/diary_page_state.dart';
 import '../viewmodels/diary_state.dart';
 import '../widgets/diary_box.dart';
 import '../widgets/diary_filter_chip.dart';
@@ -155,28 +155,15 @@ class _DiaryListScreenState extends State<DiaryListScreen> {
   // 타입별 필터
   Widget _buildFilterChips(BuildContext context, DiaryBloc diaryBloc) {
     return BlocBuilder<DiaryBloc, DiaryState>(
-      buildWhen: (prev, curr) {
-        final prevFilter = prev.pageState is DiaryPageLoaded
-            ? (prev.pageState as DiaryPageLoaded).currentFilter
-            : null;
-        final currFilter = curr.pageState is DiaryPageLoaded
-            ? (curr.pageState as DiaryPageLoaded).currentFilter
-            : null;
-        return prevFilter != currFilter;
-      },
+      buildWhen: (prev, curr) => prev.currentFilter != curr.currentFilter,
       builder: (context, state) {
-        String? currentFilter;
-        if (state.pageState is DiaryPageLoaded) {
-          currentFilter = (state.pageState as DiaryPageLoaded).currentFilter;
-        }
-
         return SingleChildScrollView(
           scrollDirection: Axis.horizontal,
           child: Row(
             children: List.generate(_filterTypes.length, (index) {
               final type = _filterTypes[index];
               final label = _filterLabels[index];
-              final isSelected = currentFilter == type;
+              final isSelected = state.currentFilter == type;
 
               return Padding(
                 padding: EdgeInsets.only(
@@ -200,16 +187,16 @@ class _DiaryListScreenState extends State<DiaryListScreen> {
   // 다이어리 리스트
   Widget _buildDiaryList(BuildContext context, DiaryBloc diaryBloc) {
     return BlocBuilder<DiaryBloc, DiaryState>(
-      // pageState가 바뀔 때만 리빌드
-      buildWhen: (prev, curr) => prev.pageState != curr.pageState,
+      buildWhen: (prev, curr) =>
+          prev.diaries != curr.diaries ||
+          prev.hasMore != curr.hasMore ||
+          prev.isLoadingMore != curr.isLoadingMore,
       builder: (context, state) {
-        final pageState = state.pageState;
+        final diaries = state.diaries;
 
-        if (pageState is! DiaryPageLoaded) {
+        if (state.pageState == DiaryPageState.init) {
           return const SizedBox.shrink();
         }
-
-        final diaries = pageState.diaries;
 
         if (diaries.isEmpty) {
           return _buildEmptyView(context);
@@ -220,9 +207,16 @@ class _DiaryListScreenState extends State<DiaryListScreen> {
             diaryBloc.add(const DiaryEvent.refresh());
           },
           child: ListView.separated(
-            itemCount: diaries.length,
+            controller: _scrollController,
+            physics: const AlwaysScrollableScrollPhysics(),
+            itemCount: diaries.length + (state.hasMore ? 1 : 0),
             separatorBuilder: (_, __) => const SizedBox(height: 12),
             itemBuilder: (context, index) {
+              // 마지막 아이템 = 로딩 인디케이터
+              if (index >= diaries.length) {
+                return _buildLoadingIndicator(state.isLoadingMore);
+              }
+
               final diary = diaries[index];
 
               return GestureDetector(
