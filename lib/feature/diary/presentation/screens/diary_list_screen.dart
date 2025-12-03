@@ -66,6 +66,7 @@ class DiaryListScreen extends StatelessWidget {
         // 플로팅 버튼 -> 다이어리 작성
         floatingActionButton: FloatingButton(
           icon: Icon(AppIcon.plus, color: AppColors.light),
+          backgroundColor: AppColors.secondary,
           onPressed: () => _onAddDiary(context),
         ),
       ),
