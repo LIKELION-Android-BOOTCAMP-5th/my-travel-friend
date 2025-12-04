@@ -101,7 +101,7 @@ class _NewDiaryScreenState extends State<NewDiaryScreen> {
                   Button(
                     width: 40,
                     height: 40,
-                    icon: Icon(AppIcon.save),
+                    icon: AppIcon.save,
                     contentColor: isDark
                         ? colorScheme.onSurface
                         : AppColors.light,

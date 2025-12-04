@@ -119,7 +119,7 @@ class _EditDiaryScreenState extends State<EditDiaryScreen> {
                                   : AppColors.light,
                             ),
                           )
-                        : Icon(AppIcon.save),
+                        : AppIcon.save,
                     contentColor: isDark
                         ? colorScheme.onSurface
                         : AppColors.light,

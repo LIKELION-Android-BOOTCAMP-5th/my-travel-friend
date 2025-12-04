@@ -157,5 +157,5 @@ class AppIcon {
   static const hourGlass = FontAwesomeIcons.hourglass;
 
   // 저장
-  static const save = FontAwesomeIcons.solidFloppyDisk;
+  static const save = Icon(FeatherIcons.save);
 }
