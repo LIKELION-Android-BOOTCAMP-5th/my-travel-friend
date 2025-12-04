@@ -3,7 +3,7 @@ import 'package:my_travel_friend/feature/trip/data/dtos/trip_dto.dart';
 
 abstract class TripDataSource {
   //유저 아이디로 본인이 참가하고 있는 여행 목록 가져오기
-  Future<Result<List<TripDto>>> getMyTrips(int userId);
+  Future<Result<List<TripDto>>> getMyTrips(int userId, int page);
 
   // 여행 생성
   Future<Result<TripDto>> createTrip(TripDto trip);
@@ -19,4 +19,11 @@ abstract class TripDataSource {
 
   //여행 삭제
   Future<Result<void>> deleteTrip(int tripId);
+
+  //여행 검색
+  Future<Result<List<TripDto>>> searchTrips(
+    int userId,
+    String keyword,
+    int page,
+  );
 }

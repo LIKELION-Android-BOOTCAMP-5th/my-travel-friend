@@ -15,8 +15,8 @@ class TripRepositoryImpl implements TripRepository {
 
   //여행가져오기
   @override
-  Future<Result<List<TripEntity>>> getMyTrips(int userId) async {
-    final res = await _dataSource.getMyTrips(userId);
+  Future<Result<List<TripEntity>>> getMyTrips(int userId, int page) async {
+    final res = await _dataSource.getMyTrips(userId, page);
     return res.when(
       success: (data) =>
           Result.success(data.map((dto) => dto.toEntity()).toList()),
@@ -79,5 +79,19 @@ class TripRepositoryImpl implements TripRepository {
   @override
   Future<Result<void>> giveUpTrip(int userId, int id) async {
     return await _dataSource.giveUpTrip(userId, id);
+  }
+
+  @override
+  Future<Result<List<TripEntity>>> searchTrips(
+    int userId,
+    String keyword,
+    int page,
+  ) async {
+    final res = await _dataSource.searchTrips(userId, keyword, page);
+    return res.when(
+      success: (data) =>
+          Result.success(data.map((dto) => dto.toEntity()).toList()),
+      failure: (failure) => Result.failure(failure),
+    );
   }
 }

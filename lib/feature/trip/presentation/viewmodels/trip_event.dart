@@ -21,7 +21,10 @@ abstract class TripEvent with _$TripEvent {
       SearchKeywordChanged;
 
   // 검색 실행 (enter or button press)
-  const factory TripEvent.searchTrips({required String keyword}) = SearchTrips;
+  const factory TripEvent.searchTrips({
+    required int userId,
+    required String keyword,
+  }) = SearchTrips;
 
   //검색창 열기/닫기 (아이콘 toggle)
   const factory TripEvent.toggleSearch() = ToggleSearch;
