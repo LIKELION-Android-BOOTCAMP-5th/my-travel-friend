@@ -22,7 +22,7 @@ mixin _$TripState {
  bool get search;//정렬 했냐 안했냐 조건?
  SortingTrip get sorting;//리스트 불러올때 페이징 하게하는 state
  int get currentPage;//페이지 state
- TripPageState get pageState;
+ TripPageState get pageState; bool get hasMore; bool get isLoadingMore;
 /// Create a copy of TripState
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -33,16 +33,16 @@ $TripStateCopyWith<TripState> get copyWith => _$TripStateCopyWithImpl<TripState>
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is TripState&&(identical(other.selectedTrip, selectedTrip) || other.selectedTrip == selectedTrip)&&const DeepCollectionEquality().equals(other.trips, trips)&&const DeepCollectionEquality().equals(other.searchTrips, searchTrips)&&(identical(other.userSearch, userSearch) || other.userSearch == userSearch)&&(identical(other.search, search) || other.search == search)&&(identical(other.sorting, sorting) || other.sorting == sorting)&&(identical(other.currentPage, currentPage) || other.currentPage == currentPage)&&(identical(other.pageState, pageState) || other.pageState == pageState));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is TripState&&(identical(other.selectedTrip, selectedTrip) || other.selectedTrip == selectedTrip)&&const DeepCollectionEquality().equals(other.trips, trips)&&const DeepCollectionEquality().equals(other.searchTrips, searchTrips)&&(identical(other.userSearch, userSearch) || other.userSearch == userSearch)&&(identical(other.search, search) || other.search == search)&&(identical(other.sorting, sorting) || other.sorting == sorting)&&(identical(other.currentPage, currentPage) || other.currentPage == currentPage)&&(identical(other.pageState, pageState) || other.pageState == pageState)&&(identical(other.hasMore, hasMore) || other.hasMore == hasMore)&&(identical(other.isLoadingMore, isLoadingMore) || other.isLoadingMore == isLoadingMore));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,selectedTrip,const DeepCollectionEquality().hash(trips),const DeepCollectionEquality().hash(searchTrips),userSearch,search,sorting,currentPage,pageState);
+int get hashCode => Object.hash(runtimeType,selectedTrip,const DeepCollectionEquality().hash(trips),const DeepCollectionEquality().hash(searchTrips),userSearch,search,sorting,currentPage,pageState,hasMore,isLoadingMore);
 
 @override
 String toString() {
-  return 'TripState(selectedTrip: $selectedTrip, trips: $trips, searchTrips: $searchTrips, userSearch: $userSearch, search: $search, sorting: $sorting, currentPage: $currentPage, pageState: $pageState)';
+  return 'TripState(selectedTrip: $selectedTrip, trips: $trips, searchTrips: $searchTrips, userSearch: $userSearch, search: $search, sorting: $sorting, currentPage: $currentPage, pageState: $pageState, hasMore: $hasMore, isLoadingMore: $isLoadingMore)';
 }
 
 
@@ -53,7 +53,7 @@ abstract mixin class $TripStateCopyWith<$Res>  {
   factory $TripStateCopyWith(TripState value, $Res Function(TripState) _then) = _$TripStateCopyWithImpl;
 @useResult
 $Res call({
- TripEntity? selectedTrip, List<TripEntity>? trips, List<TripEntity>? searchTrips, String? userSearch, bool search, SortingTrip sorting, int currentPage, TripPageState pageState
+ TripEntity? selectedTrip, List<TripEntity>? trips, List<TripEntity>? searchTrips, String? userSearch, bool search, SortingTrip sorting, int currentPage, TripPageState pageState, bool hasMore, bool isLoadingMore
 });
 
 
@@ -70,7 +70,7 @@ class _$TripStateCopyWithImpl<$Res>
 
 /// Create a copy of TripState
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? selectedTrip = freezed,Object? trips = freezed,Object? searchTrips = freezed,Object? userSearch = freezed,Object? search = null,Object? sorting = null,Object? currentPage = null,Object? pageState = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? selectedTrip = freezed,Object? trips = freezed,Object? searchTrips = freezed,Object? userSearch = freezed,Object? search = null,Object? sorting = null,Object? currentPage = null,Object? pageState = null,Object? hasMore = null,Object? isLoadingMore = null,}) {
   return _then(_self.copyWith(
 selectedTrip: freezed == selectedTrip ? _self.selectedTrip : selectedTrip // ignore: cast_nullable_to_non_nullable
 as TripEntity?,trips: freezed == trips ? _self.trips : trips // ignore: cast_nullable_to_non_nullable
@@ -80,7 +80,9 @@ as String?,search: null == search ? _self.search : search // ignore: cast_nullab
 as bool,sorting: null == sorting ? _self.sorting : sorting // ignore: cast_nullable_to_non_nullable
 as SortingTrip,currentPage: null == currentPage ? _self.currentPage : currentPage // ignore: cast_nullable_to_non_nullable
 as int,pageState: null == pageState ? _self.pageState : pageState // ignore: cast_nullable_to_non_nullable
-as TripPageState,
+as TripPageState,hasMore: null == hasMore ? _self.hasMore : hasMore // ignore: cast_nullable_to_non_nullable
+as bool,isLoadingMore: null == isLoadingMore ? _self.isLoadingMore : isLoadingMore // ignore: cast_nullable_to_non_nullable
+as bool,
   ));
 }
 /// Create a copy of TripState
@@ -177,10 +179,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( TripEntity? selectedTrip,  List<TripEntity>? trips,  List<TripEntity>? searchTrips,  String? userSearch,  bool search,  SortingTrip sorting,  int currentPage,  TripPageState pageState)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( TripEntity? selectedTrip,  List<TripEntity>? trips,  List<TripEntity>? searchTrips,  String? userSearch,  bool search,  SortingTrip sorting,  int currentPage,  TripPageState pageState,  bool hasMore,  bool isLoadingMore)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _TripState() when $default != null:
-return $default(_that.selectedTrip,_that.trips,_that.searchTrips,_that.userSearch,_that.search,_that.sorting,_that.currentPage,_that.pageState);case _:
+return $default(_that.selectedTrip,_that.trips,_that.searchTrips,_that.userSearch,_that.search,_that.sorting,_that.currentPage,_that.pageState,_that.hasMore,_that.isLoadingMore);case _:
   return orElse();
 
 }
@@ -198,10 +200,10 @@ return $default(_that.selectedTrip,_that.trips,_that.searchTrips,_that.userSearc
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( TripEntity? selectedTrip,  List<TripEntity>? trips,  List<TripEntity>? searchTrips,  String? userSearch,  bool search,  SortingTrip sorting,  int currentPage,  TripPageState pageState)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( TripEntity? selectedTrip,  List<TripEntity>? trips,  List<TripEntity>? searchTrips,  String? userSearch,  bool search,  SortingTrip sorting,  int currentPage,  TripPageState pageState,  bool hasMore,  bool isLoadingMore)  $default,) {final _that = this;
 switch (_that) {
 case _TripState():
-return $default(_that.selectedTrip,_that.trips,_that.searchTrips,_that.userSearch,_that.search,_that.sorting,_that.currentPage,_that.pageState);case _:
+return $default(_that.selectedTrip,_that.trips,_that.searchTrips,_that.userSearch,_that.search,_that.sorting,_that.currentPage,_that.pageState,_that.hasMore,_that.isLoadingMore);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -218,10 +220,10 @@ return $default(_that.selectedTrip,_that.trips,_that.searchTrips,_that.userSearc
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( TripEntity? selectedTrip,  List<TripEntity>? trips,  List<TripEntity>? searchTrips,  String? userSearch,  bool search,  SortingTrip sorting,  int currentPage,  TripPageState pageState)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( TripEntity? selectedTrip,  List<TripEntity>? trips,  List<TripEntity>? searchTrips,  String? userSearch,  bool search,  SortingTrip sorting,  int currentPage,  TripPageState pageState,  bool hasMore,  bool isLoadingMore)?  $default,) {final _that = this;
 switch (_that) {
 case _TripState() when $default != null:
-return $default(_that.selectedTrip,_that.trips,_that.searchTrips,_that.userSearch,_that.search,_that.sorting,_that.currentPage,_that.pageState);case _:
+return $default(_that.selectedTrip,_that.trips,_that.searchTrips,_that.userSearch,_that.search,_that.sorting,_that.currentPage,_that.pageState,_that.hasMore,_that.isLoadingMore);case _:
   return null;
 
 }
@@ -233,7 +235,7 @@ return $default(_that.selectedTrip,_that.trips,_that.searchTrips,_that.userSearc
 
 
 class _TripState implements TripState {
-  const _TripState({this.selectedTrip, required final  List<TripEntity>? trips, final  List<TripEntity>? searchTrips, this.userSearch, this.search = false, this.sorting = SortingTrip.recent, this.currentPage = 1, this.pageState = TripPageState.init}): _trips = trips,_searchTrips = searchTrips;
+  const _TripState({this.selectedTrip, required final  List<TripEntity>? trips, final  List<TripEntity>? searchTrips, this.userSearch, this.search = false, this.sorting = SortingTrip.recent, this.currentPage = 1, this.pageState = TripPageState.init, this.hasMore = false, this.isLoadingMore = false}): _trips = trips,_searchTrips = searchTrips;
   
 
 //조회정보
@@ -270,6 +272,8 @@ class _TripState implements TripState {
 @override@JsonKey() final  int currentPage;
 //페이지 state
 @override@JsonKey() final  TripPageState pageState;
+@override@JsonKey() final  bool hasMore;
+@override@JsonKey() final  bool isLoadingMore;
 
 /// Create a copy of TripState
 /// with the given fields replaced by the non-null parameter values.
@@ -281,16 +285,16 @@ _$TripStateCopyWith<_TripState> get copyWith => __$TripStateCopyWithImpl<_TripSt
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _TripState&&(identical(other.selectedTrip, selectedTrip) || other.selectedTrip == selectedTrip)&&const DeepCollectionEquality().equals(other._trips, _trips)&&const DeepCollectionEquality().equals(other._searchTrips, _searchTrips)&&(identical(other.userSearch, userSearch) || other.userSearch == userSearch)&&(identical(other.search, search) || other.search == search)&&(identical(other.sorting, sorting) || other.sorting == sorting)&&(identical(other.currentPage, currentPage) || other.currentPage == currentPage)&&(identical(other.pageState, pageState) || other.pageState == pageState));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _TripState&&(identical(other.selectedTrip, selectedTrip) || other.selectedTrip == selectedTrip)&&const DeepCollectionEquality().equals(other._trips, _trips)&&const DeepCollectionEquality().equals(other._searchTrips, _searchTrips)&&(identical(other.userSearch, userSearch) || other.userSearch == userSearch)&&(identical(other.search, search) || other.search == search)&&(identical(other.sorting, sorting) || other.sorting == sorting)&&(identical(other.currentPage, currentPage) || other.currentPage == currentPage)&&(identical(other.pageState, pageState) || other.pageState == pageState)&&(identical(other.hasMore, hasMore) || other.hasMore == hasMore)&&(identical(other.isLoadingMore, isLoadingMore) || other.isLoadingMore == isLoadingMore));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,selectedTrip,const DeepCollectionEquality().hash(_trips),const DeepCollectionEquality().hash(_searchTrips),userSearch,search,sorting,currentPage,pageState);
+int get hashCode => Object.hash(runtimeType,selectedTrip,const DeepCollectionEquality().hash(_trips),const DeepCollectionEquality().hash(_searchTrips),userSearch,search,sorting,currentPage,pageState,hasMore,isLoadingMore);
 
 @override
 String toString() {
-  return 'TripState(selectedTrip: $selectedTrip, trips: $trips, searchTrips: $searchTrips, userSearch: $userSearch, search: $search, sorting: $sorting, currentPage: $currentPage, pageState: $pageState)';
+  return 'TripState(selectedTrip: $selectedTrip, trips: $trips, searchTrips: $searchTrips, userSearch: $userSearch, search: $search, sorting: $sorting, currentPage: $currentPage, pageState: $pageState, hasMore: $hasMore, isLoadingMore: $isLoadingMore)';
 }
 
 
@@ -301,7 +305,7 @@ abstract mixin class _$TripStateCopyWith<$Res> implements $TripStateCopyWith<$Re
   factory _$TripStateCopyWith(_TripState value, $Res Function(_TripState) _then) = __$TripStateCopyWithImpl;
 @override @useResult
 $Res call({
- TripEntity? selectedTrip, List<TripEntity>? trips, List<TripEntity>? searchTrips, String? userSearch, bool search, SortingTrip sorting, int currentPage, TripPageState pageState
+ TripEntity? selectedTrip, List<TripEntity>? trips, List<TripEntity>? searchTrips, String? userSearch, bool search, SortingTrip sorting, int currentPage, TripPageState pageState, bool hasMore, bool isLoadingMore
 });
 
 
@@ -318,7 +322,7 @@ class __$TripStateCopyWithImpl<$Res>
 
 /// Create a copy of TripState
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? selectedTrip = freezed,Object? trips = freezed,Object? searchTrips = freezed,Object? userSearch = freezed,Object? search = null,Object? sorting = null,Object? currentPage = null,Object? pageState = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? selectedTrip = freezed,Object? trips = freezed,Object? searchTrips = freezed,Object? userSearch = freezed,Object? search = null,Object? sorting = null,Object? currentPage = null,Object? pageState = null,Object? hasMore = null,Object? isLoadingMore = null,}) {
   return _then(_TripState(
 selectedTrip: freezed == selectedTrip ? _self.selectedTrip : selectedTrip // ignore: cast_nullable_to_non_nullable
 as TripEntity?,trips: freezed == trips ? _self._trips : trips // ignore: cast_nullable_to_non_nullable
@@ -328,7 +332,9 @@ as String?,search: null == search ? _self.search : search // ignore: cast_nullab
 as bool,sorting: null == sorting ? _self.sorting : sorting // ignore: cast_nullable_to_non_nullable
 as SortingTrip,currentPage: null == currentPage ? _self.currentPage : currentPage // ignore: cast_nullable_to_non_nullable
 as int,pageState: null == pageState ? _self.pageState : pageState // ignore: cast_nullable_to_non_nullable
-as TripPageState,
+as TripPageState,hasMore: null == hasMore ? _self.hasMore : hasMore // ignore: cast_nullable_to_non_nullable
+as bool,isLoadingMore: null == isLoadingMore ? _self.isLoadingMore : isLoadingMore // ignore: cast_nullable_to_non_nullable
+as bool,
   ));
 }
 

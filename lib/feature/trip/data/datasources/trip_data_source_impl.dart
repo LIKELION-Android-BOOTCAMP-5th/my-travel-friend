@@ -16,12 +16,17 @@ class TripDataSourceImpl implements TripDataSource {
   TripDataSourceImpl(this._supabaseClient);
 
   @override
-  Future<Result<List<TripDto>>> getMyTrips(int userId) async {
+  Future<Result<List<TripDto>>> getMyTrips(int userId, int page) async {
     try {
+      const limit = 10;
+      final offset = (page - 1) * limit;
+
       final res = await _supabaseClient
           .from('trip_crew')
           .select('trip(*)')
-          .eq('member_id', userId);
+          .eq('member_id', userId)
+          .order('trip.created_at', ascending: false) // 최신순
+          .range(offset, offset + limit - 1);
 
       final trips = (res as List)
           .map((row) => TripDto.fromJson(row['trip']))
@@ -98,6 +103,34 @@ class TripDataSourceImpl implements TripDataSource {
       final int crewmember = crew.length;
 
       return Result.success(crewmember);
+    } catch (e) {
+      return Result.failure(Failure.serverFailure(message: e.toString()));
+    }
+  }
+
+  @override
+  Future<Result<List<TripDto>>> searchTrips(
+    int userId,
+    String keyword,
+    int page,
+  ) async {
+    try {
+      const limit = 20;
+      final offset = (page - 1) * limit;
+
+      final res = await _supabaseClient
+          .from('trip_crew')
+          .select('trip(*)')
+          .eq('member_id', userId)
+          .or('trip.title.ilike.%$keyword%,trip.place.ilike.%$keyword%')
+          .order('trip.created_at', ascending: false)
+          .range(offset, offset + limit - 1);
+
+      final trips = (res as List)
+          .map((row) => TripDto.fromJson(row['trip']))
+          .toList();
+
+      return Result.success(trips);
     } catch (e) {
       return Result.failure(Failure.serverFailure(message: e.toString()));
     }

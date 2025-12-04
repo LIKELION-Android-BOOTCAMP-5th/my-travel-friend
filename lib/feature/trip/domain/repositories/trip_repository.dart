@@ -6,7 +6,7 @@ import 'package:my_travel_friend/feature/trip/domain/entities/trip_entity.dart';
 
 abstract class TripRepository {
   //내가 참여한 여행 목록 가져오기
-  Future<Result<List<TripEntity>>> getMyTrips(int userId);
+  Future<Result<List<TripEntity>>> getMyTrips(int userId, int page);
 
   // 여행 생성
   Future<Result<TripEntity>> createTrip(TripEntity trip);
@@ -22,4 +22,11 @@ abstract class TripRepository {
 
   //여행 삭제
   Future<Result<void>> deleteTrip(int tripId);
+
+  //여행 검색
+  Future<Result<List<TripEntity>>> searchTrips(
+    int userId,
+    String keyword,
+    int page,
+  );
 }

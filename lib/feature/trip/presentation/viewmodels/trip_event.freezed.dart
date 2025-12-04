@@ -155,14 +155,14 @@ return refreshTrips(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function( int userId)?  getMyTrips,TResult Function( int userId)?  loadMoreTrips,TResult Function( SortingTrip sorting)?  changeSorting,TResult Function( String keyword)?  searchKeywordChanged,TResult Function( String keyword)?  searchTrips,TResult Function()?  toggleSearch,TResult Function( TripEntity trip)?  selectTrip,TResult Function()?  createNewTrip,TResult Function( TripEntity trip)?  openTripMenu,TResult Function( TripEntity trip)?  updateTrip,TResult Function( int tripId,  int userId)?  leaveTrip,TResult Function( int tripId)?  deleteTrip,TResult Function( int userId)?  refreshTrips,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function( int userId)?  getMyTrips,TResult Function( int userId)?  loadMoreTrips,TResult Function( SortingTrip sorting)?  changeSorting,TResult Function( String keyword)?  searchKeywordChanged,TResult Function( int userId,  String keyword)?  searchTrips,TResult Function()?  toggleSearch,TResult Function( TripEntity trip)?  selectTrip,TResult Function()?  createNewTrip,TResult Function( TripEntity trip)?  openTripMenu,TResult Function( TripEntity trip)?  updateTrip,TResult Function( int tripId,  int userId)?  leaveTrip,TResult Function( int tripId)?  deleteTrip,TResult Function( int userId)?  refreshTrips,required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case GetMyTrips() when getMyTrips != null:
 return getMyTrips(_that.userId);case LoadMoreTrips() when loadMoreTrips != null:
 return loadMoreTrips(_that.userId);case ChangeSorting() when changeSorting != null:
 return changeSorting(_that.sorting);case SearchKeywordChanged() when searchKeywordChanged != null:
 return searchKeywordChanged(_that.keyword);case SearchTrips() when searchTrips != null:
-return searchTrips(_that.keyword);case ToggleSearch() when toggleSearch != null:
+return searchTrips(_that.userId,_that.keyword);case ToggleSearch() when toggleSearch != null:
 return toggleSearch();case SelectTrip() when selectTrip != null:
 return selectTrip(_that.trip);case CreateNewTrip() when createNewTrip != null:
 return createNewTrip();case OpenTripMenu() when openTripMenu != null:
@@ -188,14 +188,14 @@ return refreshTrips(_that.userId);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function( int userId)  getMyTrips,required TResult Function( int userId)  loadMoreTrips,required TResult Function( SortingTrip sorting)  changeSorting,required TResult Function( String keyword)  searchKeywordChanged,required TResult Function( String keyword)  searchTrips,required TResult Function()  toggleSearch,required TResult Function( TripEntity trip)  selectTrip,required TResult Function()  createNewTrip,required TResult Function( TripEntity trip)  openTripMenu,required TResult Function( TripEntity trip)  updateTrip,required TResult Function( int tripId,  int userId)  leaveTrip,required TResult Function( int tripId)  deleteTrip,required TResult Function( int userId)  refreshTrips,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function( int userId)  getMyTrips,required TResult Function( int userId)  loadMoreTrips,required TResult Function( SortingTrip sorting)  changeSorting,required TResult Function( String keyword)  searchKeywordChanged,required TResult Function( int userId,  String keyword)  searchTrips,required TResult Function()  toggleSearch,required TResult Function( TripEntity trip)  selectTrip,required TResult Function()  createNewTrip,required TResult Function( TripEntity trip)  openTripMenu,required TResult Function( TripEntity trip)  updateTrip,required TResult Function( int tripId,  int userId)  leaveTrip,required TResult Function( int tripId)  deleteTrip,required TResult Function( int userId)  refreshTrips,}) {final _that = this;
 switch (_that) {
 case GetMyTrips():
 return getMyTrips(_that.userId);case LoadMoreTrips():
 return loadMoreTrips(_that.userId);case ChangeSorting():
 return changeSorting(_that.sorting);case SearchKeywordChanged():
 return searchKeywordChanged(_that.keyword);case SearchTrips():
-return searchTrips(_that.keyword);case ToggleSearch():
+return searchTrips(_that.userId,_that.keyword);case ToggleSearch():
 return toggleSearch();case SelectTrip():
 return selectTrip(_that.trip);case CreateNewTrip():
 return createNewTrip();case OpenTripMenu():
@@ -220,14 +220,14 @@ return refreshTrips(_that.userId);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function( int userId)?  getMyTrips,TResult? Function( int userId)?  loadMoreTrips,TResult? Function( SortingTrip sorting)?  changeSorting,TResult? Function( String keyword)?  searchKeywordChanged,TResult? Function( String keyword)?  searchTrips,TResult? Function()?  toggleSearch,TResult? Function( TripEntity trip)?  selectTrip,TResult? Function()?  createNewTrip,TResult? Function( TripEntity trip)?  openTripMenu,TResult? Function( TripEntity trip)?  updateTrip,TResult? Function( int tripId,  int userId)?  leaveTrip,TResult? Function( int tripId)?  deleteTrip,TResult? Function( int userId)?  refreshTrips,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function( int userId)?  getMyTrips,TResult? Function( int userId)?  loadMoreTrips,TResult? Function( SortingTrip sorting)?  changeSorting,TResult? Function( String keyword)?  searchKeywordChanged,TResult? Function( int userId,  String keyword)?  searchTrips,TResult? Function()?  toggleSearch,TResult? Function( TripEntity trip)?  selectTrip,TResult? Function()?  createNewTrip,TResult? Function( TripEntity trip)?  openTripMenu,TResult? Function( TripEntity trip)?  updateTrip,TResult? Function( int tripId,  int userId)?  leaveTrip,TResult? Function( int tripId)?  deleteTrip,TResult? Function( int userId)?  refreshTrips,}) {final _that = this;
 switch (_that) {
 case GetMyTrips() when getMyTrips != null:
 return getMyTrips(_that.userId);case LoadMoreTrips() when loadMoreTrips != null:
 return loadMoreTrips(_that.userId);case ChangeSorting() when changeSorting != null:
 return changeSorting(_that.sorting);case SearchKeywordChanged() when searchKeywordChanged != null:
 return searchKeywordChanged(_that.keyword);case SearchTrips() when searchTrips != null:
-return searchTrips(_that.keyword);case ToggleSearch() when toggleSearch != null:
+return searchTrips(_that.userId,_that.keyword);case ToggleSearch() when toggleSearch != null:
 return toggleSearch();case SelectTrip() when selectTrip != null:
 return selectTrip(_that.trip);case CreateNewTrip() when createNewTrip != null:
 return createNewTrip();case OpenTripMenu() when openTripMenu != null:
@@ -511,9 +511,10 @@ as String,
 
 
 class SearchTrips implements TripEvent {
-  const SearchTrips({required this.keyword});
+  const SearchTrips({required this.userId, required this.keyword});
   
 
+ final  int userId;
  final  String keyword;
 
 /// Create a copy of TripEvent
@@ -526,16 +527,16 @@ $SearchTripsCopyWith<SearchTrips> get copyWith => _$SearchTripsCopyWithImpl<Sear
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is SearchTrips&&(identical(other.keyword, keyword) || other.keyword == keyword));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is SearchTrips&&(identical(other.userId, userId) || other.userId == userId)&&(identical(other.keyword, keyword) || other.keyword == keyword));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,keyword);
+int get hashCode => Object.hash(runtimeType,userId,keyword);
 
 @override
 String toString() {
-  return 'TripEvent.searchTrips(keyword: $keyword)';
+  return 'TripEvent.searchTrips(userId: $userId, keyword: $keyword)';
 }
 
 
@@ -546,7 +547,7 @@ abstract mixin class $SearchTripsCopyWith<$Res> implements $TripEventCopyWith<$R
   factory $SearchTripsCopyWith(SearchTrips value, $Res Function(SearchTrips) _then) = _$SearchTripsCopyWithImpl;
 @useResult
 $Res call({
- String keyword
+ int userId, String keyword
 });
 
 
@@ -563,9 +564,10 @@ class _$SearchTripsCopyWithImpl<$Res>
 
 /// Create a copy of TripEvent
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') $Res call({Object? keyword = null,}) {
+@pragma('vm:prefer-inline') $Res call({Object? userId = null,Object? keyword = null,}) {
   return _then(SearchTrips(
-keyword: null == keyword ? _self.keyword : keyword // ignore: cast_nullable_to_non_nullable
+userId: null == userId ? _self.userId : userId // ignore: cast_nullable_to_non_nullable
+as int,keyword: null == keyword ? _self.keyword : keyword // ignore: cast_nullable_to_non_nullable
 as String,
   ));
 }

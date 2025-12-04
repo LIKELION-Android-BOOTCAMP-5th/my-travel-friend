@@ -22,6 +22,8 @@ abstract class TripState with _$TripState {
     @Default(1) int currentPage,
     //페이지 state
     @Default(TripPageState.init) TripPageState pageState,
+    @Default(false) bool hasMore,
+    @Default(false) bool isLoadingMore,
   }) = _TripState;
 }
 

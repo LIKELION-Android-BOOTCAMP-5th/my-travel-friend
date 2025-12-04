@@ -4,11 +4,11 @@ import 'package:my_travel_friend/feature/trip/domain/entities/trip_entity.dart';
 import 'package:my_travel_friend/feature/trip/domain/repositories/trip_repository.dart';
 
 @lazySingleton
-class GetMyTripUsecase {
+class SearchTripUsecase {
   final TripRepository _tripRepository;
-  GetMyTripUsecase(this._tripRepository);
+  SearchTripUsecase(this._tripRepository);
 
-  Future<Result<List<TripEntity>>> call(int userId, int page) {
-    return _tripRepository.getMyTrips(userId, page);
+  Future<Result<List<TripEntity>>> call(int userId, String keyword, int page) {
+    return _tripRepository.searchTrips(userId, keyword, page);
   }
 }
