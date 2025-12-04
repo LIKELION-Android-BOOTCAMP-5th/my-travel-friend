@@ -34,7 +34,7 @@ class TypeButton extends StatelessWidget {
           color: isSelected
               ? color
               : isDark
-              ? colorScheme.outlineVariant
+              ? AppColors.navy
               : AppColors.darkerGray,
           borderRadius: BorderRadius.circular(12.0),
         ),

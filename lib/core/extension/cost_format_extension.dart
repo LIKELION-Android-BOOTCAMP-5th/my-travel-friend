@@ -1,5 +1,5 @@
 // [이재은] 가격 표시에 대한 extension
-extension NumberFormatExtension on int {
+extension CostFormatExtension on int {
   // 천 단위 콤마 추가 (1000 → "1,000")
   String toCommaString() {
     return toString().replaceAllMapped(

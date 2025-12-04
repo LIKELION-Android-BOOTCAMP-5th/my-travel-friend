@@ -91,4 +91,6 @@
             <data android:scheme="mailto"/>
         </intent>
     </queries>
+
+
 </manifest>

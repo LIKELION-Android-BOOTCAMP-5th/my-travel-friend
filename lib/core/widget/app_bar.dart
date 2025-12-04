@@ -25,10 +25,15 @@ class CustomButtonAppBar extends StatelessWidget
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    final isDark = colorScheme.brightness == Brightness.dark;
+
     return SafeArea(
       child: Container(
         height: preferredSize.height,
-        color: AppColors.primaryLight,
+        color: isDark
+            ? colorScheme.surfaceContainerHighest
+            : colorScheme.primary,
         padding: const EdgeInsets.symmetric(horizontal: 12),
         child: Row(
           children: [
@@ -43,7 +48,9 @@ class CustomButtonAppBar extends StatelessWidget
                 children: [
                   Text(
                     title,
-                    style: AppFont.hugeBold.copyWith(color: AppColors.light),
+                    style: AppFont.hugeBold.copyWith(
+                      color: isDark ? colorScheme.onSurface : AppColors.light,
+                    ),
                     overflow: TextOverflow.ellipsis,
                   ),
 
@@ -51,7 +58,9 @@ class CustomButtonAppBar extends StatelessWidget
                     const SizedBox(height: 2),
                     Text(
                       subtitle!,
-                      style: AppFont.big.copyWith(color: AppColors.light),
+                      style: AppFont.big.copyWith(
+                        color: isDark ? colorScheme.onSurface : AppColors.light,
+                      ),
                       overflow: TextOverflow.ellipsis,
                     ),
                   ],

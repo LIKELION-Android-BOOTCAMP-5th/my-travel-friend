@@ -8,7 +8,6 @@ import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:my_travel_friend/core/widget/text_box.dart';
 import 'package:my_travel_friend/feature/diary/presentation/widgets/public_select_box.dart';
-import 'package:my_travel_friend/feature/diary/presentation/widgets/schedule_picker_button.dart';
 import 'package:my_travel_friend/theme/app_font.dart';
 import 'package:path/path.dart' as path;
 import 'package:path_provider/path_provider.dart';
@@ -19,25 +18,25 @@ import '../../../../core/widget/button.dart';
 import '../../../../core/widget/toast_pop.dart';
 import '../../../../theme/app_colors.dart';
 import '../../../../theme/app_icon.dart';
-import '../viewmodels/new_diary_bloc.dart';
-import '../viewmodels/new_diary_event.dart';
-import '../viewmodels/new_diary_state.dart';
+import '../../domain/entities/diary_entity.dart';
+import '../viewmodels/edit_diary_bloc.dart';
+import '../viewmodels/edit_diary_event.dart';
+import '../viewmodels/edit_diary_state.dart';
 import '../widgets/star_rating.dart';
-import '../widgets/type_button.dart';
+import '../widgets/type_tag.dart';
 
-// [이재은] 새로운 다이어리 작성 화면
+// [이재은] 다이어리 수정 화면
 
-class NewDiaryScreen extends StatefulWidget {
-  final int tripId;
-  final int userId;
+class EditDiaryScreen extends StatefulWidget {
+  final DiaryEntity diary;
 
-  const NewDiaryScreen({super.key, required this.tripId, required this.userId});
+  const EditDiaryScreen({super.key, required this.diary});
 
   @override
-  State<NewDiaryScreen> createState() => _NewDiaryScreenState();
+  State<EditDiaryScreen> createState() => _EditDiaryScreenState();
 }
 
-class _NewDiaryScreenState extends State<NewDiaryScreen> {
+class _EditDiaryScreenState extends State<EditDiaryScreen> {
   late TextEditingController _titleController;
   late TextEditingController _contentController;
   late TextEditingController _priceController;
@@ -51,14 +50,20 @@ class _NewDiaryScreenState extends State<NewDiaryScreen> {
   @override
   void initState() {
     super.initState();
-    _titleController = TextEditingController();
-    _contentController = TextEditingController();
-    _priceController = TextEditingController();
 
+    // 기존 데이터로 컨트롤러 초기화
+    _titleController = TextEditingController(text: widget.diary.title ?? '');
+    _contentController = TextEditingController(
+      text: widget.diary.content ?? '',
+    );
+    _priceController = TextEditingController(
+      text: widget.diary.cost?.toString() ?? '',
+    );
+
+    // Bloc에 기존 다이어리 로드
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      context.read<NewDiaryBloc>().initialize(
-        tripId: widget.tripId,
-        userId: widget.userId,
+      context.read<EditDiaryBloc>().add(
+        EditDiaryEvent.loadDiary(diary: widget.diary),
       );
     });
   }
@@ -76,7 +81,7 @@ class _NewDiaryScreenState extends State<NewDiaryScreen> {
     final colorScheme = Theme.of(context).colorScheme;
     final isDark = colorScheme.brightness == Brightness.dark;
 
-    return BlocConsumer<NewDiaryBloc, NewDiaryState>(
+    return BlocConsumer<EditDiaryBloc, EditDiaryState>(
       listener: _blocListener,
       builder: (context, state) {
         return GestureDetector(
@@ -86,7 +91,7 @@ class _NewDiaryScreenState extends State<NewDiaryScreen> {
               // 모드에 따른 배경 색 변경
               backgroundColor: isDark ? AppColors.navy : AppColors.darkerGray,
               appBar: CustomButtonAppBar(
-                title: '다이어리 작성',
+                title: '다이어리 수정',
                 leading: Button(
                   width: 40,
                   height: 40,
@@ -101,14 +106,29 @@ class _NewDiaryScreenState extends State<NewDiaryScreen> {
                   Button(
                     width: 40,
                     height: 40,
-                    icon: AppIcon.save,
+                    icon:
+                        state.isUploading ||
+                            state.pageState == EditDiaryPageState.loading
+                        ? SizedBox(
+                            width: 20,
+                            height: 20,
+                            child: CircularProgressIndicator(
+                              strokeWidth: 2,
+                              color: isDark
+                                  ? colorScheme.onSurface
+                                  : AppColors.light,
+                            ),
+                          )
+                        : AppIcon.save,
                     contentColor: isDark
                         ? colorScheme.onSurface
                         : AppColors.light,
                     borderRadius: 20,
-                    onTap: () {
-                      //기능
-                    },
+                    onTap: state.canSave && !state.isUploading
+                        ? () => context.read<EditDiaryBloc>().add(
+                            const EditDiaryEvent.updateDiary(),
+                          )
+                        : null,
                   ),
                 ],
               ),
@@ -120,35 +140,33 @@ class _NewDiaryScreenState extends State<NewDiaryScreen> {
                       color: isDark
                           ? colorScheme.surfaceContainerHighest
                           : AppColors.lightGray,
-                      borderRadius: BorderRadius.all(Radius.circular(24.0)),
+                      borderRadius: const BorderRadius.all(
+                        Radius.circular(24.0),
+                      ),
                     ),
                     child: Padding(
                       padding: const EdgeInsets.all(16.0),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          // 타입 버튼
-                          _buildTypeTabs(context, state),
-                          const SizedBox(height: 16),
-
                           // 제목
                           _buildTitleSection(context, state),
                           const SizedBox(height: 16),
 
-                          //내용
+                          // 내용
                           _buildContentSection(context, state),
                           const SizedBox(height: 16),
 
                           // 타입별 추가 입력필드
                           _buildTypeSpecificField(context, state),
-                          SizedBox(height: 24),
+                          const SizedBox(height: 24),
 
-                          //공개 비공개 여부
+                          // 공개 비공개 여부
                           PublicSelectBox(
                             isPublic: state.isPublic,
                             onChanged: (value) {
-                              context.read<NewDiaryBloc>().add(
-                                NewDiaryEvent.changePublic(isPublic: value),
+                              context.read<EditDiaryBloc>().add(
+                                EditDiaryEvent.changePublic(isPublic: value),
                               );
                             },
                           ),
@@ -165,12 +183,19 @@ class _NewDiaryScreenState extends State<NewDiaryScreen> {
     );
   }
 
-  void _blocListener(BuildContext context, NewDiaryState state) {
-    if (state.pageState == NewDiaryPageState.success) {}
+  void _blocListener(BuildContext context, EditDiaryState state) {
+    if (state.pageState == EditDiaryPageState.success) {
+      ToastPop.show(state.message ?? '다이어리가 수정되었습니다');
+      context.pop(true); // 성공 시 true 반환
+    }
+
+    if (state.pageState == EditDiaryPageState.error) {
+      ToastPop.show(state.message ?? '오류가 발생했습니다');
+    }
   }
 
   // 제목 입력 파트
-  Widget _buildTitleSection(BuildContext context, NewDiaryState state) {
+  Widget _buildTitleSection(BuildContext context, EditDiaryState state) {
     final colorScheme = Theme.of(context).colorScheme;
 
     return Column(
@@ -188,7 +213,7 @@ class _NewDiaryScreenState extends State<NewDiaryScreen> {
                 ),
               ),
             ),
-            SchedulePickerButton(onTap: () {}),
+            TypeTag(diary: widget.diary),
           ],
         ),
         SizedBox(height: 8),
@@ -196,8 +221,8 @@ class _NewDiaryScreenState extends State<NewDiaryScreen> {
           controller: _titleController,
           hintText: '제목을 입력하세요',
           onChanged: (value) {
-            context.read<NewDiaryBloc>().add(
-              NewDiaryEvent.changeTitle(title: value),
+            context.read<EditDiaryBloc>().add(
+              EditDiaryEvent.changeTitle(title: value),
             );
           },
         ),
@@ -206,7 +231,7 @@ class _NewDiaryScreenState extends State<NewDiaryScreen> {
   }
 
   // 내용 입력 파트
-  Widget _buildContentSection(BuildContext context, NewDiaryState state) {
+  Widget _buildContentSection(BuildContext context, EditDiaryState state) {
     final colorScheme = Theme.of(context).colorScheme;
 
     return Column(
@@ -227,8 +252,8 @@ class _NewDiaryScreenState extends State<NewDiaryScreen> {
           minLines: 6,
           hintText: '내용을 입력하세요',
           onChanged: (value) {
-            context.read<NewDiaryBloc>().add(
-              NewDiaryEvent.changeContent(content: value),
+            context.read<EditDiaryBloc>().add(
+              EditDiaryEvent.changeContent(content: value),
             );
           },
         ),
@@ -236,42 +261,8 @@ class _NewDiaryScreenState extends State<NewDiaryScreen> {
     );
   }
 
-  // 타입 선택 탭
-  Widget _buildTypeTabs(BuildContext context, NewDiaryState state) {
-    final colorScheme = Theme.of(context).colorScheme;
-
-    final types = [
-      ('MEMO', AppIcon.memo, '메모', AppColors.lightGreen),
-      ('REVIEW', AppIcon.star, '리뷰', colorScheme.tertiary),
-      ('PHOTO', AppIcon.camera, '사진', colorScheme.primary),
-      ('MONEY', AppIcon.money, '소비', colorScheme.secondary),
-    ];
-
-    return Row(
-      children: [
-        for (int i = 0; i < types.length; i++) ...[
-          Expanded(
-            child: TypeButton(
-              type: types[i].$1,
-              icon: types[i].$2,
-              label: types[i].$3,
-              color: types[i].$4,
-              isSelected: state.type == types[i].$1,
-              onTap: () {
-                context.read<NewDiaryBloc>().add(
-                  NewDiaryEvent.changeType(type: types[i].$1),
-                );
-              },
-            ),
-          ),
-          if (i < types.length - 1) const SizedBox(width: 6),
-        ],
-      ],
-    );
-  }
-
   // 타입별 추가 입력 필드
-  Widget _buildTypeSpecificField(BuildContext context, NewDiaryState state) {
+  Widget _buildTypeSpecificField(BuildContext context, EditDiaryState state) {
     switch (state.type) {
       case 'REVIEW':
         return _buildRatingField(context, state);
@@ -306,8 +297,8 @@ class _NewDiaryScreenState extends State<NewDiaryScreen> {
               starSize: 45,
               starSpacing: 13,
               onRatingChanged: (rating) {
-                context.read<NewDiaryBloc>().add(
-                  NewDiaryEvent.changeRating(rating: rating),
+                context.read<EditDiaryBloc>().add(
+                  EditDiaryEvent.changeRating(rating: rating),
                 );
               },
             ),
@@ -318,9 +309,13 @@ class _NewDiaryScreenState extends State<NewDiaryScreen> {
   }
 
   // 사진 업로드
-  Widget _buildPhotoField(BuildContext context, NewDiaryState state) {
+  Widget _buildPhotoField(BuildContext context, EditDiaryState state) {
     final colorScheme = Theme.of(context).colorScheme;
     final isDark = colorScheme.brightness == Brightness.dark;
+
+    // 표시할 이미지가 있는지 확인
+    final hasLocalImg = state.localImgFile != null;
+    final hasServerImg = state.imgUrl != null && state.imgUrl!.isNotEmpty;
 
     return Padding(
       padding: const EdgeInsets.fromLTRB(4, 0, 0, 0),
@@ -334,9 +329,10 @@ class _NewDiaryScreenState extends State<NewDiaryScreen> {
           ),
           const SizedBox(height: 8),
 
-          // 이미지가 있으면 미리보기, 없으면 업로드 버튼
-          if (state.localImgFile != null)
-            _buildImagePreview(context, state)
+          if (hasLocalImg)
+            _buildLocalImagePreview(context, state)
+          else if (hasServerImg)
+            _buildServerImagePreview(context, state)
           else
             GestureDetector(
               onTap: () => _showImgPickerSheet(context),
@@ -357,13 +353,12 @@ class _NewDiaryScreenState extends State<NewDiaryScreen> {
     );
   }
 
-  // 이미지 미리보기 + 삭제/변경 버튼
-  Widget _buildImagePreview(BuildContext context, NewDiaryState state) {
+  // 로컬 이미지 미리보기
+  Widget _buildLocalImagePreview(BuildContext context, EditDiaryState state) {
     final colorScheme = Theme.of(context).colorScheme;
 
     return Stack(
       children: [
-        // 이미지 미리보기
         ClipRRect(
           borderRadius: BorderRadius.circular(16),
           child: Image.file(
@@ -373,14 +368,61 @@ class _NewDiaryScreenState extends State<NewDiaryScreen> {
             fit: BoxFit.cover,
           ),
         ),
+        _buildImageButtons(context, colorScheme),
+      ],
+    );
+  }
 
+  // 서버 이미지 미리보기
+  Widget _buildServerImagePreview(BuildContext context, EditDiaryState state) {
+    final colorScheme = Theme.of(context).colorScheme;
+
+    return Stack(
+      children: [
+        ClipRRect(
+          borderRadius: BorderRadius.circular(16),
+          child: Image.network(
+            state.imgUrl!,
+            width: double.infinity,
+            height: 200,
+            fit: BoxFit.cover,
+            loadingBuilder: (context, child, loadingProgress) {
+              if (loadingProgress == null) return child;
+              return Container(
+                width: double.infinity,
+                height: 200,
+                color: AppColors.darkerGray,
+                child: const Center(child: CircularProgressIndicator()),
+              );
+            },
+            errorBuilder: (context, error, stackTrace) {
+              return Container(
+                width: double.infinity,
+                height: 200,
+                color: AppColors.darkerGray,
+                child: const Center(child: Icon(AppIcon.alert)),
+              );
+            },
+          ),
+        ),
+        _buildImageButtons(context, colorScheme),
+      ],
+    );
+  }
+
+  // 이미지 삭제/변경 버튼
+  Widget _buildImageButtons(BuildContext context, ColorScheme colorScheme) {
+    return Stack(
+      children: [
         // 삭제 버튼 (우측 상단)
         Positioned(
           top: 8,
           right: 8,
           child: GestureDetector(
             onTap: () {
-              context.read<NewDiaryBloc>().add(const NewDiaryEvent.removeImg());
+              context.read<EditDiaryBloc>().add(
+                const EditDiaryEvent.removeImg(),
+              );
             },
             child: Container(
               padding: const EdgeInsets.all(8),
@@ -424,7 +466,7 @@ class _NewDiaryScreenState extends State<NewDiaryScreen> {
   }
 
   // 이미지 선택 바텀시트
-  void _showImgPickerSheet(context) {
+  void _showImgPickerSheet(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
 
     CommonBottomSheet.show(
@@ -458,12 +500,11 @@ class _NewDiaryScreenState extends State<NewDiaryScreen> {
 
       if (picked == null) return;
 
-      // 압축
       final compressedFile = await _compressImage(File(picked.path));
 
       if (compressedFile != null && mounted) {
-        context.read<NewDiaryBloc>().add(
-          NewDiaryEvent.selectImg(file: compressedFile),
+        context.read<EditDiaryBloc>().add(
+          EditDiaryEvent.selectImg(file: compressedFile),
         );
       }
     } catch (e) {
@@ -502,9 +543,8 @@ class _NewDiaryScreenState extends State<NewDiaryScreen> {
   }
 
   // 금액 입력
-  Widget _buildCostField(BuildContext context, NewDiaryState state) {
+  Widget _buildCostField(BuildContext context, EditDiaryState state) {
     final colorScheme = Theme.of(context).colorScheme;
-    final isDark = colorScheme.brightness == Brightness.dark;
 
     return Padding(
       padding: const EdgeInsets.fromLTRB(4, 0, 0, 0),
@@ -516,7 +556,7 @@ class _NewDiaryScreenState extends State<NewDiaryScreen> {
             "금액",
             style: AppFont.regularBold.copyWith(color: colorScheme.onSurface),
           ),
-          SizedBox(height: 8),
+          const SizedBox(height: 8),
           TextBox(
             hintText: '금액을 입력하세요',
             controller: _priceController,
@@ -527,8 +567,8 @@ class _NewDiaryScreenState extends State<NewDiaryScreen> {
             ),
             onChanged: (value) {
               final cost = int.tryParse(value.replaceAll(',', ''));
-              context.read<NewDiaryBloc>().add(
-                NewDiaryEvent.changeCost(cost: cost),
+              context.read<EditDiaryBloc>().add(
+                EditDiaryEvent.changeCost(cost: cost),
               );
             },
           ),

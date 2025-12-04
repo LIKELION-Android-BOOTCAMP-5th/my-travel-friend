@@ -1,6 +1,9 @@
+import 'dart:io';
+
 import 'package:injectable/injectable.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
+import '../../../../core/extension/extract_Url_path_extension.dart';
 import '../../../../core/result/failures.dart';
 import '../../../../core/result/result.dart';
 import '../dtos/diary_dto.dart';
@@ -12,6 +15,9 @@ class DiaryDataSourceImpl implements DiaryDataSource {
   // Supabase 의존성 주입
   final SupabaseClient _supabaseClient;
   DiaryDataSourceImpl(this._supabaseClient);
+
+  // Storage 버킷 이름
+  static const String _bucketName = 'diary_imgs';
 
   // user 테이블이랑 조인
   static const String _selectWithUser = '''
@@ -146,6 +152,55 @@ class DiaryDataSourceImpl implements DiaryDataSource {
       return const Result.success(null);
     } catch (e) {
       return Result.failure(Failure.serverFailure(message: e.toString()));
+    }
+  }
+
+  // 이미지 업로드
+  @override
+  Future<Result<String>> uploadImg({
+    required File file,
+    required int userId,
+  }) async {
+    try {
+      // 파일 이름 생성 : timestamp_userID.jpg
+      final timestamp = DateTime.now().millisecondsSinceEpoch;
+      final fileName = '${timestamp}_${userId}.jpg';
+
+      // 전체 경로 : userUuid / fileName
+      final storagePath = '$userId/$fileName';
+
+      // 업로드
+      await _supabaseClient.storage.from(_bucketName).upload(storagePath, file);
+
+      // 공개 URL 생성
+      final publicUrl = _supabaseClient.storage
+          .from(_bucketName)
+          .getPublicUrl(storagePath);
+
+      return Result.success(publicUrl);
+    } catch (e) {
+      return Result.failure(Failure.serverFailure(message: '이미지 업로드 실패 : $e'));
+    }
+  }
+
+  // 이미지 삭제
+  @override
+  Future<Result<void>> deleteImg(String imgUrl) async {
+    try {
+      // URL에서 storage path 추출
+      final storagePath = imgUrl.extractStoragePath(_bucketName);
+
+      if (storagePath == null) {
+        return Result.failure(
+          const Failure.undefined(message: '유효하지 않은 이미지 URL'),
+        );
+      }
+
+      await _supabaseClient.storage.from(_bucketName).remove([storagePath]);
+
+      return const Result.success(null);
+    } catch (e) {
+      return Result.failure(Failure.serverFailure(message: "이미지 삭제 실패 : $e"));
     }
   }
 }

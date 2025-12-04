@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:injectable/injectable.dart';
 
 import '../../../../core/result/result.dart';
@@ -90,5 +92,20 @@ class DiaryRepositoryImpl implements DiaryRepository {
   @override
   Future<Result<void>> deleteDiary(int id) async {
     return await _dataSource.deleteDiary(id);
+  }
+
+  // 이미지 업로드
+  @override
+  Future<Result<String>> uploadImg({
+    required File file,
+    required int userId,
+  }) async {
+    return await _dataSource.uploadImg(file: file, userId: userId);
+  }
+
+  // 이미지 삭제
+  @override
+  Future<Result<void>> deleteImg(String imgUrl) async {
+    return await _dataSource.deleteImg(imgUrl);
   }
 }

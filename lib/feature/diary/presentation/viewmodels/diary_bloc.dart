@@ -33,7 +33,11 @@ class DiaryBloc extends Bloc<DiaryEvent, DiaryState> {
     on<GetDiaryById>(_onGetDiaryById);
     on<DeleteDiary>(_onDeleteDiary);
     on<FilterByType>(_onFilterByType);
+    on<LoadMore>(_onLoadMore);
     on<Refresh>(_onRefresh);
+    on<RequestCreate>(_onRequestCreate);
+    on<NavigationHandled>(_onNavigationHandled);
+    on<OnCreateCompleted>(_onCreateCompleted);
   }
 
   // 핸들러
@@ -56,6 +60,23 @@ class DiaryBloc extends Bloc<DiaryEvent, DiaryState> {
       authFailure: (_) => 'auth',
       undefined: (_) => 'unknown',
     );
+  }
+
+  // 작성 화면으로 이동 요청
+  void _onRequestCreate(RequestCreate event, Emitter<DiaryState> emit) {
+    emit(state.copyWith(navigateToCreate: true));
+  }
+
+  // 네비게이션 플래그 리셋
+  void _onNavigationHandled(NavigationHandled event, Emitter<DiaryState> emit) {
+    emit(state.copyWith(navigateToCreate: false));
+  }
+
+  // 작성 완료
+  void _onCreateCompleted(OnCreateCompleted event, Emitter<DiaryState> emit) {
+    if (event.success) {
+      _refreshList();
+    }
   }
 
   // 공유 다이어리 가져오기 (첫 페이지)

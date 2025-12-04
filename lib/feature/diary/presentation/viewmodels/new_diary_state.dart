@@ -1,10 +1,12 @@
+import 'dart:io';
+
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 import '../../domain/entities/diary_entity.dart';
 
 part 'new_diary_state.freezed.dart';
 
-// [이재은] 다이어리 전체 상태
+// [이재은] 다이어리 작성창 전체 상태
 
 @freezed
 abstract class NewDiaryState with _$NewDiaryState {
@@ -21,6 +23,7 @@ abstract class NewDiaryState with _$NewDiaryState {
     @Default('') String content,
     @Default(0.0) double rating,
     String? imgUrl,
+    File? localImgFile,
     int? cost,
     @Default(true) bool isPublic,
     int? scheduleId,
@@ -32,6 +35,9 @@ abstract class NewDiaryState with _$NewDiaryState {
     String? message,
     String? errorType,
     String? actionType,
+
+    // 이미지 업로드 상태 (추가)
+    @Default(false) bool isUploading,
 
     // 페이지 상태
     @Default(NewDiaryPageState.init) NewDiaryPageState pageState,
