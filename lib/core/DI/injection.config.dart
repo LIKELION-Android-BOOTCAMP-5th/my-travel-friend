@@ -78,6 +78,14 @@ import '../../feature/trip/data/datasources/trip_data_source_impl.dart'
     as _i386;
 import '../../feature/trip/data/repositories/trip_repository_impl.dart'
     as _i840;
+import '../../feature/trip/domain/repositories/trip_repository.dart' as _i161;
+import '../../feature/trip/domain/usecases/create_trip_usecase.dart' as _i779;
+import '../../feature/trip/domain/usecases/delete_trip_usecase.dart' as _i832;
+import '../../feature/trip/domain/usecases/edit_trip_usecase.dart' as _i637;
+import '../../feature/trip/domain/usecases/get_crew_member_count_usecase.dart'
+    as _i267;
+import '../../feature/trip/domain/usecases/get_my_trip_usecase.dart' as _i521;
+import '../../feature/trip/domain/usecases/give_up_trip_usecase.dart' as _i317;
 import 'register_module.dart' as _i291;
 
 extension GetItInjectableX on _i174.GetIt {
@@ -123,6 +131,24 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.lazySingleton<_i881.DiaryDataSource>(
       () => _i663.DiaryDataSourceImpl(gh<_i454.SupabaseClient>()),
+    );
+    gh.lazySingleton<_i779.CreateTripUsecase>(
+      () => _i779.CreateTripUsecase(gh<_i161.TripRepository>()),
+    );
+    gh.lazySingleton<_i832.DeleteTripUsecase>(
+      () => _i832.DeleteTripUsecase(gh<_i161.TripRepository>()),
+    );
+    gh.lazySingleton<_i637.EditTripUsecase>(
+      () => _i637.EditTripUsecase(gh<_i161.TripRepository>()),
+    );
+    gh.lazySingleton<_i267.GetCrewMemberCountUsecase>(
+      () => _i267.GetCrewMemberCountUsecase(gh<_i161.TripRepository>()),
+    );
+    gh.lazySingleton<_i521.GetMyTripUsecase>(
+      () => _i521.GetMyTripUsecase(gh<_i161.TripRepository>()),
+    );
+    gh.lazySingleton<_i317.GiveUpTripUsecase>(
+      () => _i317.GiveUpTripUsecase(gh<_i161.TripRepository>()),
     );
     gh.lazySingleton<_i669.AcceptRequestUsecase>(
       () => _i669.AcceptRequestUsecase(gh<_i255.FriendRequestRepository>()),

@@ -55,7 +55,7 @@ extension DiaryEventPatterns on DiaryEvent {
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( GetOurDiaries value)?  getOurDiaries,TResult Function( GetMyDiaries value)?  getMyDiaries,TResult Function( LoadMore value)?  loadMore,TResult Function( GetDiaryById value)?  getDiaryById,TResult Function( DeleteDiary value)?  deleteDiary,TResult Function( FilterByType value)?  filterByType,TResult Function( Refresh value)?  refresh,required TResult orElse(),}){
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( GetOurDiaries value)?  getOurDiaries,TResult Function( GetMyDiaries value)?  getMyDiaries,TResult Function( LoadMore value)?  loadMore,TResult Function( GetDiaryById value)?  getDiaryById,TResult Function( DeleteDiary value)?  deleteDiary,TResult Function( FilterByType value)?  filterByType,TResult Function( Refresh value)?  refresh,TResult Function( RequestCreate value)?  requestCreate,TResult Function( NavigationHandled value)?  navigationHandled,TResult Function( OnCreateCompleted value)?  onCreateCompleted,required TResult orElse(),}){
 final _that = this;
 switch (_that) {
 case GetOurDiaries() when getOurDiaries != null:
@@ -65,7 +65,10 @@ return loadMore(_that);case GetDiaryById() when getDiaryById != null:
 return getDiaryById(_that);case DeleteDiary() when deleteDiary != null:
 return deleteDiary(_that);case FilterByType() when filterByType != null:
 return filterByType(_that);case Refresh() when refresh != null:
-return refresh(_that);case _:
+return refresh(_that);case RequestCreate() when requestCreate != null:
+return requestCreate(_that);case NavigationHandled() when navigationHandled != null:
+return navigationHandled(_that);case OnCreateCompleted() when onCreateCompleted != null:
+return onCreateCompleted(_that);case _:
   return orElse();
 
 }
@@ -83,7 +86,7 @@ return refresh(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( GetOurDiaries value)  getOurDiaries,required TResult Function( GetMyDiaries value)  getMyDiaries,required TResult Function( LoadMore value)  loadMore,required TResult Function( GetDiaryById value)  getDiaryById,required TResult Function( DeleteDiary value)  deleteDiary,required TResult Function( FilterByType value)  filterByType,required TResult Function( Refresh value)  refresh,}){
+@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( GetOurDiaries value)  getOurDiaries,required TResult Function( GetMyDiaries value)  getMyDiaries,required TResult Function( LoadMore value)  loadMore,required TResult Function( GetDiaryById value)  getDiaryById,required TResult Function( DeleteDiary value)  deleteDiary,required TResult Function( FilterByType value)  filterByType,required TResult Function( Refresh value)  refresh,required TResult Function( RequestCreate value)  requestCreate,required TResult Function( NavigationHandled value)  navigationHandled,required TResult Function( OnCreateCompleted value)  onCreateCompleted,}){
 final _that = this;
 switch (_that) {
 case GetOurDiaries():
@@ -93,7 +96,10 @@ return loadMore(_that);case GetDiaryById():
 return getDiaryById(_that);case DeleteDiary():
 return deleteDiary(_that);case FilterByType():
 return filterByType(_that);case Refresh():
-return refresh(_that);case _:
+return refresh(_that);case RequestCreate():
+return requestCreate(_that);case NavigationHandled():
+return navigationHandled(_that);case OnCreateCompleted():
+return onCreateCompleted(_that);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -110,7 +116,7 @@ return refresh(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( GetOurDiaries value)?  getOurDiaries,TResult? Function( GetMyDiaries value)?  getMyDiaries,TResult? Function( LoadMore value)?  loadMore,TResult? Function( GetDiaryById value)?  getDiaryById,TResult? Function( DeleteDiary value)?  deleteDiary,TResult? Function( FilterByType value)?  filterByType,TResult? Function( Refresh value)?  refresh,}){
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( GetOurDiaries value)?  getOurDiaries,TResult? Function( GetMyDiaries value)?  getMyDiaries,TResult? Function( LoadMore value)?  loadMore,TResult? Function( GetDiaryById value)?  getDiaryById,TResult? Function( DeleteDiary value)?  deleteDiary,TResult? Function( FilterByType value)?  filterByType,TResult? Function( Refresh value)?  refresh,TResult? Function( RequestCreate value)?  requestCreate,TResult? Function( NavigationHandled value)?  navigationHandled,TResult? Function( OnCreateCompleted value)?  onCreateCompleted,}){
 final _that = this;
 switch (_that) {
 case GetOurDiaries() when getOurDiaries != null:
@@ -120,7 +126,10 @@ return loadMore(_that);case GetDiaryById() when getDiaryById != null:
 return getDiaryById(_that);case DeleteDiary() when deleteDiary != null:
 return deleteDiary(_that);case FilterByType() when filterByType != null:
 return filterByType(_that);case Refresh() when refresh != null:
-return refresh(_that);case _:
+return refresh(_that);case RequestCreate() when requestCreate != null:
+return requestCreate(_that);case NavigationHandled() when navigationHandled != null:
+return navigationHandled(_that);case OnCreateCompleted() when onCreateCompleted != null:
+return onCreateCompleted(_that);case _:
   return null;
 
 }
@@ -137,7 +146,7 @@ return refresh(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function( int tripId)?  getOurDiaries,TResult Function( int tripId,  int userId)?  getMyDiaries,TResult Function()?  loadMore,TResult Function( int diaryId)?  getDiaryById,TResult Function( int diaryId)?  deleteDiary,TResult Function( String? type)?  filterByType,TResult Function()?  refresh,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function( int tripId)?  getOurDiaries,TResult Function( int tripId,  int userId)?  getMyDiaries,TResult Function()?  loadMore,TResult Function( int diaryId)?  getDiaryById,TResult Function( int diaryId)?  deleteDiary,TResult Function( String? type)?  filterByType,TResult Function()?  refresh,TResult Function()?  requestCreate,TResult Function()?  navigationHandled,TResult Function( bool success)?  onCreateCompleted,required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case GetOurDiaries() when getOurDiaries != null:
 return getOurDiaries(_that.tripId);case GetMyDiaries() when getMyDiaries != null:
@@ -146,7 +155,10 @@ return loadMore();case GetDiaryById() when getDiaryById != null:
 return getDiaryById(_that.diaryId);case DeleteDiary() when deleteDiary != null:
 return deleteDiary(_that.diaryId);case FilterByType() when filterByType != null:
 return filterByType(_that.type);case Refresh() when refresh != null:
-return refresh();case _:
+return refresh();case RequestCreate() when requestCreate != null:
+return requestCreate();case NavigationHandled() when navigationHandled != null:
+return navigationHandled();case OnCreateCompleted() when onCreateCompleted != null:
+return onCreateCompleted(_that.success);case _:
   return orElse();
 
 }
@@ -164,7 +176,7 @@ return refresh();case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function( int tripId)  getOurDiaries,required TResult Function( int tripId,  int userId)  getMyDiaries,required TResult Function()  loadMore,required TResult Function( int diaryId)  getDiaryById,required TResult Function( int diaryId)  deleteDiary,required TResult Function( String? type)  filterByType,required TResult Function()  refresh,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function( int tripId)  getOurDiaries,required TResult Function( int tripId,  int userId)  getMyDiaries,required TResult Function()  loadMore,required TResult Function( int diaryId)  getDiaryById,required TResult Function( int diaryId)  deleteDiary,required TResult Function( String? type)  filterByType,required TResult Function()  refresh,required TResult Function()  requestCreate,required TResult Function()  navigationHandled,required TResult Function( bool success)  onCreateCompleted,}) {final _that = this;
 switch (_that) {
 case GetOurDiaries():
 return getOurDiaries(_that.tripId);case GetMyDiaries():
@@ -173,7 +185,10 @@ return loadMore();case GetDiaryById():
 return getDiaryById(_that.diaryId);case DeleteDiary():
 return deleteDiary(_that.diaryId);case FilterByType():
 return filterByType(_that.type);case Refresh():
-return refresh();case _:
+return refresh();case RequestCreate():
+return requestCreate();case NavigationHandled():
+return navigationHandled();case OnCreateCompleted():
+return onCreateCompleted(_that.success);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -190,7 +205,7 @@ return refresh();case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function( int tripId)?  getOurDiaries,TResult? Function( int tripId,  int userId)?  getMyDiaries,TResult? Function()?  loadMore,TResult? Function( int diaryId)?  getDiaryById,TResult? Function( int diaryId)?  deleteDiary,TResult? Function( String? type)?  filterByType,TResult? Function()?  refresh,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function( int tripId)?  getOurDiaries,TResult? Function( int tripId,  int userId)?  getMyDiaries,TResult? Function()?  loadMore,TResult? Function( int diaryId)?  getDiaryById,TResult? Function( int diaryId)?  deleteDiary,TResult? Function( String? type)?  filterByType,TResult? Function()?  refresh,TResult? Function()?  requestCreate,TResult? Function()?  navigationHandled,TResult? Function( bool success)?  onCreateCompleted,}) {final _that = this;
 switch (_that) {
 case GetOurDiaries() when getOurDiaries != null:
 return getOurDiaries(_that.tripId);case GetMyDiaries() when getMyDiaries != null:
@@ -199,7 +214,10 @@ return loadMore();case GetDiaryById() when getDiaryById != null:
 return getDiaryById(_that.diaryId);case DeleteDiary() when deleteDiary != null:
 return deleteDiary(_that.diaryId);case FilterByType() when filterByType != null:
 return filterByType(_that.type);case Refresh() when refresh != null:
-return refresh();case _:
+return refresh();case RequestCreate() when requestCreate != null:
+return requestCreate();case NavigationHandled() when navigationHandled != null:
+return navigationHandled();case OnCreateCompleted() when onCreateCompleted != null:
+return onCreateCompleted(_that.success);case _:
   return null;
 
 }
@@ -602,5 +620,135 @@ String toString() {
 
 
 
+
+/// @nodoc
+
+
+class RequestCreate implements DiaryEvent {
+  const RequestCreate();
+  
+
+
+
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is RequestCreate);
+}
+
+
+@override
+int get hashCode => runtimeType.hashCode;
+
+@override
+String toString() {
+  return 'DiaryEvent.requestCreate()';
+}
+
+
+}
+
+
+
+
+/// @nodoc
+
+
+class NavigationHandled implements DiaryEvent {
+  const NavigationHandled();
+  
+
+
+
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is NavigationHandled);
+}
+
+
+@override
+int get hashCode => runtimeType.hashCode;
+
+@override
+String toString() {
+  return 'DiaryEvent.navigationHandled()';
+}
+
+
+}
+
+
+
+
+/// @nodoc
+
+
+class OnCreateCompleted implements DiaryEvent {
+  const OnCreateCompleted({required this.success});
+  
+
+ final  bool success;
+
+/// Create a copy of DiaryEvent
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$OnCreateCompletedCopyWith<OnCreateCompleted> get copyWith => _$OnCreateCompletedCopyWithImpl<OnCreateCompleted>(this, _$identity);
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is OnCreateCompleted&&(identical(other.success, success) || other.success == success));
+}
+
+
+@override
+int get hashCode => Object.hash(runtimeType,success);
+
+@override
+String toString() {
+  return 'DiaryEvent.onCreateCompleted(success: $success)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class $OnCreateCompletedCopyWith<$Res> implements $DiaryEventCopyWith<$Res> {
+  factory $OnCreateCompletedCopyWith(OnCreateCompleted value, $Res Function(OnCreateCompleted) _then) = _$OnCreateCompletedCopyWithImpl;
+@useResult
+$Res call({
+ bool success
+});
+
+
+
+
+}
+/// @nodoc
+class _$OnCreateCompletedCopyWithImpl<$Res>
+    implements $OnCreateCompletedCopyWith<$Res> {
+  _$OnCreateCompletedCopyWithImpl(this._self, this._then);
+
+  final OnCreateCompleted _self;
+  final $Res Function(OnCreateCompleted) _then;
+
+/// Create a copy of DiaryEvent
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') $Res call({Object? success = null,}) {
+  return _then(OnCreateCompleted(
+success: null == success ? _self.success : success // ignore: cast_nullable_to_non_nullable
+as bool,
+  ));
+}
+
+
+}
 
 // dart format on

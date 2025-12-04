@@ -75,44 +75,71 @@ class _DiaryListScreenState extends State<DiaryListScreen> {
     return currentScroll >= (maxScroll - 100);
   }
 
+  // 다이어리 작성 화면으로 이동
+  // - 작성 성공 시 true 반환받아 목록 새로고침
+  //-> bloc state로 쓰기
+  Future<void> _navigateToCreate() async {
+    final res = await context.push<bool>(
+      '/diary/new',
+      extra: {'tripId': widget.tripId, 'userId': widget.userId},
+    );
+
+    if (mounted) {
+      context.read<DiaryBloc>().add(
+        DiaryEvent.onCreateCompleted(success: res == true),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    final diaryBloc = BlocProvider.of<DiaryBloc>(context);
     final colorScheme = Theme.of(context).colorScheme;
     final isDark = colorScheme.brightness == Brightness.dark;
 
-    return SafeArea(
-      child: Scaffold(
-        // 모드(라이트/다크)에 따른 배경 색 변경
-        backgroundColor: isDark ? AppColors.navy : AppColors.lessLight,
-        body: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            children: [
-              // 공유/개인 다이어리 탭
-              _buildPublicTabs(context, diaryBloc),
-              const SizedBox(height: 16),
-              // 타입별 필터
-              _buildFilterChips(context, diaryBloc),
-              const SizedBox(height: 16),
-              // 다이어리 리스트 출력
-              Expanded(child: _buildDiaryList(context, diaryBloc)),
-            ],
+    return BlocListener<DiaryBloc, DiaryState>(
+      listenWhen: (prev, curr) =>
+          prev.navigateToCreate != curr.navigateToCreate,
+      listener: (context, state) {
+        if (state.navigateToCreate) {
+          context.read<DiaryBloc>().add(const DiaryEvent.navigationHandled());
+          _navigateToCreate();
+        }
+      },
+      child: SafeArea(
+        child: Scaffold(
+          // 모드(라이트/다크)에 따른 배경 색 변경
+          backgroundColor: isDark ? AppColors.navy : AppColors.lessLight,
+          body: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              children: [
+                // 공유/개인 다이어리 탭
+                _buildPublicTabs(context),
+                const SizedBox(height: 16),
+                // 타입별 필터
+                _buildFilterChips(context),
+                const SizedBox(height: 16),
+                // 다이어리 리스트 출력
+                Expanded(child: _buildDiaryList(context)),
+              ],
+            ),
           ),
-        ),
 
-        // 플로팅 버튼 -> 다이어리 작성
-        floatingActionButton: FloatingButton(
-          icon: Icon(AppIcon.plus, color: AppColors.light),
-          backgroundColor: AppColors.secondary,
-          onPressed: () => _onAddDiary(context),
+          // 플로팅 버튼 -> 다이어리 작성
+          floatingActionButton: FloatingButton(
+            icon: Icon(AppIcon.plus, color: AppColors.light),
+            backgroundColor: AppColors.secondary,
+            onPressed: () {
+              context.read<DiaryBloc>().add(const DiaryEvent.requestCreate());
+            },
+          ),
         ),
       ),
     );
   }
 
   // 공유<->개인 다이어리 탭 빌드
-  Widget _buildPublicTabs(BuildContext context, DiaryBloc diaryBloc) {
+  Widget _buildPublicTabs(BuildContext context) {
     return BlocBuilder<DiaryBloc, DiaryState>(
       // 리빌드 조건 - 이전(prev)과 현재(curr)가 다를때
       buildWhen: (prev, curr) => prev.isMyDiaries != curr.isMyDiaries,
@@ -125,7 +152,7 @@ class _DiaryListScreenState extends State<DiaryListScreen> {
                 label: '공유 다이어리',
                 isSelected: !state.isMyDiaries,
                 onTap: () {
-                  diaryBloc.add(
+                  context.read<DiaryBloc>().add(
                     DiaryEvent.getOurDiaries(tripId: widget.tripId),
                   );
                 },
@@ -138,7 +165,7 @@ class _DiaryListScreenState extends State<DiaryListScreen> {
                 label: '내 다이어리',
                 isSelected: state.isMyDiaries,
                 onTap: () {
-                  diaryBloc.add(
+                  context.read<DiaryBloc>().add(
                     DiaryEvent.getMyDiaries(
                       tripId: widget.tripId,
                       userId: widget.userId,
@@ -154,7 +181,7 @@ class _DiaryListScreenState extends State<DiaryListScreen> {
   }
 
   // 타입별 필터
-  Widget _buildFilterChips(BuildContext context, DiaryBloc diaryBloc) {
+  Widget _buildFilterChips(BuildContext context) {
     return BlocBuilder<DiaryBloc, DiaryState>(
       buildWhen: (prev, curr) => prev.currentFilter != curr.currentFilter,
       builder: (context, state) {
@@ -174,7 +201,9 @@ class _DiaryListScreenState extends State<DiaryListScreen> {
                   label: label,
                   isSelected: isSelected,
                   onTap: () {
-                    diaryBloc.add(DiaryEvent.filterByType(type: type));
+                    context.read<DiaryBloc>().add(
+                      DiaryEvent.filterByType(type: type),
+                    );
                   },
                 ),
               );
@@ -186,7 +215,7 @@ class _DiaryListScreenState extends State<DiaryListScreen> {
   }
 
   // 다이어리 리스트
-  Widget _buildDiaryList(BuildContext context, DiaryBloc diaryBloc) {
+  Widget _buildDiaryList(BuildContext context) {
     return BlocBuilder<DiaryBloc, DiaryState>(
       buildWhen: (prev, curr) =>
           prev.diaries != curr.diaries ||
@@ -205,7 +234,7 @@ class _DiaryListScreenState extends State<DiaryListScreen> {
 
         return RefreshIndicator(
           onRefresh: () async {
-            diaryBloc.add(const DiaryEvent.refresh());
+            context.read<DiaryBloc>().add(const DiaryEvent.refresh());
           },
           child: ListView.separated(
             controller: _scrollController,
@@ -218,7 +247,9 @@ class _DiaryListScreenState extends State<DiaryListScreen> {
               return GestureDetector(
                 onTap: () {
                   if (diary.id != null) {
-                    diaryBloc.add(DiaryEvent.getDiaryById(diaryId: diary.id!));
+                    context.read<DiaryBloc>().add(
+                      DiaryEvent.getDiaryById(diaryId: diary.id!),
+                    );
                   }
                 },
                 child: DiaryBox(diary: diary),
@@ -254,19 +285,5 @@ class _DiaryListScreenState extends State<DiaryListScreen> {
         ],
       ),
     );
-  }
-
-  /// 다이어리 작성 화면으로 이동
-  /// - 작성 성공 시 true 반환받아 목록 새로고침
-  Future<void> _onAddDiary(BuildContext context) async {
-    final result = await context.push<bool>(
-      '/diary/new',
-      extra: {'tripId': widget.tripId, 'userId': widget.userId},
-    );
-
-    // 생성 성공 시 목록 새로고침
-    if (result == true && context.mounted) {
-      context.read<DiaryBloc>().add(const DiaryEvent.refresh());
-    }
   }
 }

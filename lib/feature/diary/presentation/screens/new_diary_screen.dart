@@ -107,7 +107,11 @@ class _NewDiaryScreenState extends State<NewDiaryScreen> {
                           //공개 비공개 여부
                           PublicSelectBox(
                             isPublic: state.isPublic,
-                            onChanged: (_) {},
+                            onChanged: (value) {
+                              context.read<NewDiaryBloc>().add(
+                                NewDiaryEvent.changePublic(isPublic: value),
+                              );
+                            },
                           ),
                         ],
                       ),
@@ -149,7 +153,15 @@ class _NewDiaryScreenState extends State<NewDiaryScreen> {
           ],
         ),
         SizedBox(height: 8),
-        TextBox(controller: _titleController),
+        TextBox(
+          controller: _titleController,
+          hintText: '제목을 입력하세요',
+          onChanged: (value) {
+            context.read<NewDiaryBloc>().add(
+              NewDiaryEvent.changeTitle(title: value),
+            );
+          },
+        ),
       ],
     );
   }
@@ -170,7 +182,17 @@ class _NewDiaryScreenState extends State<NewDiaryScreen> {
           ),
         ),
         SizedBox(height: 8),
-        TextBox(controller: _contentController, maxLines: 30, minLines: 8),
+        TextBox(
+          controller: _contentController,
+          maxLines: 30,
+          minLines: 6,
+          hintText: '내용을 입력하세요',
+          onChanged: (value) {
+            context.read<NewDiaryBloc>().add(
+              NewDiaryEvent.changeContent(content: value),
+            );
+          },
+        ),
       ],
     );
   }
@@ -247,7 +269,11 @@ class _NewDiaryScreenState extends State<NewDiaryScreen> {
               rating: state.rating,
               starSize: 45,
               starSpacing: 13,
-              onRatingChanged: (v) {},
+              onRatingChanged: (rating) {
+                context.read<NewDiaryBloc>().add(
+                  NewDiaryEvent.changeRating(rating: rating),
+                );
+              },
             ),
           ),
         ],
@@ -267,11 +293,27 @@ class _NewDiaryScreenState extends State<NewDiaryScreen> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            "사진",
+            "사진 업로드",
             style: AppFont.regularBold.copyWith(color: colorScheme.onSurface),
           ),
           SizedBox(height: 8),
-          // 사진 업로드 자리
+          GestureDetector(
+            onTap: () {},
+            child: Container(
+              decoration: BoxDecoration(
+                color: isDark ? AppColors.navy : AppColors.darkerGray,
+                borderRadius: BorderRadius.all(Radius.circular(16)),
+              ),
+              width: 60,
+              height: 60,
+              child: Center(
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Icon(AppIcon.upload, color: colorScheme.onSurface),
+                ),
+              ),
+            ),
+          ),
         ],
       ),
     );
@@ -301,7 +343,12 @@ class _NewDiaryScreenState extends State<NewDiaryScreen> {
             suffixStyle: AppFont.regularBold.copyWith(
               color: colorScheme.onSurface,
             ),
-            onChanged: (v) {},
+            onChanged: (value) {
+              final cost = int.tryParse(value.replaceAll(',', ''));
+              context.read<NewDiaryBloc>().add(
+                NewDiaryEvent.changeCost(cost: cost),
+              );
+            },
           ),
         ],
       ),
