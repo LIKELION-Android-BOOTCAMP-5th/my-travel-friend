@@ -4,11 +4,15 @@ import '../../domain/entities/user_entity.dart';
 import '../models/user_model.dart';
 
 abstract class SupabaseAuthDataSource {
-  Future<UserDTO> signInWithToken({
+  Future<Result<UserDTO>> signInWithToken({
     required SocialLoginType type,
     required String idToken,
     required String accessToken,
   });
+  Stream<Result<UserDTO?>> get userProfileStream;
   Future<Result<void>> signOut();
-  Future<UserDTO> getCurrentUser();
+  Future<Result<UserDTO>> getCurrentUser(String uuid);
+  Future<Result<String>> updateFCMToken(String uuid);
+  Future<Result<void>> deleteFCMToken(String uuid);
+  void initializeAuthListener();
 }

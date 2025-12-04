@@ -27,12 +27,16 @@ import '../../feature/auth/data/datasources/supabase_auth_data_source_impl.dart'
 import '../../feature/auth/data/repositories/auth_repository_impl.dart'
     as _i263;
 import '../../feature/auth/domain/repositories/auth_repository.dart' as _i488;
+import '../../feature/auth/domain/usecases/get_current_user_usecase.dart'
+    as _i529;
 import '../../feature/auth/domain/usecases/sign_out_usecase.dart' as _i858;
 import '../../feature/auth/domain/usecases/social_sign_in_usecase.dart'
     as _i420;
 import '../../feature/auth/domain/usecases/watch_auth_state_usecase.dart'
     as _i456;
-import '../../feature/auth/presentation/viewmodel/auth_bloc.dart' as _i434;
+import '../../feature/auth/presentation/viewmodel/auth/auth_bloc.dart' as _i474;
+import '../../feature/auth/presentation/viewmodel/auth_profile/auth_profile_bloc.dart'
+    as _i387;
 import '../../feature/diary/data/datasources/diary_data_source.dart' as _i881;
 import '../../feature/diary/data/datasources/diary_data_source_impl.dart'
     as _i663;
@@ -78,6 +82,15 @@ import '../../feature/trip/data/datasources/trip_data_source_impl.dart'
     as _i386;
 import '../../feature/trip/data/repositories/trip_repository_impl.dart'
     as _i840;
+import '../../feature/trip/domain/repositories/trip_repository.dart' as _i161;
+import '../../feature/trip/domain/usecases/create_trip_usecase.dart' as _i779;
+import '../../feature/trip/domain/usecases/delete_trip_usecase.dart' as _i832;
+import '../../feature/trip/domain/usecases/edit_trip_usecase.dart' as _i637;
+import '../../feature/trip/domain/usecases/get_crew_member_count_usecase.dart'
+    as _i267;
+import '../../feature/trip/domain/usecases/get_my_trip_usecase.dart' as _i521;
+import '../../feature/trip/domain/usecases/give_up_trip_usecase.dart' as _i317;
+import '../service/internal/push_notification_service.dart' as _i737;
 import 'register_module.dart' as _i291;
 
 extension GetItInjectableX on _i174.GetIt {
@@ -103,26 +116,35 @@ extension GetItInjectableX on _i174.GetIt {
       () => registerModule.initializeGoogleSignIn(),
       preResolve: true,
     );
-    gh.lazySingleton<_i1040.SupabaseAuthDataSource>(
-      () => _i436.SupabaseAuthDataSourceImpl(gh<_i454.SupabaseClient>()),
-    );
     gh.lazySingleton<_i153.GoogleAuthDataSource>(
       () => _i795.SocialAuthDataSourceImpl(gh<_i116.GoogleSignIn>()),
     );
-    gh.singleton<_i488.AuthRepository>(
-      () => _i263.AuthRepositoryImpl(
-        gh<_i153.GoogleAuthDataSource>(),
-        gh<_i1040.SupabaseAuthDataSource>(),
-      ),
-    );
-    gh.singleton<_i456.WatchAuthStateUseCase>(
-      () => _i456.WatchAuthStateUseCase(gh<_i488.AuthRepository>()),
+    gh.lazySingleton<_i737.PushNotificationService>(
+      () => _i737.PushNotificationService(gh<_i892.FirebaseMessaging>()),
     );
     gh.lazySingleton<_i386.TripDataSourceImpl>(
       () => _i386.TripDataSourceImpl(gh<_i454.SupabaseClient>()),
     );
     gh.lazySingleton<_i881.DiaryDataSource>(
       () => _i663.DiaryDataSourceImpl(gh<_i454.SupabaseClient>()),
+    );
+    gh.lazySingleton<_i779.CreateTripUsecase>(
+      () => _i779.CreateTripUsecase(gh<_i161.TripRepository>()),
+    );
+    gh.lazySingleton<_i832.DeleteTripUsecase>(
+      () => _i832.DeleteTripUsecase(gh<_i161.TripRepository>()),
+    );
+    gh.lazySingleton<_i637.EditTripUsecase>(
+      () => _i637.EditTripUsecase(gh<_i161.TripRepository>()),
+    );
+    gh.lazySingleton<_i267.GetCrewMemberCountUsecase>(
+      () => _i267.GetCrewMemberCountUsecase(gh<_i161.TripRepository>()),
+    );
+    gh.lazySingleton<_i521.GetMyTripUsecase>(
+      () => _i521.GetMyTripUsecase(gh<_i161.TripRepository>()),
+    );
+    gh.lazySingleton<_i317.GiveUpTripUsecase>(
+      () => _i317.GiveUpTripUsecase(gh<_i161.TripRepository>()),
     );
     gh.lazySingleton<_i669.AcceptRequestUsecase>(
       () => _i669.AcceptRequestUsecase(gh<_i255.FriendRequestRepository>()),
@@ -155,11 +177,20 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i871.DiaryRepository>(
       () => _i148.DiaryRepositoryImpl(gh<_i881.DiaryDataSource>()),
     );
-    gh.lazySingleton<_i858.SignOutUseCase>(
-      () => _i858.SignOutUseCase(gh<_i488.AuthRepository>()),
+    gh.lazySingleton<_i1040.SupabaseAuthDataSource>(
+      () => _i436.SupabaseAuthDataSourceImpl(
+        gh<_i454.SupabaseClient>(),
+        gh<_i737.PushNotificationService>(),
+      ),
     );
-    gh.lazySingleton<_i420.SocialSignInUseCase>(
-      () => _i420.SocialSignInUseCase(gh<_i488.AuthRepository>()),
+    gh.singleton<_i488.AuthRepository>(
+      () => _i263.AuthRepositoryImpl(
+        gh<_i153.GoogleAuthDataSource>(),
+        gh<_i1040.SupabaseAuthDataSource>(),
+      ),
+    );
+    gh.singleton<_i456.WatchAuthStateUseCase>(
+      () => _i456.WatchAuthStateUseCase(gh<_i488.AuthRepository>()),
     );
     gh.lazySingleton<_i27.CreateDiaryUseCase>(
       () => _i27.CreateDiaryUseCase(gh<_i871.DiaryRepository>()),
@@ -187,17 +218,32 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i699.DeleteDiaryUseCase>(),
       ),
     );
-    gh.lazySingleton<_i434.AuthBloc>(
-      () => _i434.AuthBloc(
-        gh<_i420.SocialSignInUseCase>(),
-        gh<_i858.SignOutUseCase>(),
-      ),
+    gh.lazySingleton<_i529.GetCurrentUserUseCase>(
+      () => _i529.GetCurrentUserUseCase(gh<_i488.AuthRepository>()),
+    );
+    gh.lazySingleton<_i858.SignOutUseCase>(
+      () => _i858.SignOutUseCase(gh<_i488.AuthRepository>()),
+    );
+    gh.lazySingleton<_i420.SocialSignInUseCase>(
+      () => _i420.SocialSignInUseCase(gh<_i488.AuthRepository>()),
     );
     gh.factory<_i703.EditDiaryBloc>(
       () => _i703.EditDiaryBloc(gh<_i1039.UpdateDiaryUseCase>()),
     );
     gh.factory<_i1041.NewDiaryBloc>(
       () => _i1041.NewDiaryBloc(gh<_i27.CreateDiaryUseCase>()),
+    );
+    gh.lazySingleton<_i387.AuthProfileBloc>(
+      () => _i387.AuthProfileBloc(
+        gh<_i456.WatchAuthStateUseCase>(),
+        gh<_i529.GetCurrentUserUseCase>(),
+      ),
+    );
+    gh.lazySingleton<_i474.AuthBloc>(
+      () => _i474.AuthBloc(
+        gh<_i420.SocialSignInUseCase>(),
+        gh<_i858.SignOutUseCase>(),
+      ),
     );
     return this;
   }

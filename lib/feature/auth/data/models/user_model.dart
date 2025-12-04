@@ -9,7 +9,7 @@ abstract class UserDTO with _$UserDTO {
   const UserDTO._();
 
   const factory UserDTO({
-    required int id,
+    required int? id,
     required String? uuid,
     required String? nickname,
     required String? email,

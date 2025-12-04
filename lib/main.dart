@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:get_it/get_it.dart';
 import 'package:my_travel_friend/config/router.dart';
 import 'package:my_travel_friend/core/DI/injection.dart';
 import 'package:my_travel_friend/theme/app_theme.dart';
+
+import 'feature/auth/presentation/viewmodel/auth_profile/auth_profile_bloc.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -11,7 +15,15 @@ void main() async {
   //DI관련
   await configureDependencies();
 
-  runApp(const MyApp());
+  runApp(
+    MultiBlocProvider(
+      providers: [
+        //supabase listener를 통한 유저 객체 상태용 bloc
+        BlocProvider(create: (context) => GetIt.instance<AuthProfileBloc>()),
+      ],
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {

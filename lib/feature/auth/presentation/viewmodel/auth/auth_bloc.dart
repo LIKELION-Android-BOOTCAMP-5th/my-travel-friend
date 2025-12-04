@@ -1,10 +1,11 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 import 'package:my_travel_friend/core/result/result.dart';
-import 'package:my_travel_friend/feature/auth/domain/usecases/sign_out_usecase.dart';
-import 'package:my_travel_friend/feature/auth/domain/usecases/social_sign_in_usecase.dart';
-import 'package:my_travel_friend/feature/auth/presentation/viewmodel/auth_event.dart';
-import 'package:my_travel_friend/feature/auth/presentation/viewmodel/auth_state.dart';
+
+import '../../../domain/usecases/sign_out_usecase.dart';
+import '../../../domain/usecases/social_sign_in_usecase.dart';
+import 'auth_event.dart';
+import 'auth_state.dart';
 
 @lazySingleton
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
@@ -43,7 +44,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     result.when(
       success: (user) {
         //성공시 인증 상태로 변경
-        emit(AuthState.authenticated(userId: user.id));
+        emit(AuthState.authenticated(uuId: user.uuid!));
       },
       failure: (fail) {
         // 실패 시 Error 상태로 전환
