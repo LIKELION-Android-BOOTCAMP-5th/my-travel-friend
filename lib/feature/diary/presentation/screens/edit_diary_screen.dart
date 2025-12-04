@@ -8,7 +8,6 @@ import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:my_travel_friend/core/widget/text_box.dart';
 import 'package:my_travel_friend/feature/diary/presentation/widgets/public_select_box.dart';
-import 'package:my_travel_friend/feature/diary/presentation/widgets/schedule_picker_button.dart';
 import 'package:my_travel_friend/theme/app_font.dart';
 import 'package:path/path.dart' as path;
 import 'package:path_provider/path_provider.dart';
@@ -150,10 +149,6 @@ class _EditDiaryScreenState extends State<EditDiaryScreen> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          // 타입 태그 (수정 불가)
-                          TypeTag(diary: widget.diary),
-                          const SizedBox(height: 16),
-
                           // 제목
                           _buildTitleSection(context, state),
                           const SizedBox(height: 16),
@@ -218,7 +213,7 @@ class _EditDiaryScreenState extends State<EditDiaryScreen> {
                 ),
               ),
             ),
-            SchedulePickerButton(onTap: () {}),
+            TypeTag(diary: widget.diary),
           ],
         ),
         SizedBox(height: 8),
