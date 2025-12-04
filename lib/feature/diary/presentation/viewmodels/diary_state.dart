@@ -1,13 +1,10 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:my_travel_friend/feature/diary/presentation/viewmodels/diary_page_state.dart';
 
 import '../../domain/entities/diary_entity.dart';
 
 part 'diary_state.freezed.dart';
 
 // [이재은] 다이어리 전체 상태
-// - 조회 정보(tripId, userId, isMyDiaries)
-// - 페이지 상태(DiaryPageState)
 
 @freezed
 abstract class DiaryState with _$DiaryState {
@@ -17,10 +14,35 @@ abstract class DiaryState with _$DiaryState {
     int? userId,
     @Default(false) bool isMyDiaries,
 
-    // 페이지 상태
-    @Default(DiaryPageState.initial()) DiaryPageState pageState,
-  }) = _DiaryState;
+    // 다이어리 목록 데이터
+    @Default([]) List<DiaryEntity> diaries,
+    @Default([]) List<DiaryEntity> allDiaries,
+    String? currentFilter,
 
-  // 초기 상태
-  static const initial = DiaryState();
+    // 상세 조회 데이터
+    DiaryEntity? selectedDiary,
+
+    // 페이지네이션
+    @Default(0) int currentPage,
+    @Default(false) bool hasMore,
+    @Default(false) bool isLoadingMore,
+
+    // 메세지 (성공/에러)
+    String? message,
+    String? errorType,
+    String? actionType,
+
+    // 페이지 상태
+    @Default(DiaryPageState.init) DiaryPageState pageState,
+  }) = _DiaryState;
+}
+
+// [이재은] 다이어리 페이지 상태 (UI 상태)
+enum DiaryPageState {
+  init, // 초기 상태
+  loading, // 로딩 중
+  loaded, // 목록 로드 완료
+  detailLoaded, // 상세 조회 완료
+  success, // 생성/수정/삭제 성공
+  error, // 에러
 }

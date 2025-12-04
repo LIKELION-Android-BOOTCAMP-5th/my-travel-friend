@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:my_travel_friend/theme/app_colors.dart';
 
 // [이재은] UI 디자인에 맞춘 텍스트 필드 컴포넌트
 // ===============================================
@@ -45,6 +46,8 @@ class TextBox extends StatefulWidget {
   final VoidCallback? onTap; // 탭했을 때 호출
   final Widget? prefixIcon; // 왼쪽 아이콘
   final Widget? suffixIcon; // 오른쪽 아이콘
+  final String? suffix;
+  final TextStyle? suffixStyle;
   final EdgeInsetsGeometry? contentPadding;
   final FocusNode? focusNode;
 
@@ -83,6 +86,8 @@ class TextBox extends StatefulWidget {
     this.suffixIcon,
     this.contentPadding,
     this.focusNode,
+    this.suffix,
+    this.suffixStyle,
   });
 
   @override
@@ -94,11 +99,10 @@ class _TextBoxState extends State<TextBox> {
   Widget build(BuildContext context) {
     // 테마 색상 설정
     final colorScheme = Theme.of(context).colorScheme;
-    final isDarkMode = colorScheme.brightness == Brightness.dark;
+    final isDark = colorScheme.brightness == Brightness.dark;
 
     // 모드에 따라 색상 변경
-    final bgColor =
-        widget.backgroundColor ?? colorScheme.surfaceContainerHighest;
+    final bgColor = isDark ? AppColors.navy : AppColors.darkerGray;
     final focusBorder = widget.focusedBorderColor ?? colorScheme.primary;
     final unfocusBorder = widget.unfocusedBorderColor ?? Colors.transparent;
     final txtColor = widget.textColor ?? colorScheme.onSurface;
@@ -136,6 +140,8 @@ class _TextBoxState extends State<TextBox> {
 
         prefixIcon: widget.prefixIcon,
         suffixIcon: widget.suffixIcon,
+        suffixText: widget.suffix,
+        suffixStyle: widget.suffixStyle,
 
         counterStyle: TextStyle(color: hntColor),
 

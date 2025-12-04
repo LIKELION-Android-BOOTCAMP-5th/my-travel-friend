@@ -2,17 +2,23 @@ import 'package:flutter/material.dart';
 import 'package:my_travel_friend/theme/app_colors.dart';
 import 'package:my_travel_friend/theme/app_font.dart';
 
-// [이재은] 공유 다이어리 <-> 내 다이어리 탭 버튼
-class PublicTab extends StatelessWidget {
+// [이재은] 다이어리 작성 시 타입을 결정하는 버튼
+class TypeButton extends StatelessWidget {
+  final String type;
+  final IconData icon;
   final String label;
-  final bool isSelected;
+  final Color color;
   final VoidCallback onTap;
+  final bool isSelected;
 
-  const PublicTab({
+  const TypeButton({
     super.key,
+    required this.type,
+    required this.icon,
     required this.label,
-    required this.isSelected,
+    required this.color,
     required this.onTap,
+    required this.isSelected,
   });
 
   @override
@@ -26,19 +32,26 @@ class PublicTab extends StatelessWidget {
         padding: const EdgeInsets.symmetric(vertical: 12),
         decoration: BoxDecoration(
           color: isSelected
-              ? colorScheme.secondary
+              ? color
               : isDark
               ? colorScheme.outlineVariant
-              : AppColors.darkGray,
+              : AppColors.darkerGray,
           borderRadius: BorderRadius.circular(12.0),
         ),
-        child: Row(
+        child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
+            Icon(
+              icon,
+              color: isSelected
+                  ? colorScheme.onSurface
+                  : colorScheme.onSurfaceVariant,
+            ),
+            SizedBox(height: 4),
             Text(
               label,
-              style: AppFont.regular.copyWith(
+              style: AppFont.small.copyWith(
                 color: isSelected
                     ? colorScheme.onSurface
                     : colorScheme.onSurfaceVariant,

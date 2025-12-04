@@ -5,7 +5,6 @@ import '../../../../core/DI/injection.dart';
 import '../../../../core/widget/toast_pop.dart';
 import '../viewmodels/diary_bloc.dart';
 import '../viewmodels/diary_event.dart';
-import '../viewmodels/diary_page_state.dart';
 import '../viewmodels/diary_state.dart';
 import 'diary_list_screen.dart';
 
@@ -49,33 +48,25 @@ class _DiaryBlocConsumer extends StatelessWidget {
         final pageState = state.pageState;
 
         // 성공 상태: 토스트 표시
-        if (pageState is DiaryPageSuccess) {
-          ToastPop.show(pageState.message ?? '완료되었습니다');
+        if (state.pageState == DiaryPageState.success) {
+          ToastPop.show(state.message ?? '완료되었습니다');
         }
 
         // 에러 상태: 토스트 표시
-        if (pageState is DiaryPageError) {
-          ToastPop.show(pageState.message);
+        if (state.pageState == DiaryPageState.error) {
+          ToastPop.show(state.message ?? '오류가 발생했습니다');
         }
 
         // 상세 조회 성공: 팝업 띄우기
-        if (pageState is DiaryPageDetailLoaded) {
-          _showDiaryDetailPopUp(context, pageState.diary);
+        if (state.pageState == DiaryPageState.detailLoaded &&
+            state.selectedDiary != null) {
+          _showDiaryDetailPopUp(context, state.selectedDiary);
         }
       },
 
       builder: (context, state) {
-        return state.pageState.when(
-          initial: () => DiaryListScreen(tripId: tripId, userId: userId),
-          loaded: (diaries, allDiaries, currentFilter) =>
-              DiaryListScreen(tripId: tripId, userId: userId),
-          success: (message, actionType) =>
-              DiaryListScreen(tripId: tripId, userId: userId),
-          error: (message, errorType) =>
-              DiaryListScreen(tripId: tripId, userId: userId),
-          detailLoaded: (diary) =>
-              DiaryListScreen(tripId: tripId, userId: userId),
-          loading: () => Stack(
+        if (state.pageState == DiaryPageState.loading) {
+          return Stack(
             children: [
               DiaryListScreen(tripId: tripId, userId: userId),
               Container(
@@ -83,8 +74,10 @@ class _DiaryBlocConsumer extends StatelessWidget {
                 child: const Center(child: CircularProgressIndicator()),
               ),
             ],
-          ),
-        );
+          );
+        }
+
+        return DiaryListScreen(tripId: tripId, userId: userId);
       },
     );
   }

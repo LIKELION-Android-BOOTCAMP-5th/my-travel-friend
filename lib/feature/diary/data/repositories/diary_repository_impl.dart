@@ -14,8 +14,16 @@ class DiaryRepositoryImpl implements DiaryRepository {
 
   // 공유 다이어리 목록 가져오기
   @override
-  Future<Result<List<DiaryEntity>>> getOurDiaries(int tripId) async {
-    final res = await _dataSource.getOurDiaries(tripId);
+  Future<Result<List<DiaryEntity>>> getOurDiaries(
+    int tripId,
+    int page,
+    int limit,
+  ) async {
+    final res = await _dataSource.getOurDiaries(
+      tripId: tripId,
+      page: page,
+      limit: limit,
+    );
     return res.when(
       success: (data) =>
           Result.success(data.map((dto) => dto.toEntity()).toList()),
@@ -25,8 +33,18 @@ class DiaryRepositoryImpl implements DiaryRepository {
 
   // 내 다이어리 목록 가져오기
   @override
-  Future<Result<List<DiaryEntity>>> getMyDiaries(int tripId, int userId) async {
-    final res = await _dataSource.getMyDiaries(tripId, userId);
+  Future<Result<List<DiaryEntity>>> getMyDiaries(
+    int tripId,
+    int userId,
+    int page,
+    int limit,
+  ) async {
+    final res = await _dataSource.getMyDiaries(
+      tripId: tripId,
+      userId: userId,
+      page: page,
+      limit: limit,
+    );
     return res.when(
       success: (data) =>
           Result.success(data.map((dto) => dto.toEntity()).toList()),

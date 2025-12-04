@@ -50,6 +50,10 @@ import '../../feature/diary/domain/usecases/get_our_diaries_usecase.dart'
 import '../../feature/diary/domain/usecases/update_diary_usecase.dart'
     as _i1039;
 import '../../feature/diary/presentation/viewmodels/diary_bloc.dart' as _i611;
+import '../../feature/diary/presentation/viewmodels/edit_diary_bloc.dart'
+    as _i703;
+import '../../feature/diary/presentation/viewmodels/new_diary_bloc.dart'
+    as _i1041;
 import '../../feature/friend/domain/repositories/friend_repository.dart'
     as _i359;
 import '../../feature/friend/domain/repositories/friend_request_repository.dart'
@@ -175,21 +179,25 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i1039.UpdateDiaryUseCase>(
       () => _i1039.UpdateDiaryUseCase(gh<_i871.DiaryRepository>()),
     );
+    gh.factory<_i611.DiaryBloc>(
+      () => _i611.DiaryBloc(
+        gh<_i849.GetOurDiariesUseCase>(),
+        gh<_i730.GetMyDiariesUseCase>(),
+        gh<_i236.GetDiaryByIdUseCase>(),
+        gh<_i699.DeleteDiaryUseCase>(),
+      ),
+    );
     gh.lazySingleton<_i434.AuthBloc>(
       () => _i434.AuthBloc(
         gh<_i420.SocialSignInUseCase>(),
         gh<_i858.SignOutUseCase>(),
       ),
     );
-    gh.factory<_i611.DiaryBloc>(
-      () => _i611.DiaryBloc(
-        gh<_i849.GetOurDiariesUseCase>(),
-        gh<_i730.GetMyDiariesUseCase>(),
-        gh<_i236.GetDiaryByIdUseCase>(),
-        gh<_i27.CreateDiaryUseCase>(),
-        gh<_i1039.UpdateDiaryUseCase>(),
-        gh<_i699.DeleteDiaryUseCase>(),
-      ),
+    gh.factory<_i703.EditDiaryBloc>(
+      () => _i703.EditDiaryBloc(gh<_i1039.UpdateDiaryUseCase>()),
+    );
+    gh.factory<_i1041.NewDiaryBloc>(
+      () => _i1041.NewDiaryBloc(gh<_i27.CreateDiaryUseCase>()),
     );
     return this;
   }
