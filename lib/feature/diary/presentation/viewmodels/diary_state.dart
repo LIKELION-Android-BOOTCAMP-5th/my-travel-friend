@@ -1,5 +1,4 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:my_travel_friend/feature/diary/presentation/viewmodels/diary_page_state.dart';
 
 import '../../domain/entities/diary_entity.dart';
 
@@ -36,4 +35,14 @@ abstract class DiaryState with _$DiaryState {
     // 페이지 상태
     @Default(DiaryPageState.init) DiaryPageState pageState,
   }) = _DiaryState;
+}
+
+// [이재은] 다이어리 페이지 상태 (UI 상태)
+enum DiaryPageState {
+  init, // 초기 상태
+  loading, // 로딩 중
+  loaded, // 목록 로드 완료
+  detailLoaded, // 상세 조회 완료
+  success, // 생성/수정/삭제 성공
+  error, // 에러
 }

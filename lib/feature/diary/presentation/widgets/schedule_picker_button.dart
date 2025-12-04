@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:my_travel_friend/theme/app_font.dart';
 
+import '../../../../theme/app_colors.dart';
+
 // [이재은] 일정 선택 버튼
 class SchedulePickerButton extends StatelessWidget {
   final VoidCallback onTap;
@@ -16,9 +18,7 @@ class SchedulePickerButton extends StatelessWidget {
       onTap: onTap,
       child: Container(
         decoration: BoxDecoration(
-          color: isDark
-              ? colorScheme.surfaceContainerHighest
-              : colorScheme.primaryContainer,
+          color: isDark ? AppColors.navy : colorScheme.primaryContainer,
           borderRadius: BorderRadius.all(Radius.circular(6.0)),
         ),
         child: Padding(

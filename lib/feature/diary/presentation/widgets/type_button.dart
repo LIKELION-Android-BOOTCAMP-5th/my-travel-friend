@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:my_travel_friend/theme/app_colors.dart';
 import 'package:my_travel_friend/theme/app_font.dart';
 
 // [이재은] 다이어리 작성 시 타입을 결정하는 버튼
@@ -23,13 +24,18 @@ class TypeButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
+    final isDark = colorScheme.brightness == Brightness.dark;
 
     return GestureDetector(
       onTap: onTap,
       child: Container(
         padding: const EdgeInsets.symmetric(vertical: 12),
         decoration: BoxDecoration(
-          color: isSelected ? color : colorScheme.outlineVariant,
+          color: isSelected
+              ? color
+              : isDark
+              ? colorScheme.outlineVariant
+              : AppColors.darkerGray,
           borderRadius: BorderRadius.circular(12.0),
         ),
         child: Column(

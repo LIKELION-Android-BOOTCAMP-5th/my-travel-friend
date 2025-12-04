@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:my_travel_friend/theme/app_colors.dart';
 import 'package:my_travel_friend/theme/app_font.dart';
 
 // [이재은] 공유 다이어리 <-> 내 다이어리 탭 버튼
@@ -17,6 +18,7 @@ class PublicTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
+    final isDark = colorScheme.brightness == Brightness.dark;
 
     return GestureDetector(
       onTap: onTap,
@@ -25,7 +27,9 @@ class PublicTab extends StatelessWidget {
         decoration: BoxDecoration(
           color: isSelected
               ? colorScheme.secondary
-              : colorScheme.outlineVariant,
+              : isDark
+              ? colorScheme.outlineVariant
+              : AppColors.darkGray,
           borderRadius: BorderRadius.circular(12.0),
         ),
         child: Row(

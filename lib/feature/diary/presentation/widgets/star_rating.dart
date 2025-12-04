@@ -110,6 +110,8 @@ class _StarRatingState extends State<StarRating> {
 
   Widget _buildStar(int index) {
     double fill = _currentRating - index;
+    final colorScheme = Theme.of(context).colorScheme;
+    final isDark = colorScheme.brightness == Brightness.dark;
 
     // 채워진 별 (full 또는 half)
     IconData? filledIcon;
@@ -128,7 +130,9 @@ class _StarRatingState extends State<StarRating> {
           Icon(
             AppIcon.star,
             size: widget.starSize,
-            color: widget.emptyColor.withOpacity(0.3),
+            color: isDark
+                ? widget.emptyColor.withOpacity(0.3)
+                : AppColors.darkerGray,
           ),
 
           if (filledIcon != null)

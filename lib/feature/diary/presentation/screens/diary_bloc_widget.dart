@@ -5,7 +5,6 @@ import '../../../../core/DI/injection.dart';
 import '../../../../core/widget/toast_pop.dart';
 import '../viewmodels/diary_bloc.dart';
 import '../viewmodels/diary_event.dart';
-import '../viewmodels/diary_page_state.dart';
 import '../viewmodels/diary_state.dart';
 import 'diary_list_screen.dart';
 

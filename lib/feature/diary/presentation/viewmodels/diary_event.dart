@@ -4,7 +4,7 @@ import '../../domain/entities/diary_entity.dart';
 
 part 'diary_event.freezed.dart';
 
-// [이재은] 다이어리 관련 이벤트 (사용자의 행동, 시스템에서 발생하는 일)
+// [이재은] 다이어리 조회/ 삭제 관련 이벤트 (사용자의 행동, 시스템에서 발생하는 일)
 
 @freezed
 abstract class DiaryEvent with _$DiaryEvent {
@@ -30,18 +30,6 @@ abstract class DiaryEvent with _$DiaryEvent {
   // - 다이어리 박스 클릭 시 상세 정보 가져오기
   // - DiaryDetailPopUp 띄우기 전에 호출
   const factory DiaryEvent.getDiaryById({required int diaryId}) = GetDiaryById;
-
-  // 다이어리 생성
-  // - 플로팅 버튼 -> 작성 화면 -> 저장 버튼 클릭시 호출
-  // - 성공하면 목록 재 로드 필요
-  const factory DiaryEvent.createDiary({required DiaryEntity diary}) =
-      CreateDiary;
-
-  // 다이어리 수정
-  // - 바텀시트 -> 수정버튼 -> 수정화면 -> 저장 버튼 클릭시 호출
-  // - 기존 다이어리 내용 업데이트
-  const factory DiaryEvent.updateDiary({required DiaryEntity diary}) =
-      UpdateDiary;
 
   // 다이어리 삭제
   // - 바텀시트 -> 삭제 버튼 -> 삭제 팝업 -> 삭제 시 호출

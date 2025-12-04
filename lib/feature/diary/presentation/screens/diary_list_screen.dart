@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:my_travel_friend/feature/diary/presentation/widgets/public_tab.dart';
 import 'package:my_travel_friend/theme/app_colors.dart';
 
@@ -8,7 +9,6 @@ import '../../../../theme/app_font.dart';
 import '../../../../theme/app_icon.dart';
 import '../viewmodels/diary_bloc.dart';
 import '../viewmodels/diary_event.dart';
-import '../viewmodels/diary_page_state.dart';
 import '../viewmodels/diary_state.dart';
 import '../widgets/diary_box.dart';
 import '../widgets/diary_filter_chip.dart';
@@ -33,6 +33,7 @@ class DiaryListScreen extends StatefulWidget {
 }
 
 class _DiaryListScreenState extends State<DiaryListScreen> {
+  // 무한 스크롤을 위한 컨트롤러
   late ScrollController _scrollController;
 
   static const List<String?> _filterTypes = [
@@ -58,7 +59,9 @@ class _DiaryListScreenState extends State<DiaryListScreen> {
     super.dispose();
   }
 
-  @override
+  // 스크롤 이벤트 핸들러
+  // - 스크롤이 하단에 도달하면 LoadMore 이벤트 발생
+  // - 실제 조건 체크는 Bloc에서
   void _onScroll() {
     if (_isBottom) {
       context.read<DiaryBloc>().add(const DiaryEvent.loadMore());
@@ -114,39 +117,37 @@ class _DiaryListScreenState extends State<DiaryListScreen> {
       // 리빌드 조건 - 이전(prev)과 현재(curr)가 다를때
       buildWhen: (prev, curr) => prev.isMyDiaries != curr.isMyDiaries,
       builder: (context, state) {
-        return Container(
-          child: Row(
-            children: [
-              // 공유 다이어리 탭
-              Expanded(
-                child: PublicTab(
-                  label: '공유 다이어리',
-                  isSelected: !state.isMyDiaries,
-                  onTap: () {
-                    diaryBloc.add(
-                      DiaryEvent.getOurDiaries(tripId: widget.tripId),
-                    );
-                  },
-                ),
+        return Row(
+          children: [
+            // 공유 다이어리 탭
+            Expanded(
+              child: PublicTab(
+                label: '공유 다이어리',
+                isSelected: !state.isMyDiaries,
+                onTap: () {
+                  diaryBloc.add(
+                    DiaryEvent.getOurDiaries(tripId: widget.tripId),
+                  );
+                },
               ),
-              SizedBox(width: 8.0),
-              // 내 다이어리 탭
-              Expanded(
-                child: PublicTab(
-                  label: '내 다이어리',
-                  isSelected: state.isMyDiaries,
-                  onTap: () {
-                    diaryBloc.add(
-                      DiaryEvent.getMyDiaries(
-                        tripId: widget.tripId,
-                        userId: widget.userId,
-                      ),
-                    );
-                  },
-                ),
+            ),
+            SizedBox(width: 8.0),
+            // 내 다이어리 탭
+            Expanded(
+              child: PublicTab(
+                label: '내 다이어리',
+                isSelected: state.isMyDiaries,
+                onTap: () {
+                  diaryBloc.add(
+                    DiaryEvent.getMyDiaries(
+                      tripId: widget.tripId,
+                      userId: widget.userId,
+                    ),
+                  );
+                },
               ),
-            ],
-          ),
+            ),
+          ],
         );
       },
     );
@@ -255,6 +256,17 @@ class _DiaryListScreenState extends State<DiaryListScreen> {
     );
   }
 
-  // 다이어리 작성 화면으로 이동
-  void _onAddDiary(BuildContext context) {}
+  /// 다이어리 작성 화면으로 이동
+  /// - 작성 성공 시 true 반환받아 목록 새로고침
+  Future<void> _onAddDiary(BuildContext context) async {
+    final result = await context.push<bool>(
+      '/diary/new',
+      extra: {'tripId': widget.tripId, 'userId': widget.userId},
+    );
+
+    // 생성 성공 시 목록 새로고침
+    if (result == true && context.mounted) {
+      context.read<DiaryBloc>().add(const DiaryEvent.refresh());
+    }
+  }
 }

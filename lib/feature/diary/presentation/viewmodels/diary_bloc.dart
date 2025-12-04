@@ -1,27 +1,23 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 import 'package:my_travel_friend/feature/diary/domain/entities/diary_entity.dart';
-import 'package:my_travel_friend/feature/diary/domain/usecases/create_diary_usecase.dart';
 import 'package:my_travel_friend/feature/diary/domain/usecases/delete_diary_usecase.dart';
 import 'package:my_travel_friend/feature/diary/domain/usecases/get_diary_by_id_usecase.dart';
 import 'package:my_travel_friend/feature/diary/domain/usecases/get_my_diaries_usecase.dart';
 import 'package:my_travel_friend/feature/diary/domain/usecases/get_our_diaries_usecase.dart';
-import 'package:my_travel_friend/feature/diary/domain/usecases/update_diary_usecase.dart';
-import 'package:my_travel_friend/feature/diary/presentation/viewmodels/diary_page_state.dart';
 
 import '../../../../core/result/result.dart';
 import 'diary_event.dart';
 import 'diary_state.dart';
 
-// [이재은] 다이어리 bloc
+// [이재은] 다이어리 조회 및 삭제 bloc
+
 @injectable
 class DiaryBloc extends Bloc<DiaryEvent, DiaryState> {
   // usecase 주입
   final GetOurDiariesUseCase _getOurDiariesUseCase;
   final GetMyDiariesUseCase _getMyDiariesUseCase;
   final GetDiaryByIdUseCase _getDiaryByIdUseCase;
-  final CreateDiaryUseCase _createDiaryUseCase;
-  final UpdateDiaryUseCase _updateDiaryUseCase;
   final DeleteDiaryUseCase _deleteDiaryUseCase;
 
   static const int _pageLimit = 7;
@@ -30,15 +26,11 @@ class DiaryBloc extends Bloc<DiaryEvent, DiaryState> {
     this._getOurDiariesUseCase,
     this._getMyDiariesUseCase,
     this._getDiaryByIdUseCase,
-    this._createDiaryUseCase,
-    this._updateDiaryUseCase,
     this._deleteDiaryUseCase,
   ) : super(const DiaryState()) {
     on<GetOurDiaries>(_onGetOurDiaries);
     on<GetMyDiaries>(_onGetMyDiaries);
     on<GetDiaryById>(_onGetDiaryById);
-    on<CreateDiary>(_onCreateDiary);
-    on<UpdateDiary>(_onUpdateDiary);
     on<DeleteDiary>(_onDeleteDiary);
     on<FilterByType>(_onFilterByType);
     on<Refresh>(_onRefresh);
@@ -160,6 +152,8 @@ class DiaryBloc extends Bloc<DiaryEvent, DiaryState> {
   }
 
   // 다음 페이지 로드 (무한 스크롤)
+  // -Screen에서는 스크롤 위치만 감지 & 이벤트 발생
+  // - 여기에서 실제 조건 체크
   Future<void> _onLoadMore(LoadMore event, Emitter<DiaryState> emit) async {
     if (state.pageState != DiaryPageState.loaded) return;
     if (state.isLoadingMore || !state.hasMore) return;
@@ -235,81 +229,6 @@ class DiaryBloc extends Bloc<DiaryEvent, DiaryState> {
           state.copyWith(
             pageState: DiaryPageState.error,
             message: failure.message,
-            errorType: _getErrorType(failure),
-          ),
-        );
-      },
-    );
-  }
-
-  // 다이어리 생성
-  Future<void> _onCreateDiary(
-    CreateDiary event,
-    Emitter<DiaryState> emit,
-  ) async {
-    emit(state.copyWith(pageState: DiaryPageState.loading));
-
-    final res = await _createDiaryUseCase.call(event.diary);
-
-    res.when(
-      success: (createdDiary) {
-        emit(
-          state.copyWith(
-            pageState: DiaryPageState.success,
-            message: '다이어리를 작성했습니다',
-            actionType: 'create',
-          ),
-        );
-        _refreshList();
-      },
-      failure: (failure) {
-        emit(
-          state.copyWith(
-            pageState: DiaryPageState.error,
-            message: '다이어리 작성 실패: ${failure.message}',
-            errorType: _getErrorType(failure),
-          ),
-        );
-      },
-    );
-  }
-
-  // 다이어리 수정
-  Future<void> _onUpdateDiary(
-    UpdateDiary event,
-    Emitter<DiaryState> emit,
-  ) async {
-    emit(state.copyWith(pageState: DiaryPageState.loading));
-
-    if (event.diary.id == null) {
-      emit(
-        state.copyWith(
-          pageState: DiaryPageState.error,
-          message: '수정할 다이어리 ID가 없습니다',
-          errorType: 'validation',
-        ),
-      );
-      return;
-    }
-
-    final res = await _updateDiaryUseCase.call(event.diary);
-
-    res.when(
-      success: (updatedDiary) {
-        emit(
-          state.copyWith(
-            pageState: DiaryPageState.success,
-            message: '다이어리가 수정되었습니다',
-            actionType: 'update',
-          ),
-        );
-        _refreshList();
-      },
-      failure: (failure) {
-        emit(
-          state.copyWith(
-            pageState: DiaryPageState.error,
-            message: '다이어리 수정 실패 : ${failure.message}',
             errorType: _getErrorType(failure),
           ),
         );
