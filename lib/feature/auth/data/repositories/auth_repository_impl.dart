@@ -79,7 +79,7 @@ class AuthRepositoryImpl implements AuthRepository {
   @override
   Stream<Result<UserEntity?>> authStateChanges() {
     return supabaseAuthDataSource.userProfileStream.map((result) {
-      result.when(
+      return result.when(
         success: (success) {
           return Result.success(success?.toEntity());
         },
@@ -87,7 +87,6 @@ class AuthRepositoryImpl implements AuthRepository {
           return Result.failure(failure);
         },
       );
-      return Result.failure(Failure.undefined(message: "알수없는 에러"));
     });
   }
 

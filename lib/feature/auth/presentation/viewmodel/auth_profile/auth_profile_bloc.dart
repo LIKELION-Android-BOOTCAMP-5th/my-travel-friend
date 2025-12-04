@@ -10,7 +10,7 @@ import 'package:my_travel_friend/feature/auth/presentation/viewmodel/auth_profil
 
 import '../../../domain/usecases/watch_auth_state_usecase.dart';
 
-@LazySingleton()
+@singleton
 class AuthProfileBloc extends Bloc<AuthProfileEvent, AuthProfileState> {
   final WatchAuthStateUseCase _watchAuthStateUseCase; // 스트림 구독
   final GetCurrentUserUseCase _getCurrentUserUseCase; // 유저 DB 정보 로딩
