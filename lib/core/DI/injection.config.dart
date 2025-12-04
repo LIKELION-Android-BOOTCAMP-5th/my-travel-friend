@@ -227,9 +227,6 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i420.SocialSignInUseCase>(
       () => _i420.SocialSignInUseCase(gh<_i488.AuthRepository>()),
     );
-    gh.factory<_i703.EditDiaryBloc>(
-      () => _i703.EditDiaryBloc(gh<_i1039.UpdateDiaryUseCase>()),
-    );
     gh.singleton<_i387.AuthProfileBloc>(
       () => _i387.AuthProfileBloc(
         gh<_i456.WatchAuthStateUseCase>(),
@@ -239,6 +236,12 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i1041.NewDiaryBloc>(
       () => _i1041.NewDiaryBloc(
         gh<_i27.CreateDiaryUseCase>(),
+        gh<_i871.DiaryRepository>(),
+      ),
+    );
+    gh.factory<_i703.EditDiaryBloc>(
+      () => _i703.EditDiaryBloc(
+        gh<_i1039.UpdateDiaryUseCase>(),
         gh<_i871.DiaryRepository>(),
       ),
     );
