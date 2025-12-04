@@ -3,6 +3,7 @@ import 'package:my_travel_friend/theme/app_font.dart';
 
 // [이재은] 다이어리 작성 시 타입을 결정하는 버튼
 class TypeButton extends StatelessWidget {
+  final String type;
   final IconData icon;
   final String label;
   final Color color;
@@ -11,6 +12,7 @@ class TypeButton extends StatelessWidget {
 
   const TypeButton({
     super.key,
+    required this.type,
     required this.icon,
     required this.label,
     required this.color,

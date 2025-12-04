@@ -212,11 +212,6 @@ class _DiaryListScreenState extends State<DiaryListScreen> {
             itemCount: diaries.length + (state.hasMore ? 1 : 0),
             separatorBuilder: (_, __) => const SizedBox(height: 12),
             itemBuilder: (context, index) {
-              // 마지막 아이템 = 로딩 인디케이터
-              if (index >= diaries.length) {
-                return _buildLoadingIndicator(state.isLoadingMore);
-              }
-
               final diary = diaries[index];
 
               return GestureDetector(
@@ -231,18 +226,6 @@ class _DiaryListScreenState extends State<DiaryListScreen> {
           ),
         );
       },
-    );
-  }
-
-  // 로딩 인디케이터
-  Widget _buildLoadingIndicator(bool isLoading) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 16.0),
-      child: Center(
-        child: isLoading
-            ? const CircularProgressIndicator()
-            : const SizedBox.shrink(),
-      ),
     );
   }
 
