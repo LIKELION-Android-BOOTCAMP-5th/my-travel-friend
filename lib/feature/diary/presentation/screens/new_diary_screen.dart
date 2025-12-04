@@ -1,13 +1,21 @@
+import 'dart:io';
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:my_travel_friend/core/widget/text_box.dart';
 import 'package:my_travel_friend/feature/diary/presentation/widgets/public_select_box.dart';
 import 'package:my_travel_friend/feature/diary/presentation/widgets/schedule_picker_button.dart';
 import 'package:my_travel_friend/theme/app_font.dart';
+import 'package:path/path.dart' as path;
+import 'package:path_provider/path_provider.dart';
 
 import '../../../../core/widget/app_bar.dart';
+import '../../../../core/widget/bottom_sheat.dart';
 import '../../../../core/widget/button.dart';
+import '../../../../core/widget/toast_pop.dart';
 import '../../../../theme/app_colors.dart';
 import '../../../../theme/app_icon.dart';
 import '../viewmodels/new_diary_bloc.dart';
@@ -32,9 +40,12 @@ class _NewDiaryScreenState extends State<NewDiaryScreen> {
   late TextEditingController _titleController;
   late TextEditingController _contentController;
   late TextEditingController _priceController;
-  late TextEditingController _imgController;
 
   final ImagePicker _imagePicker = ImagePicker();
+
+  static const int _maxWidth = 1024;
+  static const int _maxHeight = 1024;
+  static const int _quality = 80;
 
   @override
   void initState() {
@@ -42,7 +53,6 @@ class _NewDiaryScreenState extends State<NewDiaryScreen> {
     _titleController = TextEditingController();
     _contentController = TextEditingController();
     _priceController = TextEditingController();
-    _imgController = TextEditingController();
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       context.read<NewDiaryBloc>().initialize(
@@ -57,7 +67,6 @@ class _NewDiaryScreenState extends State<NewDiaryScreen> {
     _titleController.dispose();
     _contentController.dispose();
     _priceController.dispose();
-    _imgController.dispose();
     super.dispose();
   }
 
@@ -131,7 +140,7 @@ class _NewDiaryScreenState extends State<NewDiaryScreen> {
 
                           // 타입별 추가 입력필드
                           _buildTypeSpecificField(context, state),
-                          SizedBox(height: 16),
+                          SizedBox(height: 24),
 
                           //공개 비공개 여부
                           PublicSelectBox(
@@ -308,7 +317,7 @@ class _NewDiaryScreenState extends State<NewDiaryScreen> {
   }
 
   // 사진 업로드
-  Widget _buildPhotoField(context, text) {
+  Widget _buildPhotoField(BuildContext context, NewDiaryState state) {
     final colorScheme = Theme.of(context).colorScheme;
     final isDark = colorScheme.brightness == Brightness.dark;
 
@@ -322,27 +331,173 @@ class _NewDiaryScreenState extends State<NewDiaryScreen> {
             "사진 업로드",
             style: AppFont.regularBold.copyWith(color: colorScheme.onSurface),
           ),
-          SizedBox(height: 8),
-          GestureDetector(
-            onTap: () {},
-            child: Container(
-              decoration: BoxDecoration(
-                color: isDark ? AppColors.navy : AppColors.darkerGray,
-                borderRadius: BorderRadius.all(Radius.circular(16)),
-              ),
-              width: 60,
-              height: 60,
-              child: Center(
-                child: Padding(
-                  padding: const EdgeInsets.all(16.0),
+          const SizedBox(height: 8),
+
+          // 이미지가 있으면 미리보기, 없으면 업로드 버튼
+          if (state.localImgFile != null)
+            _buildImagePreview(context, state)
+          else
+            GestureDetector(
+              onTap: () => _showImgPickerSheet(context),
+              child: Container(
+                decoration: BoxDecoration(
+                  color: isDark ? AppColors.navy : AppColors.darkerGray,
+                  borderRadius: const BorderRadius.all(Radius.circular(16)),
+                ),
+                width: 80,
+                height: 80,
+                child: Center(
                   child: Icon(AppIcon.upload, color: colorScheme.onSurface),
                 ),
               ),
             ),
-          ),
         ],
       ),
     );
+  }
+
+  // 이미지 미리보기 + 삭제/변경 버튼
+  Widget _buildImagePreview(BuildContext context, NewDiaryState state) {
+    final colorScheme = Theme.of(context).colorScheme;
+
+    return Stack(
+      children: [
+        // 이미지 미리보기
+        ClipRRect(
+          borderRadius: BorderRadius.circular(16),
+          child: Image.file(
+            state.localImgFile!,
+            width: double.infinity,
+            height: 200,
+            fit: BoxFit.cover,
+          ),
+        ),
+
+        // 삭제 버튼 (우측 상단)
+        Positioned(
+          top: 8,
+          right: 8,
+          child: GestureDetector(
+            onTap: () {
+              context.read<NewDiaryBloc>().add(const NewDiaryEvent.removeImg());
+            },
+            child: Container(
+              padding: const EdgeInsets.all(8),
+              decoration: BoxDecoration(
+                color: AppColors.dark.withOpacity(0.7),
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: Icon(AppIcon.close, color: AppColors.light, size: 20),
+            ),
+          ),
+        ),
+
+        // 변경 버튼 (우측 하단)
+        Positioned(
+          bottom: 8,
+          right: 8,
+          child: GestureDetector(
+            onTap: () => _showImgPickerSheet(context),
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+              decoration: BoxDecoration(
+                color: colorScheme.primary,
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(AppIcon.camera, color: AppColors.light, size: 16),
+                  const SizedBox(width: 4),
+                  Text(
+                    '변경',
+                    style: AppFont.small.copyWith(color: AppColors.light),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  // 이미지 선택 바텀시트
+  void _showImgPickerSheet(context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
+    CommonBottomSheet.show(
+      context,
+      sheetTitle: '사진 업로드',
+      actions: [
+        BottomSheetAction(
+          icon: const Icon(AppIcon.camera),
+          iconBgColor: colorScheme.primary,
+          title: '새로 찍기',
+          onTap: () => _pickImg(ImageSource.camera),
+        ),
+        BottomSheetAction(
+          icon: const Icon(AppIcon.image),
+          iconBgColor: colorScheme.secondary,
+          title: '앨범에서 선택',
+          onTap: () => _pickImg(ImageSource.gallery),
+        ),
+      ],
+    );
+  }
+
+  // 이미지 선택 + 압축
+  Future<void> _pickImg(ImageSource source) async {
+    try {
+      final XFile? picked = await _imagePicker.pickImage(
+        source: source,
+        maxWidth: 1920,
+        maxHeight: 1920,
+      );
+
+      if (picked == null) return;
+
+      // 압축
+      final compressedFile = await _compressImage(File(picked.path));
+
+      if (compressedFile != null && mounted) {
+        context.read<NewDiaryBloc>().add(
+          NewDiaryEvent.selectImg(file: compressedFile),
+        );
+      }
+    } catch (e) {
+      ToastPop.show('이미지 선택 실패: $e');
+    }
+  }
+
+  // 이미지 압축
+  Future<File?> _compressImage(File file) async {
+    try {
+      final dir = await getTemporaryDirectory();
+      final targetPath = path.join(
+        dir.path,
+        'compressed_${DateTime.now().millisecondsSinceEpoch}.jpg',
+      );
+
+      final Uint8List? compressedBytes =
+          await FlutterImageCompress.compressWithFile(
+            file.absolute.path,
+            minWidth: _maxWidth,
+            minHeight: _maxHeight,
+            quality: _quality,
+            format: CompressFormat.jpeg,
+          );
+
+      if (compressedBytes == null) return null;
+
+      final compressedFile = File(targetPath);
+      await compressedFile.writeAsBytes(compressedBytes);
+
+      return compressedFile;
+    } catch (e) {
+      ToastPop.show('이미지 압축 실패');
+      return null;
+    }
   }
 
   // 금액 입력

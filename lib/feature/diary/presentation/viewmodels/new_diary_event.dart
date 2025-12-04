@@ -1,5 +1,7 @@
 // [이재은] 다이어리 작성 관련 이벤트 (사용자의 행동, 시스템에서 발생하는 일)
 
+import 'dart:io';
+
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 import '../../domain/entities/diary_entity.dart';
@@ -29,9 +31,11 @@ abstract class NewDiaryEvent with _$NewDiaryEvent {
   const factory NewDiaryEvent.changeRating({required double rating}) =
       ChangeRating;
 
-  // 이미지 변경(사진용)
-  const factory NewDiaryEvent.changePhoto({required String? imgUrl}) =
-      ChangePhoto;
+  // 로컬 이미지 선택
+  const factory NewDiaryEvent.selectImg({required File file}) = SelectImg;
+
+  // 이미지 제거
+  const factory NewDiaryEvent.removeImg() = RemoveImg;
 
   // 금액 변경(소비용)
   const factory NewDiaryEvent.changeCost({required int? cost}) = ChangeCost;

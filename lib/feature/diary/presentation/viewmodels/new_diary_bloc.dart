@@ -3,6 +3,7 @@ import 'package:injectable/injectable.dart';
 import 'package:my_travel_friend/feature/diary/domain/usecases/create_diary_usecase.dart';
 
 import '../../../../core/result/result.dart';
+import '../../domain/repositories/diary_repository.dart';
 import 'new_diary_event.dart';
 import 'new_diary_state.dart';
 
@@ -11,14 +12,17 @@ import 'new_diary_state.dart';
 class NewDiaryBloc extends Bloc<NewDiaryEvent, NewDiaryState> {
   // usecase 주입
   final CreateDiaryUseCase _createDiaryUseCase;
+  final DiaryRepository _diaryRepository;
 
-  NewDiaryBloc(this._createDiaryUseCase) : super(const NewDiaryState()) {
+  NewDiaryBloc(this._createDiaryUseCase, this._diaryRepository)
+    : super(const NewDiaryState()) {
     on<CreateDiary>(_onCreateDiary);
     on<ChangeType>(_onChangeType);
     on<ChangeTitle>(_onChangeTitle);
     on<ChangeContent>(_onChangeContent);
     on<ChangeRating>(_onChangeRating);
-    on<ChangePhoto>(_onChangePhoto);
+    on<SelectImg>(_onSelectImg);
+    on<RemoveImg>(_onRemoveImg);
     on<ChangeCost>(_onChangeCost);
     on<ChangePublic>(_onChangePublic);
     on<ChooseSchedule>(_onChooseSchedule);
@@ -48,6 +52,42 @@ class NewDiaryBloc extends Bloc<NewDiaryEvent, NewDiaryState> {
     Emitter<NewDiaryState> emit,
   ) async {
     emit(state.copyWith(pageState: NewDiaryPageState.loading));
+
+    String? uploadedImgUrl = state.imgUrl;
+
+    // PHOTO 타입이고 로컬 이미지가 있으면 업로드
+    if (state.type == 'PHOTO' && state.localImgFile != null) {
+      emit(state.copyWith(isUploading: true));
+
+      final uploadResult = await _diaryRepository.uploadImg(
+        file: state.localImgFile!,
+        userId: state.userId ?? 0,
+      );
+
+      final uploadFailed = uploadResult.when(
+        success: (url) {
+          uploadedImgUrl = url;
+          return false;
+        },
+        failure: (failure) {
+          emit(
+            state.copyWith(
+              pageState: NewDiaryPageState.error,
+              message: '이미지 업로드 실패 : ${failure.message}',
+              errorType: _getErrorType(failure),
+              isUploading: false,
+            ),
+          );
+          return true;
+        },
+      );
+
+      if (uploadFailed) return;
+
+      emit(state.copyWith(isUploading: false, imgUrl: uploadedImgUrl));
+    }
+
+    final diary = state.copyWith(imgUrl: uploadedImgUrl).toEntity();
 
     final res = await _createDiaryUseCase.call(event.diary);
 
@@ -107,12 +147,20 @@ class NewDiaryBloc extends Bloc<NewDiaryEvent, NewDiaryState> {
     emit(state.copyWith(rating: event.rating));
   }
 
-  // 이미지 변경
-  Future<void> _onChangePhoto(
-    ChangePhoto event,
+  // 로컬 이미지 선택
+  Future<void> _onSelectImg(
+    SelectImg event,
     Emitter<NewDiaryState> emit,
   ) async {
-    emit(state.copyWith(imgUrl: event.imgUrl));
+    emit(state.copyWith(localImgFile: event.file, imgUrl: null));
+  }
+
+  // 이미지 제거
+  Future<void> _onRemoveImg(
+    RemoveImg event,
+    Emitter<NewDiaryState> emit,
+  ) async {
+    emit(state.copyWith(localImgFile: null, imgUrl: null));
   }
 
   // 금액 변경

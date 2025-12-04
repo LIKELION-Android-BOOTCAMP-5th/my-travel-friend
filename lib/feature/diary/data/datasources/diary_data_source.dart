@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import '../../../../core/result/result.dart';
 import '../dtos/diary_dto.dart';
 
@@ -29,4 +31,10 @@ abstract class DiaryDataSource {
 
   // 다이어리 삭제
   Future<Result<void>> deleteDiary(int id);
+
+  // 이미지 업로드
+  Future<Result<String>> uploadImg({required File file, required int userId});
+
+  // 이미지 삭제
+  Future<Result<void>> deleteImg(String imgUrl);
 }

@@ -43,7 +43,7 @@ dependencies:
   fluttertoast: ^9.0.0
   lottie: ^3.1.0
   intl: ^0.20.2
-  image_picker: ^1.0.7
+  image_picker: ^1.1.2
   flutter_dotenv: ^5.0.2
   freezed: ^3.2.3
   flutter_bloc: ^9.1.1
@@ -60,6 +60,9 @@ dependencies:
   dio: ^5.4.0
   gal: ^2.3.0
   permission_handler: ^11.3.0
+  flutter_image_compress: ^2.3.0
+  path_provider: ^2.1.5
+  path: ^1.9.0
 
 
 
