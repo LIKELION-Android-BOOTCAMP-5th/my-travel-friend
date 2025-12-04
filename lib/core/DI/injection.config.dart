@@ -233,7 +233,7 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i1041.NewDiaryBloc>(
       () => _i1041.NewDiaryBloc(gh<_i27.CreateDiaryUseCase>()),
     );
-    gh.lazySingleton<_i387.AuthProfileBloc>(
+    gh.singleton<_i387.AuthProfileBloc>(
       () => _i387.AuthProfileBloc(
         gh<_i456.WatchAuthStateUseCase>(),
         gh<_i529.GetCurrentUserUseCase>(),
