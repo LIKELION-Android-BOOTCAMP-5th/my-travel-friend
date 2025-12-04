@@ -59,7 +59,26 @@ class AuthBlocWidget extends StatelessWidget {
           ),
 
           // 인증된 상태일 때 리스너로 네비게이션 될것이기 때문에 빈 컨테이너
-          authenticated: (userId) => Container(),
+          authenticated: (userId) {
+            // 위젯이 빌드되는 시점에 네비게이션을 수행하는 안전 장치입니다.
+            // 리스너의 네비게이션이 작동하지 않았을 경우에 대비합니다.
+
+            // postFrameCallback을 사용하여 빌드가 완료된 직후 네비게이션을 실행합니다.
+            // 이렇게 하면 'Widget build called multiple times' 오류를 방지할 수 있습니다.
+            WidgetsBinding.instance.addPostFrameCallback((_) {
+              // 현재 화면을 완전히 대체하고 홈 화면으로 이동합니다.
+              // pop/push 대신 pushReplacement를 사용하여 현재 AuthBlocWidget 화면이
+              // 스택에 남아있지 않도록 하는 것이 좋습니다.
+              // context.pushReplacement('/');
+
+              // 하지만 이미 listener에서 push/pop을 사용했으므로,
+              // 중복 네비게이션을 방지하기 위해 간단히 홈 화면으로 이동만 시킵니다.
+              context.pushReplacement('/');
+            });
+
+            // 네비게이션이 일어나기 전 잠시 동안 빈 위젯을 반환합니다.
+            return const SizedBox.shrink();
+          },
         );
       },
     );
