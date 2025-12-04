@@ -1,5 +1,3 @@
-// [이재은] 다이어리 작성 관련 이벤트 (사용자의 행동, 시스템에서 발생하는 일)
-
 import 'dart:io';
 
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -8,6 +6,7 @@ import '../../domain/entities/diary_entity.dart';
 
 part 'new_diary_event.freezed.dart';
 
+// [이재은] 다이어리 작성 관련 이벤트 (사용자의 행동, 시스템에서 발생하는 일)
 @freezed
 abstract class NewDiaryEvent with _$NewDiaryEvent {
   // 다이어리 생성

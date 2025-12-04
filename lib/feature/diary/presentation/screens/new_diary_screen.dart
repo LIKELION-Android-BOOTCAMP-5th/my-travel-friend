@@ -4,6 +4,7 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
+import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:my_travel_friend/core/widget/text_box.dart';
 import 'package:my_travel_friend/feature/diary/presentation/widgets/public_select_box.dart';
@@ -94,7 +95,7 @@ class _NewDiaryScreenState extends State<NewDiaryScreen> {
                       ? colorScheme.onSurface
                       : AppColors.light,
                   borderRadius: 20,
-                  onTap: () => {},
+                  onTap: () => context.pop(),
                 ),
                 actions: [
                   Button(

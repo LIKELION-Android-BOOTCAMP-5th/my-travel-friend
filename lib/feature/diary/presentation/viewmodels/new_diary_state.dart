@@ -6,7 +6,7 @@ import '../../domain/entities/diary_entity.dart';
 
 part 'new_diary_state.freezed.dart';
 
-// [이재은] 다이어리 전체 상태
+// [이재은] 다이어리 작성창 전체 상태
 
 @freezed
 abstract class NewDiaryState with _$NewDiaryState {
