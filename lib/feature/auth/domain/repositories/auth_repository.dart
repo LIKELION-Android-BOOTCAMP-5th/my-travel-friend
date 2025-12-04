@@ -16,7 +16,9 @@ abstract class AuthRepository {
   Future<Result<void>> signOut();
 
   // 4. 현재 사용자 확인
-  Future<Result<UserEntity?>> getCurrentUser();
+  Future<Result<UserEntity?>> getCurrentUser(String uuid);
   //
   Stream<Result<UserEntity?>> authStateChanges();
+  Future<Result<String>> updateFCMToken(String uuid);
+  Future<Result<String>> deleteFCMToken(String uuid);
 }

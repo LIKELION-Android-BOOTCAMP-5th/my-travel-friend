@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$UserDTO {
 
- int get id; String? get uuid; String? get nickname; String? get email; String? get token;@JsonKey(name: 'profile_img') String? get profileImg;@JsonKey(name: 'delete_at') String? get deletedAt;
+ int? get id; String? get uuid; String? get nickname; String? get email; String? get token;@JsonKey(name: 'profile_img') String? get profileImg;@JsonKey(name: 'delete_at') String? get deletedAt;
 /// Create a copy of UserDTO
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -48,7 +48,7 @@ abstract mixin class $UserDTOCopyWith<$Res>  {
   factory $UserDTOCopyWith(UserDTO value, $Res Function(UserDTO) _then) = _$UserDTOCopyWithImpl;
 @useResult
 $Res call({
- int id, String? uuid, String? nickname, String? email, String? token,@JsonKey(name: 'profile_img') String? profileImg,@JsonKey(name: 'delete_at') String? deletedAt
+ int? id, String? uuid, String? nickname, String? email, String? token,@JsonKey(name: 'profile_img') String? profileImg,@JsonKey(name: 'delete_at') String? deletedAt
 });
 
 
@@ -65,10 +65,10 @@ class _$UserDTOCopyWithImpl<$Res>
 
 /// Create a copy of UserDTO
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? uuid = freezed,Object? nickname = freezed,Object? email = freezed,Object? token = freezed,Object? profileImg = freezed,Object? deletedAt = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = freezed,Object? uuid = freezed,Object? nickname = freezed,Object? email = freezed,Object? token = freezed,Object? profileImg = freezed,Object? deletedAt = freezed,}) {
   return _then(_self.copyWith(
-id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
-as int,uuid: freezed == uuid ? _self.uuid : uuid // ignore: cast_nullable_to_non_nullable
+id: freezed == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
+as int?,uuid: freezed == uuid ? _self.uuid : uuid // ignore: cast_nullable_to_non_nullable
 as String?,nickname: freezed == nickname ? _self.nickname : nickname // ignore: cast_nullable_to_non_nullable
 as String?,email: freezed == email ? _self.email : email // ignore: cast_nullable_to_non_nullable
 as String?,token: freezed == token ? _self.token : token // ignore: cast_nullable_to_non_nullable
@@ -159,7 +159,7 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int id,  String? uuid,  String? nickname,  String? email,  String? token, @JsonKey(name: 'profile_img')  String? profileImg, @JsonKey(name: 'delete_at')  String? deletedAt)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int? id,  String? uuid,  String? nickname,  String? email,  String? token, @JsonKey(name: 'profile_img')  String? profileImg, @JsonKey(name: 'delete_at')  String? deletedAt)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _UserDTO() when $default != null:
 return $default(_that.id,_that.uuid,_that.nickname,_that.email,_that.token,_that.profileImg,_that.deletedAt);case _:
@@ -180,7 +180,7 @@ return $default(_that.id,_that.uuid,_that.nickname,_that.email,_that.token,_that
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int id,  String? uuid,  String? nickname,  String? email,  String? token, @JsonKey(name: 'profile_img')  String? profileImg, @JsonKey(name: 'delete_at')  String? deletedAt)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int? id,  String? uuid,  String? nickname,  String? email,  String? token, @JsonKey(name: 'profile_img')  String? profileImg, @JsonKey(name: 'delete_at')  String? deletedAt)  $default,) {final _that = this;
 switch (_that) {
 case _UserDTO():
 return $default(_that.id,_that.uuid,_that.nickname,_that.email,_that.token,_that.profileImg,_that.deletedAt);case _:
@@ -200,7 +200,7 @@ return $default(_that.id,_that.uuid,_that.nickname,_that.email,_that.token,_that
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int id,  String? uuid,  String? nickname,  String? email,  String? token, @JsonKey(name: 'profile_img')  String? profileImg, @JsonKey(name: 'delete_at')  String? deletedAt)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int? id,  String? uuid,  String? nickname,  String? email,  String? token, @JsonKey(name: 'profile_img')  String? profileImg, @JsonKey(name: 'delete_at')  String? deletedAt)?  $default,) {final _that = this;
 switch (_that) {
 case _UserDTO() when $default != null:
 return $default(_that.id,_that.uuid,_that.nickname,_that.email,_that.token,_that.profileImg,_that.deletedAt);case _:
@@ -218,7 +218,7 @@ class _UserDTO extends UserDTO {
   const _UserDTO({required this.id, required this.uuid, required this.nickname, required this.email, required this.token, @JsonKey(name: 'profile_img') required this.profileImg, @JsonKey(name: 'delete_at') required this.deletedAt}): super._();
   factory _UserDTO.fromJson(Map<String, dynamic> json) => _$UserDTOFromJson(json);
 
-@override final  int id;
+@override final  int? id;
 @override final  String? uuid;
 @override final  String? nickname;
 @override final  String? email;
@@ -259,7 +259,7 @@ abstract mixin class _$UserDTOCopyWith<$Res> implements $UserDTOCopyWith<$Res> {
   factory _$UserDTOCopyWith(_UserDTO value, $Res Function(_UserDTO) _then) = __$UserDTOCopyWithImpl;
 @override @useResult
 $Res call({
- int id, String? uuid, String? nickname, String? email, String? token,@JsonKey(name: 'profile_img') String? profileImg,@JsonKey(name: 'delete_at') String? deletedAt
+ int? id, String? uuid, String? nickname, String? email, String? token,@JsonKey(name: 'profile_img') String? profileImg,@JsonKey(name: 'delete_at') String? deletedAt
 });
 
 
@@ -276,10 +276,10 @@ class __$UserDTOCopyWithImpl<$Res>
 
 /// Create a copy of UserDTO
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? uuid = freezed,Object? nickname = freezed,Object? email = freezed,Object? token = freezed,Object? profileImg = freezed,Object? deletedAt = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = freezed,Object? uuid = freezed,Object? nickname = freezed,Object? email = freezed,Object? token = freezed,Object? profileImg = freezed,Object? deletedAt = freezed,}) {
   return _then(_UserDTO(
-id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
-as int,uuid: freezed == uuid ? _self.uuid : uuid // ignore: cast_nullable_to_non_nullable
+id: freezed == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
+as int?,uuid: freezed == uuid ? _self.uuid : uuid // ignore: cast_nullable_to_non_nullable
 as String?,nickname: freezed == nickname ? _self.nickname : nickname // ignore: cast_nullable_to_non_nullable
 as String?,email: freezed == email ? _self.email : email // ignore: cast_nullable_to_non_nullable
 as String?,token: freezed == token ? _self.token : token // ignore: cast_nullable_to_non_nullable

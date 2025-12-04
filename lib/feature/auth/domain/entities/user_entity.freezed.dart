@@ -14,7 +14,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$UserEntity {
 
- int get id; String? get uuid; String? get nickname; String? get email; String? get token; String? get profileImg; String? get deletedAt;
+ int? get id; String? get uuid; String? get nickname; String? get email; String? get token; String? get profileImg; String? get deletedAt;
 /// Create a copy of UserEntity
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -45,7 +45,7 @@ abstract mixin class $UserEntityCopyWith<$Res>  {
   factory $UserEntityCopyWith(UserEntity value, $Res Function(UserEntity) _then) = _$UserEntityCopyWithImpl;
 @useResult
 $Res call({
- int id, String? uuid, String? nickname, String? email, String? token, String? profileImg, String? deletedAt
+ int? id, String? uuid, String? nickname, String? email, String? token, String? profileImg, String? deletedAt
 });
 
 
@@ -62,10 +62,10 @@ class _$UserEntityCopyWithImpl<$Res>
 
 /// Create a copy of UserEntity
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? uuid = freezed,Object? nickname = freezed,Object? email = freezed,Object? token = freezed,Object? profileImg = freezed,Object? deletedAt = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = freezed,Object? uuid = freezed,Object? nickname = freezed,Object? email = freezed,Object? token = freezed,Object? profileImg = freezed,Object? deletedAt = freezed,}) {
   return _then(_self.copyWith(
-id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
-as int,uuid: freezed == uuid ? _self.uuid : uuid // ignore: cast_nullable_to_non_nullable
+id: freezed == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
+as int?,uuid: freezed == uuid ? _self.uuid : uuid // ignore: cast_nullable_to_non_nullable
 as String?,nickname: freezed == nickname ? _self.nickname : nickname // ignore: cast_nullable_to_non_nullable
 as String?,email: freezed == email ? _self.email : email // ignore: cast_nullable_to_non_nullable
 as String?,token: freezed == token ? _self.token : token // ignore: cast_nullable_to_non_nullable
@@ -156,7 +156,7 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int id,  String? uuid,  String? nickname,  String? email,  String? token,  String? profileImg,  String? deletedAt)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int? id,  String? uuid,  String? nickname,  String? email,  String? token,  String? profileImg,  String? deletedAt)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _UserEntity() when $default != null:
 return $default(_that.id,_that.uuid,_that.nickname,_that.email,_that.token,_that.profileImg,_that.deletedAt);case _:
@@ -177,7 +177,7 @@ return $default(_that.id,_that.uuid,_that.nickname,_that.email,_that.token,_that
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int id,  String? uuid,  String? nickname,  String? email,  String? token,  String? profileImg,  String? deletedAt)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int? id,  String? uuid,  String? nickname,  String? email,  String? token,  String? profileImg,  String? deletedAt)  $default,) {final _that = this;
 switch (_that) {
 case _UserEntity():
 return $default(_that.id,_that.uuid,_that.nickname,_that.email,_that.token,_that.profileImg,_that.deletedAt);case _:
@@ -197,7 +197,7 @@ return $default(_that.id,_that.uuid,_that.nickname,_that.email,_that.token,_that
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int id,  String? uuid,  String? nickname,  String? email,  String? token,  String? profileImg,  String? deletedAt)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int? id,  String? uuid,  String? nickname,  String? email,  String? token,  String? profileImg,  String? deletedAt)?  $default,) {final _that = this;
 switch (_that) {
 case _UserEntity() when $default != null:
 return $default(_that.id,_that.uuid,_that.nickname,_that.email,_that.token,_that.profileImg,_that.deletedAt);case _:
@@ -212,10 +212,10 @@ return $default(_that.id,_that.uuid,_that.nickname,_that.email,_that.token,_that
 
 
 class _UserEntity implements UserEntity {
-  const _UserEntity({required this.id, this.uuid, this.nickname, this.email, this.token, this.profileImg, this.deletedAt});
+  const _UserEntity({this.id, this.uuid, this.nickname, this.email, this.token, this.profileImg, this.deletedAt});
   
 
-@override final  int id;
+@override final  int? id;
 @override final  String? uuid;
 @override final  String? nickname;
 @override final  String? email;
@@ -253,7 +253,7 @@ abstract mixin class _$UserEntityCopyWith<$Res> implements $UserEntityCopyWith<$
   factory _$UserEntityCopyWith(_UserEntity value, $Res Function(_UserEntity) _then) = __$UserEntityCopyWithImpl;
 @override @useResult
 $Res call({
- int id, String? uuid, String? nickname, String? email, String? token, String? profileImg, String? deletedAt
+ int? id, String? uuid, String? nickname, String? email, String? token, String? profileImg, String? deletedAt
 });
 
 
@@ -270,10 +270,10 @@ class __$UserEntityCopyWithImpl<$Res>
 
 /// Create a copy of UserEntity
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? uuid = freezed,Object? nickname = freezed,Object? email = freezed,Object? token = freezed,Object? profileImg = freezed,Object? deletedAt = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = freezed,Object? uuid = freezed,Object? nickname = freezed,Object? email = freezed,Object? token = freezed,Object? profileImg = freezed,Object? deletedAt = freezed,}) {
   return _then(_UserEntity(
-id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
-as int,uuid: freezed == uuid ? _self.uuid : uuid // ignore: cast_nullable_to_non_nullable
+id: freezed == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
+as int?,uuid: freezed == uuid ? _self.uuid : uuid // ignore: cast_nullable_to_non_nullable
 as String?,nickname: freezed == nickname ? _self.nickname : nickname // ignore: cast_nullable_to_non_nullable
 as String?,email: freezed == email ? _self.email : email // ignore: cast_nullable_to_non_nullable
 as String?,token: freezed == token ? _self.token : token // ignore: cast_nullable_to_non_nullable
