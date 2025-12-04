@@ -11,7 +11,7 @@ class TempScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: Row(
+      child: Column(
         children: [
           Text("임시페이지"),
           TextButton(
@@ -20,7 +20,7 @@ class TempScreen extends StatelessWidget {
           ),
           IconButton(
             onPressed: () => context.push('/diary'),
-            icon: Icon(AppIcon.diary, color: AppColors.lightGreen, size: 20),
+            icon: Icon(AppIcon.diary, color: AppColors.lightGreen, size: 30),
           ),
         ],
       ),

@@ -155,4 +155,7 @@ class AppIcon {
 
   // 모래시계
   static const hourGlass = FontAwesomeIcons.hourglass;
+
+  // 저장
+  static const save = FontAwesomeIcons.solidFloppyDisk;
 }

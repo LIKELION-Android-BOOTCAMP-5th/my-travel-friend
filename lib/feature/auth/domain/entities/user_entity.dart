@@ -17,7 +17,7 @@ flutter 3.0이후부터는 반드시 클래스명 앞에 abstract나 sealed 키�
 @freezed
 abstract class UserEntity with _$UserEntity {
   const factory UserEntity({
-    required int id,
+    int? id,
     String? uuid,
     String? nickname,
     String? email,

@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:my_travel_friend/feature/auth/presentation/viewmodel/auth_bloc.dart';
+import 'package:my_travel_friend/feature/auth/presentation/viewmodel/auth/auth_bloc.dart';
 import 'package:my_travel_friend/theme/app_font.dart';
 
 import '../../../../theme/app_colors.dart';
-import '../../domain/entities/user_entity.dart';
-import '../viewmodel/auth_event.dart';
+
+import '../viewmodel/auth/auth_event.dart';
 import '../widgets/google_login_button.dart';
 import '../widgets/kakao_login_button.dart';
+import '../../domain/entities/user_entity.dart';
 
 // [이재은] 로그인 화면 생성
 // [전재민] bloc적용

@@ -6,6 +6,8 @@ import 'package:my_travel_friend/feature/diary/presentation/widgets/public_selec
 import 'package:my_travel_friend/feature/diary/presentation/widgets/schedule_picker_button.dart';
 import 'package:my_travel_friend/theme/app_font.dart';
 
+import '../../../../core/widget/app_bar.dart';
+import '../../../../core/widget/button.dart';
 import '../../../../theme/app_colors.dart';
 import '../../../../theme/app_icon.dart';
 import '../viewmodels/new_diary_bloc.dart';
@@ -73,6 +75,33 @@ class _NewDiaryScreenState extends State<NewDiaryScreen> {
             child: Scaffold(
               // 모드에 따른 배경 색 변경
               backgroundColor: isDark ? AppColors.navy : AppColors.darkerGray,
+              appBar: CustomButtonAppBar(
+                title: '다이어리 작성',
+                leading: Button(
+                  width: 40,
+                  height: 40,
+                  icon: Icon(AppIcon.back),
+                  contentColor: isDark
+                      ? colorScheme.onSurface
+                      : AppColors.light,
+                  borderRadius: 20,
+                  onTap: () => {},
+                ),
+                actions: [
+                  Button(
+                    width: 40,
+                    height: 40,
+                    icon: Icon(AppIcon.save),
+                    contentColor: isDark
+                        ? colorScheme.onSurface
+                        : AppColors.light,
+                    borderRadius: 20,
+                    onTap: () {
+                      //기능
+                    },
+                  ),
+                ],
+              ),
               body: SingleChildScrollView(
                 child: Padding(
                   padding: const EdgeInsets.all(20.0),
@@ -209,28 +238,25 @@ class _NewDiaryScreenState extends State<NewDiaryScreen> {
     ];
 
     return Row(
-      children: types.map((typeData) {
-        final (type, icon, label, color) = typeData;
-        final isSelected = state.type == type;
-
-        return Expanded(
-          child: Padding(
-            padding: EdgeInsets.only(right: type != 'MONEY' ? 6.0 : 0),
+      children: [
+        for (int i = 0; i < types.length; i++) ...[
+          Expanded(
             child: TypeButton(
-              type: type,
-              icon: icon,
-              label: label,
-              color: color,
-              isSelected: isSelected,
+              type: types[i].$1,
+              icon: types[i].$2,
+              label: types[i].$3,
+              color: types[i].$4,
+              isSelected: state.type == types[i].$1,
               onTap: () {
                 context.read<NewDiaryBloc>().add(
-                  NewDiaryEvent.changeType(type: type),
+                  NewDiaryEvent.changeType(type: types[i].$1),
                 );
               },
             ),
           ),
-        );
-      }).toList(),
+          if (i < types.length - 1) const SizedBox(width: 6),
+        ],
+      ],
     );
   }
 

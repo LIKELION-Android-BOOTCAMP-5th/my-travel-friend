@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:my_travel_friend/feature/auth/presentation/screens/auth_screen.dart';
-import 'package:my_travel_friend/feature/auth/presentation/viewmodel/auth_bloc.dart';
-import 'package:my_travel_friend/feature/auth/presentation/viewmodel/auth_state.dart';
+import 'package:my_travel_friend/feature/auth/presentation/viewmodel/auth/auth_bloc.dart';
+import 'package:my_travel_friend/feature/auth/presentation/viewmodel/auth/auth_state.dart';
 
 import '../../../../core/widget/toast_pop.dart';
 
@@ -28,6 +29,8 @@ class AuthBlocWidget extends StatelessWidget {
           authenticated: (userId) {
             // Navigator.of(context).pushReplacementNamed('/home');
             ToastPop.show('로그인 성공! User ID: $userId');
+            context.pop();
+            context.push('/');
           },
           // 오류 상태가 되면 알림/팝업 표시
           error: (message) {
