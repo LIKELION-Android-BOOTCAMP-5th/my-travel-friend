@@ -206,16 +206,15 @@ class SupabaseAuthDataSourceImpl implements SupabaseAuthDataSource {
     String? familyName,
   }) async {
     try {
-      // nonce 사용
       final AuthResponse response = await supabaseClient.auth.signInWithIdToken(
         provider: OAuthProvider.apple,
         idToken: idToken,
-        nonce: rawNonce, // accessToken 대신 nonce
+        nonce: rawNonce,
       );
 
-      final uuid = response.user?.id;
+      final user = response.user;
 
-      if (uuid == null) {
+      if (user == null) {
         return Result.failure(
           const Failure.authFailure(message: "사용자 정보를 가져올 수 없습니다"),
         );
@@ -238,22 +237,16 @@ class SupabaseAuthDataSourceImpl implements SupabaseAuthDataSource {
         );
       }
 
-      await updateFCMToken(uuid);
-
-      final userResult = await getCurrentUser(uuid);
-
-      return userResult.when(
-        success: (user) => Result.success(user),
-        failure: (_) => Result.success(
-          UserDTO(
-            id: null,
-            uuid: response.user!.id,
-            nickname: null,
-            email: response.user!.email,
-            token: null,
-            profileImg: null,
-            deletedAt: null,
-          ),
+      // response에서 직접 UserDTO 반환
+      return Result.success(
+        UserDTO(
+          id: null,
+          uuid: user.id,
+          nickname: null,
+          email: user.email,
+          token: null,
+          profileImg: null,
+          deletedAt: null,
         ),
       );
     } catch (e) {
