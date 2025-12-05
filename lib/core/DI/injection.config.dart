@@ -90,6 +90,7 @@ import '../../feature/trip/domain/usecases/get_crew_member_count_usecase.dart'
     as _i267;
 import '../../feature/trip/domain/usecases/get_my_trip_usecase.dart' as _i521;
 import '../../feature/trip/domain/usecases/give_up_trip_usecase.dart' as _i317;
+import '../../feature/trip/domain/usecases/search_trip_usecase.dart' as _i437;
 import '../service/internal/push_notification_service.dart' as _i737;
 import 'register_module.dart' as _i291;
 
@@ -145,6 +146,9 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.lazySingleton<_i317.GiveUpTripUsecase>(
       () => _i317.GiveUpTripUsecase(gh<_i161.TripRepository>()),
+    );
+    gh.lazySingleton<_i437.SearchTripUsecase>(
+      () => _i437.SearchTripUsecase(gh<_i161.TripRepository>()),
     );
     gh.lazySingleton<_i669.AcceptRequestUsecase>(
       () => _i669.AcceptRequestUsecase(gh<_i255.FriendRequestRepository>()),
