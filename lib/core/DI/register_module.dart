@@ -35,6 +35,8 @@ abstract class RegisterModule {
 
     if (Platform.isIOS) {
       clientId = dotenv.get("iOS_Client_Id");
+    } else {
+      clientId = dotenv.get("Client_Id");
     }
 
     await GoogleSignIn.instance.initialize(
