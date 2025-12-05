@@ -14,9 +14,15 @@ class TempScreen extends StatelessWidget {
       child: Column(
         children: [
           Text("임시페이지"),
-          TextButton(
-            onPressed: () => context.push('/login'),
-            child: Text("로그인으로"),
+          Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              TextButton(
+                onPressed: () => context.push('/login'),
+                child: Text("로그인으로"),
+              ),
+              TextButton(onPressed: () => {}, child: Text("로그인아웃")),
+            ],
           ),
           IconButton(
             onPressed: () => context.push('/diary'),
