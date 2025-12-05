@@ -55,13 +55,12 @@ extension AuthStatePatterns on AuthState {
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( AuthInitial value)?  initial,TResult Function( AuthLoading value)?  loading,TResult Function( AuthOAuthInProgress value)?  oauthInProgress,TResult Function( AuthAuthenticated value)?  authenticated,TResult Function( AuthUnauthenticated value)?  unauthenticated,TResult Function( AuthError value)?  error,required TResult orElse(),}){
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( AuthInitial value)?  initial,TResult Function( AuthLoading value)?  loading,TResult Function( AuthAuthenticated value)?  authenticated,TResult Function( AuthUnauthenticated value)?  unauthenticated,TResult Function( AuthError value)?  error,required TResult orElse(),}){
 final _that = this;
 switch (_that) {
 case AuthInitial() when initial != null:
 return initial(_that);case AuthLoading() when loading != null:
-return loading(_that);case AuthOAuthInProgress() when oauthInProgress != null:
-return oauthInProgress(_that);case AuthAuthenticated() when authenticated != null:
+return loading(_that);case AuthAuthenticated() when authenticated != null:
 return authenticated(_that);case AuthUnauthenticated() when unauthenticated != null:
 return unauthenticated(_that);case AuthError() when error != null:
 return error(_that);case _:
@@ -82,13 +81,12 @@ return error(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( AuthInitial value)  initial,required TResult Function( AuthLoading value)  loading,required TResult Function( AuthOAuthInProgress value)  oauthInProgress,required TResult Function( AuthAuthenticated value)  authenticated,required TResult Function( AuthUnauthenticated value)  unauthenticated,required TResult Function( AuthError value)  error,}){
+@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( AuthInitial value)  initial,required TResult Function( AuthLoading value)  loading,required TResult Function( AuthAuthenticated value)  authenticated,required TResult Function( AuthUnauthenticated value)  unauthenticated,required TResult Function( AuthError value)  error,}){
 final _that = this;
 switch (_that) {
 case AuthInitial():
 return initial(_that);case AuthLoading():
-return loading(_that);case AuthOAuthInProgress():
-return oauthInProgress(_that);case AuthAuthenticated():
+return loading(_that);case AuthAuthenticated():
 return authenticated(_that);case AuthUnauthenticated():
 return unauthenticated(_that);case AuthError():
 return error(_that);case _:
@@ -108,13 +106,12 @@ return error(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( AuthInitial value)?  initial,TResult? Function( AuthLoading value)?  loading,TResult? Function( AuthOAuthInProgress value)?  oauthInProgress,TResult? Function( AuthAuthenticated value)?  authenticated,TResult? Function( AuthUnauthenticated value)?  unauthenticated,TResult? Function( AuthError value)?  error,}){
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( AuthInitial value)?  initial,TResult? Function( AuthLoading value)?  loading,TResult? Function( AuthAuthenticated value)?  authenticated,TResult? Function( AuthUnauthenticated value)?  unauthenticated,TResult? Function( AuthError value)?  error,}){
 final _that = this;
 switch (_that) {
 case AuthInitial() when initial != null:
 return initial(_that);case AuthLoading() when loading != null:
-return loading(_that);case AuthOAuthInProgress() when oauthInProgress != null:
-return oauthInProgress(_that);case AuthAuthenticated() when authenticated != null:
+return loading(_that);case AuthAuthenticated() when authenticated != null:
 return authenticated(_that);case AuthUnauthenticated() when unauthenticated != null:
 return unauthenticated(_that);case AuthError() when error != null:
 return error(_that);case _:
@@ -134,12 +131,11 @@ return error(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  initial,TResult Function()?  loading,TResult Function( SocialLoginType type)?  oauthInProgress,TResult Function( String uuId)?  authenticated,TResult Function()?  unauthenticated,TResult Function( String message)?  error,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  initial,TResult Function()?  loading,TResult Function( String uuId)?  authenticated,TResult Function()?  unauthenticated,TResult Function( String message)?  error,required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case AuthInitial() when initial != null:
 return initial();case AuthLoading() when loading != null:
-return loading();case AuthOAuthInProgress() when oauthInProgress != null:
-return oauthInProgress(_that.type);case AuthAuthenticated() when authenticated != null:
+return loading();case AuthAuthenticated() when authenticated != null:
 return authenticated(_that.uuId);case AuthUnauthenticated() when unauthenticated != null:
 return unauthenticated();case AuthError() when error != null:
 return error(_that.message);case _:
@@ -160,12 +156,11 @@ return error(_that.message);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  initial,required TResult Function()  loading,required TResult Function( SocialLoginType type)  oauthInProgress,required TResult Function( String uuId)  authenticated,required TResult Function()  unauthenticated,required TResult Function( String message)  error,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  initial,required TResult Function()  loading,required TResult Function( String uuId)  authenticated,required TResult Function()  unauthenticated,required TResult Function( String message)  error,}) {final _that = this;
 switch (_that) {
 case AuthInitial():
 return initial();case AuthLoading():
-return loading();case AuthOAuthInProgress():
-return oauthInProgress(_that.type);case AuthAuthenticated():
+return loading();case AuthAuthenticated():
 return authenticated(_that.uuId);case AuthUnauthenticated():
 return unauthenticated();case AuthError():
 return error(_that.message);case _:
@@ -185,12 +180,11 @@ return error(_that.message);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  initial,TResult? Function()?  loading,TResult? Function( SocialLoginType type)?  oauthInProgress,TResult? Function( String uuId)?  authenticated,TResult? Function()?  unauthenticated,TResult? Function( String message)?  error,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  initial,TResult? Function()?  loading,TResult? Function( String uuId)?  authenticated,TResult? Function()?  unauthenticated,TResult? Function( String message)?  error,}) {final _that = this;
 switch (_that) {
 case AuthInitial() when initial != null:
 return initial();case AuthLoading() when loading != null:
-return loading();case AuthOAuthInProgress() when oauthInProgress != null:
-return oauthInProgress(_that.type);case AuthAuthenticated() when authenticated != null:
+return loading();case AuthAuthenticated() when authenticated != null:
 return authenticated(_that.uuId);case AuthUnauthenticated() when unauthenticated != null:
 return unauthenticated();case AuthError() when error != null:
 return error(_that.message);case _:
@@ -264,72 +258,6 @@ String toString() {
 
 
 
-
-/// @nodoc
-
-
-class AuthOAuthInProgress implements AuthState {
-  const AuthOAuthInProgress({required this.type});
-  
-
- final  SocialLoginType type;
-
-/// Create a copy of AuthState
-/// with the given fields replaced by the non-null parameter values.
-@JsonKey(includeFromJson: false, includeToJson: false)
-@pragma('vm:prefer-inline')
-$AuthOAuthInProgressCopyWith<AuthOAuthInProgress> get copyWith => _$AuthOAuthInProgressCopyWithImpl<AuthOAuthInProgress>(this, _$identity);
-
-
-
-@override
-bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is AuthOAuthInProgress&&(identical(other.type, type) || other.type == type));
-}
-
-
-@override
-int get hashCode => Object.hash(runtimeType,type);
-
-@override
-String toString() {
-  return 'AuthState.oauthInProgress(type: $type)';
-}
-
-
-}
-
-/// @nodoc
-abstract mixin class $AuthOAuthInProgressCopyWith<$Res> implements $AuthStateCopyWith<$Res> {
-  factory $AuthOAuthInProgressCopyWith(AuthOAuthInProgress value, $Res Function(AuthOAuthInProgress) _then) = _$AuthOAuthInProgressCopyWithImpl;
-@useResult
-$Res call({
- SocialLoginType type
-});
-
-
-
-
-}
-/// @nodoc
-class _$AuthOAuthInProgressCopyWithImpl<$Res>
-    implements $AuthOAuthInProgressCopyWith<$Res> {
-  _$AuthOAuthInProgressCopyWithImpl(this._self, this._then);
-
-  final AuthOAuthInProgress _self;
-  final $Res Function(AuthOAuthInProgress) _then;
-
-/// Create a copy of AuthState
-/// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') $Res call({Object? type = null,}) {
-  return _then(AuthOAuthInProgress(
-type: null == type ? _self.type : type // ignore: cast_nullable_to_non_nullable
-as SocialLoginType,
-  ));
-}
-
-
-}
 
 /// @nodoc
 

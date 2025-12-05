@@ -95,13 +95,9 @@ class AppleAuthDataSourceImpl implements AppleAuthDataSource {
       // OAuth 시작 전 Completer로 결과 대기
       _oauthCompleter = Completer<Result<AppleTokenEntity>>();
 
-      // Auth 상태 변화 리스너 (일회성)
-      late final StreamSubscription<AuthState> subscription;
-      subscription = supabaseClient.auth.onAuthStateChange.listen((data) {
+      _authSubscription = supabaseClient.auth.onAuthStateChange.listen((data) {
         if (data.event == AuthChangeEvent.signedIn && data.session != null) {
-          subscription.cancel();
-          if (!_oauthCompleter!.isCompleted) {
-            // OAuth 성공 - 빈 토큰 반환 (세션은 이미 Supabase에 저장됨)
+          if (_oauthCompleter != null && !_oauthCompleter!.isCompleted) {
             _oauthCompleter!.complete(
               Result.success(
                 const AppleTokenEntity(idToken: '', authorizationCode: null),
@@ -126,12 +122,12 @@ class AppleAuthDataSourceImpl implements AppleAuthDataSource {
         );
       }
 
-      // 타임아웃 1분 - 브라우저에서 안 돌아오면 자동 취소
+      // 타임아웃 3분 - 브라우저에서 안 돌아오면 자동 취소
       final result = await _oauthCompleter!.future.timeout(
-        const Duration(minutes: 1),
+        const Duration(minutes: 3),
         onTimeout: () {
           return Result.failure(
-            const Failure.authFailure(message: "로그인이 취소되었습니다"),
+            const Failure.authFailure(message: "로그인 시간이 초과되었습니다"),
           );
         },
       );

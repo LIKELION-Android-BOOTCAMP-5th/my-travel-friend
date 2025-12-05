@@ -12,10 +12,6 @@ abstract class AuthState with _$AuthState {
   /// 로딩 상태 (로그인 또는 로그아웃 요청 처리 중)
   const factory AuthState.loading() = AuthLoading;
 
-  // [이재은] 외부 브라우저 열어서 OAuth 진행
-  const factory AuthState.oauthInProgress({required SocialLoginType type}) =
-      AuthOAuthInProgress;
-
   /// 인증된 상태 (로그인 성공, userId는 임시 사용자 식별자)
   const factory AuthState.authenticated({required String uuId}) =
       AuthAuthenticated;
