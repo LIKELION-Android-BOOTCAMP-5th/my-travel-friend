@@ -2,6 +2,8 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>CADisableMinimumFrameDurationOnPhone</key>
+	<true/>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
@@ -24,6 +26,14 @@
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSCameraUsageDescription</key>
+	<string>다이어리에 사진을 추가하기 위해 카메라 접근 권한이 필요합니다.</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>사진을 갤러리에 저장하기 위해 권한이 필요합니다.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>다이어리에 사진을 추가하기 위해 사진 라이브러리 접근 권한이 필요합니다.</string>
+	<key>UIApplicationSupportsIndirectInputEvents</key>
+	<true/>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>
@@ -41,22 +51,5 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
-	<key>CADisableMinimumFrameDurationOnPhone</key>
-	<true/>
-	<key>UIApplicationSupportsIndirectInputEvents</key>
-	<true/>
-
-    <!-- 카메라 권한 -->
-    <key>NSCameraUsageDescription</key>
-    <string>다이어리에 사진을 추가하기 위해 카메라 접근 권한이 필요합니다.</string>
-
-    <!-- 갤러리 읽기 권한 -->
-    <key>NSPhotoLibraryUsageDescription</key>
-    <string>다이어리에 사진을 추가하기 위해 사진 라이브러리 접근 권한이 필요합니다.</string>
-
-    <!-- 갤러리 쓰기 권한 (이미지 저장용 - Gal 패키지 사용 시) -->
-    <key>NSPhotoLibraryAddUsageDescription</key>
-    <string>사진을 갤러리에 저장하기 위해 권한이 필요합니다.</string>
-
 </dict>
 </plist>

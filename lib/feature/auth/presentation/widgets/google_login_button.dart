@@ -29,9 +29,9 @@ class GoogleLoginButton extends StatelessWidget {
               Image.asset('assets/images/google_logo_24.png'),
               SizedBox(width: 16.0),
               Text(
-                "구글로 시작하기",
+                "Google로 시작하기",
                 textAlign: TextAlign.center,
-                style: AppFont.regularBold.copyWith(
+                style: AppFont.login.copyWith(
                   color: Color(0xff1F1F1F),
                   decoration: TextDecoration.none,
                 ),

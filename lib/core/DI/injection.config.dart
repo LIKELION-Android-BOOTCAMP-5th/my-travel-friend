@@ -197,11 +197,9 @@ extension GetItInjectableX on _i174.GetIt {
     gh.singleton<_i488.AuthRepository>(
       () => _i263.AuthRepositoryImpl(
         gh<_i153.GoogleAuthDataSource>(),
+        gh<_i278.AppleAuthDataSource>(),
         gh<_i1040.SupabaseAuthDataSource>(),
       ),
-    );
-    gh.singleton<_i456.WatchAuthStateUseCase>(
-      () => _i456.WatchAuthStateUseCase(gh<_i488.AuthRepository>()),
     );
     gh.lazySingleton<_i27.CreateDiaryUseCase>(
       () => _i27.CreateDiaryUseCase(gh<_i871.DiaryRepository>()),
@@ -238,11 +236,8 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i420.SocialSignInUseCase>(
       () => _i420.SocialSignInUseCase(gh<_i488.AuthRepository>()),
     );
-    gh.singleton<_i387.AuthProfileBloc>(
-      () => _i387.AuthProfileBloc(
-        gh<_i456.WatchAuthStateUseCase>(),
-        gh<_i529.GetCurrentUserUseCase>(),
-      ),
+    gh.singleton<_i456.WatchAuthStateUseCase>(
+      () => _i456.WatchAuthStateUseCase(gh<_i488.AuthRepository>()),
     );
     gh.factory<_i1041.NewDiaryBloc>(
       () => _i1041.NewDiaryBloc(
@@ -260,6 +255,12 @@ extension GetItInjectableX on _i174.GetIt {
       () => _i474.AuthBloc(
         gh<_i420.SocialSignInUseCase>(),
         gh<_i858.SignOutUseCase>(),
+      ),
+    );
+    gh.singleton<_i387.AuthProfileBloc>(
+      () => _i387.AuthProfileBloc(
+        gh<_i456.WatchAuthStateUseCase>(),
+        gh<_i529.GetCurrentUserUseCase>(),
       ),
     );
     return this;

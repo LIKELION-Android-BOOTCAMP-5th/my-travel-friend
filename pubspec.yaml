@@ -103,9 +103,13 @@ flutter:
     - assets/images/logo_dark.svg
     - assets/images/google_logo_24.png
     - assets/images/kakao_logo_48.png
+    - assets/images/apple_logo.png
     - assets/images/title_black.png
     - assets/images/title_white.png
     - assets/images/profile_hearty.png
+    - assets/images/android_login.png
+    - assets/images/kakao_login.png
+    - assets/images/apple_login.png
 
 
   # An image asset can refer to one or more resolution-specific "variants", see
@@ -138,7 +142,7 @@ flutter:
           weight: 700
         - asset: assets/fonts/Pretendard-ExtraBold.otf
           weight: 800
-        - asset: assets/fonts/Pretendard-Black.otf
+        - asset: assets/fonts/Roboto-Medium.ttf
           weight: 900
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/to/font-from-package

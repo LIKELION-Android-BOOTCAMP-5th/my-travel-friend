@@ -69,6 +69,14 @@ class AppFont {
     height: 16 / 12,
   );
 
+  // D9 : Roboto Medium 12px
+  static const TextStyle login = TextStyle(
+    fontFamily: _fontFamily,
+    fontWeight: FontWeight.w900,
+    fontSize: 15,
+    height: 19 / 15,
+  );
+
   // [이재은] Material3 TextTheme으로 변환
   static TextTheme get textTheme => const TextTheme(
     displayLarge: tiny,
@@ -79,5 +87,6 @@ class AppFont {
     headlineSmall: big,
     titleLarge: huge,
     titleMedium: hugeBold,
+    titleSmall: login,
   );
 }

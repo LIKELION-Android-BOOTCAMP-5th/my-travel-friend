@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_travel_friend/feature/auth/presentation/viewmodel/auth/auth_bloc.dart';
+import 'package:my_travel_friend/feature/auth/presentation/widgets/apple_login_button.dart';
 import 'package:my_travel_friend/theme/app_font.dart';
 
 import '../../../../theme/app_colors.dart';
-
+import '../../domain/entities/user_entity.dart';
 import '../viewmodel/auth/auth_event.dart';
 import '../widgets/google_login_button.dart';
 import '../widgets/kakao_login_button.dart';
-import '../../domain/entities/user_entity.dart';
 
 // [이재은] 로그인 화면 생성
 // [전재민] bloc적용
@@ -25,7 +25,7 @@ class AuthScreen extends StatelessWidget {
         body: Container(
           width: MediaQuery.of(context).size.width,
           height: MediaQuery.of(context).size.height,
-          color: const Color(0xffEEF5FA),
+          color: const Color(0xffcaebf3),
           child: Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -48,7 +48,17 @@ class AuthScreen extends StatelessWidget {
                         );
                       }, // 구글 로그인 액션 넣기
                     ),
-                    SizedBox(height: 8.0),
+                    SizedBox(height: 16.0),
+                    AppleLoginButton(
+                      onTap: () {
+                        authBloc.add(
+                          const AuthEvent.signInWithSocialPressed(
+                            type: SocialLoginType.apple,
+                          ),
+                        );
+                      }, // 구글 로그인 액션 넣기
+                    ),
+                    SizedBox(height: 16.0),
                     KakaoLoginButton(
                       onTap: () {
                         authBloc.add(
