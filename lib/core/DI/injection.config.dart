@@ -16,6 +16,10 @@ import 'package:google_sign_in/google_sign_in.dart' as _i116;
 import 'package:injectable/injectable.dart' as _i526;
 import 'package:supabase_flutter/supabase_flutter.dart' as _i454;
 
+import '../../feature/auth/data/datasources/apple_auth_data_source.dart'
+    as _i278;
+import '../../feature/auth/data/datasources/apple_auth_data_source_impl.dart'
+    as _i45;
 import '../../feature/auth/data/datasources/google_auth_data_source.dart'
     as _i153;
 import '../../feature/auth/data/datasources/google_auth_data_source_impl.dart'
@@ -119,6 +123,9 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.lazySingleton<_i153.GoogleAuthDataSource>(
       () => _i795.SocialAuthDataSourceImpl(gh<_i116.GoogleSignIn>()),
+    );
+    gh.lazySingleton<_i278.AppleAuthDataSource>(
+      () => _i45.AppleAuthDataSourceImpl(),
     );
     gh.lazySingleton<_i737.PushNotificationService>(
       () => _i737.PushNotificationService(gh<_i892.FirebaseMessaging>()),

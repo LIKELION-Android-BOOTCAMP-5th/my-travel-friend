@@ -29,8 +29,8 @@ class SupabaseAuthDataSourceImpl implements SupabaseAuthDataSource {
       case SocialLoginType.kakao:
         return OAuthProvider.kakao;
       case SocialLoginType.apple:
-        // TODO: Handle this case.
-        throw UnimplementedError();
+        // [이재은] 애플 추가
+        return OAuthProvider.apple;
       case SocialLoginType.naver:
         // TODO: Handle this case.
         throw UnimplementedError();
