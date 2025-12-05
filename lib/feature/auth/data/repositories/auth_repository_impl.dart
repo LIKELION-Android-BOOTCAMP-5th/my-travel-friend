@@ -81,7 +81,11 @@ class AuthRepositoryImpl implements AuthRepository {
     return supabaseAuthDataSource.userProfileStream.map((result) {
       return result.when(
         success: (success) {
-          return Result.success(success?.toEntity());
+          if (success!.uuid == null) {
+            return Result.success(null);
+          } else {
+            return Result.success(success.toEntity());
+          }
         },
         failure: (failure) {
           return Result.failure(failure);
