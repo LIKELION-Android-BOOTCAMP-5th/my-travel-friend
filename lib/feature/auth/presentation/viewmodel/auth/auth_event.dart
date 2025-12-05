@@ -13,6 +13,9 @@ abstract class AuthEvent with _$AuthEvent {
     required SocialLoginType type,
   }) = SignInWithSocialPressed;
 
+  /// [이재은] 로그인 취소 하는 이벤트 (뒤로가기, 앱복귀등)
+  const factory AuthEvent.signInCancelled() = SignInCanceled;
+
   /// 로그아웃 요청 이벤트
   const factory AuthEvent.signedOut() = SignedOut;
 }

@@ -57,6 +57,14 @@
                 <data android:scheme="com.example.myTravelFriend" android:host="login-callback" />
             </intent-filter>
             <!--콜백url처리용-->
+            <!-- 애플 로그인 용 -->
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="mytravelfriend" android:host="login-callback" />
+            </intent-filter>
+            <!-- 애플 로그인 용 -->
         </activity>
         <!--flutter_local_notification용 리시버 설정-->
         <receiver android:exported="false" android:name="com.dexterous.flutterlocalnotifications.ScheduledNotificationReceiver" />

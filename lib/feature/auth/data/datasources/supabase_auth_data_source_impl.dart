@@ -29,8 +29,8 @@ class SupabaseAuthDataSourceImpl implements SupabaseAuthDataSource {
       case SocialLoginType.kakao:
         return OAuthProvider.kakao;
       case SocialLoginType.apple:
-        // TODO: Handle this case.
-        throw UnimplementedError();
+        // [이재은] 애플 추가
+        return OAuthProvider.apple;
       case SocialLoginType.naver:
         // TODO: Handle this case.
         throw UnimplementedError();
@@ -194,6 +194,63 @@ class SupabaseAuthDataSourceImpl implements SupabaseAuthDataSource {
       // tokenRefreshed, passwordRecovery 등은 상태 변경 없이 무시
       default:
         break;
+    }
+  }
+
+  // [이재은] Apple 로그인 (nonce 사용)
+  @override
+  Future<Result<UserDTO>> signInWithApple({
+    required String idToken,
+    required String rawNonce,
+    String? givenName,
+    String? familyName,
+  }) async {
+    try {
+      final AuthResponse response = await supabaseClient.auth.signInWithIdToken(
+        provider: OAuthProvider.apple,
+        idToken: idToken,
+        nonce: rawNonce,
+      );
+
+      final user = response.user;
+
+      if (user == null) {
+        return Result.failure(
+          const Failure.authFailure(message: "사용자 정보를 가져올 수 없습니다"),
+        );
+      }
+
+      if (givenName != null || familyName != null) {
+        final nameParts = <String>[];
+        if (familyName != null) nameParts.add(familyName);
+        if (givenName != null) nameParts.add(givenName);
+        final fullName = nameParts.join(' ');
+
+        await supabaseClient.auth.updateUser(
+          UserAttributes(
+            data: {
+              'full_name': fullName,
+              'given_name': givenName,
+              'family_name': familyName,
+            },
+          ),
+        );
+      }
+
+      // response에서 직접 UserDTO 반환
+      return Result.success(
+        UserDTO(
+          id: null,
+          uuid: user.id,
+          nickname: null,
+          email: user.email,
+          token: null,
+          profileImg: null,
+          deletedAt: null,
+        ),
+      );
+    } catch (e) {
+      return Result.failure(Failure.undefined(message: "Apple 로그인 오류: $e"));
     }
   }
 

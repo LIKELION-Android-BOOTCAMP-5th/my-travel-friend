@@ -16,6 +16,10 @@ import 'package:google_sign_in/google_sign_in.dart' as _i116;
 import 'package:injectable/injectable.dart' as _i526;
 import 'package:supabase_flutter/supabase_flutter.dart' as _i454;
 
+import '../../feature/auth/data/datasources/apple_auth_data_source.dart'
+    as _i278;
+import '../../feature/auth/data/datasources/apple_auth_data_source_impl.dart'
+    as _i45;
 import '../../feature/auth/data/datasources/google_auth_data_source.dart'
     as _i153;
 import '../../feature/auth/data/datasources/google_auth_data_source_impl.dart'
@@ -27,6 +31,7 @@ import '../../feature/auth/data/datasources/supabase_auth_data_source_impl.dart'
 import '../../feature/auth/data/repositories/auth_repository_impl.dart'
     as _i263;
 import '../../feature/auth/domain/repositories/auth_repository.dart' as _i488;
+import '../../feature/auth/domain/usecases/cancel_oauth_usecase.dart' as _i739;
 import '../../feature/auth/domain/usecases/get_current_user_usecase.dart'
     as _i529;
 import '../../feature/auth/domain/usecases/sign_out_usecase.dart' as _i858;
@@ -90,6 +95,7 @@ import '../../feature/trip/domain/usecases/get_crew_member_count_usecase.dart'
     as _i267;
 import '../../feature/trip/domain/usecases/get_my_trip_usecase.dart' as _i521;
 import '../../feature/trip/domain/usecases/give_up_trip_usecase.dart' as _i317;
+import '../../feature/trip/domain/usecases/search_trip_usecase.dart' as _i437;
 import '../service/internal/push_notification_service.dart' as _i737;
 import 'register_module.dart' as _i291;
 
@@ -115,6 +121,9 @@ extension GetItInjectableX on _i174.GetIt {
     await gh.lazySingletonAsync<_i116.GoogleSignIn>(
       () => registerModule.initializeGoogleSignIn(),
       preResolve: true,
+    );
+    gh.lazySingleton<_i278.AppleAuthDataSource>(
+      () => _i45.AppleAuthDataSourceImpl(gh<_i454.SupabaseClient>()),
     );
     gh.lazySingleton<_i153.GoogleAuthDataSource>(
       () => _i795.SocialAuthDataSourceImpl(gh<_i116.GoogleSignIn>()),
@@ -145,6 +154,9 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.lazySingleton<_i317.GiveUpTripUsecase>(
       () => _i317.GiveUpTripUsecase(gh<_i161.TripRepository>()),
+    );
+    gh.lazySingleton<_i437.SearchTripUsecase>(
+      () => _i437.SearchTripUsecase(gh<_i161.TripRepository>()),
     );
     gh.lazySingleton<_i669.AcceptRequestUsecase>(
       () => _i669.AcceptRequestUsecase(gh<_i255.FriendRequestRepository>()),
@@ -186,11 +198,9 @@ extension GetItInjectableX on _i174.GetIt {
     gh.singleton<_i488.AuthRepository>(
       () => _i263.AuthRepositoryImpl(
         gh<_i153.GoogleAuthDataSource>(),
+        gh<_i278.AppleAuthDataSource>(),
         gh<_i1040.SupabaseAuthDataSource>(),
       ),
-    );
-    gh.singleton<_i456.WatchAuthStateUseCase>(
-      () => _i456.WatchAuthStateUseCase(gh<_i488.AuthRepository>()),
     );
     gh.lazySingleton<_i27.CreateDiaryUseCase>(
       () => _i27.CreateDiaryUseCase(gh<_i871.DiaryRepository>()),
@@ -227,11 +237,11 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i420.SocialSignInUseCase>(
       () => _i420.SocialSignInUseCase(gh<_i488.AuthRepository>()),
     );
-    gh.singleton<_i387.AuthProfileBloc>(
-      () => _i387.AuthProfileBloc(
-        gh<_i456.WatchAuthStateUseCase>(),
-        gh<_i529.GetCurrentUserUseCase>(),
-      ),
+    gh.lazySingleton<_i739.CancelOauthUseCase>(
+      () => _i739.CancelOauthUseCase(gh<_i488.AuthRepository>()),
+    );
+    gh.singleton<_i456.WatchAuthStateUseCase>(
+      () => _i456.WatchAuthStateUseCase(gh<_i488.AuthRepository>()),
     );
     gh.factory<_i1041.NewDiaryBloc>(
       () => _i1041.NewDiaryBloc(
@@ -249,6 +259,13 @@ extension GetItInjectableX on _i174.GetIt {
       () => _i474.AuthBloc(
         gh<_i420.SocialSignInUseCase>(),
         gh<_i858.SignOutUseCase>(),
+        gh<_i739.CancelOauthUseCase>(),
+      ),
+    );
+    gh.singleton<_i387.AuthProfileBloc>(
+      () => _i387.AuthProfileBloc(
+        gh<_i456.WatchAuthStateUseCase>(),
+        gh<_i529.GetCurrentUserUseCase>(),
       ),
     );
     return this;

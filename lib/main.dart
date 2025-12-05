@@ -5,7 +5,9 @@ import 'package:get_it/get_it.dart';
 import 'package:my_travel_friend/config/router.dart';
 import 'package:my_travel_friend/core/DI/injection.dart';
 import 'package:my_travel_friend/theme/app_theme.dart';
+import 'package:permission_handler/permission_handler.dart';
 
+import 'core/service/internal/push_notification_service.dart';
 import 'feature/auth/presentation/viewmodel/auth_profile/auth_profile_bloc.dart';
 
 void main() async {
@@ -14,6 +16,9 @@ void main() async {
   await dotenv.load(fileName: "assets/config/.env");
   //DI관련
   await configureDependencies();
+
+  // 권한 요청
+  await _requestPermissions();
 
   runApp(
     MultiBlocProvider(
@@ -24,6 +29,22 @@ void main() async {
       child: const MyApp(),
     ),
   );
+}
+
+// 앱 시작시 필요한 권한 요청
+Future<void> _requestPermissions() async {
+  // FCM 푸시 알림 권한
+  final pushService = GetIt.instance<PushNotificationService>();
+  await pushService.requestPermission();
+
+  // 카메라 권한
+  await Permission.camera.request();
+
+  // 앨범/갤러리 권한
+  await Permission.photos.request();
+
+  // 저장 권한 (Android)
+  await Permission.storage.request();
 }
 
 class MyApp extends StatelessWidget {

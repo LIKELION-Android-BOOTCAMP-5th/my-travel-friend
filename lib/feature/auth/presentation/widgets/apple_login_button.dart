@@ -1,13 +1,13 @@
-// [이재은] 카카오 로그인 버튼 위젯 생성
-// 카카오 디자인 가이드 규칙에 따라 생성함
+// [이재은] 구글 로그인 버튼 위젯 생성
+// 구글 디자인 가이드 규칙에 따라 생성함
 
 import 'package:flutter/material.dart';
 
 import '../../../../theme/app_font.dart';
 
-class KakaoLoginButton extends StatelessWidget {
+class AppleLoginButton extends StatelessWidget {
   final VoidCallback? onTap;
-  const KakaoLoginButton({super.key, required this.onTap});
+  const AppleLoginButton({super.key, required this.onTap});
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +17,7 @@ class KakaoLoginButton extends StatelessWidget {
         width: MediaQuery.of(context).size.width * 0.7,
         height: 50,
         decoration: BoxDecoration(
-          color: Color(0xffFEE500),
+          color: Color(0xff000000),
           borderRadius: BorderRadius.all(Radius.circular(12.0)),
         ),
         child: Padding(
@@ -26,13 +26,13 @@ class KakaoLoginButton extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Image.asset('assets/images/kakao_logo_48.png'),
+              Image.asset('assets/images/apple_logo.png', width: 18),
               SizedBox(width: 16.0),
               Text(
-                "카카오 로그인",
+                "Apple로 로그인",
                 textAlign: TextAlign.center,
                 style: AppFont.login.copyWith(
-                  color: Color(0xff000000),
+                  color: Color(0xffffffff),
                   decoration: TextDecoration.none,
                 ),
               ),

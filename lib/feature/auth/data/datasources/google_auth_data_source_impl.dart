@@ -41,7 +41,7 @@ class SocialAuthDataSourceImpl implements GoogleAuthDataSource {
         ),
       );
     } catch (e) {
-      return Result.failure(Failure.undefined(message: "알수없는 오류 ${e}"));
+      return Result.failure(Failure.undefined(message: "알 수 없는 오류 ${e}"));
     }
   }
 }

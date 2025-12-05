@@ -21,4 +21,11 @@ abstract class AuthRepository {
   Stream<Result<UserEntity?>> authStateChanges();
   Future<Result<String>> updateFCMToken(String uuid);
   Future<Result<String>> deleteFCMToken(String uuid);
+
+  // [이재은]
+  // OAuth 취소
+  void cancelOAuth();
+
+  // OAuth 진행 중 여부 확인
+  bool get isOAuthInProgress;
 }

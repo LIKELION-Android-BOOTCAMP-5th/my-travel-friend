@@ -6,6 +6,9 @@ import 'package:my_travel_friend/feature/auth/presentation/viewmodel/auth/auth_b
 import 'package:my_travel_friend/feature/auth/presentation/viewmodel/auth/auth_state.dart';
 
 import '../../../../core/widget/toast_pop.dart';
+import '../../../../theme/app_colors.dart';
+import '../../../../theme/app_font.dart';
+import '../viewmodel/auth/auth_event.dart';
 
 // [전재민]
 /*
@@ -48,14 +51,39 @@ class AuthBlocWidget extends StatelessWidget {
           error: (message) => const AuthScreen(),
 
           // 로딩 상태일 때 로딩 인디케이터를 포함한 로그인 화면 표시
-          loading: () => Stack(
-            children: [
-              const AuthScreen(),
-              Container(
-                color: Colors.black.withOpacity(0.5),
-                child: const Center(child: CircularProgressIndicator()),
-              ),
-            ],
+          loading: () => PopScope(
+            canPop: false,
+            child: Stack(
+              children: [
+                const AuthScreen(),
+                Container(
+                  color: Colors.black.withOpacity(0.5),
+                  child: Center(
+                    child: Column(
+                      mainAxisSize: MainAxisSize.max,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const CircularProgressIndicator(),
+                        const SizedBox(height: 16),
+                        TextButton(
+                          onPressed: () {
+                            context.read<AuthBloc>().add(
+                              const AuthEvent.signInCancelled(),
+                            );
+                          },
+                          child: Text(
+                            '로그인 취소',
+                            style: AppFont.regular.copyWith(
+                              color: AppColors.secondary,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
 
           // 인증된 상태일 때 리스너로 네비게이션 될것이기 때문에 빈 컨테이너

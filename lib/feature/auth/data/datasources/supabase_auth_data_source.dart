@@ -9,6 +9,14 @@ abstract class SupabaseAuthDataSource {
     required String idToken,
     required String accessToken,
   });
+
+  Future<Result<UserDTO>> signInWithApple({
+    required String idToken,
+    required String rawNonce,
+    String? givenName,
+    String? familyName,
+  });
+
   Stream<Result<UserDTO?>> get userProfileStream;
   Future<Result<void>> signOut();
   Future<Result<UserDTO>> getCurrentUser(String uuid);
