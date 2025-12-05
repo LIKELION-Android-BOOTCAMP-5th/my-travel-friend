@@ -1,6 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 import 'package:my_travel_friend/core/result/result.dart';
+import 'package:my_travel_friend/feature/auth/domain/usecases/cancel_oauth_usecase.dart';
 
 import '../../../domain/usecases/sign_out_usecase.dart';
 import '../../../domain/usecases/social_sign_in_usecase.dart';
@@ -12,12 +13,14 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   //bloc에서 사용할 usercase 를 주입받아야함.
   final SocialSignInUseCase _signInUseCase;
   final SignOutUseCase _signOutUseCase;
+  final CancelOauthUseCase _cancelOauthUseCase;
 
   // BLoC 초기 상태는 Unauthenticated로 설정하여 로그인 화면을 표시
-  AuthBloc(this._signInUseCase, this._signOutUseCase)
+  AuthBloc(this._signInUseCase, this._signOutUseCase, this._cancelOauthUseCase)
     : super(const AuthState.unauthenticated()) {
     on<AuthStarted>(_onAuthStarted);
     on<SignInWithSocialPressed>(_onSignInWithSocialPressed);
+    on<SignInCanceled>(_onSignInCanceled);
     on<SignedOut>(_onSignedOut);
   }
 
@@ -48,11 +51,20 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       },
       failure: (fail) {
         // 실패 시 Error 상태로 전환
-        emit(AuthState.error(message: 'Google 로그인 실패: ${fail.message}'));
+        emit(AuthState.error(message: '로그인 실패: ${fail.message}'));
         // 에러 후 다시 비 인증상태
         emit(const AuthState.unauthenticated());
       },
     );
+  }
+
+  // [이재은] 로그인 중 취소 사건 발생시
+  Future<void> _onSignInCanceled(
+    SignInCanceled event,
+    Emitter<AuthState> emit,
+  ) async {
+    _cancelOauthUseCase.call();
+    emit(const AuthState.unauthenticated());
   }
 
   // 로그아웃 이벤트 핸들러

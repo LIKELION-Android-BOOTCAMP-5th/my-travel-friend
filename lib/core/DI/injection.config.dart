@@ -31,6 +31,7 @@ import '../../feature/auth/data/datasources/supabase_auth_data_source_impl.dart'
 import '../../feature/auth/data/repositories/auth_repository_impl.dart'
     as _i263;
 import '../../feature/auth/domain/repositories/auth_repository.dart' as _i488;
+import '../../feature/auth/domain/usecases/cancel_oauth_usecase.dart' as _i739;
 import '../../feature/auth/domain/usecases/get_current_user_usecase.dart'
     as _i529;
 import '../../feature/auth/domain/usecases/sign_out_usecase.dart' as _i858;
@@ -121,11 +122,11 @@ extension GetItInjectableX on _i174.GetIt {
       () => registerModule.initializeGoogleSignIn(),
       preResolve: true,
     );
+    gh.lazySingleton<_i278.AppleAuthDataSource>(
+      () => _i45.AppleAuthDataSourceImpl(gh<_i454.SupabaseClient>()),
+    );
     gh.lazySingleton<_i153.GoogleAuthDataSource>(
       () => _i795.SocialAuthDataSourceImpl(gh<_i116.GoogleSignIn>()),
-    );
-    gh.lazySingleton<_i278.AppleAuthDataSource>(
-      () => _i45.AppleAuthDataSourceImpl(),
     );
     gh.lazySingleton<_i737.PushNotificationService>(
       () => _i737.PushNotificationService(gh<_i892.FirebaseMessaging>()),
@@ -236,6 +237,9 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i420.SocialSignInUseCase>(
       () => _i420.SocialSignInUseCase(gh<_i488.AuthRepository>()),
     );
+    gh.lazySingleton<_i739.CancelOauthUseCase>(
+      () => _i739.CancelOauthUseCase(gh<_i488.AuthRepository>()),
+    );
     gh.singleton<_i456.WatchAuthStateUseCase>(
       () => _i456.WatchAuthStateUseCase(gh<_i488.AuthRepository>()),
     );
@@ -255,6 +259,7 @@ extension GetItInjectableX on _i174.GetIt {
       () => _i474.AuthBloc(
         gh<_i420.SocialSignInUseCase>(),
         gh<_i858.SignOutUseCase>(),
+        gh<_i739.CancelOauthUseCase>(),
       ),
     );
     gh.singleton<_i387.AuthProfileBloc>(

@@ -4,8 +4,11 @@ import 'package:go_router/go_router.dart';
 import 'package:my_travel_friend/feature/auth/presentation/screens/auth_screen.dart';
 import 'package:my_travel_friend/feature/auth/presentation/viewmodel/auth/auth_bloc.dart';
 import 'package:my_travel_friend/feature/auth/presentation/viewmodel/auth/auth_state.dart';
+import 'package:my_travel_friend/theme/app_colors.dart';
 
 import '../../../../core/widget/toast_pop.dart';
+import '../../../../theme/app_font.dart';
+import '../viewmodel/auth/auth_event.dart';
 
 // [전재민]
 /*
@@ -56,6 +59,56 @@ class AuthBlocWidget extends StatelessWidget {
                 child: const Center(child: CircularProgressIndicator()),
               ),
             ],
+          ),
+
+          // [이재은] 뒤로가기 등으로 인해 로그인이 취소되었을 때 (안드로이드 애플 로그인)
+          // 로그인이 성공하면 딥링크로 복귀해서 authenticated 상태
+          // 뒤로가면 popscope로, 취소버튼 누를 경우 -> 취소 이벤트발생
+          // 브라우저에서 안돌아오면 로그인 자동 취소(1분 제한)
+          oauthInProgress: (type) => PopScope(
+            canPop: false,
+            onPopInvokedWithResult: (didPop, result) {
+              if (!didPop) {
+                context.read<AuthBloc>().add(const AuthEvent.signInCancelled());
+              }
+            },
+            child: Stack(
+              children: [
+                const AuthScreen(),
+                Container(
+                  color: Colors.black.withOpacity(0.5),
+                  child: Center(
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        const CircularProgressIndicator(),
+                        const SizedBox(height: 16),
+                        Text(
+                          'Apple 로그인 진행 중...',
+                          style: AppFont.regularBold.copyWith(
+                            color: AppColors.light,
+                          ),
+                        ),
+                        const SizedBox(height: 16),
+                        TextButton(
+                          onPressed: () {
+                            context.read<AuthBloc>().add(
+                              const AuthEvent.signInCancelled(),
+                            );
+                          },
+                          child: Text(
+                            '취소',
+                            style: AppFont.small.copyWith(
+                              color: AppColors.secondary,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
 
           // 인증된 상태일 때 리스너로 네비게이션 될것이기 때문에 빈 컨테이너
