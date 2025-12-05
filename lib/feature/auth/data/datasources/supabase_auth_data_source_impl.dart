@@ -197,6 +197,70 @@ class SupabaseAuthDataSourceImpl implements SupabaseAuthDataSource {
     }
   }
 
+  // [이재은] Apple 로그인 (nonce 사용)
+  @override
+  Future<Result<UserDTO>> signInWithApple({
+    required String idToken,
+    required String rawNonce,
+    String? givenName,
+    String? familyName,
+  }) async {
+    try {
+      // nonce 사용
+      final AuthResponse response = await supabaseClient.auth.signInWithIdToken(
+        provider: OAuthProvider.apple,
+        idToken: idToken,
+        nonce: rawNonce, // accessToken 대신 nonce
+      );
+
+      final uuid = response.user?.id;
+
+      if (uuid == null) {
+        return Result.failure(
+          const Failure.authFailure(message: "사용자 정보를 가져올 수 없습니다"),
+        );
+      }
+
+      if (givenName != null || familyName != null) {
+        final nameParts = <String>[];
+        if (familyName != null) nameParts.add(familyName);
+        if (givenName != null) nameParts.add(givenName);
+        final fullName = nameParts.join(' ');
+
+        await supabaseClient.auth.updateUser(
+          UserAttributes(
+            data: {
+              'full_name': fullName,
+              'given_name': givenName,
+              'family_name': familyName,
+            },
+          ),
+        );
+      }
+
+      await updateFCMToken(uuid);
+
+      final userResult = await getCurrentUser(uuid);
+
+      return userResult.when(
+        success: (user) => Result.success(user),
+        failure: (_) => Result.success(
+          UserDTO(
+            id: null,
+            uuid: response.user!.id,
+            nickname: null,
+            email: response.user!.email,
+            token: null,
+            profileImg: null,
+            deletedAt: null,
+          ),
+        ),
+      );
+    } catch (e) {
+      return Result.failure(Failure.undefined(message: "Apple 로그인 오류: $e"));
+    }
+  }
+
   //Repository에 제공할 UserDTO 스트림
   @override
   Stream<Result<UserDTO?>> get userProfileStream =>

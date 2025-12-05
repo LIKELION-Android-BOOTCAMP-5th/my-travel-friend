@@ -67,7 +67,7 @@ class AuthRepositoryImpl implements AuthRepository {
         // TODO: Handle this case.
         throw UnimplementedError();
 
-      case SocialLoginType.apple: //[이재은] 애플 로그인 추가
+      case SocialLoginType.apple: // [이재은] 애플 로그인 추가
         final res = await appleDataSource.getAppleToken();
         return res.when(
           failure: (fail) => Result.failure(fail),
@@ -86,12 +86,14 @@ class AuthRepositoryImpl implements AuthRepository {
               );
             }
 
-            // iOS: 기존 토큰 방식
-            final authResult = await supabaseAuthDataSource.signInWithToken(
-              type: type,
+            // iOS: Apple 전용 메서드 사용 (nonce 포함)
+            final authResult = await supabaseAuthDataSource.signInWithApple(
               idToken: token.idToken,
-              accessToken: '',
+              rawNonce: token.rawNonce,
+              givenName: token.givenName,
+              familyName: token.familyName,
             );
+
             return authResult.when(
               success: (user) => Result.success(user.toEntity()),
               failure: (fail) => Result.failure(fail),

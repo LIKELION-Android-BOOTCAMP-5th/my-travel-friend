@@ -64,6 +64,7 @@ dependencies:
   path_provider: ^2.1.5
   path: ^1.9.0
   sign_in_with_apple: ^6.1.4
+  crypto: ^3.0.7
 
 
 

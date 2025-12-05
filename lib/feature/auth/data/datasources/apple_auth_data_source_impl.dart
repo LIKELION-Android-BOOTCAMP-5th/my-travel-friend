@@ -1,6 +1,8 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:io';
 
+import 'package:crypto/crypto.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:injectable/injectable.dart';
 import 'package:my_travel_friend/core/result/result.dart';
@@ -11,20 +13,19 @@ import '../../../../core/result/failures.dart';
 import '../../domain/entities/apple_token_entity.dart';
 import 'apple_auth_data_source.dart';
 
-// [이재은] 애플 로그인
+// [이재은] Android랑 iOS native 분리 필요 -> 단 처리는 Supabase에서
 @LazySingleton(as: AppleAuthDataSource)
 class AppleAuthDataSourceImpl implements AppleAuthDataSource {
   final SupabaseClient supabaseClient;
 
-  // OAuth 상태 관리
+  // Android OAuth 상태 관리
   Completer<Result<AppleTokenEntity>>? _oauthCompleter;
-  StreamSubscription<AuthState>? _authSubscription;
 
   AppleAuthDataSourceImpl(this.supabaseClient);
 
   @override
   bool get isOAuthInProgress =>
-      _oauthCompleter != null && _oauthCompleter!.isCompleted;
+      _oauthCompleter != null && !_oauthCompleter!.isCompleted;
 
   @override
   void cancelOAuth() {
@@ -33,12 +34,6 @@ class AppleAuthDataSourceImpl implements AppleAuthDataSource {
         Result.failure(const Failure.authFailure(message: "로그인이 취소되었습니다")),
       );
     }
-    _cleanup();
-  }
-
-  void _cleanup() {
-    _authSubscription?.cancel();
-    _authSubscription = null;
     _oauthCompleter = null;
   }
 
@@ -51,15 +46,21 @@ class AppleAuthDataSourceImpl implements AppleAuthDataSource {
     }
   }
 
-  // iOS : 네이티브 Apple 로그인
+  // iOS: 네이티브 Apple 로그인 - 토큰만 반환
   Future<Result<AppleTokenEntity>> _getAppleTokenNative() async {
     try {
+      //Supabase 공식 방식: nonce 생성
+      final rawNonce = supabaseClient.auth.generateRawNonce();
+      final hashedNonce = sha256.convert(utf8.encode(rawNonce)).toString();
+
       final credential = await SignInWithApple.getAppleIDCredential(
         scopes: [
           AppleIDAuthorizationScopes.email,
           AppleIDAuthorizationScopes.fullName,
         ],
+        nonce: hashedNonce,
       );
+
       final idToken = credential.identityToken;
 
       if (idToken == null) {
@@ -70,29 +71,14 @@ class AppleAuthDataSourceImpl implements AppleAuthDataSource {
 
       debugPrint("Apple idToken (iOS): $idToken");
 
-      final response = await supabaseClient.auth.signInWithIdToken(
-        provider: OAuthProvider.apple,
-        idToken: idToken,
-      );
-
-      final givenName = credential.givenName;
-      final familyName = credential.familyName;
-
-      if (givenName != null || familyName != null) {
-        final fullName = [
-          familyName,
-          givenName,
-        ].where((e) => e != null && e.isNotEmpty).join(''); // 한국어는 성+이름 붙여서
-
-        await supabaseClient.auth.updateUser(
-          UserAttributes(data: {'full_name': fullName, 'name': fullName}),
-        );
-      }
-
+      // 토큰 정보만 반환 -> Supabase 로그인은 supabase_auth_data_source_impl에서
       return Result.success(
         AppleTokenEntity(
           idToken: idToken,
+          rawNonce: rawNonce,
           authorizationCode: credential.authorizationCode,
+          givenName: credential.givenName,
+          familyName: credential.familyName,
         ),
       );
     } on SignInWithAppleAuthorizationException catch (e) {
@@ -104,40 +90,22 @@ class AppleAuthDataSourceImpl implements AppleAuthDataSource {
       return Result.failure(
         Failure.authFailure(message: "Apple 로그인 실패: ${e.message}"),
       );
-    } on AuthException catch (e) {
-      //Supabase 인증 에러 처리
-      return Result.failure(
-        Failure.authFailure(message: "Supabase 인증 실패: ${e.message}"),
-      );
     } catch (e) {
       return Result.failure(Failure.undefined(message: "알 수 없는 오류: $e"));
     }
   }
 
-  // Android : Supabase OAuth 사용
+  // Android: Supabase OAuth 사용
   Future<Result<AppleTokenEntity>> _getAppleTokenViaOAuth() async {
+    // Android는 기존 OAuth 방식 유지 (웹 브라우저 통해 로그인)
+    // 이 경우 Supabase가 직접 처리하므로 빈 토큰 반환
     if (isOAuthInProgress) {
       cancelOAuth();
     }
 
     try {
-      // OAuth 시작 전 Completer로 결과 대기
       _oauthCompleter = Completer<Result<AppleTokenEntity>>();
 
-      _authSubscription = supabaseClient.auth.onAuthStateChange.listen((data) {
-        if (data.event == AuthChangeEvent.signedIn && data.session != null) {
-          if (_oauthCompleter != null && !_oauthCompleter!.isCompleted) {
-            _oauthCompleter!.complete(
-              Result.success(
-                const AppleTokenEntity(idToken: '', authorizationCode: null),
-              ),
-            );
-          }
-          _cleanup();
-        }
-      });
-
-      // OAuth 시작
       final res = await supabaseClient.auth.signInWithOAuth(
         OAuthProvider.apple,
         redirectTo: 'mytravelfriend://login-callback',
@@ -145,13 +113,14 @@ class AppleAuthDataSourceImpl implements AppleAuthDataSource {
       );
 
       if (!res) {
-        _cleanup();
+        _oauthCompleter = null;
         return Result.failure(
           const Failure.authFailure(message: "Apple 로그인을 시작할 수 없습니다"),
         );
       }
 
-      // 타임아웃 3분 - 브라우저에서 안 돌아오면 자동 취소
+      // Android OAuth는 Supabase가 직접 처리하므로 빈 토큰 반환
+      // auth_repository_impl에서 세션 확인
       final result = await _oauthCompleter!.future.timeout(
         const Duration(minutes: 3),
         onTimeout: () {
@@ -161,11 +130,26 @@ class AppleAuthDataSourceImpl implements AppleAuthDataSource {
         },
       );
 
-      _cleanup();
+      _oauthCompleter = null;
       return result;
     } catch (e) {
-      _cleanup();
+      _oauthCompleter = null;
       return Result.failure(Failure.undefined(message: "Apple OAuth 오류: $e"));
+    }
+  }
+
+  // Android OAuth 완료 시 호출 (외부에서 호출)
+  void completeOAuth() {
+    if (_oauthCompleter != null && !_oauthCompleter!.isCompleted) {
+      _oauthCompleter!.complete(
+        Result.success(
+          const AppleTokenEntity(
+            idToken: '',
+            rawNonce: '',
+            authorizationCode: null,
+          ),
+        ),
+      );
     }
   }
 }

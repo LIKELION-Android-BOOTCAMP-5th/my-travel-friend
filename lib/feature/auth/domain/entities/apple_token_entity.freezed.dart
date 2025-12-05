@@ -14,7 +14,8 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$AppleTokenEntity {
 
- String get idToken; String? get authorizationCode;
+ String get idToken; String get rawNonce;// Supabase signInWithIdToken에 필요
+ String? get authorizationCode; String? get givenName; String? get familyName;
 /// Create a copy of AppleTokenEntity
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -25,16 +26,16 @@ $AppleTokenEntityCopyWith<AppleTokenEntity> get copyWith => _$AppleTokenEntityCo
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is AppleTokenEntity&&(identical(other.idToken, idToken) || other.idToken == idToken)&&(identical(other.authorizationCode, authorizationCode) || other.authorizationCode == authorizationCode));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is AppleTokenEntity&&(identical(other.idToken, idToken) || other.idToken == idToken)&&(identical(other.rawNonce, rawNonce) || other.rawNonce == rawNonce)&&(identical(other.authorizationCode, authorizationCode) || other.authorizationCode == authorizationCode)&&(identical(other.givenName, givenName) || other.givenName == givenName)&&(identical(other.familyName, familyName) || other.familyName == familyName));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,idToken,authorizationCode);
+int get hashCode => Object.hash(runtimeType,idToken,rawNonce,authorizationCode,givenName,familyName);
 
 @override
 String toString() {
-  return 'AppleTokenEntity(idToken: $idToken, authorizationCode: $authorizationCode)';
+  return 'AppleTokenEntity(idToken: $idToken, rawNonce: $rawNonce, authorizationCode: $authorizationCode, givenName: $givenName, familyName: $familyName)';
 }
 
 
@@ -45,7 +46,7 @@ abstract mixin class $AppleTokenEntityCopyWith<$Res>  {
   factory $AppleTokenEntityCopyWith(AppleTokenEntity value, $Res Function(AppleTokenEntity) _then) = _$AppleTokenEntityCopyWithImpl;
 @useResult
 $Res call({
- String idToken, String? authorizationCode
+ String idToken, String rawNonce, String? authorizationCode, String? givenName, String? familyName
 });
 
 
@@ -62,10 +63,13 @@ class _$AppleTokenEntityCopyWithImpl<$Res>
 
 /// Create a copy of AppleTokenEntity
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? idToken = null,Object? authorizationCode = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? idToken = null,Object? rawNonce = null,Object? authorizationCode = freezed,Object? givenName = freezed,Object? familyName = freezed,}) {
   return _then(_self.copyWith(
 idToken: null == idToken ? _self.idToken : idToken // ignore: cast_nullable_to_non_nullable
+as String,rawNonce: null == rawNonce ? _self.rawNonce : rawNonce // ignore: cast_nullable_to_non_nullable
 as String,authorizationCode: freezed == authorizationCode ? _self.authorizationCode : authorizationCode // ignore: cast_nullable_to_non_nullable
+as String?,givenName: freezed == givenName ? _self.givenName : givenName // ignore: cast_nullable_to_non_nullable
+as String?,familyName: freezed == familyName ? _self.familyName : familyName // ignore: cast_nullable_to_non_nullable
 as String?,
   ));
 }
@@ -151,10 +155,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String idToken,  String? authorizationCode)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String idToken,  String rawNonce,  String? authorizationCode,  String? givenName,  String? familyName)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _AppleTokenEntity() when $default != null:
-return $default(_that.idToken,_that.authorizationCode);case _:
+return $default(_that.idToken,_that.rawNonce,_that.authorizationCode,_that.givenName,_that.familyName);case _:
   return orElse();
 
 }
@@ -172,10 +176,10 @@ return $default(_that.idToken,_that.authorizationCode);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String idToken,  String? authorizationCode)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String idToken,  String rawNonce,  String? authorizationCode,  String? givenName,  String? familyName)  $default,) {final _that = this;
 switch (_that) {
 case _AppleTokenEntity():
-return $default(_that.idToken,_that.authorizationCode);case _:
+return $default(_that.idToken,_that.rawNonce,_that.authorizationCode,_that.givenName,_that.familyName);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -192,10 +196,10 @@ return $default(_that.idToken,_that.authorizationCode);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String idToken,  String? authorizationCode)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String idToken,  String rawNonce,  String? authorizationCode,  String? givenName,  String? familyName)?  $default,) {final _that = this;
 switch (_that) {
 case _AppleTokenEntity() when $default != null:
-return $default(_that.idToken,_that.authorizationCode);case _:
+return $default(_that.idToken,_that.rawNonce,_that.authorizationCode,_that.givenName,_that.familyName);case _:
   return null;
 
 }
@@ -207,11 +211,15 @@ return $default(_that.idToken,_that.authorizationCode);case _:
 
 
 class _AppleTokenEntity implements AppleTokenEntity {
-  const _AppleTokenEntity({required this.idToken, this.authorizationCode});
+  const _AppleTokenEntity({required this.idToken, required this.rawNonce, this.authorizationCode, this.givenName, this.familyName});
   
 
 @override final  String idToken;
+@override final  String rawNonce;
+// Supabase signInWithIdToken에 필요
 @override final  String? authorizationCode;
+@override final  String? givenName;
+@override final  String? familyName;
 
 /// Create a copy of AppleTokenEntity
 /// with the given fields replaced by the non-null parameter values.
@@ -223,16 +231,16 @@ _$AppleTokenEntityCopyWith<_AppleTokenEntity> get copyWith => __$AppleTokenEntit
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _AppleTokenEntity&&(identical(other.idToken, idToken) || other.idToken == idToken)&&(identical(other.authorizationCode, authorizationCode) || other.authorizationCode == authorizationCode));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _AppleTokenEntity&&(identical(other.idToken, idToken) || other.idToken == idToken)&&(identical(other.rawNonce, rawNonce) || other.rawNonce == rawNonce)&&(identical(other.authorizationCode, authorizationCode) || other.authorizationCode == authorizationCode)&&(identical(other.givenName, givenName) || other.givenName == givenName)&&(identical(other.familyName, familyName) || other.familyName == familyName));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,idToken,authorizationCode);
+int get hashCode => Object.hash(runtimeType,idToken,rawNonce,authorizationCode,givenName,familyName);
 
 @override
 String toString() {
-  return 'AppleTokenEntity(idToken: $idToken, authorizationCode: $authorizationCode)';
+  return 'AppleTokenEntity(idToken: $idToken, rawNonce: $rawNonce, authorizationCode: $authorizationCode, givenName: $givenName, familyName: $familyName)';
 }
 
 
@@ -243,7 +251,7 @@ abstract mixin class _$AppleTokenEntityCopyWith<$Res> implements $AppleTokenEnti
   factory _$AppleTokenEntityCopyWith(_AppleTokenEntity value, $Res Function(_AppleTokenEntity) _then) = __$AppleTokenEntityCopyWithImpl;
 @override @useResult
 $Res call({
- String idToken, String? authorizationCode
+ String idToken, String rawNonce, String? authorizationCode, String? givenName, String? familyName
 });
 
 
@@ -260,10 +268,13 @@ class __$AppleTokenEntityCopyWithImpl<$Res>
 
 /// Create a copy of AppleTokenEntity
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? idToken = null,Object? authorizationCode = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? idToken = null,Object? rawNonce = null,Object? authorizationCode = freezed,Object? givenName = freezed,Object? familyName = freezed,}) {
   return _then(_AppleTokenEntity(
 idToken: null == idToken ? _self.idToken : idToken // ignore: cast_nullable_to_non_nullable
+as String,rawNonce: null == rawNonce ? _self.rawNonce : rawNonce // ignore: cast_nullable_to_non_nullable
 as String,authorizationCode: freezed == authorizationCode ? _self.authorizationCode : authorizationCode // ignore: cast_nullable_to_non_nullable
+as String?,givenName: freezed == givenName ? _self.givenName : givenName // ignore: cast_nullable_to_non_nullable
+as String?,familyName: freezed == familyName ? _self.familyName : familyName // ignore: cast_nullable_to_non_nullable
 as String?,
   ));
 }
