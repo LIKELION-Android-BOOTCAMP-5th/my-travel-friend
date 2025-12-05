@@ -107,9 +107,6 @@ flutter:
     - assets/images/title_black.png
     - assets/images/title_white.png
     - assets/images/profile_hearty.png
-    - assets/images/android_login.png
-    - assets/images/kakao_login.png
-    - assets/images/apple_login.png
 
 
   # An image asset can refer to one or more resolution-specific "variants", see
