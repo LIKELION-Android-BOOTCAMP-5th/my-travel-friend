@@ -54,7 +54,12 @@ class AppleAuthDataSourceImpl implements AppleAuthDataSource {
   // iOS : 네이티브 Apple 로그인
   Future<Result<AppleTokenEntity>> _getAppleTokenNative() async {
     try {
-      final credential = await SignInWithApple.getAppleIDCredential(scopes: []);
+      final credential = await SignInWithApple.getAppleIDCredential(
+        scopes: [
+          AppleIDAuthorizationScopes.email,
+          AppleIDAuthorizationScopes.fullName,
+        ],
+      );
       final idToken = credential.identityToken;
 
       if (idToken == null) {
@@ -64,6 +69,25 @@ class AppleAuthDataSourceImpl implements AppleAuthDataSource {
       }
 
       debugPrint("Apple idToken (iOS): $idToken");
+
+      final response = await supabaseClient.auth.signInWithIdToken(
+        provider: OAuthProvider.apple,
+        idToken: idToken,
+      );
+
+      final givenName = credential.givenName;
+      final familyName = credential.familyName;
+
+      if (givenName != null || familyName != null) {
+        final fullName = [
+          familyName,
+          givenName,
+        ].where((e) => e != null && e.isNotEmpty).join(''); // 한국어는 성+이름 붙여서
+
+        await supabaseClient.auth.updateUser(
+          UserAttributes(data: {'full_name': fullName, 'name': fullName}),
+        );
+      }
 
       return Result.success(
         AppleTokenEntity(
@@ -79,6 +103,11 @@ class AppleAuthDataSourceImpl implements AppleAuthDataSource {
       }
       return Result.failure(
         Failure.authFailure(message: "Apple 로그인 실패: ${e.message}"),
+      );
+    } on AuthException catch (e) {
+      //Supabase 인증 에러 처리
+      return Result.failure(
+        Failure.authFailure(message: "Supabase 인증 실패: ${e.message}"),
       );
     } catch (e) {
       return Result.failure(Failure.undefined(message: "알 수 없는 오류: $e"));
