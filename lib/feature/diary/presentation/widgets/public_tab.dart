@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:my_travel_friend/theme/app_colors.dart';
 import 'package:my_travel_friend/theme/app_font.dart';
 
 // [이재은] 공유 다이어리 <-> 내 다이어리 탭 버튼
@@ -27,9 +26,7 @@ class PublicTab extends StatelessWidget {
         decoration: BoxDecoration(
           color: isSelected
               ? colorScheme.secondary
-              : isDark
-              ? colorScheme.outlineVariant
-              : AppColors.darkGray,
+              : colorScheme.surfaceContainerHighest,
           borderRadius: BorderRadius.circular(12.0),
         ),
         child: Row(

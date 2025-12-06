@@ -12,8 +12,7 @@ abstract class NewDiaryEvent with _$NewDiaryEvent {
   // 다이어리 생성
   // - 플로팅 버튼 -> 작성 화면 -> 저장 버튼 클릭시 호출
   // - 성공하면 목록 재 로드 필요
-  const factory NewDiaryEvent.createDiary({required DiaryEntity diary}) =
-      CreateDiary;
+  const factory NewDiaryEvent.createDiary() = CreateDiary;
 
   // 타입 변경
   const factory NewDiaryEvent.changeType({required String type}) = ChangeType;

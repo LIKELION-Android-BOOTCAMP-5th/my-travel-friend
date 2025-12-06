@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:my_travel_friend/theme/app_colors.dart';
+import 'package:my_travel_friend/theme/app_font.dart';
 
 class PopUpBox extends StatelessWidget {
   final String title; // 팝업 제목
@@ -43,11 +45,12 @@ class PopUpBox extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
+    final isDark = colorScheme.brightness == Brightness.dark;
     return Center(
       child: ConstrainedBox(
         constraints: const BoxConstraints(maxWidth: 340, minWidth: 260),
         child: Material(
-          color: colorScheme.surface, //배경 컬러
+          color: colorScheme.surfaceContainerHighest, //배경 컬러
           elevation: 12,
           borderRadius: BorderRadius.circular(20),
           child: Padding(
@@ -75,11 +78,7 @@ class PopUpBox extends StatelessWidget {
                 /// 제목
                 Text(
                   title,
-                  style: TextStyle(
-                    fontFamily: 'Pretendard',
-                    fontWeight: FontWeight.w600,
-                    color: colorScheme.onSurface,
-                  ),
+                  style: AppFont.medium.copyWith(color: colorScheme.onSurface),
                   textAlign: TextAlign.center,
                 ),
 
@@ -88,11 +87,7 @@ class PopUpBox extends StatelessWidget {
                 /// 내용
                 Text(
                   message,
-                  style: const TextStyle(
-                    fontFamily: 'Pretendard',
-                    height: 1.4,
-                    color: Color(0xff2e2e2e),
-                  ),
+                  style: AppFont.regular.copyWith(color: colorScheme.onSurface),
                   textAlign: TextAlign.center,
                 ),
 
@@ -110,16 +105,17 @@ class PopUpBox extends StatelessWidget {
                             onLeft?.call();
                           },
                           style: TextButton.styleFrom(
-                            backgroundColor: leftButtonColor,
+                            backgroundColor: isDark
+                                ? AppColors.navy
+                                : AppColors.darkGray,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(12),
                             ),
                           ),
                           child: Text(
                             leftText,
-                            style: TextStyle(
-                              color: leftTextColor,
-                              fontFamily: 'Pretendard',
+                            style: AppFont.regular.copyWith(
+                              color: isDark ? AppColors.light : AppColors.dark,
                             ),
                           ),
                         ),
@@ -146,9 +142,8 @@ class PopUpBox extends StatelessWidget {
 
                           child: Text(
                             rightText,
-                            style: TextStyle(
+                            style: AppFont.regular.copyWith(
                               color: rightTextColor,
-                              fontFamily: 'Pretendard',
                             ),
                           ),
                         ),

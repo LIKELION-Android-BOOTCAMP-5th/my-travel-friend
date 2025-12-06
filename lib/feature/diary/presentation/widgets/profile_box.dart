@@ -23,8 +23,8 @@ class ProfileBox extends StatelessWidget {
 
     return Row(
       children: [
-        ProfileImg(imageUrl: writer?.profileImg!),
-        SizedBox(width: 8.0),
+        ProfileImg(imageUrl: writer?.profileImg!, radius: 20),
+        SizedBox(width: 16.0),
         Expanded(
           child: Column(
             children: [
@@ -38,11 +38,11 @@ class ProfileBox extends StatelessWidget {
                       color: colorScheme.onSurface,
                     ),
                   ),
-                  SizedBox(width: 8),
+                  SizedBox(width: 16),
                   TypeTag(diary: diary),
                 ],
               ),
-              SizedBox(height: 8),
+              SizedBox(height: 7),
               Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.start,
@@ -56,8 +56,16 @@ class ProfileBox extends StatelessWidget {
                     ),
                   SizedBox(width: 8),
                   diary.isPublic
-                      ? Icon(AppIcon.unlock, color: colorScheme.primary)
-                      : Icon(AppIcon.lock, color: colorScheme.secondary),
+                      ? Icon(
+                          AppIcon.unlock,
+                          color: colorScheme.primary,
+                          size: 13,
+                        )
+                      : Icon(
+                          AppIcon.lock,
+                          color: colorScheme.secondary,
+                          size: 13,
+                        ),
                 ],
               ),
             ],

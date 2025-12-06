@@ -6,6 +6,7 @@ import 'package:my_travel_friend/feature/diary/domain/usecases/get_diary_by_id_u
 import 'package:my_travel_friend/feature/diary/domain/usecases/get_my_diaries_usecase.dart';
 import 'package:my_travel_friend/feature/diary/domain/usecases/get_our_diaries_usecase.dart';
 
+import '../../../../core/result/failures.dart';
 import '../../../../core/result/result.dart';
 import 'diary_event.dart';
 import 'diary_state.dart';
@@ -36,8 +37,11 @@ class DiaryBloc extends Bloc<DiaryEvent, DiaryState> {
     on<LoadMore>(_onLoadMore);
     on<Refresh>(_onRefresh);
     on<RequestCreate>(_onRequestCreate);
+    on<RequestEdit>(_onRequestEdit);
     on<NavigationHandled>(_onNavigationHandled);
     on<OnCreateCompleted>(_onCreateCompleted);
+    on<OnEditCompleted>(_onEditCompleted);
+    on<ClearSelectedDiary>(_onClearSelectedDiary);
   }
 
   // 핸들러
@@ -53,13 +57,15 @@ class DiaryBloc extends Bloc<DiaryEvent, DiaryState> {
   }
 
   // 에러타입 추출
-  String _getErrorType(dynamic failure) {
-    return failure.map(
-      serverFailure: (_) => 'server',
-      networkFailure: (_) => 'network',
-      authFailure: (_) => 'auth',
-      undefined: (_) => 'unknown',
-    );
+  String _getErrorType(Failure failure) {
+    return switch (failure) {
+      ServerFailure() => 'server',
+      NetworkFailure() => 'network',
+      AuthFailure() => 'auth',
+      UndefinedFailure() => 'unknown',
+      // TODO: Handle this case.
+      Failure() => throw UnimplementedError(),
+    };
   }
 
   // 작성 화면으로 이동 요청
@@ -67,13 +73,31 @@ class DiaryBloc extends Bloc<DiaryEvent, DiaryState> {
     emit(state.copyWith(navigateToCreate: true));
   }
 
+  // 수정 화면으로 이동 요청
+  void _onRequestEdit(RequestEdit event, Emitter<DiaryState> emit) {
+    emit(
+      state.copyWith(
+        navigateToEdit: true,
+        selectedDiary: event.diary, // 수정할 다이어리 저장
+      ),
+    );
+  }
+
   // 네비게이션 플래그 리셋
   void _onNavigationHandled(NavigationHandled event, Emitter<DiaryState> emit) {
     emit(state.copyWith(navigateToCreate: false));
+    emit(state.copyWith(navigateToEdit: false));
   }
 
   // 작성 완료
   void _onCreateCompleted(OnCreateCompleted event, Emitter<DiaryState> emit) {
+    if (event.success) {
+      _refreshList();
+    }
+  }
+
+  // 수정 완료
+  void _onEditCompleted(OnEditCompleted event, Emitter<DiaryState> emit) {
     if (event.success) {
       _refreshList();
     }
@@ -255,6 +279,13 @@ class DiaryBloc extends Bloc<DiaryEvent, DiaryState> {
         );
       },
     );
+  }
+
+  void _onClearSelectedDiary(
+    ClearSelectedDiary event,
+    Emitter<DiaryState> emit,
+  ) {
+    emit(state.copyWith(pageState: DiaryPageState.loaded, selectedDiary: null));
   }
 
   // 다이어리 삭제
