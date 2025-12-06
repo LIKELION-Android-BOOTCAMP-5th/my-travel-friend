@@ -68,9 +68,13 @@ class SupabaseAuthDataSourceImpl implements SupabaseAuthDataSource {
   }
 
   @override
-  Future<Result<void>> signOut() {
-    // TODO: implement signOut
-    throw UnimplementedError();
+  Future<Result<void>> signOut() async {
+    try {
+      await supabaseClient.auth.signOut();
+      return Result.success(null);
+    } catch (e) {
+      return Result.failure(Failure.authFailure(message: "로그아웃 실패 $e"));
+    }
   }
 
   @override

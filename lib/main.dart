@@ -1,7 +1,9 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get_it/get_it.dart';
+import 'package:go_router/go_router.dart';
 import 'package:my_travel_friend/config/router.dart';
 import 'package:my_travel_friend/core/DI/injection.dart';
 import 'package:my_travel_friend/theme/app_theme.dart';
@@ -9,6 +11,16 @@ import 'package:permission_handler/permission_handler.dart';
 
 import 'core/service/internal/push_notification_service.dart';
 import 'feature/auth/presentation/viewmodel/auth_profile/auth_profile_bloc.dart';
+
+@pragma('vm:entry-point')
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  //dotenv는di 등록이 안되므로 먼저 여기서 초기화
+  await dotenv.load(fileName: "assets/config/.env");
+  //DI관련
+  await configureDependencies();
+  print("Handling a background message: ${message.messageId}");
+  // TODO: 백그라운드에서 실행시 로직 처리
+}
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -19,6 +31,9 @@ void main() async {
 
   // 권한 요청
   await _requestPermissions();
+
+  //백그라운드 핸들러
+  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
 
   runApp(
     MultiBlocProvider(

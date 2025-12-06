@@ -11,6 +11,8 @@
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:firebase_core/firebase_core.dart' as _i982;
 import 'package:firebase_messaging/firebase_messaging.dart' as _i892;
+import 'package:flutter_local_notifications/flutter_local_notifications.dart'
+    as _i163;
 import 'package:get_it/get_it.dart' as _i174;
 import 'package:google_sign_in/google_sign_in.dart' as _i116;
 import 'package:injectable/injectable.dart' as _i526;
@@ -105,6 +107,9 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i892.FirebaseMessaging>(
       () => registerModule.firebaseMessaging,
     );
+    gh.lazySingleton<_i163.FlutterLocalNotificationsPlugin>(
+      () => registerModule.localNotificationsPlugin,
+    );
     await gh.lazySingletonAsync<_i982.FirebaseApp>(
       () => registerModule.initializeFirebaseApp(),
       preResolve: true,
@@ -134,34 +139,6 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.lazySingleton<_i58.AlarmDataSource>(
       () => _i1049.AlarmDataSourceImpl(gh<_i454.SupabaseClient>()),
-    );
-    gh.lazySingleton<_i669.AcceptRequestUsecase>(
-      () => _i669.AcceptRequestUsecase(gh<_i255.FriendRequestRepository>()),
-    );
-    gh.lazySingleton<_i611.CreateFriendRequestUsecase>(
-      () =>
-          _i611.CreateFriendRequestUsecase(gh<_i255.FriendRequestRepository>()),
-    );
-    gh.lazySingleton<_i491.DeleteRequestUsecase>(
-      () => _i491.DeleteRequestUsecase(gh<_i255.FriendRequestRepository>()),
-    );
-    gh.lazySingleton<_i739.GetFriendRequestUsecase>(
-      () => _i739.GetFriendRequestUsecase(gh<_i255.FriendRequestRepository>()),
-    );
-    gh.lazySingleton<_i639.CreateFriendRelationUsecase>(
-      () => _i639.CreateFriendRelationUsecase(gh<_i359.FriendRepository>()),
-    );
-    gh.lazySingleton<_i285.DeleteFriendUsecases>(
-      () => _i285.DeleteFriendUsecases(gh<_i359.FriendRepository>()),
-    );
-    gh.lazySingleton<_i813.GetFriendRelationUsecase>(
-      () => _i813.GetFriendRelationUsecase(gh<_i359.FriendRepository>()),
-    );
-    gh.lazySingleton<_i806.GetFriendsUsecase>(
-      () => _i806.GetFriendsUsecase(gh<_i359.FriendRepository>()),
-    );
-    gh.lazySingleton<_i1063.TripDataSource>(
-      () => _i386.TripDataSourceImpl(gh<_i454.SupabaseClient>()),
     );
     gh.lazySingleton<_i871.DiaryRepository>(
       () => _i148.DiaryRepositoryImpl(gh<_i881.DiaryDataSource>()),
@@ -205,30 +182,6 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.lazySingleton<_i831.AlarmRepository>(
       () => _i915.AlarmRepositoryImpl(gh<_i58.AlarmDataSource>()),
-    );
-    gh.lazySingleton<_i161.TripRepository>(
-      () => _i840.TripRepositoryImpl(gh<_i1063.TripDataSource>()),
-    );
-    gh.lazySingleton<_i779.CreateTripUsecase>(
-      () => _i779.CreateTripUsecase(gh<_i161.TripRepository>()),
-    );
-    gh.lazySingleton<_i832.DeleteTripUsecase>(
-      () => _i832.DeleteTripUsecase(gh<_i161.TripRepository>()),
-    );
-    gh.lazySingleton<_i637.EditTripUsecase>(
-      () => _i637.EditTripUsecase(gh<_i161.TripRepository>()),
-    );
-    gh.lazySingleton<_i267.GetCrewMemberCountUsecase>(
-      () => _i267.GetCrewMemberCountUsecase(gh<_i161.TripRepository>()),
-    );
-    gh.lazySingleton<_i521.GetMyTripUsecase>(
-      () => _i521.GetMyTripUsecase(gh<_i161.TripRepository>()),
-    );
-    gh.lazySingleton<_i317.GiveUpTripUsecase>(
-      () => _i317.GiveUpTripUsecase(gh<_i161.TripRepository>()),
-    );
-    gh.lazySingleton<_i437.SearchTripUsecase>(
-      () => _i437.SearchTripUsecase(gh<_i161.TripRepository>()),
     );
     gh.lazySingleton<_i27.CreateDiaryUseCase>(
       () => _i27.CreateDiaryUseCase(gh<_i871.DiaryRepository>()),
@@ -311,18 +264,19 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i739.CancelOauthUseCase>(),
       ),
     );
+    gh.singleton<_i387.AuthProfileBloc>(
+      () => _i387.AuthProfileBloc(
+        gh<_i456.WatchAuthStateUseCase>(),
+        gh<_i529.GetCurrentUserUseCase>(),
+        gh<_i858.SignOutUseCase>(),
+      ),
+    );
     gh.factory<_i693.AlarmBloc>(
       () => _i693.AlarmBloc(
         gh<_i135.GetAlarmsUseCase>(),
         gh<_i820.GetAlarmByIdUseCase>(),
         gh<_i539.CheckAnAlarmUseCase>(),
         gh<_i889.CheckAlarmsUseCase>(),
-      ),
-    );
-    gh.singleton<_i387.AuthProfileBloc>(
-      () => _i387.AuthProfileBloc(
-        gh<_i456.WatchAuthStateUseCase>(),
-        gh<_i529.GetCurrentUserUseCase>(),
       ),
     );
     return this;

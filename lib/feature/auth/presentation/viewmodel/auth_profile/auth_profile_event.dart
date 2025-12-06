@@ -24,5 +24,7 @@ abstract class AuthProfileEvent with _$AuthProfileEvent {
     required bool isSignIn, // 로그인(true) 또는 로그아웃(false) 시 호출
   }) = HandleFCMToken;
 
+  const factory AuthProfileEvent.signOut() = SignOut;
+
   const factory AuthProfileEvent.error({required String message}) = Error;
 }

@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 import 'package:my_travel_friend/core/result/result.dart';
 import 'package:my_travel_friend/feature/auth/domain/usecases/get_current_user_usecase.dart';
+import 'package:my_travel_friend/feature/auth/domain/usecases/sign_out_usecase.dart';
 import 'package:my_travel_friend/feature/auth/presentation/viewmodel/auth_profile/auth_profile_event.dart';
 import 'package:my_travel_friend/feature/auth/presentation/viewmodel/auth_profile/auth_profile_state.dart';
 
@@ -14,19 +15,21 @@ import '../../../domain/usecases/watch_auth_state_usecase.dart';
 class AuthProfileBloc extends Bloc<AuthProfileEvent, AuthProfileState> {
   final WatchAuthStateUseCase _watchAuthStateUseCase; // 스트림 구독
   final GetCurrentUserUseCase _getCurrentUserUseCase; // 유저 DB 정보 로딩
-
+  final SignOutUseCase _signOutUseCase; //로그아웃시
   // 스트림 구독 관리
   late final StreamSubscription _authStateSubscription;
 
   AuthProfileBloc(
     this._watchAuthStateUseCase,
     this._getCurrentUserUseCase,
+    this._signOutUseCase,
     // this._fcmService,
   ) : super(const AuthProfileState.initial()) {
     // 이벤트 핸들러 등록
     on<AuthStateChanged>(_onAuthStateChanged);
     on<FetchUserProfile>(_onFetchUserProfile);
     on<UserRefreshed>(_onUserRefreshed);
+    on<SignOut>(_onSignOut);
     on<Error>(_onError);
 
     //Bloc 생성과 동시에 usecase 스트림 구독 시작
@@ -106,6 +109,18 @@ class AuthProfileBloc extends Bloc<AuthProfileEvent, AuthProfileState> {
       emit(const AuthProfileState.loading());
       add(AuthProfileEvent.fetchUserProfile(event.uuid));
     } else {}
+  }
+
+  Future<void> _onSignOut(SignOut event, Emitter<AuthProfileState> emit) async {
+    final result = await _signOutUseCase();
+    result.when(
+      success: (success) {
+        print("로그아웃 성공");
+      },
+      failure: (failure) {
+        add(AuthProfileEvent.error(message: failure.message));
+      },
+    );
   }
 
   Future<void> _onError(Error event, Emitter<AuthProfileState> emit) async {
