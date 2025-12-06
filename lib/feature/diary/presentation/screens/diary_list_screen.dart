@@ -296,7 +296,7 @@ class _DiaryListScreenState extends State<DiaryListScreen> {
                     );
                   }
                 },
-                child: DiaryBox(diary: diary),
+                child: DiaryBox(diary: diary, loginUserId: 9),
               );
             },
           ),
