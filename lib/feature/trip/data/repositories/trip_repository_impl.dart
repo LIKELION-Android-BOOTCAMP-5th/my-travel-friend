@@ -8,7 +8,7 @@ import 'package:my_travel_friend/feature/trip/domain/repositories/trip_repositor
 //신강현
 //여행 레포지터리 임플리먼트
 
-@lazySingleton
+@LazySingleton(as: TripRepository)
 class TripRepositoryImpl implements TripRepository {
   final TripDataSource _dataSource;
   TripRepositoryImpl(this._dataSource);

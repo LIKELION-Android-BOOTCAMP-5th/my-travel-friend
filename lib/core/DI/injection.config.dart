@@ -28,6 +28,7 @@ import '../../feature/alarm/domain/usecases/check_an_alarm_usecase.dart'
 import '../../feature/alarm/domain/usecases/get_alarm_by_id_usecase.dart'
     as _i820;
 import '../../feature/alarm/domain/usecases/get_alarms_usecase.dart' as _i135;
+import '../../feature/alarm/presentation/viewmodels/alarm_bloc.dart' as _i693;
 import '../../feature/auth/data/datasources/apple_auth_data_source.dart'
     as _i278;
 import '../../feature/auth/data/datasources/apple_auth_data_source_impl.dart'
@@ -75,25 +76,6 @@ import '../../feature/diary/presentation/viewmodels/edit_diary_bloc.dart'
     as _i703;
 import '../../feature/diary/presentation/viewmodels/new_diary_bloc.dart'
     as _i1041;
-import '../../feature/friend/domain/repositories/friend_repository.dart'
-    as _i359;
-import '../../feature/friend/domain/repositories/friend_request_repository.dart'
-    as _i255;
-import '../../feature/friend/domain/usecases/accept_request_usecase.dart'
-    as _i669;
-import '../../feature/friend/domain/usecases/create_friend_relation_usecase.dart'
-    as _i639;
-import '../../feature/friend/domain/usecases/create_friend_request_usecase.dart'
-    as _i611;
-import '../../feature/friend/domain/usecases/delete_friend_usecases.dart'
-    as _i285;
-import '../../feature/friend/domain/usecases/delete_request_usecase.dart'
-    as _i491;
-import '../../feature/friend/domain/usecases/get_friend_relation_usecase.dart'
-    as _i813;
-import '../../feature/friend/domain/usecases/get_friend_request_usecase.dart'
-    as _i739;
-import '../../feature/friend/domain/usecases/get_friends_usecase.dart' as _i806;
 import '../../feature/trip/data/datasources/trip_data_source.dart' as _i1063;
 import '../../feature/trip/data/datasources/trip_data_source_impl.dart'
     as _i386;
@@ -143,11 +125,33 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i737.PushNotificationService>(
       () => _i737.PushNotificationService(gh<_i892.FirebaseMessaging>()),
     );
-    gh.lazySingleton<_i386.TripDataSourceImpl>(
-      () => _i386.TripDataSourceImpl(gh<_i454.SupabaseClient>()),
-    );
     gh.lazySingleton<_i881.DiaryDataSource>(
       () => _i663.DiaryDataSourceImpl(gh<_i454.SupabaseClient>()),
+    );
+    gh.lazySingleton<_i1063.TripDataSource>(
+      () => _i386.TripDataSourceImpl(gh<_i454.SupabaseClient>()),
+    );
+    gh.lazySingleton<_i58.AlarmDataSource>(
+      () => _i1049.AlarmDataSourceImpl(gh<_i454.SupabaseClient>()),
+    );
+    gh.lazySingleton<_i871.DiaryRepository>(
+      () => _i148.DiaryRepositoryImpl(gh<_i881.DiaryDataSource>()),
+    );
+    gh.lazySingleton<_i1040.SupabaseAuthDataSource>(
+      () => _i436.SupabaseAuthDataSourceImpl(
+        gh<_i454.SupabaseClient>(),
+        gh<_i737.PushNotificationService>(),
+      ),
+    );
+    gh.singleton<_i488.AuthRepository>(
+      () => _i263.AuthRepositoryImpl(
+        gh<_i153.GoogleAuthDataSource>(),
+        gh<_i278.AppleAuthDataSource>(),
+        gh<_i1040.SupabaseAuthDataSource>(),
+      ),
+    );
+    gh.lazySingleton<_i161.TripRepository>(
+      () => _i840.TripRepositoryImpl(gh<_i1063.TripDataSource>()),
     );
     gh.lazySingleton<_i779.CreateTripUsecase>(
       () => _i779.CreateTripUsecase(gh<_i161.TripRepository>()),
@@ -169,53 +173,6 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.lazySingleton<_i437.SearchTripUsecase>(
       () => _i437.SearchTripUsecase(gh<_i161.TripRepository>()),
-    );
-    gh.lazySingleton<_i669.AcceptRequestUsecase>(
-      () => _i669.AcceptRequestUsecase(gh<_i255.FriendRequestRepository>()),
-    );
-    gh.lazySingleton<_i611.CreateFriendRequestUsecase>(
-      () =>
-          _i611.CreateFriendRequestUsecase(gh<_i255.FriendRequestRepository>()),
-    );
-    gh.lazySingleton<_i491.DeleteRequestUsecase>(
-      () => _i491.DeleteRequestUsecase(gh<_i255.FriendRequestRepository>()),
-    );
-    gh.lazySingleton<_i739.GetFriendRequestUsecase>(
-      () => _i739.GetFriendRequestUsecase(gh<_i255.FriendRequestRepository>()),
-    );
-    gh.lazySingleton<_i639.CreateFriendRelationUsecase>(
-      () => _i639.CreateFriendRelationUsecase(gh<_i359.FriendRepository>()),
-    );
-    gh.lazySingleton<_i285.DeleteFriendUsecases>(
-      () => _i285.DeleteFriendUsecases(gh<_i359.FriendRepository>()),
-    );
-    gh.lazySingleton<_i813.GetFriendRelationUsecase>(
-      () => _i813.GetFriendRelationUsecase(gh<_i359.FriendRepository>()),
-    );
-    gh.lazySingleton<_i806.GetFriendsUsecase>(
-      () => _i806.GetFriendsUsecase(gh<_i359.FriendRepository>()),
-    );
-    gh.lazySingleton<_i840.TripRepositoryImpl>(
-      () => _i840.TripRepositoryImpl(gh<_i1063.TripDataSource>()),
-    );
-    gh.lazySingleton<_i58.AlarmDataSource>(
-      () => _i1049.AlarmDataSourceImpl(gh<_i454.SupabaseClient>()),
-    );
-    gh.lazySingleton<_i871.DiaryRepository>(
-      () => _i148.DiaryRepositoryImpl(gh<_i881.DiaryDataSource>()),
-    );
-    gh.lazySingleton<_i1040.SupabaseAuthDataSource>(
-      () => _i436.SupabaseAuthDataSourceImpl(
-        gh<_i454.SupabaseClient>(),
-        gh<_i737.PushNotificationService>(),
-      ),
-    );
-    gh.singleton<_i488.AuthRepository>(
-      () => _i263.AuthRepositoryImpl(
-        gh<_i153.GoogleAuthDataSource>(),
-        gh<_i278.AppleAuthDataSource>(),
-        gh<_i1040.SupabaseAuthDataSource>(),
-      ),
     );
     gh.lazySingleton<_i831.AlarmRepository>(
       () => _i915.AlarmRepositoryImpl(gh<_i58.AlarmDataSource>()),
@@ -290,6 +247,14 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i420.SocialSignInUseCase>(),
         gh<_i858.SignOutUseCase>(),
         gh<_i739.CancelOauthUseCase>(),
+      ),
+    );
+    gh.factory<_i693.AlarmBloc>(
+      () => _i693.AlarmBloc(
+        gh<_i135.GetAlarmsUseCase>(),
+        gh<_i820.GetAlarmByIdUseCase>(),
+        gh<_i539.CheckAnAlarmUseCase>(),
+        gh<_i889.CheckAlarmsUseCase>(),
       ),
     );
     gh.singleton<_i387.AuthProfileBloc>(

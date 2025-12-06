@@ -1,9 +1,7 @@
-import 'package:injectable/injectable.dart';
-
 import '../repositories/friend_request_repository.dart';
 
 // [엄수빈] 친구 요청 수락 usecase
-@LazySingleton()
+// @LazySingleton()
 class AcceptRequestUsecase {
   final FriendRequestRepository _friendRequestRepository;
 
