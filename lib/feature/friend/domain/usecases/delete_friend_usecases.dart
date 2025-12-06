@@ -1,9 +1,7 @@
-import 'package:injectable/injectable.dart';
-
 import '../repositories/friend_repository.dart';
 
 // [엄수빈] 친구 관계 삭제 usecase
-@LazySingleton()
+// @LazySingleton()
 class DeleteFriendUsecases {
   final FriendRepository _friendRepository;
 
