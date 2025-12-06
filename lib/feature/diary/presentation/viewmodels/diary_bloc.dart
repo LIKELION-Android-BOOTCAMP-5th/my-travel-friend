@@ -41,6 +41,7 @@ class DiaryBloc extends Bloc<DiaryEvent, DiaryState> {
     on<NavigationHandled>(_onNavigationHandled);
     on<OnCreateCompleted>(_onCreateCompleted);
     on<OnEditCompleted>(_onEditCompleted);
+    on<ClearSelectedDiary>(_onClearSelectedDiary);
   }
 
   // 핸들러
@@ -278,6 +279,13 @@ class DiaryBloc extends Bloc<DiaryEvent, DiaryState> {
         );
       },
     );
+  }
+
+  void _onClearSelectedDiary(
+    ClearSelectedDiary event,
+    Emitter<DiaryState> emit,
+  ) {
+    emit(state.copyWith(pageState: DiaryPageState.loaded, selectedDiary: null));
   }
 
   // 다이어리 삭제

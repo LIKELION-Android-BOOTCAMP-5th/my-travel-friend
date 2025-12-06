@@ -24,24 +24,24 @@ class DiaryDetailPopUp extends StatelessWidget {
     final title = diary.title;
     final photo = diary.img;
 
-    return Center(
-      child: Container(
-        decoration: BoxDecoration(
-          color: colorScheme.surfaceContainerHighest,
-          borderRadius: BorderRadius.circular(16),
-        ),
-        width: MediaQuery.of(context).size.width * 0.8,
+    return Container(
+      decoration: BoxDecoration(
+        color: colorScheme.surfaceContainerHighest,
+        borderRadius: BorderRadius.circular(16),
+      ),
+      child: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  ProfileBox(diary: diary),
+                  Expanded(child: ProfileBox(diary: diary)),
                   IconButton(
                     icon: Icon(AppIcon.close),
                     color: colorScheme.onSurface,

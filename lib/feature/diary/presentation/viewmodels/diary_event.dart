@@ -31,6 +31,9 @@ abstract class DiaryEvent with _$DiaryEvent {
   // - DiaryDetailPopUp 띄우기 전에 호출
   const factory DiaryEvent.getDiaryById({required int diaryId}) = GetDiaryById;
 
+  // 상세 팝업 닫힘 (상태 초기화)
+  const factory DiaryEvent.clearSelectedDiary() = ClearSelectedDiary;
+
   // 다이어리 삭제
   // - 바텀시트 -> 삭제 버튼 -> 삭제 팝업 -> 삭제 시 호출
   const factory DiaryEvent.deleteDiary({required int diaryId}) = DeleteDiary;
