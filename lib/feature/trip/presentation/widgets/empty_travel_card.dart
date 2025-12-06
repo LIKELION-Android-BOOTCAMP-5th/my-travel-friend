@@ -16,57 +16,61 @@ class EmptyTravelCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.symmetric(vertical: 32),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(20),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.06),
-            blurRadius: 10,
-            offset: const Offset(0, 4),
-          ),
-        ],
-      ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          /// 아이콘 영역
-          Container(
-            padding: const EdgeInsets.all(10),
-            decoration: BoxDecoration(
-              color: AppColors.primaryLight.withOpacity(0.15),
-              shape: BoxShape.circle,
-            ),
-            child: IconTheme(
-              data: const IconThemeData(
-                color: AppColors.primaryLight,
-                size: 30,
+    return Padding(
+      padding: const EdgeInsets.only(top: 40), // ⭐ 상단에서 조금 내려옴
+      child: Align(
+        alignment: Alignment.topCenter, // ⭐ 위쪽 중앙 정렬
+        child: Container(
+          width: 300,
+          height: 300,
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(20),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.06),
+                blurRadius: 12,
+                offset: const Offset(0, 6),
               ),
-              child: Icon(AppIcon.mapPin), // 그대로 넣기!
-            ),
+            ],
           ),
-          const SizedBox(height: 12),
-
-          /// 제목
-          Text(
-            title,
-            style: AppFont.huge.copyWith(color: AppColors.dark),
-            textAlign: TextAlign.center,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center, // 내부는 그대로 중심
+            children: [
+              Container(
+                padding: const EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                  color: AppColors.primaryLight.withOpacity(0.15),
+                  shape: BoxShape.circle,
+                ),
+                child: IconTheme(
+                  data: const IconThemeData(
+                    color: AppColors.primaryLight,
+                    size: 32,
+                  ),
+                  child: Icon(AppIcon.mapPin),
+                ),
+              ),
+              const SizedBox(height: 14),
+              Text(
+                title,
+                style: AppFont.big.copyWith(color: AppColors.dark),
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 6),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: Text(
+                  description,
+                  style: AppFont.regular.copyWith(
+                    color: AppColors.dark.withOpacity(0.7),
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+              ),
+            ],
           ),
-          const SizedBox(height: 4),
-
-          /// 설명
-          Text(
-            description,
-            style: AppFont.regular.copyWith(
-              color: AppColors.dark.withOpacity(0.7),
-            ),
-            textAlign: TextAlign.center,
-          ),
-        ],
+        ),
       ),
     );
   }

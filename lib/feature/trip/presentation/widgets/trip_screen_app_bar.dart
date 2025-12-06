@@ -8,6 +8,7 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
   final VoidCallback? onSearchTap;
   final VoidCallback? onAlarmTap;
   final VoidCallback? onSettingTap;
+  final IconData? searchIcon;
 
   const HomeAppBar({
     super.key,
@@ -15,6 +16,7 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
     this.onSearchTap,
     this.onAlarmTap,
     this.onSettingTap,
+    this.searchIcon,
   });
 
   @override
@@ -30,7 +32,7 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
               onTap: onLogoTap,
               child: Image.asset(
                 "assets/images/logo_long_white.png",
-                height: 24,
+                width: 150,
               ),
             ),
 
@@ -39,7 +41,7 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
             Button(
               width: 40,
               height: 40,
-              icon: Icon(AppIcon.search),
+              icon: Icon(searchIcon ?? AppIcon.search),
               backgroundColor: Colors.transparent,
               contentColor: AppColors.light,
               borderRadius: 20,

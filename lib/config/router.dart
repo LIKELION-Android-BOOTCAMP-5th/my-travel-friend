@@ -3,6 +3,8 @@ import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
 import 'package:my_travel_friend/feature/auth/presentation/screens/auth_bloc_widget.dart';
 import 'package:my_travel_friend/feature/auth/presentation/viewmodel/auth/auth_bloc.dart';
+import 'package:my_travel_friend/feature/trip/presentation/screens/trip_bloc_widget.dart';
+import 'package:my_travel_friend/feature/trip/presentation/viewmodels/trip_bloc.dart';
 import 'package:my_travel_friend/splash.dart';
 import 'package:my_travel_friend/temp_screen.dart';
 
@@ -74,6 +76,14 @@ class AppRouter {
           //bloc 제공자
           create: (context) => GetIt.instance<AuthBloc>(),
           child: const AuthBlocWidget(),
+        ),
+      ),
+      GoRoute(
+        path: '/mainHome',
+        builder: (context, state) => BlocProvider(
+          //bloc 제공자
+          create: (context) => GetIt.instance<TripBloc>(),
+          child: const TripBlocWidget(userId: 10),
         ),
       ),
       GoRoute(
