@@ -9,7 +9,7 @@ import 'trip_data_source.dart';
 // 신강현
 // 데이터소스 임플리먼트 작성완료
 
-@lazySingleton
+@LazySingleton(as: TripDataSource)
 class TripDataSourceImpl implements TripDataSource {
   final SupabaseClient _supabaseClient;
 

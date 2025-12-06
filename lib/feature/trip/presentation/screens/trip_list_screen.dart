@@ -6,6 +6,7 @@ import 'package:my_travel_friend/core/widget/pop_up_box.dart';
 import 'package:my_travel_friend/core/widget/text_box.dart';
 import 'package:my_travel_friend/feature/trip/presentation/widgets/empty_travel_card.dart';
 import 'package:my_travel_friend/feature/trip/presentation/widgets/trip_card.dart';
+import 'package:my_travel_friend/feature/trip/presentation/widgets/trip_screen_app_bar.dart';
 import 'package:my_travel_friend/theme/app_colors.dart';
 import 'package:my_travel_friend/theme/app_icon.dart';
 
@@ -98,6 +99,29 @@ class _TripListScreenState extends State<TripListScreen> {
 
         return Scaffold(
           backgroundColor: AppColors.lightGray,
+
+          /// 🔹 상단 앱바 추가
+          appBar: HomeAppBar(
+            onLogoTap: () {
+              debugPrint("홈 로고 클릭");
+            },
+
+            /// 🔹 검색 버튼 토글 처리
+            onSearchTap: () {
+              bloc.add(TripEvent.toggleSearch());
+            },
+
+            /// 🔹 검색 상태면 close 아이콘 / 아니면 search 아이콘
+            searchIcon: isSearching ? AppIcon.close : AppIcon.search,
+
+            onAlarmTap: () {
+              debugPrint("알림 클릭");
+            },
+            onSettingTap: () {
+              debugPrint("설정 클릭");
+            },
+          ),
+
           body: SafeArea(
             child: Column(
               children: [

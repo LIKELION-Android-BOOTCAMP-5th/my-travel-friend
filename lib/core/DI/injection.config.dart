@@ -96,6 +96,7 @@ import '../../feature/trip/domain/usecases/get_crew_member_count_usecase.dart'
 import '../../feature/trip/domain/usecases/get_my_trip_usecase.dart' as _i521;
 import '../../feature/trip/domain/usecases/give_up_trip_usecase.dart' as _i317;
 import '../../feature/trip/domain/usecases/search_trip_usecase.dart' as _i437;
+import '../../feature/trip/presentation/viewmodels/trip_bloc.dart' as _i482;
 import '../service/internal/push_notification_service.dart' as _i737;
 import 'register_module.dart' as _i291;
 
@@ -131,32 +132,8 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i737.PushNotificationService>(
       () => _i737.PushNotificationService(gh<_i892.FirebaseMessaging>()),
     );
-    gh.lazySingleton<_i386.TripDataSourceImpl>(
-      () => _i386.TripDataSourceImpl(gh<_i454.SupabaseClient>()),
-    );
     gh.lazySingleton<_i881.DiaryDataSource>(
       () => _i663.DiaryDataSourceImpl(gh<_i454.SupabaseClient>()),
-    );
-    gh.lazySingleton<_i779.CreateTripUsecase>(
-      () => _i779.CreateTripUsecase(gh<_i161.TripRepository>()),
-    );
-    gh.lazySingleton<_i832.DeleteTripUsecase>(
-      () => _i832.DeleteTripUsecase(gh<_i161.TripRepository>()),
-    );
-    gh.lazySingleton<_i637.EditTripUsecase>(
-      () => _i637.EditTripUsecase(gh<_i161.TripRepository>()),
-    );
-    gh.lazySingleton<_i267.GetCrewMemberCountUsecase>(
-      () => _i267.GetCrewMemberCountUsecase(gh<_i161.TripRepository>()),
-    );
-    gh.lazySingleton<_i521.GetMyTripUsecase>(
-      () => _i521.GetMyTripUsecase(gh<_i161.TripRepository>()),
-    );
-    gh.lazySingleton<_i317.GiveUpTripUsecase>(
-      () => _i317.GiveUpTripUsecase(gh<_i161.TripRepository>()),
-    );
-    gh.lazySingleton<_i437.SearchTripUsecase>(
-      () => _i437.SearchTripUsecase(gh<_i161.TripRepository>()),
     );
     gh.lazySingleton<_i669.AcceptRequestUsecase>(
       () => _i669.AcceptRequestUsecase(gh<_i255.FriendRequestRepository>()),
@@ -183,8 +160,8 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i806.GetFriendsUsecase>(
       () => _i806.GetFriendsUsecase(gh<_i359.FriendRepository>()),
     );
-    gh.lazySingleton<_i840.TripRepositoryImpl>(
-      () => _i840.TripRepositoryImpl(gh<_i1063.TripDataSource>()),
+    gh.lazySingleton<_i1063.TripDataSource>(
+      () => _i386.TripDataSourceImpl(gh<_i454.SupabaseClient>()),
     );
     gh.lazySingleton<_i871.DiaryRepository>(
       () => _i148.DiaryRepositoryImpl(gh<_i881.DiaryDataSource>()),
@@ -201,6 +178,30 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i278.AppleAuthDataSource>(),
         gh<_i1040.SupabaseAuthDataSource>(),
       ),
+    );
+    gh.lazySingleton<_i161.TripRepository>(
+      () => _i840.TripRepositoryImpl(gh<_i1063.TripDataSource>()),
+    );
+    gh.lazySingleton<_i779.CreateTripUsecase>(
+      () => _i779.CreateTripUsecase(gh<_i161.TripRepository>()),
+    );
+    gh.lazySingleton<_i832.DeleteTripUsecase>(
+      () => _i832.DeleteTripUsecase(gh<_i161.TripRepository>()),
+    );
+    gh.lazySingleton<_i637.EditTripUsecase>(
+      () => _i637.EditTripUsecase(gh<_i161.TripRepository>()),
+    );
+    gh.lazySingleton<_i267.GetCrewMemberCountUsecase>(
+      () => _i267.GetCrewMemberCountUsecase(gh<_i161.TripRepository>()),
+    );
+    gh.lazySingleton<_i521.GetMyTripUsecase>(
+      () => _i521.GetMyTripUsecase(gh<_i161.TripRepository>()),
+    );
+    gh.lazySingleton<_i317.GiveUpTripUsecase>(
+      () => _i317.GiveUpTripUsecase(gh<_i161.TripRepository>()),
+    );
+    gh.lazySingleton<_i437.SearchTripUsecase>(
+      () => _i437.SearchTripUsecase(gh<_i161.TripRepository>()),
     );
     gh.lazySingleton<_i27.CreateDiaryUseCase>(
       () => _i27.CreateDiaryUseCase(gh<_i871.DiaryRepository>()),
@@ -226,6 +227,15 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i730.GetMyDiariesUseCase>(),
         gh<_i236.GetDiaryByIdUseCase>(),
         gh<_i699.DeleteDiaryUseCase>(),
+      ),
+    );
+    gh.factory<_i482.TripBloc>(
+      () => _i482.TripBloc(
+        gh<_i521.GetMyTripUsecase>(),
+        gh<_i267.GetCrewMemberCountUsecase>(),
+        gh<_i832.DeleteTripUsecase>(),
+        gh<_i317.GiveUpTripUsecase>(),
+        gh<_i437.SearchTripUsecase>(),
       ),
     );
     gh.lazySingleton<_i529.GetCurrentUserUseCase>(
