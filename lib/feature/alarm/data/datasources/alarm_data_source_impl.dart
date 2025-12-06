@@ -27,7 +27,6 @@ class AlarmDataSourceImpl implements AlarmDataSource {
           .from('alarm')
           .select()
           .eq('user_id', userId)
-          .eq('is_checked', false)
           .order('created_at', ascending: false)
           .range(offset, offset + limit - 1);
 
@@ -63,8 +62,9 @@ class AlarmDataSourceImpl implements AlarmDataSource {
     try {
       final res = await _supabaseClient
           .from('alarm')
-          .select()
-          .eq('id', alarmId!);
+          .update({'is_checked': true})
+          .eq('id', alarmId!)
+          .select();
 
       final list = (res as List).map((e) => AlarmDTO.fromJson(e)).toList();
       return Result.success(list);
