@@ -46,7 +46,7 @@ class DiaryDataSourceImpl implements DiaryDataSource {
           .from('diary')
           .select(_selectWithUser)
           .eq('trip_id', tripId)
-          .eq('is_public', false)
+          .eq('is_public', true)
           .order('created_at', ascending: false)
           .range(offset, offset + limit - 1);
 
@@ -108,9 +108,14 @@ class DiaryDataSourceImpl implements DiaryDataSource {
   @override
   Future<Result<DiaryDTO>> createDiary(DiaryDTO diary) async {
     try {
+      final insertData = diary.toJson()
+        ..remove('user')
+        ..remove('id')
+        ..remove('created_at');
+
       final res = await _supabaseClient
           .from('diary')
-          .insert(diary.toJson()..remove('user'))
+          .insert(insertData)
           .select(_selectWithUser)
           .single();
 
@@ -132,7 +137,7 @@ class DiaryDataSourceImpl implements DiaryDataSource {
 
       final res = await _supabaseClient
           .from('diary')
-          .update(diary.toJson())
+          .update(updateData)
           .eq('id', diary.id!)
           .select(_selectWithUser)
           .single();

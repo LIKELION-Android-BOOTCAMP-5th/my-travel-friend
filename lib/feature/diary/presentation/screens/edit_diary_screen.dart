@@ -200,21 +200,21 @@ class _EditDiaryScreenState extends State<EditDiaryScreen> {
 
     return Column(
       children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Padding(
-              padding: const EdgeInsets.fromLTRB(4, 0, 0, 0),
-              child: Text(
+        Padding(
+          padding: const EdgeInsets.fromLTRB(4, 0, 0, 0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Text(
                 "제목",
                 style: AppFont.regularBold.copyWith(
                   color: colorScheme.onSurface,
                 ),
               ),
-            ),
-            TypeTag(diary: widget.diary),
-          ],
+              TypeTag(diary: widget.diary),
+            ],
+          ),
         ),
         SizedBox(height: 8),
         TextBox(
@@ -368,7 +368,7 @@ class _EditDiaryScreenState extends State<EditDiaryScreen> {
             fit: BoxFit.cover,
           ),
         ),
-        _buildImageButtons(context, colorScheme),
+        ..._buildImageButtons(context, colorScheme),
       ],
     );
   }
@@ -405,64 +405,63 @@ class _EditDiaryScreenState extends State<EditDiaryScreen> {
             },
           ),
         ),
-        _buildImageButtons(context, colorScheme),
+        ..._buildImageButtons(context, colorScheme),
       ],
     );
   }
 
   // 이미지 삭제/변경 버튼
-  Widget _buildImageButtons(BuildContext context, ColorScheme colorScheme) {
-    return Stack(
-      children: [
-        // 삭제 버튼 (우측 상단)
-        Positioned(
-          top: 8,
-          right: 8,
-          child: GestureDetector(
-            onTap: () {
-              context.read<EditDiaryBloc>().add(
-                const EditDiaryEvent.removeImg(),
-              );
-            },
-            child: Container(
-              padding: const EdgeInsets.all(8),
-              decoration: BoxDecoration(
-                color: AppColors.dark.withOpacity(0.7),
-                borderRadius: BorderRadius.circular(8),
-              ),
-              child: Icon(AppIcon.close, color: AppColors.light, size: 20),
+  List<Widget> _buildImageButtons(
+    BuildContext context,
+    ColorScheme colorScheme,
+  ) {
+    return [
+      // 삭제 버튼 (우측 상단)
+      Positioned(
+        top: 8,
+        right: 8,
+        child: GestureDetector(
+          onTap: () {
+            context.read<EditDiaryBloc>().add(const EditDiaryEvent.removeImg());
+          },
+          child: Container(
+            padding: const EdgeInsets.all(8),
+            decoration: BoxDecoration(
+              color: AppColors.dark.withOpacity(0.7),
+              borderRadius: BorderRadius.circular(8),
             ),
+            child: Icon(AppIcon.close, color: AppColors.light, size: 20),
           ),
         ),
+      ),
 
-        // 변경 버튼 (우측 하단)
-        Positioned(
-          bottom: 8,
-          right: 8,
-          child: GestureDetector(
-            onTap: () => _showImgPickerSheet(context),
-            child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-              decoration: BoxDecoration(
-                color: colorScheme.primary,
-                borderRadius: BorderRadius.circular(8),
-              ),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Icon(AppIcon.camera, color: AppColors.light, size: 16),
-                  const SizedBox(width: 4),
-                  Text(
-                    '변경',
-                    style: AppFont.small.copyWith(color: AppColors.light),
-                  ),
-                ],
-              ),
+      // 변경 버튼 (우측 하단)
+      Positioned(
+        bottom: 8,
+        right: 8,
+        child: GestureDetector(
+          onTap: () => _showImgPickerSheet(context),
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+            decoration: BoxDecoration(
+              color: colorScheme.primary,
+              borderRadius: BorderRadius.circular(8),
+            ),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(AppIcon.camera, color: AppColors.light, size: 16),
+                const SizedBox(width: 4),
+                Text(
+                  '변경',
+                  style: AppFont.small.copyWith(color: AppColors.light),
+                ),
+              ],
             ),
           ),
         ),
-      ],
-    );
+      ),
+    ];
   }
 
   // 이미지 선택 바텀시트

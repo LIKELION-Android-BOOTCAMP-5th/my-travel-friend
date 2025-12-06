@@ -1,5 +1,7 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
+import '../../domain/entities/diary_entity.dart';
+
 part 'diary_event.freezed.dart';
 
 // [이재은] 다이어리 조회/ 삭제 관련 이벤트 (사용자의 행동, 시스템에서 발생하는 일)
@@ -29,6 +31,9 @@ abstract class DiaryEvent with _$DiaryEvent {
   // - DiaryDetailPopUp 띄우기 전에 호출
   const factory DiaryEvent.getDiaryById({required int diaryId}) = GetDiaryById;
 
+  // 상세 팝업 닫힘 (상태 초기화)
+  const factory DiaryEvent.clearSelectedDiary() = ClearSelectedDiary;
+
   // 다이어리 삭제
   // - 바텀시트 -> 삭제 버튼 -> 삭제 팝업 -> 삭제 시 호출
   const factory DiaryEvent.deleteDiary({required int diaryId}) = DeleteDiary;
@@ -42,10 +47,18 @@ abstract class DiaryEvent with _$DiaryEvent {
   // 다이어리 작성 화면 이동 요청
   const factory DiaryEvent.requestCreate() = RequestCreate;
 
+  // 다이어리 수정 화면 이동 요청
+  const factory DiaryEvent.requestEdit({required DiaryEntity diary}) =
+      RequestEdit;
+
   // 네비게이션 처리 완료(플래그 초기화)
   const factory DiaryEvent.navigationHandled() = NavigationHandled;
 
   // 다이어리 작성 완료(성공 후 새로고침)
   const factory DiaryEvent.onCreateCompleted({required bool success}) =
       OnCreateCompleted;
+
+  // 다이어리 수정 완료(성공 후 새로고침)
+  const factory DiaryEvent.onEditCompleted({required bool success}) =
+      OnEditCompleted;
 }

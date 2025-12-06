@@ -10,6 +10,8 @@ abstract class TripState with _$TripState {
     TripEntity? selectedTrip,
     //getmytrip -> 여행 리스트
     required List<TripEntity>? trips,
+    //크루인원 찾기용
+    Map<int, int>? crewCounts,
     //검색한 결과에 따른 리스트
     List<TripEntity>? searchTrips,
     //검색어 상태
@@ -24,6 +26,11 @@ abstract class TripState with _$TripState {
     @Default(TripPageState.init) TripPageState pageState,
     @Default(false) bool hasMore,
     @Default(false) bool isLoadingMore,
+
+    // 메세지 (성공/에러)
+    String? message,
+    String? errorType,
+    String? actionType,
   }) = _TripState;
 }
 

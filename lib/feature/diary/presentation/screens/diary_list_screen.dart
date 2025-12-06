@@ -7,6 +7,7 @@ import 'package:my_travel_friend/theme/app_colors.dart';
 import '../../../../core/widget/floating_button.dart';
 import '../../../../theme/app_font.dart';
 import '../../../../theme/app_icon.dart';
+import '../../domain/entities/diary_entity.dart';
 import '../viewmodels/diary_bloc.dart';
 import '../viewmodels/diary_event.dart';
 import '../viewmodels/diary_state.dart';
@@ -75,40 +76,44 @@ class _DiaryListScreenState extends State<DiaryListScreen> {
     return currentScroll >= (maxScroll - 100);
   }
 
-  // 다이어리 작성 화면으로 이동
-  // - 작성 성공 시 true 반환받아 목록 새로고침
-  //-> bloc state로 쓰기
-  Future<void> _navigateToCreate() async {
-    final res = await context.push<bool>(
-      '/diary/new',
-      extra: {'tripId': widget.tripId, 'userId': widget.userId},
-    );
-
-    if (mounted) {
-      context.read<DiaryBloc>().add(
-        DiaryEvent.onCreateCompleted(success: res == true),
-      );
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
     final isDark = colorScheme.brightness == Brightness.dark;
 
-    return BlocListener<DiaryBloc, DiaryState>(
-      listenWhen: (prev, curr) =>
-          prev.navigateToCreate != curr.navigateToCreate,
-      listener: (context, state) {
-        if (state.navigateToCreate) {
-          context.read<DiaryBloc>().add(const DiaryEvent.navigationHandled());
-          _navigateToCreate();
-        }
-      },
+    return MultiBlocListener(
+      listeners: [
+        // 생성 화면 이동 리스너
+        BlocListener<DiaryBloc, DiaryState>(
+          listenWhen: (prev, curr) =>
+              prev.navigateToCreate != curr.navigateToCreate,
+          listener: (context, state) {
+            if (state.navigateToCreate) {
+              context.read<DiaryBloc>().add(
+                const DiaryEvent.navigationHandled(),
+              );
+              _navigateToCreate();
+            }
+          },
+        ),
+        // 수정 화면 이동 리스너
+        BlocListener<DiaryBloc, DiaryState>(
+          listenWhen: (prev, curr) =>
+              prev.navigateToEdit != curr.navigateToEdit,
+          listener: (context, state) {
+            if (state.navigateToEdit && state.selectedDiary != null) {
+              context.read<DiaryBloc>().add(
+                const DiaryEvent.navigationHandled(),
+              );
+              _navigateToEdit(state.selectedDiary!);
+            }
+          },
+        ),
+      ],
       child: SafeArea(
         child: Scaffold(
           // 모드(라이트/다크)에 따른 배경 색 변경
-          backgroundColor: isDark ? AppColors.navy : AppColors.lessLight,
+          backgroundColor: isDark ? AppColors.navy : AppColors.darkGray,
           body: Padding(
             padding: const EdgeInsets.all(16.0),
             child: Column(
@@ -118,7 +123,7 @@ class _DiaryListScreenState extends State<DiaryListScreen> {
                 const SizedBox(height: 16),
                 // 타입별 필터
                 _buildFilterChips(context),
-                const SizedBox(height: 16),
+                const SizedBox(height: 32),
                 // 다이어리 리스트 출력
                 Expanded(child: _buildDiaryList(context)),
               ],
@@ -136,6 +141,36 @@ class _DiaryListScreenState extends State<DiaryListScreen> {
         ),
       ),
     );
+  }
+
+  // 다이어리 작성 화면으로 이동
+  // - 작성 성공 시 true 반환받아 목록 새로고침
+  //-> bloc state로 쓰기
+  Future<void> _navigateToCreate() async {
+    final res = await context.push<bool>(
+      '/diary/new',
+      extra: {'tripId': widget.tripId, 'userId': widget.userId},
+    );
+
+    if (mounted) {
+      context.read<DiaryBloc>().add(
+        DiaryEvent.onCreateCompleted(success: res == true),
+      );
+    }
+  }
+
+  // 다이어리 수정 화면으로 이동
+  Future<void> _navigateToEdit(DiaryEntity diary) async {
+    final res = await context.push<bool>(
+      '/diary/edit',
+      extra: {'diary': diary},
+    );
+
+    if (mounted) {
+      context.read<DiaryBloc>().add(
+        DiaryEvent.onEditCompleted(success: res == true),
+      );
+    }
   }
 
   // 공유<->개인 다이어리 탭 빌드
@@ -242,6 +277,15 @@ class _DiaryListScreenState extends State<DiaryListScreen> {
             itemCount: diaries.length + (state.hasMore ? 1 : 0),
             separatorBuilder: (_, __) => const SizedBox(height: 12),
             itemBuilder: (context, index) {
+              if (index >= diaries.length) {
+                return const Center(
+                  child: Padding(
+                    padding: EdgeInsets.all(16.0),
+                    child: CircularProgressIndicator(),
+                  ),
+                );
+              }
+
               final diary = diaries[index];
 
               return GestureDetector(

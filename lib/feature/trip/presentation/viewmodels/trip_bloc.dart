@@ -1,4 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:injectable/injectable.dart';
 import 'package:my_travel_friend/core/result/result.dart';
 import 'package:my_travel_friend/feature/trip/domain/usecases/delete_trip_usecase.dart';
 import 'package:my_travel_friend/feature/trip/domain/usecases/get_crew_member_count_usecase.dart';
@@ -8,6 +9,7 @@ import 'package:my_travel_friend/feature/trip/domain/usecases/search_trip_usecas
 import 'package:my_travel_friend/feature/trip/presentation/viewmodels/trip_event.dart';
 import 'package:my_travel_friend/feature/trip/presentation/viewmodels/trip_state.dart';
 
+@injectable
 class TripBloc extends Bloc<TripEvent, TripState> {
   final GetMyTripUsecase _getMyTripUsecase;
   final GetCrewMemberCountUsecase _getCrewMemberCountUsecase;
@@ -37,7 +39,6 @@ class TripBloc extends Bloc<TripEvent, TripState> {
     on<UpdateTrip>(_onUpdateTrip);
   }
 
-  //기본 리스트 조회
   Future<void> _onGetMyTrips(GetMyTrips event, Emitter<TripState> emit) async {
     emit(
       state.copyWith(
@@ -50,13 +51,26 @@ class TripBloc extends Bloc<TripEvent, TripState> {
     final result = await _getMyTripUsecase(event.userId, 1);
 
     result.when(
-      success: (data) => emit(
-        state.copyWith(
-          trips: data,
-          pageState: TripPageState.loaded,
-          currentPage: 1,
-        ),
-      ),
+      success: (data) async {
+        Map<int, int> countMap = {};
+
+        for (var trip in data) {
+          final crewResult = await _getCrewMemberCountUsecase(trip.id!);
+          crewResult.when(
+            success: (value) => countMap[trip.id!] = value,
+            failure: (_) => countMap[trip.id!] = 1,
+          );
+        }
+
+        emit(
+          state.copyWith(
+            trips: data,
+            crewCounts: countMap, // 👈 추가된 crewCount!
+            pageState: TripPageState.loaded,
+            currentPage: 1,
+          ),
+        );
+      },
       failure: (_) => emit(state.copyWith(pageState: TripPageState.error)),
     );
   }

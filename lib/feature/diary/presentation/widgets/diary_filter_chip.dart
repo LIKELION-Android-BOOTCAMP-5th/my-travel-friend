@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:my_travel_friend/theme/app_font.dart';
 
-import '../../../../theme/app_colors.dart';
-
 // [이재은] 다이어리 타입 필터 칩
 // - 전체, 메모, 리뷰, 사진, 소비
 class DiaryFilterChip extends StatelessWidget {
@@ -29,9 +27,7 @@ class DiaryFilterChip extends StatelessWidget {
         decoration: BoxDecoration(
           color: isSelected
               ? colorScheme.secondary
-              : isDark
-              ? colorScheme.outlineVariant
-              : AppColors.darkGray,
+              : colorScheme.surfaceContainerHighest,
           borderRadius: BorderRadius.circular(13),
         ),
         child: Text(

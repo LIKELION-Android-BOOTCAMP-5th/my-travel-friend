@@ -101,14 +101,31 @@ class _NewDiaryScreenState extends State<NewDiaryScreen> {
                   Button(
                     width: 40,
                     height: 40,
-                    icon: AppIcon.save,
+                    icon:
+                        state.isUploading ||
+                            state.pageState == NewDiaryPageState.loading
+                        ? SizedBox(
+                            width: 20,
+                            height: 20,
+                            child: CircularProgressIndicator(
+                              strokeWidth: 2,
+                              color: isDark
+                                  ? colorScheme.onSurface
+                                  : AppColors.light,
+                            ),
+                          )
+                        : AppIcon.save,
                     contentColor: isDark
                         ? colorScheme.onSurface
                         : AppColors.light,
                     borderRadius: 20,
-                    onTap: () {
-                      //기능
-                    },
+                    onTap: state.canSave && !state.isUploading
+                        ? () {
+                            context.read<NewDiaryBloc>().add(
+                              const NewDiaryEvent.createDiary(),
+                            );
+                          }
+                        : null,
                   ),
                 ],
               ),
@@ -166,7 +183,14 @@ class _NewDiaryScreenState extends State<NewDiaryScreen> {
   }
 
   void _blocListener(BuildContext context, NewDiaryState state) {
-    if (state.pageState == NewDiaryPageState.success) {}
+    if (state.pageState == NewDiaryPageState.success) {
+      ToastPop.show(state.message ?? '다이어리를 작성했습니다');
+      context.pop(true); // 성공 시 true 반환
+    }
+
+    if (state.pageState == NewDiaryPageState.error) {
+      ToastPop.show(state.message ?? '오류가 발생했습니다');
+    }
   }
 
   // 제목 입력 파트

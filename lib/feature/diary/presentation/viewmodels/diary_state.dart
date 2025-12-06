@@ -32,8 +32,11 @@ abstract class DiaryState with _$DiaryState {
     String? errorType,
     String? actionType,
 
-    // 네비게이션 (화면 이동)
+    // 네비게이션 (작성 화면 이동)
     @Default(false) bool navigateToCreate,
+
+    // 네비게이션 (수정 화면 이동)
+    @Default(false) bool navigateToEdit,
 
     // 페이지 상태
     @Default(DiaryPageState.init) DiaryPageState pageState,

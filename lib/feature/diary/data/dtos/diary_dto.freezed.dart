@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$DiaryDTO {
 
- int? get id;@JsonKey(name: 'created_at') String? get createdAt;@JsonKey(name: 'trip_id') int get tripId;@JsonKey(name: 'user_id') int get userId;@JsonKey(name: 'user') Map<String, dynamic>? get userJson;@JsonKey(name: 'is_public') bool get isPublic; String get type; String? get title;@JsonKey(name: 'schedule_id') int? get scheduleId; String? get img; int? get rating; String? get content; int? get cost;
+ int? get id;@JsonKey(name: 'created_at') String? get createdAt;@JsonKey(name: 'trip_id') int get tripId;@JsonKey(name: 'user_id') int get userId;@JsonKey(name: 'user') Map<String, dynamic>? get userJson;@JsonKey(name: 'is_public') bool get isPublic; String get type; String? get title;@JsonKey(name: 'schedule_id') int? get scheduleId; String? get img; double? get rating; String? get content; int? get cost;
 /// Create a copy of DiaryDTO
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -48,7 +48,7 @@ abstract mixin class $DiaryDTOCopyWith<$Res>  {
   factory $DiaryDTOCopyWith(DiaryDTO value, $Res Function(DiaryDTO) _then) = _$DiaryDTOCopyWithImpl;
 @useResult
 $Res call({
- int? id,@JsonKey(name: 'created_at') String? createdAt,@JsonKey(name: 'trip_id') int tripId,@JsonKey(name: 'user_id') int userId,@JsonKey(name: 'user') Map<String, dynamic>? userJson,@JsonKey(name: 'is_public') bool isPublic, String type, String? title,@JsonKey(name: 'schedule_id') int? scheduleId, String? img, int? rating, String? content, int? cost
+ int? id,@JsonKey(name: 'created_at') String? createdAt,@JsonKey(name: 'trip_id') int tripId,@JsonKey(name: 'user_id') int userId,@JsonKey(name: 'user') Map<String, dynamic>? userJson,@JsonKey(name: 'is_public') bool isPublic, String type, String? title,@JsonKey(name: 'schedule_id') int? scheduleId, String? img, double? rating, String? content, int? cost
 });
 
 
@@ -78,7 +78,7 @@ as String,title: freezed == title ? _self.title : title // ignore: cast_nullable
 as String?,scheduleId: freezed == scheduleId ? _self.scheduleId : scheduleId // ignore: cast_nullable_to_non_nullable
 as int?,img: freezed == img ? _self.img : img // ignore: cast_nullable_to_non_nullable
 as String?,rating: freezed == rating ? _self.rating : rating // ignore: cast_nullable_to_non_nullable
-as int?,content: freezed == content ? _self.content : content // ignore: cast_nullable_to_non_nullable
+as double?,content: freezed == content ? _self.content : content // ignore: cast_nullable_to_non_nullable
 as String?,cost: freezed == cost ? _self.cost : cost // ignore: cast_nullable_to_non_nullable
 as int?,
   ));
@@ -165,7 +165,7 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int? id, @JsonKey(name: 'created_at')  String? createdAt, @JsonKey(name: 'trip_id')  int tripId, @JsonKey(name: 'user_id')  int userId, @JsonKey(name: 'user')  Map<String, dynamic>? userJson, @JsonKey(name: 'is_public')  bool isPublic,  String type,  String? title, @JsonKey(name: 'schedule_id')  int? scheduleId,  String? img,  int? rating,  String? content,  int? cost)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int? id, @JsonKey(name: 'created_at')  String? createdAt, @JsonKey(name: 'trip_id')  int tripId, @JsonKey(name: 'user_id')  int userId, @JsonKey(name: 'user')  Map<String, dynamic>? userJson, @JsonKey(name: 'is_public')  bool isPublic,  String type,  String? title, @JsonKey(name: 'schedule_id')  int? scheduleId,  String? img,  double? rating,  String? content,  int? cost)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _DiaryDTO() when $default != null:
 return $default(_that.id,_that.createdAt,_that.tripId,_that.userId,_that.userJson,_that.isPublic,_that.type,_that.title,_that.scheduleId,_that.img,_that.rating,_that.content,_that.cost);case _:
@@ -186,7 +186,7 @@ return $default(_that.id,_that.createdAt,_that.tripId,_that.userId,_that.userJso
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int? id, @JsonKey(name: 'created_at')  String? createdAt, @JsonKey(name: 'trip_id')  int tripId, @JsonKey(name: 'user_id')  int userId, @JsonKey(name: 'user')  Map<String, dynamic>? userJson, @JsonKey(name: 'is_public')  bool isPublic,  String type,  String? title, @JsonKey(name: 'schedule_id')  int? scheduleId,  String? img,  int? rating,  String? content,  int? cost)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int? id, @JsonKey(name: 'created_at')  String? createdAt, @JsonKey(name: 'trip_id')  int tripId, @JsonKey(name: 'user_id')  int userId, @JsonKey(name: 'user')  Map<String, dynamic>? userJson, @JsonKey(name: 'is_public')  bool isPublic,  String type,  String? title, @JsonKey(name: 'schedule_id')  int? scheduleId,  String? img,  double? rating,  String? content,  int? cost)  $default,) {final _that = this;
 switch (_that) {
 case _DiaryDTO():
 return $default(_that.id,_that.createdAt,_that.tripId,_that.userId,_that.userJson,_that.isPublic,_that.type,_that.title,_that.scheduleId,_that.img,_that.rating,_that.content,_that.cost);case _:
@@ -206,7 +206,7 @@ return $default(_that.id,_that.createdAt,_that.tripId,_that.userId,_that.userJso
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int? id, @JsonKey(name: 'created_at')  String? createdAt, @JsonKey(name: 'trip_id')  int tripId, @JsonKey(name: 'user_id')  int userId, @JsonKey(name: 'user')  Map<String, dynamic>? userJson, @JsonKey(name: 'is_public')  bool isPublic,  String type,  String? title, @JsonKey(name: 'schedule_id')  int? scheduleId,  String? img,  int? rating,  String? content,  int? cost)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int? id, @JsonKey(name: 'created_at')  String? createdAt, @JsonKey(name: 'trip_id')  int tripId, @JsonKey(name: 'user_id')  int userId, @JsonKey(name: 'user')  Map<String, dynamic>? userJson, @JsonKey(name: 'is_public')  bool isPublic,  String type,  String? title, @JsonKey(name: 'schedule_id')  int? scheduleId,  String? img,  double? rating,  String? content,  int? cost)?  $default,) {final _that = this;
 switch (_that) {
 case _DiaryDTO() when $default != null:
 return $default(_that.id,_that.createdAt,_that.tripId,_that.userId,_that.userJson,_that.isPublic,_that.type,_that.title,_that.scheduleId,_that.img,_that.rating,_that.content,_that.cost);case _:
@@ -242,7 +242,7 @@ class _DiaryDTO extends DiaryDTO {
 @override final  String? title;
 @override@JsonKey(name: 'schedule_id') final  int? scheduleId;
 @override final  String? img;
-@override final  int? rating;
+@override final  double? rating;
 @override final  String? content;
 @override final  int? cost;
 
@@ -279,7 +279,7 @@ abstract mixin class _$DiaryDTOCopyWith<$Res> implements $DiaryDTOCopyWith<$Res>
   factory _$DiaryDTOCopyWith(_DiaryDTO value, $Res Function(_DiaryDTO) _then) = __$DiaryDTOCopyWithImpl;
 @override @useResult
 $Res call({
- int? id,@JsonKey(name: 'created_at') String? createdAt,@JsonKey(name: 'trip_id') int tripId,@JsonKey(name: 'user_id') int userId,@JsonKey(name: 'user') Map<String, dynamic>? userJson,@JsonKey(name: 'is_public') bool isPublic, String type, String? title,@JsonKey(name: 'schedule_id') int? scheduleId, String? img, int? rating, String? content, int? cost
+ int? id,@JsonKey(name: 'created_at') String? createdAt,@JsonKey(name: 'trip_id') int tripId,@JsonKey(name: 'user_id') int userId,@JsonKey(name: 'user') Map<String, dynamic>? userJson,@JsonKey(name: 'is_public') bool isPublic, String type, String? title,@JsonKey(name: 'schedule_id') int? scheduleId, String? img, double? rating, String? content, int? cost
 });
 
 
@@ -309,7 +309,7 @@ as String,title: freezed == title ? _self.title : title // ignore: cast_nullable
 as String?,scheduleId: freezed == scheduleId ? _self.scheduleId : scheduleId // ignore: cast_nullable_to_non_nullable
 as int?,img: freezed == img ? _self.img : img // ignore: cast_nullable_to_non_nullable
 as String?,rating: freezed == rating ? _self.rating : rating // ignore: cast_nullable_to_non_nullable
-as int?,content: freezed == content ? _self.content : content // ignore: cast_nullable_to_non_nullable
+as double?,content: freezed == content ? _self.content : content // ignore: cast_nullable_to_non_nullable
 as String?,cost: freezed == cost ? _self.cost : cost // ignore: cast_nullable_to_non_nullable
 as int?,
   ));

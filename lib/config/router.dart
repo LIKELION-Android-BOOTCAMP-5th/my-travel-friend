@@ -3,10 +3,14 @@ import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
 import 'package:my_travel_friend/feature/auth/presentation/screens/auth_bloc_widget.dart';
 import 'package:my_travel_friend/feature/auth/presentation/viewmodel/auth/auth_bloc.dart';
+import 'package:my_travel_friend/feature/trip/presentation/screens/trip_bloc_widget.dart';
+import 'package:my_travel_friend/feature/trip/presentation/viewmodels/trip_bloc.dart';
 import 'package:my_travel_friend/splash.dart';
 import 'package:my_travel_friend/temp_screen.dart';
 
+import '../feature/diary/domain/entities/diary_entity.dart';
 import '../feature/diary/presentation/screens/diary_bloc_widget.dart';
+import '../feature/diary/presentation/screens/edit_diary_bloc_widget.dart';
 import '../feature/diary/presentation/screens/new_diary_bloc_widget.dart';
 import '../feature/diary/presentation/viewmodels/diary_bloc.dart';
 import '../feature/diary/presentation/viewmodels/new_diary_bloc.dart';
@@ -75,19 +79,35 @@ class AppRouter {
         ),
       ),
       GoRoute(
+        path: '/mainHome',
+        builder: (context, state) => BlocProvider(
+          //bloc 제공자
+          create: (context) => GetIt.instance<TripBloc>(),
+          child: const TripBlocWidget(userId: 10),
+        ),
+      ),
+      GoRoute(
         path: '/diary',
         builder: (context, state) => BlocProvider(
           //bloc 제공자
           create: (context) => GetIt.instance<DiaryBloc>(),
-          child: const DiaryBlocWidget(tripId: 1, userId: 1),
+          child: const DiaryBlocWidget(tripId: 1, userId: 10),
         ),
       ),
       GoRoute(
         path: '/diary/new',
         builder: (context, state) => BlocProvider(
           create: (context) => GetIt.instance<NewDiaryBloc>(),
-          child: const NewDiaryBlocWidget(tripId: 1, userId: 1),
+          child: const NewDiaryBlocWidget(tripId: 1, userId: 10),
         ),
+      ),
+      GoRoute(
+        path: '/diary/edit',
+        builder: (context, state) {
+          final extra = state.extra as Map<String, dynamic>;
+          final diary = extra['diary'] as DiaryEntity;
+          return EditDiaryBlocWidget(diary: diary);
+        },
       ),
       /*
       // Shell Route: 앱바 + 하단 네비게이션이 있는 메인 구조

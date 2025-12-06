@@ -2,6 +2,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 import 'package:my_travel_friend/feature/diary/domain/usecases/update_diary_usecase.dart';
 
+import '../../../../core/result/failures.dart';
 import '../../../../core/result/result.dart';
 import '../../domain/repositories/diary_repository.dart';
 import 'edit_diary_event.dart';
@@ -28,13 +29,15 @@ class EditDiaryBloc extends Bloc<EditDiaryEvent, EditDiaryState> {
   }
 
   // 에러타입 추출
-  String _getErrorType(dynamic failure) {
-    return failure.map(
-      serverFailure: (_) => 'server',
-      networkFailure: (_) => 'network',
-      authFailure: (_) => 'auth',
-      undefined: (_) => 'unknown',
-    );
+  String _getErrorType(Failure failure) {
+    return switch (failure) {
+      ServerFailure() => 'server',
+      NetworkFailure() => 'network',
+      AuthFailure() => 'auth',
+      UndefinedFailure() => 'unknown',
+      // TODO: Handle this case.
+      Failure() => throw UnimplementedError(),
+    };
   }
 
   // 기존 다이어리 데이터 로드
