@@ -19,7 +19,7 @@ abstract class DiaryEntity with _$DiaryEntity {
     String? title,
     int? scheduleId,
     String? img,
-    int? rating,
+    double? rating,
     String? content,
     int? cost,
   }) = _DiaryEntity;

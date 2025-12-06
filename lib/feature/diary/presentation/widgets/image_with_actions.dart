@@ -52,7 +52,7 @@ class _ImageWithActionsState extends State<ImageWithActions> {
               tag: widget.heroTag ?? widget.imageUrl,
               child: Image.network(
                 widget.imageUrl,
-                width: widget.width ?? double.infinity,
+                width: widget.width ?? MediaQuery.of(context).size.width,
                 height: widget.height,
                 fit: BoxFit.cover, // 이미지가 영역을 꽉 채우도록
                 // 이미지 로드 실패시 대체 UI

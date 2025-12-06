@@ -36,6 +36,7 @@ class DiaryBloc extends Bloc<DiaryEvent, DiaryState> {
     on<LoadMore>(_onLoadMore);
     on<Refresh>(_onRefresh);
     on<RequestCreate>(_onRequestCreate);
+    on<RequestEdit>(_onRequestEdit);
     on<NavigationHandled>(_onNavigationHandled);
     on<OnCreateCompleted>(_onCreateCompleted);
   }
@@ -67,13 +68,31 @@ class DiaryBloc extends Bloc<DiaryEvent, DiaryState> {
     emit(state.copyWith(navigateToCreate: true));
   }
 
+  // 수정 화면으로 이동 요청
+  void _onRequestEdit(RequestEdit event, Emitter<DiaryState> emit) {
+    emit(
+      state.copyWith(
+        navigateToEdit: true,
+        selectedDiary: event.diary, // 수정할 다이어리 저장
+      ),
+    );
+  }
+
   // 네비게이션 플래그 리셋
   void _onNavigationHandled(NavigationHandled event, Emitter<DiaryState> emit) {
     emit(state.copyWith(navigateToCreate: false));
+    emit(state.copyWith(navigateToEdit: false));
   }
 
   // 작성 완료
   void _onCreateCompleted(OnCreateCompleted event, Emitter<DiaryState> emit) {
+    if (event.success) {
+      _refreshList();
+    }
+  }
+
+  // 수정 완료
+  void _onEditCompleted(OnEditCompleted event, Emitter<DiaryState> emit) {
     if (event.success) {
       _refreshList();
     }

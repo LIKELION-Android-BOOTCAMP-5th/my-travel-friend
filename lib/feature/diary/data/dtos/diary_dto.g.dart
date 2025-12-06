@@ -17,7 +17,7 @@ _DiaryDTO _$DiaryDTOFromJson(Map<String, dynamic> json) => _DiaryDTO(
   title: json['title'] as String?,
   scheduleId: (json['schedule_id'] as num?)?.toInt(),
   img: json['img'] as String?,
-  rating: (json['rating'] as num?)?.toInt(),
+  rating: (json['rating'] as num?)?.toDouble(),
   content: json['content'] as String?,
   cost: (json['cost'] as num?)?.toInt(),
 );

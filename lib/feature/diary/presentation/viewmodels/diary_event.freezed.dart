@@ -55,7 +55,7 @@ extension DiaryEventPatterns on DiaryEvent {
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( GetOurDiaries value)?  getOurDiaries,TResult Function( GetMyDiaries value)?  getMyDiaries,TResult Function( LoadMore value)?  loadMore,TResult Function( GetDiaryById value)?  getDiaryById,TResult Function( DeleteDiary value)?  deleteDiary,TResult Function( FilterByType value)?  filterByType,TResult Function( Refresh value)?  refresh,TResult Function( RequestCreate value)?  requestCreate,TResult Function( NavigationHandled value)?  navigationHandled,TResult Function( OnCreateCompleted value)?  onCreateCompleted,required TResult orElse(),}){
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( GetOurDiaries value)?  getOurDiaries,TResult Function( GetMyDiaries value)?  getMyDiaries,TResult Function( LoadMore value)?  loadMore,TResult Function( GetDiaryById value)?  getDiaryById,TResult Function( DeleteDiary value)?  deleteDiary,TResult Function( FilterByType value)?  filterByType,TResult Function( Refresh value)?  refresh,TResult Function( RequestCreate value)?  requestCreate,TResult Function( RequestEdit value)?  requestEdit,TResult Function( NavigationHandled value)?  navigationHandled,TResult Function( OnCreateCompleted value)?  onCreateCompleted,TResult Function( OnEditCompleted value)?  onEditCompleted,required TResult orElse(),}){
 final _that = this;
 switch (_that) {
 case GetOurDiaries() when getOurDiaries != null:
@@ -66,9 +66,11 @@ return getDiaryById(_that);case DeleteDiary() when deleteDiary != null:
 return deleteDiary(_that);case FilterByType() when filterByType != null:
 return filterByType(_that);case Refresh() when refresh != null:
 return refresh(_that);case RequestCreate() when requestCreate != null:
-return requestCreate(_that);case NavigationHandled() when navigationHandled != null:
+return requestCreate(_that);case RequestEdit() when requestEdit != null:
+return requestEdit(_that);case NavigationHandled() when navigationHandled != null:
 return navigationHandled(_that);case OnCreateCompleted() when onCreateCompleted != null:
-return onCreateCompleted(_that);case _:
+return onCreateCompleted(_that);case OnEditCompleted() when onEditCompleted != null:
+return onEditCompleted(_that);case _:
   return orElse();
 
 }
@@ -86,7 +88,7 @@ return onCreateCompleted(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( GetOurDiaries value)  getOurDiaries,required TResult Function( GetMyDiaries value)  getMyDiaries,required TResult Function( LoadMore value)  loadMore,required TResult Function( GetDiaryById value)  getDiaryById,required TResult Function( DeleteDiary value)  deleteDiary,required TResult Function( FilterByType value)  filterByType,required TResult Function( Refresh value)  refresh,required TResult Function( RequestCreate value)  requestCreate,required TResult Function( NavigationHandled value)  navigationHandled,required TResult Function( OnCreateCompleted value)  onCreateCompleted,}){
+@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( GetOurDiaries value)  getOurDiaries,required TResult Function( GetMyDiaries value)  getMyDiaries,required TResult Function( LoadMore value)  loadMore,required TResult Function( GetDiaryById value)  getDiaryById,required TResult Function( DeleteDiary value)  deleteDiary,required TResult Function( FilterByType value)  filterByType,required TResult Function( Refresh value)  refresh,required TResult Function( RequestCreate value)  requestCreate,required TResult Function( RequestEdit value)  requestEdit,required TResult Function( NavigationHandled value)  navigationHandled,required TResult Function( OnCreateCompleted value)  onCreateCompleted,required TResult Function( OnEditCompleted value)  onEditCompleted,}){
 final _that = this;
 switch (_that) {
 case GetOurDiaries():
@@ -97,9 +99,11 @@ return getDiaryById(_that);case DeleteDiary():
 return deleteDiary(_that);case FilterByType():
 return filterByType(_that);case Refresh():
 return refresh(_that);case RequestCreate():
-return requestCreate(_that);case NavigationHandled():
+return requestCreate(_that);case RequestEdit():
+return requestEdit(_that);case NavigationHandled():
 return navigationHandled(_that);case OnCreateCompleted():
-return onCreateCompleted(_that);case _:
+return onCreateCompleted(_that);case OnEditCompleted():
+return onEditCompleted(_that);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -116,7 +120,7 @@ return onCreateCompleted(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( GetOurDiaries value)?  getOurDiaries,TResult? Function( GetMyDiaries value)?  getMyDiaries,TResult? Function( LoadMore value)?  loadMore,TResult? Function( GetDiaryById value)?  getDiaryById,TResult? Function( DeleteDiary value)?  deleteDiary,TResult? Function( FilterByType value)?  filterByType,TResult? Function( Refresh value)?  refresh,TResult? Function( RequestCreate value)?  requestCreate,TResult? Function( NavigationHandled value)?  navigationHandled,TResult? Function( OnCreateCompleted value)?  onCreateCompleted,}){
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( GetOurDiaries value)?  getOurDiaries,TResult? Function( GetMyDiaries value)?  getMyDiaries,TResult? Function( LoadMore value)?  loadMore,TResult? Function( GetDiaryById value)?  getDiaryById,TResult? Function( DeleteDiary value)?  deleteDiary,TResult? Function( FilterByType value)?  filterByType,TResult? Function( Refresh value)?  refresh,TResult? Function( RequestCreate value)?  requestCreate,TResult? Function( RequestEdit value)?  requestEdit,TResult? Function( NavigationHandled value)?  navigationHandled,TResult? Function( OnCreateCompleted value)?  onCreateCompleted,TResult? Function( OnEditCompleted value)?  onEditCompleted,}){
 final _that = this;
 switch (_that) {
 case GetOurDiaries() when getOurDiaries != null:
@@ -127,9 +131,11 @@ return getDiaryById(_that);case DeleteDiary() when deleteDiary != null:
 return deleteDiary(_that);case FilterByType() when filterByType != null:
 return filterByType(_that);case Refresh() when refresh != null:
 return refresh(_that);case RequestCreate() when requestCreate != null:
-return requestCreate(_that);case NavigationHandled() when navigationHandled != null:
+return requestCreate(_that);case RequestEdit() when requestEdit != null:
+return requestEdit(_that);case NavigationHandled() when navigationHandled != null:
 return navigationHandled(_that);case OnCreateCompleted() when onCreateCompleted != null:
-return onCreateCompleted(_that);case _:
+return onCreateCompleted(_that);case OnEditCompleted() when onEditCompleted != null:
+return onEditCompleted(_that);case _:
   return null;
 
 }
@@ -146,7 +152,7 @@ return onCreateCompleted(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function( int tripId)?  getOurDiaries,TResult Function( int tripId,  int userId)?  getMyDiaries,TResult Function()?  loadMore,TResult Function( int diaryId)?  getDiaryById,TResult Function( int diaryId)?  deleteDiary,TResult Function( String? type)?  filterByType,TResult Function()?  refresh,TResult Function()?  requestCreate,TResult Function()?  navigationHandled,TResult Function( bool success)?  onCreateCompleted,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function( int tripId)?  getOurDiaries,TResult Function( int tripId,  int userId)?  getMyDiaries,TResult Function()?  loadMore,TResult Function( int diaryId)?  getDiaryById,TResult Function( int diaryId)?  deleteDiary,TResult Function( String? type)?  filterByType,TResult Function()?  refresh,TResult Function()?  requestCreate,TResult Function( DiaryEntity diary)?  requestEdit,TResult Function()?  navigationHandled,TResult Function( bool success)?  onCreateCompleted,TResult Function( bool success)?  onEditCompleted,required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case GetOurDiaries() when getOurDiaries != null:
 return getOurDiaries(_that.tripId);case GetMyDiaries() when getMyDiaries != null:
@@ -156,9 +162,11 @@ return getDiaryById(_that.diaryId);case DeleteDiary() when deleteDiary != null:
 return deleteDiary(_that.diaryId);case FilterByType() when filterByType != null:
 return filterByType(_that.type);case Refresh() when refresh != null:
 return refresh();case RequestCreate() when requestCreate != null:
-return requestCreate();case NavigationHandled() when navigationHandled != null:
+return requestCreate();case RequestEdit() when requestEdit != null:
+return requestEdit(_that.diary);case NavigationHandled() when navigationHandled != null:
 return navigationHandled();case OnCreateCompleted() when onCreateCompleted != null:
-return onCreateCompleted(_that.success);case _:
+return onCreateCompleted(_that.success);case OnEditCompleted() when onEditCompleted != null:
+return onEditCompleted(_that.success);case _:
   return orElse();
 
 }
@@ -176,7 +184,7 @@ return onCreateCompleted(_that.success);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function( int tripId)  getOurDiaries,required TResult Function( int tripId,  int userId)  getMyDiaries,required TResult Function()  loadMore,required TResult Function( int diaryId)  getDiaryById,required TResult Function( int diaryId)  deleteDiary,required TResult Function( String? type)  filterByType,required TResult Function()  refresh,required TResult Function()  requestCreate,required TResult Function()  navigationHandled,required TResult Function( bool success)  onCreateCompleted,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function( int tripId)  getOurDiaries,required TResult Function( int tripId,  int userId)  getMyDiaries,required TResult Function()  loadMore,required TResult Function( int diaryId)  getDiaryById,required TResult Function( int diaryId)  deleteDiary,required TResult Function( String? type)  filterByType,required TResult Function()  refresh,required TResult Function()  requestCreate,required TResult Function( DiaryEntity diary)  requestEdit,required TResult Function()  navigationHandled,required TResult Function( bool success)  onCreateCompleted,required TResult Function( bool success)  onEditCompleted,}) {final _that = this;
 switch (_that) {
 case GetOurDiaries():
 return getOurDiaries(_that.tripId);case GetMyDiaries():
@@ -186,9 +194,11 @@ return getDiaryById(_that.diaryId);case DeleteDiary():
 return deleteDiary(_that.diaryId);case FilterByType():
 return filterByType(_that.type);case Refresh():
 return refresh();case RequestCreate():
-return requestCreate();case NavigationHandled():
+return requestCreate();case RequestEdit():
+return requestEdit(_that.diary);case NavigationHandled():
 return navigationHandled();case OnCreateCompleted():
-return onCreateCompleted(_that.success);case _:
+return onCreateCompleted(_that.success);case OnEditCompleted():
+return onEditCompleted(_that.success);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -205,7 +215,7 @@ return onCreateCompleted(_that.success);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function( int tripId)?  getOurDiaries,TResult? Function( int tripId,  int userId)?  getMyDiaries,TResult? Function()?  loadMore,TResult? Function( int diaryId)?  getDiaryById,TResult? Function( int diaryId)?  deleteDiary,TResult? Function( String? type)?  filterByType,TResult? Function()?  refresh,TResult? Function()?  requestCreate,TResult? Function()?  navigationHandled,TResult? Function( bool success)?  onCreateCompleted,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function( int tripId)?  getOurDiaries,TResult? Function( int tripId,  int userId)?  getMyDiaries,TResult? Function()?  loadMore,TResult? Function( int diaryId)?  getDiaryById,TResult? Function( int diaryId)?  deleteDiary,TResult? Function( String? type)?  filterByType,TResult? Function()?  refresh,TResult? Function()?  requestCreate,TResult? Function( DiaryEntity diary)?  requestEdit,TResult? Function()?  navigationHandled,TResult? Function( bool success)?  onCreateCompleted,TResult? Function( bool success)?  onEditCompleted,}) {final _that = this;
 switch (_that) {
 case GetOurDiaries() when getOurDiaries != null:
 return getOurDiaries(_that.tripId);case GetMyDiaries() when getMyDiaries != null:
@@ -215,9 +225,11 @@ return getDiaryById(_that.diaryId);case DeleteDiary() when deleteDiary != null:
 return deleteDiary(_that.diaryId);case FilterByType() when filterByType != null:
 return filterByType(_that.type);case Refresh() when refresh != null:
 return refresh();case RequestCreate() when requestCreate != null:
-return requestCreate();case NavigationHandled() when navigationHandled != null:
+return requestCreate();case RequestEdit() when requestEdit != null:
+return requestEdit(_that.diary);case NavigationHandled() when navigationHandled != null:
 return navigationHandled();case OnCreateCompleted() when onCreateCompleted != null:
-return onCreateCompleted(_that.success);case _:
+return onCreateCompleted(_that.success);case OnEditCompleted() when onEditCompleted != null:
+return onEditCompleted(_that.success);case _:
   return null;
 
 }
@@ -656,6 +668,81 @@ String toString() {
 /// @nodoc
 
 
+class RequestEdit implements DiaryEvent {
+  const RequestEdit({required this.diary});
+  
+
+ final  DiaryEntity diary;
+
+/// Create a copy of DiaryEvent
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$RequestEditCopyWith<RequestEdit> get copyWith => _$RequestEditCopyWithImpl<RequestEdit>(this, _$identity);
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is RequestEdit&&(identical(other.diary, diary) || other.diary == diary));
+}
+
+
+@override
+int get hashCode => Object.hash(runtimeType,diary);
+
+@override
+String toString() {
+  return 'DiaryEvent.requestEdit(diary: $diary)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class $RequestEditCopyWith<$Res> implements $DiaryEventCopyWith<$Res> {
+  factory $RequestEditCopyWith(RequestEdit value, $Res Function(RequestEdit) _then) = _$RequestEditCopyWithImpl;
+@useResult
+$Res call({
+ DiaryEntity diary
+});
+
+
+$DiaryEntityCopyWith<$Res> get diary;
+
+}
+/// @nodoc
+class _$RequestEditCopyWithImpl<$Res>
+    implements $RequestEditCopyWith<$Res> {
+  _$RequestEditCopyWithImpl(this._self, this._then);
+
+  final RequestEdit _self;
+  final $Res Function(RequestEdit) _then;
+
+/// Create a copy of DiaryEvent
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') $Res call({Object? diary = null,}) {
+  return _then(RequestEdit(
+diary: null == diary ? _self.diary : diary // ignore: cast_nullable_to_non_nullable
+as DiaryEntity,
+  ));
+}
+
+/// Create a copy of DiaryEvent
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$DiaryEntityCopyWith<$Res> get diary {
+  
+  return $DiaryEntityCopyWith<$Res>(_self.diary, (value) {
+    return _then(_self.copyWith(diary: value));
+  });
+}
+}
+
+/// @nodoc
+
+
 class NavigationHandled implements DiaryEvent {
   const NavigationHandled();
   
@@ -743,6 +830,72 @@ class _$OnCreateCompletedCopyWithImpl<$Res>
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') $Res call({Object? success = null,}) {
   return _then(OnCreateCompleted(
+success: null == success ? _self.success : success // ignore: cast_nullable_to_non_nullable
+as bool,
+  ));
+}
+
+
+}
+
+/// @nodoc
+
+
+class OnEditCompleted implements DiaryEvent {
+  const OnEditCompleted({required this.success});
+  
+
+ final  bool success;
+
+/// Create a copy of DiaryEvent
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$OnEditCompletedCopyWith<OnEditCompleted> get copyWith => _$OnEditCompletedCopyWithImpl<OnEditCompleted>(this, _$identity);
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is OnEditCompleted&&(identical(other.success, success) || other.success == success));
+}
+
+
+@override
+int get hashCode => Object.hash(runtimeType,success);
+
+@override
+String toString() {
+  return 'DiaryEvent.onEditCompleted(success: $success)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class $OnEditCompletedCopyWith<$Res> implements $DiaryEventCopyWith<$Res> {
+  factory $OnEditCompletedCopyWith(OnEditCompleted value, $Res Function(OnEditCompleted) _then) = _$OnEditCompletedCopyWithImpl;
+@useResult
+$Res call({
+ bool success
+});
+
+
+
+
+}
+/// @nodoc
+class _$OnEditCompletedCopyWithImpl<$Res>
+    implements $OnEditCompletedCopyWith<$Res> {
+  _$OnEditCompletedCopyWithImpl(this._self, this._then);
+
+  final OnEditCompleted _self;
+  final $Res Function(OnEditCompleted) _then;
+
+/// Create a copy of DiaryEvent
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') $Res call({Object? success = null,}) {
+  return _then(OnEditCompleted(
 success: null == success ? _self.success : success // ignore: cast_nullable_to_non_nullable
 as bool,
   ));

@@ -67,7 +67,7 @@ abstract class NewDiaryState with _$NewDiaryState {
       type: type,
       title: title.isNotEmpty ? title : null,
       content: content.isNotEmpty ? content : null,
-      rating: type == 'REVIEW' ? rating.toInt() : null,
+      rating: type == 'REVIEW' ? rating.toDouble() : null,
       img: type == 'PHOTO' ? imgUrl : null,
       cost: type == 'MONEY' ? cost : null,
       isPublic: isPublic,

@@ -24,7 +24,7 @@ abstract class DiaryDTO with _$DiaryDTO {
     String? title,
     @JsonKey(name: 'schedule_id') int? scheduleId,
     String? img,
-    int? rating,
+    double? rating,
     String? content,
     int? cost,
   }) = _DiaryDTO;

@@ -46,7 +46,7 @@ class DiaryDataSourceImpl implements DiaryDataSource {
           .from('diary')
           .select(_selectWithUser)
           .eq('trip_id', tripId)
-          .eq('is_public', false)
+          .eq('is_public', true)
           .order('created_at', ascending: false)
           .range(offset, offset + limit - 1);
 
