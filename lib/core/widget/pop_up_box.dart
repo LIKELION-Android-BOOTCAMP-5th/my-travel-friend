@@ -50,7 +50,7 @@ class PopUpBox extends StatelessWidget {
       child: ConstrainedBox(
         constraints: const BoxConstraints(maxWidth: 340, minWidth: 260),
         child: Material(
-          color: colorScheme.surface, //배경 컬러
+          color: colorScheme.surfaceContainerHighest, //배경 컬러
           elevation: 12,
           borderRadius: BorderRadius.circular(20),
           child: Padding(
