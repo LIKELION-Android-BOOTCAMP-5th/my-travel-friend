@@ -55,14 +55,15 @@ extension AuthProfileEventPatterns on AuthProfileEvent {
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( AuthStateChanged value)?  authStateChanged,TResult Function( FetchUserProfile value)?  fetchUserProfile,TResult Function( UserRefreshed value)?  userRefreshed,TResult Function( HandleFCMToken value)?  handleFCMToken,TResult Function( Error value)?  error,required TResult orElse(),}){
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( AuthStateChanged value)?  authStateChanged,TResult Function( FetchUserProfile value)?  fetchUserProfile,TResult Function( UserRefreshed value)?  userRefreshed,TResult Function( HandleFCMToken value)?  handleFCMToken,TResult Function( SignOut value)?  signOut,TResult Function( Error value)?  error,required TResult orElse(),}){
 final _that = this;
 switch (_that) {
 case AuthStateChanged() when authStateChanged != null:
 return authStateChanged(_that);case FetchUserProfile() when fetchUserProfile != null:
 return fetchUserProfile(_that);case UserRefreshed() when userRefreshed != null:
 return userRefreshed(_that);case HandleFCMToken() when handleFCMToken != null:
-return handleFCMToken(_that);case Error() when error != null:
+return handleFCMToken(_that);case SignOut() when signOut != null:
+return signOut(_that);case Error() when error != null:
 return error(_that);case _:
   return orElse();
 
@@ -81,14 +82,15 @@ return error(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( AuthStateChanged value)  authStateChanged,required TResult Function( FetchUserProfile value)  fetchUserProfile,required TResult Function( UserRefreshed value)  userRefreshed,required TResult Function( HandleFCMToken value)  handleFCMToken,required TResult Function( Error value)  error,}){
+@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( AuthStateChanged value)  authStateChanged,required TResult Function( FetchUserProfile value)  fetchUserProfile,required TResult Function( UserRefreshed value)  userRefreshed,required TResult Function( HandleFCMToken value)  handleFCMToken,required TResult Function( SignOut value)  signOut,required TResult Function( Error value)  error,}){
 final _that = this;
 switch (_that) {
 case AuthStateChanged():
 return authStateChanged(_that);case FetchUserProfile():
 return fetchUserProfile(_that);case UserRefreshed():
 return userRefreshed(_that);case HandleFCMToken():
-return handleFCMToken(_that);case Error():
+return handleFCMToken(_that);case SignOut():
+return signOut(_that);case Error():
 return error(_that);case _:
   throw StateError('Unexpected subclass');
 
@@ -106,14 +108,15 @@ return error(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( AuthStateChanged value)?  authStateChanged,TResult? Function( FetchUserProfile value)?  fetchUserProfile,TResult? Function( UserRefreshed value)?  userRefreshed,TResult? Function( HandleFCMToken value)?  handleFCMToken,TResult? Function( Error value)?  error,}){
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( AuthStateChanged value)?  authStateChanged,TResult? Function( FetchUserProfile value)?  fetchUserProfile,TResult? Function( UserRefreshed value)?  userRefreshed,TResult? Function( HandleFCMToken value)?  handleFCMToken,TResult? Function( SignOut value)?  signOut,TResult? Function( Error value)?  error,}){
 final _that = this;
 switch (_that) {
 case AuthStateChanged() when authStateChanged != null:
 return authStateChanged(_that);case FetchUserProfile() when fetchUserProfile != null:
 return fetchUserProfile(_that);case UserRefreshed() when userRefreshed != null:
 return userRefreshed(_that);case HandleFCMToken() when handleFCMToken != null:
-return handleFCMToken(_that);case Error() when error != null:
+return handleFCMToken(_that);case SignOut() when signOut != null:
+return signOut(_that);case Error() when error != null:
 return error(_that);case _:
   return null;
 
@@ -131,13 +134,14 @@ return error(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function( Result<UserEntity?> userResult)?  authStateChanged,TResult Function( String uuid)?  fetchUserProfile,TResult Function( String uuid)?  userRefreshed,TResult Function( String? uuid,  bool isSignIn)?  handleFCMToken,TResult Function( String message)?  error,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function( Result<UserEntity?> userResult)?  authStateChanged,TResult Function( String uuid)?  fetchUserProfile,TResult Function( String uuid)?  userRefreshed,TResult Function( String? uuid,  bool isSignIn)?  handleFCMToken,TResult Function()?  signOut,TResult Function( String message)?  error,required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case AuthStateChanged() when authStateChanged != null:
 return authStateChanged(_that.userResult);case FetchUserProfile() when fetchUserProfile != null:
 return fetchUserProfile(_that.uuid);case UserRefreshed() when userRefreshed != null:
 return userRefreshed(_that.uuid);case HandleFCMToken() when handleFCMToken != null:
-return handleFCMToken(_that.uuid,_that.isSignIn);case Error() when error != null:
+return handleFCMToken(_that.uuid,_that.isSignIn);case SignOut() when signOut != null:
+return signOut();case Error() when error != null:
 return error(_that.message);case _:
   return orElse();
 
@@ -156,13 +160,14 @@ return error(_that.message);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function( Result<UserEntity?> userResult)  authStateChanged,required TResult Function( String uuid)  fetchUserProfile,required TResult Function( String uuid)  userRefreshed,required TResult Function( String? uuid,  bool isSignIn)  handleFCMToken,required TResult Function( String message)  error,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function( Result<UserEntity?> userResult)  authStateChanged,required TResult Function( String uuid)  fetchUserProfile,required TResult Function( String uuid)  userRefreshed,required TResult Function( String? uuid,  bool isSignIn)  handleFCMToken,required TResult Function()  signOut,required TResult Function( String message)  error,}) {final _that = this;
 switch (_that) {
 case AuthStateChanged():
 return authStateChanged(_that.userResult);case FetchUserProfile():
 return fetchUserProfile(_that.uuid);case UserRefreshed():
 return userRefreshed(_that.uuid);case HandleFCMToken():
-return handleFCMToken(_that.uuid,_that.isSignIn);case Error():
+return handleFCMToken(_that.uuid,_that.isSignIn);case SignOut():
+return signOut();case Error():
 return error(_that.message);case _:
   throw StateError('Unexpected subclass');
 
@@ -180,13 +185,14 @@ return error(_that.message);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function( Result<UserEntity?> userResult)?  authStateChanged,TResult? Function( String uuid)?  fetchUserProfile,TResult? Function( String uuid)?  userRefreshed,TResult? Function( String? uuid,  bool isSignIn)?  handleFCMToken,TResult? Function( String message)?  error,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function( Result<UserEntity?> userResult)?  authStateChanged,TResult? Function( String uuid)?  fetchUserProfile,TResult? Function( String uuid)?  userRefreshed,TResult? Function( String? uuid,  bool isSignIn)?  handleFCMToken,TResult? Function()?  signOut,TResult? Function( String message)?  error,}) {final _that = this;
 switch (_that) {
 case AuthStateChanged() when authStateChanged != null:
 return authStateChanged(_that.userResult);case FetchUserProfile() when fetchUserProfile != null:
 return fetchUserProfile(_that.uuid);case UserRefreshed() when userRefreshed != null:
 return userRefreshed(_that.uuid);case HandleFCMToken() when handleFCMToken != null:
-return handleFCMToken(_that.uuid,_that.isSignIn);case Error() when error != null:
+return handleFCMToken(_that.uuid,_that.isSignIn);case SignOut() when signOut != null:
+return signOut();case Error() when error != null:
 return error(_that.message);case _:
   return null;
 
@@ -469,6 +475,38 @@ as bool,
 
 
 }
+
+/// @nodoc
+
+
+class SignOut implements AuthProfileEvent {
+  const SignOut();
+  
+
+
+
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is SignOut);
+}
+
+
+@override
+int get hashCode => runtimeType.hashCode;
+
+@override
+String toString() {
+  return 'AuthProfileEvent.signOut()';
+}
+
+
+}
+
+
+
 
 /// @nodoc
 

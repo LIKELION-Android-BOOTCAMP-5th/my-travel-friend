@@ -3,9 +3,13 @@ import 'dart:io';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:go_router/go_router.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:injectable/injectable.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+
+import '../../config/router.dart';
 
 @module
 abstract class RegisterModule {
@@ -45,4 +49,8 @@ abstract class RegisterModule {
     );
     return GoogleSignIn.instance;
   }
+
+  @LazySingleton()
+  FlutterLocalNotificationsPlugin get localNotificationsPlugin =>
+      FlutterLocalNotificationsPlugin();
 }
