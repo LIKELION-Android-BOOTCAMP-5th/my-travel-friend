@@ -149,10 +149,10 @@ return reset(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function( DiaryEntity diary)?  createDiary,TResult Function( String type)?  changeType,TResult Function( String title)?  changeTitle,TResult Function( String content)?  changeContent,TResult Function( double rating)?  changeRating,TResult Function( File file)?  selectImg,TResult Function()?  removeImg,TResult Function( int? cost)?  changeCost,TResult Function( bool isPublic)?  changePublic,TResult Function( int? scheduleId)?  chooseSchedule,TResult Function()?  reset,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  createDiary,TResult Function( String type)?  changeType,TResult Function( String title)?  changeTitle,TResult Function( String content)?  changeContent,TResult Function( double rating)?  changeRating,TResult Function( File file)?  selectImg,TResult Function()?  removeImg,TResult Function( int? cost)?  changeCost,TResult Function( bool isPublic)?  changePublic,TResult Function( int? scheduleId)?  chooseSchedule,TResult Function()?  reset,required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case CreateDiary() when createDiary != null:
-return createDiary(_that.diary);case ChangeType() when changeType != null:
+return createDiary();case ChangeType() when changeType != null:
 return changeType(_that.type);case ChangeTitle() when changeTitle != null:
 return changeTitle(_that.title);case ChangeContent() when changeContent != null:
 return changeContent(_that.content);case ChangeRating() when changeRating != null:
@@ -180,10 +180,10 @@ return reset();case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function( DiaryEntity diary)  createDiary,required TResult Function( String type)  changeType,required TResult Function( String title)  changeTitle,required TResult Function( String content)  changeContent,required TResult Function( double rating)  changeRating,required TResult Function( File file)  selectImg,required TResult Function()  removeImg,required TResult Function( int? cost)  changeCost,required TResult Function( bool isPublic)  changePublic,required TResult Function( int? scheduleId)  chooseSchedule,required TResult Function()  reset,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  createDiary,required TResult Function( String type)  changeType,required TResult Function( String title)  changeTitle,required TResult Function( String content)  changeContent,required TResult Function( double rating)  changeRating,required TResult Function( File file)  selectImg,required TResult Function()  removeImg,required TResult Function( int? cost)  changeCost,required TResult Function( bool isPublic)  changePublic,required TResult Function( int? scheduleId)  chooseSchedule,required TResult Function()  reset,}) {final _that = this;
 switch (_that) {
 case CreateDiary():
-return createDiary(_that.diary);case ChangeType():
+return createDiary();case ChangeType():
 return changeType(_that.type);case ChangeTitle():
 return changeTitle(_that.title);case ChangeContent():
 return changeContent(_that.content);case ChangeRating():
@@ -210,10 +210,10 @@ return reset();case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function( DiaryEntity diary)?  createDiary,TResult? Function( String type)?  changeType,TResult? Function( String title)?  changeTitle,TResult? Function( String content)?  changeContent,TResult? Function( double rating)?  changeRating,TResult? Function( File file)?  selectImg,TResult? Function()?  removeImg,TResult? Function( int? cost)?  changeCost,TResult? Function( bool isPublic)?  changePublic,TResult? Function( int? scheduleId)?  chooseSchedule,TResult? Function()?  reset,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  createDiary,TResult? Function( String type)?  changeType,TResult? Function( String title)?  changeTitle,TResult? Function( String content)?  changeContent,TResult? Function( double rating)?  changeRating,TResult? Function( File file)?  selectImg,TResult? Function()?  removeImg,TResult? Function( int? cost)?  changeCost,TResult? Function( bool isPublic)?  changePublic,TResult? Function( int? scheduleId)?  chooseSchedule,TResult? Function()?  reset,}) {final _that = this;
 switch (_that) {
 case CreateDiary() when createDiary != null:
-return createDiary(_that.diary);case ChangeType() when changeType != null:
+return createDiary();case ChangeType() when changeType != null:
 return changeType(_that.type);case ChangeTitle() when changeTitle != null:
 return changeTitle(_that.title);case ChangeContent() when changeContent != null:
 return changeContent(_that.content);case ChangeRating() when changeRating != null:
@@ -235,76 +235,33 @@ return reset();case _:
 
 
 class CreateDiary implements NewDiaryEvent {
-  const CreateDiary({required this.diary});
+  const CreateDiary();
   
 
- final  DiaryEntity diary;
 
-/// Create a copy of NewDiaryEvent
-/// with the given fields replaced by the non-null parameter values.
-@JsonKey(includeFromJson: false, includeToJson: false)
-@pragma('vm:prefer-inline')
-$CreateDiaryCopyWith<CreateDiary> get copyWith => _$CreateDiaryCopyWithImpl<CreateDiary>(this, _$identity);
+
 
 
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is CreateDiary&&(identical(other.diary, diary) || other.diary == diary));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is CreateDiary);
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,diary);
+int get hashCode => runtimeType.hashCode;
 
 @override
 String toString() {
-  return 'NewDiaryEvent.createDiary(diary: $diary)';
+  return 'NewDiaryEvent.createDiary()';
 }
 
 
 }
 
-/// @nodoc
-abstract mixin class $CreateDiaryCopyWith<$Res> implements $NewDiaryEventCopyWith<$Res> {
-  factory $CreateDiaryCopyWith(CreateDiary value, $Res Function(CreateDiary) _then) = _$CreateDiaryCopyWithImpl;
-@useResult
-$Res call({
- DiaryEntity diary
-});
 
 
-$DiaryEntityCopyWith<$Res> get diary;
-
-}
-/// @nodoc
-class _$CreateDiaryCopyWithImpl<$Res>
-    implements $CreateDiaryCopyWith<$Res> {
-  _$CreateDiaryCopyWithImpl(this._self, this._then);
-
-  final CreateDiary _self;
-  final $Res Function(CreateDiary) _then;
-
-/// Create a copy of NewDiaryEvent
-/// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') $Res call({Object? diary = null,}) {
-  return _then(CreateDiary(
-diary: null == diary ? _self.diary : diary // ignore: cast_nullable_to_non_nullable
-as DiaryEntity,
-  ));
-}
-
-/// Create a copy of NewDiaryEvent
-/// with the given fields replaced by the non-null parameter values.
-@override
-@pragma('vm:prefer-inline')
-$DiaryEntityCopyWith<$Res> get diary {
-  
-  return $DiaryEntityCopyWith<$Res>(_self.diary, (value) {
-    return _then(_self.copyWith(diary: value));
-  });
-}
-}
 
 /// @nodoc
 

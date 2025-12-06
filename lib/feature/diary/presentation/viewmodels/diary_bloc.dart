@@ -6,6 +6,7 @@ import 'package:my_travel_friend/feature/diary/domain/usecases/get_diary_by_id_u
 import 'package:my_travel_friend/feature/diary/domain/usecases/get_my_diaries_usecase.dart';
 import 'package:my_travel_friend/feature/diary/domain/usecases/get_our_diaries_usecase.dart';
 
+import '../../../../core/result/failures.dart';
 import '../../../../core/result/result.dart';
 import 'diary_event.dart';
 import 'diary_state.dart';
@@ -39,6 +40,7 @@ class DiaryBloc extends Bloc<DiaryEvent, DiaryState> {
     on<RequestEdit>(_onRequestEdit);
     on<NavigationHandled>(_onNavigationHandled);
     on<OnCreateCompleted>(_onCreateCompleted);
+    on<OnEditCompleted>(_onEditCompleted);
   }
 
   // 핸들러
@@ -54,13 +56,15 @@ class DiaryBloc extends Bloc<DiaryEvent, DiaryState> {
   }
 
   // 에러타입 추출
-  String _getErrorType(dynamic failure) {
-    return failure.map(
-      serverFailure: (_) => 'server',
-      networkFailure: (_) => 'network',
-      authFailure: (_) => 'auth',
-      undefined: (_) => 'unknown',
-    );
+  String _getErrorType(Failure failure) {
+    return switch (failure) {
+      ServerFailure() => 'server',
+      NetworkFailure() => 'network',
+      AuthFailure() => 'auth',
+      UndefinedFailure() => 'unknown',
+      // TODO: Handle this case.
+      Failure() => throw UnimplementedError(),
+    };
   }
 
   // 작성 화면으로 이동 요청

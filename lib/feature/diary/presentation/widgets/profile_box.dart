@@ -54,7 +54,7 @@ class ProfileBox extends StatelessWidget {
                         color: colorScheme.onSurfaceVariant,
                       ),
                     ),
-                  SizedBox(width: 16),
+                  SizedBox(width: 8),
                   diary.isPublic
                       ? Icon(
                           AppIcon.unlock,

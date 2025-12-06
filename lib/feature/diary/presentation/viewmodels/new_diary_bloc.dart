@@ -2,6 +2,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 import 'package:my_travel_friend/feature/diary/domain/usecases/create_diary_usecase.dart';
 
+import '../../../../core/result/failures.dart';
 import '../../../../core/result/result.dart';
 import '../../domain/repositories/diary_repository.dart';
 import 'new_diary_event.dart';
@@ -37,13 +38,15 @@ class NewDiaryBloc extends Bloc<NewDiaryEvent, NewDiaryState> {
   }
 
   // 에러타입 추출
-  String _getErrorType(dynamic failure) {
-    return failure.map(
-      serverFailure: (_) => 'server',
-      networkFailure: (_) => 'network',
-      authFailure: (_) => 'auth',
-      undefined: (_) => 'unknown',
-    );
+  String _getErrorType(Failure failure) {
+    return switch (failure) {
+      ServerFailure() => 'server',
+      NetworkFailure() => 'network',
+      AuthFailure() => 'auth',
+      UndefinedFailure() => 'unknown',
+      // TODO: Handle this case.
+      Failure() => throw UnimplementedError(),
+    };
   }
 
   // 다이어리 생성
@@ -51,6 +54,8 @@ class NewDiaryBloc extends Bloc<NewDiaryEvent, NewDiaryState> {
     CreateDiary event,
     Emitter<NewDiaryState> emit,
   ) async {
+    print('>>> [1] _onCreateDiary 호출됨!');
+    print('>>> type: ${state.type}');
     emit(state.copyWith(pageState: NewDiaryPageState.loading));
 
     String? uploadedImgUrl = state.imgUrl;
@@ -61,7 +66,7 @@ class NewDiaryBloc extends Bloc<NewDiaryEvent, NewDiaryState> {
 
       final uploadResult = await _diaryRepository.uploadImg(
         file: state.localImgFile!,
-        userId: state.userId ?? 0,
+        userId: state.userId,
       );
 
       final uploadFailed = uploadResult.when(
@@ -73,7 +78,7 @@ class NewDiaryBloc extends Bloc<NewDiaryEvent, NewDiaryState> {
           emit(
             state.copyWith(
               pageState: NewDiaryPageState.error,
-              message: '이미지 업로드 실패 : ${failure.message}',
+              message: '이미지 업로드 실패: ${failure.message}',
               errorType: _getErrorType(failure),
               isUploading: false,
             ),
@@ -87,15 +92,17 @@ class NewDiaryBloc extends Bloc<NewDiaryEvent, NewDiaryState> {
       emit(state.copyWith(isUploading: false, imgUrl: uploadedImgUrl));
     }
 
+    // state에서 entity 생성 (업로드된 이미지 URL 포함)
     final diary = state.copyWith(imgUrl: uploadedImgUrl).toEntity();
 
-    final res = await _createDiaryUseCase.call(event.diary);
+    final res = await _createDiaryUseCase.call(diary);
 
     res.when(
       success: (createdDiary) {
         emit(
           state.copyWith(
             pageState: NewDiaryPageState.success,
+            createdDiary: createdDiary,
             message: '다이어리를 작성했습니다',
             actionType: 'create',
           ),
@@ -119,7 +126,13 @@ class NewDiaryBloc extends Bloc<NewDiaryEvent, NewDiaryState> {
     Emitter<NewDiaryState> emit,
   ) async {
     emit(
-      state.copyWith(type: event.type, rating: 0.0, imgUrl: null, cost: null),
+      state.copyWith(
+        type: event.type,
+        rating: 0.0,
+        imgUrl: null,
+        cost: null,
+        localImgFile: null,
+      ),
     );
   }
 
@@ -187,7 +200,7 @@ class NewDiaryBloc extends Bloc<NewDiaryEvent, NewDiaryState> {
     emit(state.copyWith(scheduleId: event.scheduleId));
   }
 
-  // 새로고침
+  // 초기화
   Future<void> _onReset(Reset event, Emitter<NewDiaryState> emit) async {
     emit(const NewDiaryState());
   }

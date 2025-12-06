@@ -50,13 +50,15 @@ class DiaryBox extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Expanded(child: ProfileBox(diary: diary)),
-                    GestureDetector(
-                      onTap: () => _showEditOrDeleteSheet(context),
-                      child: Icon(
+                    IconButton(
+                      onPressed: () => _showEditOrDeleteSheet(context),
+                      icon: Icon(
                         AppIcon.threeDots,
                         size: 20,
                         color: colorScheme.onSurface,
                       ),
+                      padding: EdgeInsets.all(8),
+                      constraints: const BoxConstraints(),
                     ),
                   ],
                 ),
@@ -110,8 +112,8 @@ class DiaryBox extends StatelessWidget {
                     child: ImageWithActions(
                       imageUrl: photo, // 이미지 URL
                       heroTag: 'diary_image_${diary.id}', // 애니메이션 태그
-                      height: 80,
-                      width: 80,
+                      height: 100,
+                      width: 100,
                       borderRadius: BorderRadius.circular(8), // 모서리 둥글기
                     ),
                   ),

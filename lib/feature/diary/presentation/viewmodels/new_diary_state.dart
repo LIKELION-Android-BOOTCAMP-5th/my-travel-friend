@@ -51,7 +51,7 @@ abstract class NewDiaryState with _$NewDiaryState {
       case 'REVIEW':
         return rating > 0;
       case 'PHOTO':
-        return imgUrl != null && imgUrl!.isNotEmpty;
+        return localImgFile != null;
       case 'MONEY':
         return cost != null && cost! > 0;
       default:
