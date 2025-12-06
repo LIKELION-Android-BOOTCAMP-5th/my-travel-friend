@@ -16,6 +16,18 @@ import 'package:google_sign_in/google_sign_in.dart' as _i116;
 import 'package:injectable/injectable.dart' as _i526;
 import 'package:supabase_flutter/supabase_flutter.dart' as _i454;
 
+import '../../feature/alarm/data/datasources/alarm_data_source.dart' as _i58;
+import '../../feature/alarm/data/datasources/alarm_data_source_impl.dart'
+    as _i1049;
+import '../../feature/alarm/data/repositories/alarm_repository_impl.dart'
+    as _i915;
+import '../../feature/alarm/domain/repositories/alarm_repository.dart' as _i831;
+import '../../feature/alarm/domain/usecases/check_alarms_usecase.dart' as _i889;
+import '../../feature/alarm/domain/usecases/check_an_alarm_usecase.dart'
+    as _i539;
+import '../../feature/alarm/domain/usecases/get_alarm_by_id_usecase.dart'
+    as _i820;
+import '../../feature/alarm/domain/usecases/get_alarms_usecase.dart' as _i135;
 import '../../feature/auth/data/datasources/apple_auth_data_source.dart'
     as _i278;
 import '../../feature/auth/data/datasources/apple_auth_data_source_impl.dart'
@@ -186,6 +198,9 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i840.TripRepositoryImpl>(
       () => _i840.TripRepositoryImpl(gh<_i1063.TripDataSource>()),
     );
+    gh.lazySingleton<_i58.AlarmDataSource>(
+      () => _i1049.AlarmDataSourceImpl(gh<_i454.SupabaseClient>()),
+    );
     gh.lazySingleton<_i871.DiaryRepository>(
       () => _i148.DiaryRepositoryImpl(gh<_i881.DiaryDataSource>()),
     );
@@ -201,6 +216,9 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i278.AppleAuthDataSource>(),
         gh<_i1040.SupabaseAuthDataSource>(),
       ),
+    );
+    gh.lazySingleton<_i831.AlarmRepository>(
+      () => _i915.AlarmRepositoryImpl(gh<_i58.AlarmDataSource>()),
     );
     gh.lazySingleton<_i27.CreateDiaryUseCase>(
       () => _i27.CreateDiaryUseCase(gh<_i871.DiaryRepository>()),
@@ -254,6 +272,18 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i1039.UpdateDiaryUseCase>(),
         gh<_i871.DiaryRepository>(),
       ),
+    );
+    gh.lazySingleton<_i889.CheckAlarmsUseCase>(
+      () => _i889.CheckAlarmsUseCase(gh<_i831.AlarmRepository>()),
+    );
+    gh.lazySingleton<_i539.CheckAnAlarmUseCase>(
+      () => _i539.CheckAnAlarmUseCase(gh<_i831.AlarmRepository>()),
+    );
+    gh.lazySingleton<_i820.GetAlarmByIdUseCase>(
+      () => _i820.GetAlarmByIdUseCase(gh<_i831.AlarmRepository>()),
+    );
+    gh.lazySingleton<_i135.GetAlarmsUseCase>(
+      () => _i135.GetAlarmsUseCase(gh<_i831.AlarmRepository>()),
     );
     gh.lazySingleton<_i474.AuthBloc>(
       () => _i474.AuthBloc(
