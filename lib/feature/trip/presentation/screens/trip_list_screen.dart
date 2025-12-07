@@ -125,18 +125,18 @@ class _TripListScreenState extends State<TripListScreen> {
         return Scaffold(
           backgroundColor: AppColors.lightGray,
 
-          /// 🔹 상단 앱바 추가
+          /// 상단 앱바 추가
           appBar: HomeAppBar(
             onLogoTap: () {
               debugPrint("홈 로고 클릭");
             },
 
-            /// 🔹 검색 버튼 토글 처리
+            /// 검색 버튼 토글 처리
             onSearchTap: () {
               bloc.add(TripEvent.toggleSearch());
             },
 
-            /// 🔹 검색 상태면 close 아이콘 / 아니면 search 아이콘
+            /// 검색 상태면 close 아이콘 / 아니면 search 아이콘
             searchIcon: isSearching ? AppIcon.close : AppIcon.search,
 
             onAlarmTap: () {
@@ -150,7 +150,7 @@ class _TripListScreenState extends State<TripListScreen> {
           body: SafeArea(
             child: Column(
               children: [
-                /// 🔍 검색 On일 때만 TextBox 노출
+                /// 검색 On일 때만 TextBox 노출
                 if (isSearching)
                   Padding(
                     padding: const EdgeInsets.symmetric(
@@ -170,7 +170,7 @@ class _TripListScreenState extends State<TripListScreen> {
                     ),
                   ),
 
-                /// 🔽 리스트 영역
+                /// 리스트 영역
                 Expanded(
                   child: RefreshIndicator(
                     onRefresh: () async {
@@ -212,7 +212,7 @@ class _TripListScreenState extends State<TripListScreen> {
             ),
           ),
 
-          /// ➕ 새 여행 만들기 버튼
+          /// 새 여행 만들기 버튼
           floatingActionButton: FloatingButton(
             icon: const Icon(Icons.add, size: 34, color: AppColors.light),
             onPressed: () {
