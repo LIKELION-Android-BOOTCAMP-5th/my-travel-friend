@@ -6,8 +6,8 @@ import 'package:my_travel_friend/feature/trip/domain/usecases/get_crew_member_co
 import 'package:my_travel_friend/feature/trip/domain/usecases/get_my_trip_usecase.dart';
 import 'package:my_travel_friend/feature/trip/domain/usecases/give_up_trip_usecase.dart';
 import 'package:my_travel_friend/feature/trip/domain/usecases/search_trip_usecase.dart';
-import 'package:my_travel_friend/feature/trip/presentation/viewmodels/trip_event.dart';
-import 'package:my_travel_friend/feature/trip/presentation/viewmodels/trip_state.dart';
+import 'package:my_travel_friend/feature/trip/presentation/viewmodels/trip/trip_event.dart';
+import 'package:my_travel_friend/feature/trip/presentation/viewmodels/trip/trip_state.dart';
 
 @injectable
 class TripBloc extends Bloc<TripEvent, TripState> {
@@ -51,21 +51,10 @@ class TripBloc extends Bloc<TripEvent, TripState> {
     final result = await _getMyTripUsecase(event.userId, 1);
 
     result.when(
-      success: (data) async {
-        Map<int, int> countMap = {};
-
-        for (var trip in data) {
-          final crewResult = await _getCrewMemberCountUsecase(trip.id!);
-          crewResult.when(
-            success: (value) => countMap[trip.id!] = value,
-            failure: (_) => countMap[trip.id!] = 1,
-          );
-        }
-
+      success: (data) {
         emit(
           state.copyWith(
             trips: data,
-            crewCounts: countMap, // 👈 추가된 crewCount!
             pageState: TripPageState.loaded,
             currentPage: 1,
           ),

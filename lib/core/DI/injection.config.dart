@@ -92,7 +92,8 @@ import '../../feature/trip/domain/usecases/get_crew_member_count_usecase.dart'
 import '../../feature/trip/domain/usecases/get_my_trip_usecase.dart' as _i521;
 import '../../feature/trip/domain/usecases/give_up_trip_usecase.dart' as _i317;
 import '../../feature/trip/domain/usecases/search_trip_usecase.dart' as _i437;
-import '../../feature/trip/presentation/viewmodels/trip_bloc.dart' as _i482;
+import '../../feature/trip/presentation/viewmodels/trip/trip_bloc.dart'
+    as _i616;
 import '../service/internal/push_notification_service.dart' as _i737;
 import 'register_module.dart' as _i291;
 
@@ -209,8 +210,8 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i699.DeleteDiaryUseCase>(),
       ),
     );
-    gh.factory<_i482.TripBloc>(
-      () => _i482.TripBloc(
+    gh.factory<_i616.TripBloc>(
+      () => _i616.TripBloc(
         gh<_i521.GetMyTripUsecase>(),
         gh<_i267.GetCrewMemberCountUsecase>(),
         gh<_i832.DeleteTripUsecase>(),

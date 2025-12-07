@@ -10,7 +10,7 @@ class TripCard extends StatelessWidget {
   final String title;
   final String startDate;
   final String endDate;
-  final int peopleCount;
+  final int? peopleCount;
   final Color? backgroundColor;
   final String? backgroundImageUrl;
   final VoidCallback? onTap;
