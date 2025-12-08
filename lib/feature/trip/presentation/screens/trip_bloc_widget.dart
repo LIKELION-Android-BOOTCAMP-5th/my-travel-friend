@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:my_travel_friend/feature/auth/presentation/viewmodel/auth_profile/auth_profile_bloc.dart';
 import 'package:my_travel_friend/feature/auth/presentation/viewmodel/auth_profile/auth_profile_state.dart';
 import 'package:my_travel_friend/feature/trip/presentation/screens/trip_list_screen.dart'
@@ -23,8 +24,7 @@ class TripBlocWidget extends StatelessWidget {
     if (authState is AuthProfileAuthenticated) {
       userId = authState.userInfo.id!;
     } else {
-      // 로그인 상태가 아니라면 예외 처리
-      return const Center(child: Text("로그인이 필요합니다"));
+      context.pushReplacement('/login');
     }
 
     return BlocProvider(
