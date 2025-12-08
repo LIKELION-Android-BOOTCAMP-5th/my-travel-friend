@@ -65,6 +65,7 @@ dependencies:
   path: ^1.9.0
   sign_in_with_apple: ^6.1.4
   crypto: ^3.0.7
+  change_app_package_name: ^1.5.0
 
 
 
