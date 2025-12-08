@@ -56,7 +56,12 @@ class _NewDiaryScreenState extends State<NewDiaryScreen> {
     _priceController = TextEditingController();
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      context.read<NewDiaryBloc>().initialize(tripId: widget.tripId);
+      if (mounted) {
+        context.read<NewDiaryBloc>().initialize(
+          tripId: widget.tripId,
+          userId: widget.userId,
+        );
+      }
     });
   }
 
