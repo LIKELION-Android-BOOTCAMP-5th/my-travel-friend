@@ -4,6 +4,7 @@ import 'package:my_travel_friend/feature/friend/domain/entities/friend_request_e
 part 'friend_request_dto.freezed.dart';
 part 'friend_request_dto.g.dart';
 
+//[엄수빈] 친구 요청 dto
 @freezed
 abstract class FriendRequestDTO with _$FriendRequestDTO {
   const FriendRequestDTO._();
