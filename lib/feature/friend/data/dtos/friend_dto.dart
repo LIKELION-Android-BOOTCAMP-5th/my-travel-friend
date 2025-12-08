@@ -6,7 +6,6 @@ part 'friend_dto.freezed.dart';
 part 'friend_dto.g.dart';
 
 // [엄수빈] 친구 DTO
-
 @freezed
 abstract class FriendDTO with _$FriendDTO {
   const FriendDTO._();
