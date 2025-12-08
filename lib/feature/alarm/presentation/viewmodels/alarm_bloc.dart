@@ -31,10 +31,20 @@ class AlarmBloc extends Bloc<AlarmEvent, AlarmState> {
     on<CheckAlarms>(_onCheckAlarms);
     on<GetAlarmById>(_onGetAlarmById);
     on<ClearSelectedAlarm>(_onClearSelectedAlarm);
+    on<RefreshAlarm>(_onRefresh);
   }
+
+  // 자동 새로고침
+  void _refreshList() {
+    if (state.userId == 0) return;
+    add(AlarmEvent.getAlarms(userId: state.userId));
+  }
+
   // 알림 리스트 가져오기
   Future<void> _onGetAlarms(GetAlarms event, Emitter<AlarmState> emit) async {
-    emit(state.copyWith(pageState: AlarmPageState.loading));
+    emit(
+      state.copyWith(userId: event.userId, pageState: AlarmPageState.loading),
+    );
 
     final res = await _getAlarmsUseCase.call(
       userId: event.userId,
@@ -75,7 +85,7 @@ class AlarmBloc extends Bloc<AlarmEvent, AlarmState> {
 
     final nextPage = state.currentPage + 1;
     final res = await _getAlarmsUseCase.call(
-      userId: event.userId,
+      userId: state.userId,
       page: nextPage,
       limit: _limit,
     );
@@ -143,7 +153,7 @@ class AlarmBloc extends Bloc<AlarmEvent, AlarmState> {
   ) async {
     emit(state.copyWith(pageState: AlarmPageState.loading));
 
-    final res = await _checkAlarmsUseCase.call(event.userId);
+    final res = await _checkAlarmsUseCase.call(state.userId);
 
     res.when(
       success: (_) {
@@ -203,5 +213,10 @@ class AlarmBloc extends Bloc<AlarmEvent, AlarmState> {
     Emitter<AlarmState> emit,
   ) {
     emit(state.copyWith(pageState: AlarmPageState.loaded, selectedAlarm: null));
+  }
+
+  // 새로고침
+  Future<void> _onRefresh(RefreshAlarm event, Emitter<AlarmState> emit) async {
+    _refreshList();
   }
 }

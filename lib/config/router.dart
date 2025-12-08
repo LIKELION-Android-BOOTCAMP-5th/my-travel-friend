@@ -11,6 +11,8 @@ import 'package:my_travel_friend/feature/trip/presentation/viewmodels/trip/trip_
 import 'package:my_travel_friend/splash.dart';
 import 'package:my_travel_friend/temp_screen.dart';
 
+import '../feature/alarm/presentation/screens/alarm_bloc_widget.dart';
+import '../feature/alarm/presentation/viewmodels/alarm_bloc.dart';
 import '../feature/diary/domain/entities/diary_entity.dart';
 import '../feature/diary/presentation/screens/diary_bloc_widget.dart';
 import '../feature/diary/presentation/screens/edit_diary_bloc_widget.dart';
@@ -47,7 +49,9 @@ class AppRouter {
         '/setting_alarm_page',
         '/diary',
         '/diary/new',
+        '/diary/edit',
         '/mainHome',
+        '/alarm',
       ];
 
       final isGoingToLockedPath = lockedPaths.any(
@@ -116,6 +120,14 @@ class AppRouter {
           final diary = extra['diary'] as DiaryEntity;
           return EditDiaryBlocWidget(diary: diary);
         },
+      ),
+      GoRoute(
+        path: '/alarm',
+        builder: (context, state) => BlocProvider(
+          //bloc 제공자
+          create: (context) => GetIt.instance<AlarmBloc>(),
+          child: const AlarmBlocWidget(),
+        ),
       ),
     ],
   );

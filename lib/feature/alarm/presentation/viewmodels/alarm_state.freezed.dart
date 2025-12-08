@@ -14,7 +14,13 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$AlarmState {
 
- AlarmPageState get pageState; List<AlarmEntity> get alarms; AlarmEntity? get selectedAlarm; int get currentPage; bool get hasMore; String? get message;
+// 사용자 정보
+ int get userId;// 페이지 상태
+ AlarmPageState get pageState;// 알림 목록
+ List<AlarmEntity> get alarms;// 상세 조회용
+ AlarmEntity? get selectedAlarm;// 페이지네이션
+ int get currentPage; bool get hasMore;// 메세지(성공/에러)
+ String? get message;
 /// Create a copy of AlarmState
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -25,16 +31,16 @@ $AlarmStateCopyWith<AlarmState> get copyWith => _$AlarmStateCopyWithImpl<AlarmSt
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is AlarmState&&(identical(other.pageState, pageState) || other.pageState == pageState)&&const DeepCollectionEquality().equals(other.alarms, alarms)&&(identical(other.selectedAlarm, selectedAlarm) || other.selectedAlarm == selectedAlarm)&&(identical(other.currentPage, currentPage) || other.currentPage == currentPage)&&(identical(other.hasMore, hasMore) || other.hasMore == hasMore)&&(identical(other.message, message) || other.message == message));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is AlarmState&&(identical(other.userId, userId) || other.userId == userId)&&(identical(other.pageState, pageState) || other.pageState == pageState)&&const DeepCollectionEquality().equals(other.alarms, alarms)&&(identical(other.selectedAlarm, selectedAlarm) || other.selectedAlarm == selectedAlarm)&&(identical(other.currentPage, currentPage) || other.currentPage == currentPage)&&(identical(other.hasMore, hasMore) || other.hasMore == hasMore)&&(identical(other.message, message) || other.message == message));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,pageState,const DeepCollectionEquality().hash(alarms),selectedAlarm,currentPage,hasMore,message);
+int get hashCode => Object.hash(runtimeType,userId,pageState,const DeepCollectionEquality().hash(alarms),selectedAlarm,currentPage,hasMore,message);
 
 @override
 String toString() {
-  return 'AlarmState(pageState: $pageState, alarms: $alarms, selectedAlarm: $selectedAlarm, currentPage: $currentPage, hasMore: $hasMore, message: $message)';
+  return 'AlarmState(userId: $userId, pageState: $pageState, alarms: $alarms, selectedAlarm: $selectedAlarm, currentPage: $currentPage, hasMore: $hasMore, message: $message)';
 }
 
 
@@ -45,7 +51,7 @@ abstract mixin class $AlarmStateCopyWith<$Res>  {
   factory $AlarmStateCopyWith(AlarmState value, $Res Function(AlarmState) _then) = _$AlarmStateCopyWithImpl;
 @useResult
 $Res call({
- AlarmPageState pageState, List<AlarmEntity> alarms, AlarmEntity? selectedAlarm, int currentPage, bool hasMore, String? message
+ int userId, AlarmPageState pageState, List<AlarmEntity> alarms, AlarmEntity? selectedAlarm, int currentPage, bool hasMore, String? message
 });
 
 
@@ -62,9 +68,10 @@ class _$AlarmStateCopyWithImpl<$Res>
 
 /// Create a copy of AlarmState
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? pageState = null,Object? alarms = null,Object? selectedAlarm = freezed,Object? currentPage = null,Object? hasMore = null,Object? message = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? userId = null,Object? pageState = null,Object? alarms = null,Object? selectedAlarm = freezed,Object? currentPage = null,Object? hasMore = null,Object? message = freezed,}) {
   return _then(_self.copyWith(
-pageState: null == pageState ? _self.pageState : pageState // ignore: cast_nullable_to_non_nullable
+userId: null == userId ? _self.userId : userId // ignore: cast_nullable_to_non_nullable
+as int,pageState: null == pageState ? _self.pageState : pageState // ignore: cast_nullable_to_non_nullable
 as AlarmPageState,alarms: null == alarms ? _self.alarms : alarms // ignore: cast_nullable_to_non_nullable
 as List<AlarmEntity>,selectedAlarm: freezed == selectedAlarm ? _self.selectedAlarm : selectedAlarm // ignore: cast_nullable_to_non_nullable
 as AlarmEntity?,currentPage: null == currentPage ? _self.currentPage : currentPage // ignore: cast_nullable_to_non_nullable
@@ -167,10 +174,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( AlarmPageState pageState,  List<AlarmEntity> alarms,  AlarmEntity? selectedAlarm,  int currentPage,  bool hasMore,  String? message)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int userId,  AlarmPageState pageState,  List<AlarmEntity> alarms,  AlarmEntity? selectedAlarm,  int currentPage,  bool hasMore,  String? message)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _AlarmState() when $default != null:
-return $default(_that.pageState,_that.alarms,_that.selectedAlarm,_that.currentPage,_that.hasMore,_that.message);case _:
+return $default(_that.userId,_that.pageState,_that.alarms,_that.selectedAlarm,_that.currentPage,_that.hasMore,_that.message);case _:
   return orElse();
 
 }
@@ -188,10 +195,10 @@ return $default(_that.pageState,_that.alarms,_that.selectedAlarm,_that.currentPa
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( AlarmPageState pageState,  List<AlarmEntity> alarms,  AlarmEntity? selectedAlarm,  int currentPage,  bool hasMore,  String? message)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int userId,  AlarmPageState pageState,  List<AlarmEntity> alarms,  AlarmEntity? selectedAlarm,  int currentPage,  bool hasMore,  String? message)  $default,) {final _that = this;
 switch (_that) {
 case _AlarmState():
-return $default(_that.pageState,_that.alarms,_that.selectedAlarm,_that.currentPage,_that.hasMore,_that.message);case _:
+return $default(_that.userId,_that.pageState,_that.alarms,_that.selectedAlarm,_that.currentPage,_that.hasMore,_that.message);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -208,10 +215,10 @@ return $default(_that.pageState,_that.alarms,_that.selectedAlarm,_that.currentPa
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( AlarmPageState pageState,  List<AlarmEntity> alarms,  AlarmEntity? selectedAlarm,  int currentPage,  bool hasMore,  String? message)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int userId,  AlarmPageState pageState,  List<AlarmEntity> alarms,  AlarmEntity? selectedAlarm,  int currentPage,  bool hasMore,  String? message)?  $default,) {final _that = this;
 switch (_that) {
 case _AlarmState() when $default != null:
-return $default(_that.pageState,_that.alarms,_that.selectedAlarm,_that.currentPage,_that.hasMore,_that.message);case _:
+return $default(_that.userId,_that.pageState,_that.alarms,_that.selectedAlarm,_that.currentPage,_that.hasMore,_that.message);case _:
   return null;
 
 }
@@ -222,21 +229,29 @@ return $default(_that.pageState,_that.alarms,_that.selectedAlarm,_that.currentPa
 /// @nodoc
 
 
-class _AlarmState implements AlarmState {
-  const _AlarmState({this.pageState = AlarmPageState.initial, final  List<AlarmEntity> alarms = const [], this.selectedAlarm, this.currentPage = 0, this.hasMore = false, this.message}): _alarms = alarms;
+class _AlarmState extends AlarmState {
+  const _AlarmState({this.userId = 0, this.pageState = AlarmPageState.initial, final  List<AlarmEntity> alarms = const [], this.selectedAlarm, this.currentPage = 0, this.hasMore = false, this.message}): _alarms = alarms,super._();
   
 
+// 사용자 정보
+@override@JsonKey() final  int userId;
+// 페이지 상태
 @override@JsonKey() final  AlarmPageState pageState;
+// 알림 목록
  final  List<AlarmEntity> _alarms;
+// 알림 목록
 @override@JsonKey() List<AlarmEntity> get alarms {
   if (_alarms is EqualUnmodifiableListView) return _alarms;
   // ignore: implicit_dynamic_type
   return EqualUnmodifiableListView(_alarms);
 }
 
+// 상세 조회용
 @override final  AlarmEntity? selectedAlarm;
+// 페이지네이션
 @override@JsonKey() final  int currentPage;
 @override@JsonKey() final  bool hasMore;
+// 메세지(성공/에러)
 @override final  String? message;
 
 /// Create a copy of AlarmState
@@ -249,16 +264,16 @@ _$AlarmStateCopyWith<_AlarmState> get copyWith => __$AlarmStateCopyWithImpl<_Ala
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _AlarmState&&(identical(other.pageState, pageState) || other.pageState == pageState)&&const DeepCollectionEquality().equals(other._alarms, _alarms)&&(identical(other.selectedAlarm, selectedAlarm) || other.selectedAlarm == selectedAlarm)&&(identical(other.currentPage, currentPage) || other.currentPage == currentPage)&&(identical(other.hasMore, hasMore) || other.hasMore == hasMore)&&(identical(other.message, message) || other.message == message));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _AlarmState&&(identical(other.userId, userId) || other.userId == userId)&&(identical(other.pageState, pageState) || other.pageState == pageState)&&const DeepCollectionEquality().equals(other._alarms, _alarms)&&(identical(other.selectedAlarm, selectedAlarm) || other.selectedAlarm == selectedAlarm)&&(identical(other.currentPage, currentPage) || other.currentPage == currentPage)&&(identical(other.hasMore, hasMore) || other.hasMore == hasMore)&&(identical(other.message, message) || other.message == message));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,pageState,const DeepCollectionEquality().hash(_alarms),selectedAlarm,currentPage,hasMore,message);
+int get hashCode => Object.hash(runtimeType,userId,pageState,const DeepCollectionEquality().hash(_alarms),selectedAlarm,currentPage,hasMore,message);
 
 @override
 String toString() {
-  return 'AlarmState(pageState: $pageState, alarms: $alarms, selectedAlarm: $selectedAlarm, currentPage: $currentPage, hasMore: $hasMore, message: $message)';
+  return 'AlarmState(userId: $userId, pageState: $pageState, alarms: $alarms, selectedAlarm: $selectedAlarm, currentPage: $currentPage, hasMore: $hasMore, message: $message)';
 }
 
 
@@ -269,7 +284,7 @@ abstract mixin class _$AlarmStateCopyWith<$Res> implements $AlarmStateCopyWith<$
   factory _$AlarmStateCopyWith(_AlarmState value, $Res Function(_AlarmState) _then) = __$AlarmStateCopyWithImpl;
 @override @useResult
 $Res call({
- AlarmPageState pageState, List<AlarmEntity> alarms, AlarmEntity? selectedAlarm, int currentPage, bool hasMore, String? message
+ int userId, AlarmPageState pageState, List<AlarmEntity> alarms, AlarmEntity? selectedAlarm, int currentPage, bool hasMore, String? message
 });
 
 
@@ -286,9 +301,10 @@ class __$AlarmStateCopyWithImpl<$Res>
 
 /// Create a copy of AlarmState
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? pageState = null,Object? alarms = null,Object? selectedAlarm = freezed,Object? currentPage = null,Object? hasMore = null,Object? message = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? userId = null,Object? pageState = null,Object? alarms = null,Object? selectedAlarm = freezed,Object? currentPage = null,Object? hasMore = null,Object? message = freezed,}) {
   return _then(_AlarmState(
-pageState: null == pageState ? _self.pageState : pageState // ignore: cast_nullable_to_non_nullable
+userId: null == userId ? _self.userId : userId // ignore: cast_nullable_to_non_nullable
+as int,pageState: null == pageState ? _self.pageState : pageState // ignore: cast_nullable_to_non_nullable
 as AlarmPageState,alarms: null == alarms ? _self._alarms : alarms // ignore: cast_nullable_to_non_nullable
 as List<AlarmEntity>,selectedAlarm: freezed == selectedAlarm ? _self.selectedAlarm : selectedAlarm // ignore: cast_nullable_to_non_nullable
 as AlarmEntity?,currentPage: null == currentPage ? _self.currentPage : currentPage // ignore: cast_nullable_to_non_nullable
