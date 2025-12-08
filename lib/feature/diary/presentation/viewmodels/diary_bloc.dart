@@ -1,12 +1,12 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
+import 'package:my_travel_friend/core/extension/failure_extension.dart';
 import 'package:my_travel_friend/feature/diary/domain/entities/diary_entity.dart';
 import 'package:my_travel_friend/feature/diary/domain/usecases/delete_diary_usecase.dart';
 import 'package:my_travel_friend/feature/diary/domain/usecases/get_diary_by_id_usecase.dart';
 import 'package:my_travel_friend/feature/diary/domain/usecases/get_my_diaries_usecase.dart';
 import 'package:my_travel_friend/feature/diary/domain/usecases/get_our_diaries_usecase.dart';
 
-import '../../../../core/result/failures.dart';
 import '../../../../core/result/result.dart';
 import 'diary_event.dart';
 import 'diary_state.dart';
@@ -56,37 +56,19 @@ class DiaryBloc extends Bloc<DiaryEvent, DiaryState> {
     }
   }
 
-  // 에러타입 추출
-  String _getErrorType(Failure failure) {
-    return switch (failure) {
-      ServerFailure() => 'server',
-      NetworkFailure() => 'network',
-      AuthFailure() => 'auth',
-      UndefinedFailure() => 'unknown',
-      // TODO: Handle this case.
-      Failure() => throw UnimplementedError(),
-    };
-  }
-
   // 작성 화면으로 이동 요청
   void _onRequestCreate(RequestCreate event, Emitter<DiaryState> emit) {
-    emit(state.copyWith(navigateToCreate: true));
+    emit(state.copyWith(navigation: const DiaryNavigationToCreate()));
   }
 
   // 수정 화면으로 이동 요청
   void _onRequestEdit(RequestEdit event, Emitter<DiaryState> emit) {
-    emit(
-      state.copyWith(
-        navigateToEdit: true,
-        selectedDiary: event.diary, // 수정할 다이어리 저장
-      ),
-    );
+    emit(state.copyWith(navigation: DiaryNavigationToEdit(event.diary)));
   }
 
   // 네비게이션 플래그 리셋
   void _onNavigationHandled(NavigationHandled event, Emitter<DiaryState> emit) {
-    emit(state.copyWith(navigateToCreate: false));
-    emit(state.copyWith(navigateToEdit: false));
+    emit(state.copyWith(navigation: const DiaryNavigationNone()));
   }
 
   // 작성 완료
@@ -142,7 +124,7 @@ class DiaryBloc extends Bloc<DiaryEvent, DiaryState> {
           state.copyWith(
             pageState: DiaryPageState.error,
             message: failure.message,
-            errorType: _getErrorType(failure),
+            errorType: failure.errorType,
           ),
         );
       },
@@ -189,7 +171,7 @@ class DiaryBloc extends Bloc<DiaryEvent, DiaryState> {
           state.copyWith(
             pageState: DiaryPageState.error,
             message: failure.message,
-            errorType: _getErrorType(failure),
+            errorType: failure.errorType,
           ),
         );
       },
@@ -274,7 +256,7 @@ class DiaryBloc extends Bloc<DiaryEvent, DiaryState> {
           state.copyWith(
             pageState: DiaryPageState.error,
             message: failure.message,
-            errorType: _getErrorType(failure),
+            errorType: failure.errorType,
           ),
         );
       },
@@ -313,7 +295,7 @@ class DiaryBloc extends Bloc<DiaryEvent, DiaryState> {
           state.copyWith(
             pageState: DiaryPageState.error,
             message: '다이어리 삭제 실패 : ${failure.message}',
-            errorType: _getErrorType(failure),
+            errorType: failure.errorType,
           ),
         );
       },

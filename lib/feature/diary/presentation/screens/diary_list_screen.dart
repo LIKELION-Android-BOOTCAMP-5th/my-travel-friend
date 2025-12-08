@@ -5,8 +5,11 @@ import 'package:my_travel_friend/feature/diary/presentation/widgets/public_tab.d
 import 'package:my_travel_friend/theme/app_colors.dart';
 
 import '../../../../core/widget/floating_button.dart';
+import '../../../../core/widget/toast_pop.dart';
 import '../../../../theme/app_font.dart';
 import '../../../../theme/app_icon.dart';
+import '../../../auth/presentation/viewmodel/auth_profile/auth_profile_bloc.dart';
+import '../../../auth/presentation/viewmodel/auth_profile/auth_profile_state.dart';
 import '../../domain/entities/diary_entity.dart';
 import '../viewmodels/diary_bloc.dart';
 import '../viewmodels/diary_event.dart';
@@ -80,57 +83,41 @@ class _DiaryListScreenState extends State<DiaryListScreen> {
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
     final isDark = colorScheme.brightness == Brightness.dark;
+    final user = BlocProvider.of<AuthProfileBloc>(context).state;
+    if (user is AuthProfileAuthenticated) {
+      ToastPop.show(user.userInfo.email!);
+    }
 
-    return MultiBlocListener(
-      listeners: [
-        // 생성 화면 이동 리스너
-        BlocListener<DiaryBloc, DiaryState>(
-          listenWhen: (prev, curr) =>
-              prev.navigateToCreate != curr.navigateToCreate,
-          listener: (context, state) {
-            if (state.navigateToCreate) {
-              context.read<DiaryBloc>().add(
-                const DiaryEvent.navigationHandled(),
-              );
-              _navigateToCreate();
-            }
-          },
-        ),
-        // 수정 화면 이동 리스너
-        BlocListener<DiaryBloc, DiaryState>(
-          listenWhen: (prev, curr) =>
-              prev.navigateToEdit != curr.navigateToEdit,
-          listener: (context, state) {
-            if (state.navigateToEdit && state.selectedDiary != null) {
-              context.read<DiaryBloc>().add(
-                const DiaryEvent.navigationHandled(),
-              );
-              _navigateToEdit(state.selectedDiary!);
-            }
-          },
-        ),
-      ],
+    return BlocListener<DiaryBloc, DiaryState>(
+      listenWhen: (prev, curr) => prev.navigation != curr.navigation,
+      listener: (context, state) {
+        switch (state.navigation) {
+          case DiaryNavigationToCreate():
+            context.read<DiaryBloc>().add(const DiaryEvent.navigationHandled());
+            _navigateToCreate();
+          case DiaryNavigationToEdit(diary: final diary):
+            context.read<DiaryBloc>().add(const DiaryEvent.navigationHandled());
+            _navigateToEdit(diary);
+          case DiaryNavigationNone():
+            break;
+        }
+      },
       child: SafeArea(
+        // 👈 여기 그대로!
         child: Scaffold(
-          // 모드(라이트/다크)에 따른 배경 색 변경
           backgroundColor: isDark ? AppColors.navy : AppColors.darkGray,
           body: Padding(
             padding: const EdgeInsets.all(16.0),
             child: Column(
               children: [
-                // 공유/개인 다이어리 탭
                 _buildPublicTabs(context),
                 const SizedBox(height: 16),
-                // 타입별 필터
                 _buildFilterChips(context),
                 const SizedBox(height: 32),
-                // 다이어리 리스트 출력
                 Expanded(child: _buildDiaryList(context)),
               ],
             ),
           ),
-
-          // 플로팅 버튼 -> 다이어리 작성
           floatingActionButton: FloatingButton(
             icon: Icon(AppIcon.plus, color: AppColors.light),
             backgroundColor: AppColors.secondary,

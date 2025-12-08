@@ -6,6 +6,24 @@ part 'diary_state.freezed.dart';
 
 // [이재은] 다이어리 전체 상태
 
+// 네비게이션 상태 (sealed class)
+sealed class DiaryNavigation {
+  const DiaryNavigation();
+}
+
+class DiaryNavigationNone extends DiaryNavigation {
+  const DiaryNavigationNone();
+}
+
+class DiaryNavigationToCreate extends DiaryNavigation {
+  const DiaryNavigationToCreate();
+}
+
+class DiaryNavigationToEdit extends DiaryNavigation {
+  final DiaryEntity diary;
+  const DiaryNavigationToEdit(this.diary);
+}
+
 @freezed
 abstract class DiaryState with _$DiaryState {
   const factory DiaryState({
@@ -32,11 +50,8 @@ abstract class DiaryState with _$DiaryState {
     String? errorType,
     String? actionType,
 
-    // 네비게이션 (작성 화면 이동)
-    @Default(false) bool navigateToCreate,
-
-    // 네비게이션 (수정 화면 이동)
-    @Default(false) bool navigateToEdit,
+    // 네비게이션
+    @Default(DiaryNavigationNone()) DiaryNavigation navigation,
 
     // 페이지 상태
     @Default(DiaryPageState.init) DiaryPageState pageState,
