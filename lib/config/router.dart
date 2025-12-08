@@ -46,7 +46,6 @@ class AppRouter {
       const lockedPaths = [
         '/friend',
         '/setting',
-        '/post_detail_page',
         '/alarm_list_page',
         '/setting_alarm_page',
         '/diary',
