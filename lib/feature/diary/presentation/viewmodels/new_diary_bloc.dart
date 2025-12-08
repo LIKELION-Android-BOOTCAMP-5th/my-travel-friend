@@ -33,8 +33,8 @@ class NewDiaryBloc extends Bloc<NewDiaryEvent, NewDiaryState> {
   // 핸들러
 
   // tripId, userId 초기화 메서드
-  void initialize({required int tripId, required int userId}) {
-    emit(state.copyWith(tripId: tripId, userId: userId));
+  void initialize({required int tripId}) {
+    emit(state.copyWith(tripId: tripId));
   }
 
   // 에러타입 추출

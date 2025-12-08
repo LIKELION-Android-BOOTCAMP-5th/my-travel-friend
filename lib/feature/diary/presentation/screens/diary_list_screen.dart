@@ -5,16 +5,14 @@ import 'package:my_travel_friend/feature/diary/presentation/widgets/public_tab.d
 import 'package:my_travel_friend/theme/app_colors.dart';
 
 import '../../../../core/widget/floating_button.dart';
-import '../../../../core/widget/toast_pop.dart';
 import '../../../../theme/app_font.dart';
 import '../../../../theme/app_icon.dart';
-import '../../../auth/presentation/viewmodel/auth_profile/auth_profile_bloc.dart';
-import '../../../auth/presentation/viewmodel/auth_profile/auth_profile_state.dart';
 import '../../domain/entities/diary_entity.dart';
 import '../viewmodels/diary_bloc.dart';
 import '../viewmodels/diary_event.dart';
 import '../viewmodels/diary_state.dart';
 import '../widgets/diary_box.dart';
+import '../widgets/diary_detail_pop_up.dart';
 import '../widgets/diary_filter_chip.dart';
 
 // [이재은] 다이어리 탭 화면
@@ -83,10 +81,6 @@ class _DiaryListScreenState extends State<DiaryListScreen> {
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
     final isDark = colorScheme.brightness == Brightness.dark;
-    final user = BlocProvider.of<AuthProfileBloc>(context).state;
-    if (user is AuthProfileAuthenticated) {
-      ToastPop.show(user.userInfo.email!);
-    }
 
     return BlocListener<DiaryBloc, DiaryState>(
       listenWhen: (prev, curr) => prev.navigation != curr.navigation,
@@ -98,12 +92,14 @@ class _DiaryListScreenState extends State<DiaryListScreen> {
           case DiaryNavigationToEdit(diary: final diary):
             context.read<DiaryBloc>().add(const DiaryEvent.navigationHandled());
             _navigateToEdit(diary);
+          case DiaryNavigationToDetail(diary: final diary):
+            context.read<DiaryBloc>().add(const DiaryEvent.navigationHandled());
+            _showDetailPopup(diary);
           case DiaryNavigationNone():
             break;
         }
       },
       child: SafeArea(
-        // 👈 여기 그대로!
         child: Scaffold(
           backgroundColor: isDark ? AppColors.navy : AppColors.darkGray,
           body: Padding(
@@ -158,6 +154,20 @@ class _DiaryListScreenState extends State<DiaryListScreen> {
         DiaryEvent.onEditCompleted(success: res == true),
       );
     }
+  }
+
+  // 다이어리 상세보기
+  void _showDetailPopup(DiaryEntity diary) {
+    showDialog(
+      context: context,
+      barrierDismissible: true,
+      barrierColor: Colors.black.withOpacity(0.5),
+      builder: (_) => Dialog(
+        backgroundColor: Colors.transparent,
+        insetPadding: const EdgeInsets.symmetric(horizontal: 24),
+        child: DiaryDetailPopUp(diary: diary),
+      ),
+    );
   }
 
   // 공유<->개인 다이어리 탭 빌드
@@ -279,11 +289,11 @@ class _DiaryListScreenState extends State<DiaryListScreen> {
                 onTap: () {
                   if (diary.id != null) {
                     context.read<DiaryBloc>().add(
-                      DiaryEvent.getDiaryById(diaryId: diary.id!),
+                      DiaryEvent.requestDetail(diary: diary),
                     );
                   }
                 },
-                child: DiaryBox(diary: diary, loginUserId: 9),
+                child: DiaryBox(diary: diary, loginUserId: widget.userId),
               );
             },
           ),

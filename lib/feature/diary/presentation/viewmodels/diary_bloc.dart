@@ -31,7 +31,7 @@ class DiaryBloc extends Bloc<DiaryEvent, DiaryState> {
   ) : super(const DiaryState()) {
     on<GetOurDiaries>(_onGetOurDiaries);
     on<GetMyDiaries>(_onGetMyDiaries);
-    on<GetDiaryById>(_onGetDiaryById);
+    on<RequestDetail>(_onRequestDetail);
     on<DeleteDiary>(_onDeleteDiary);
     on<FilterByType>(_onFilterByType);
     on<LoadMore>(_onLoadMore);
@@ -54,6 +54,11 @@ class DiaryBloc extends Bloc<DiaryEvent, DiaryState> {
     } else {
       add(DiaryEvent.getOurDiaries(tripId: state.tripId));
     }
+  }
+
+  // 다이어리 상세보기
+  void _onRequestDetail(RequestDetail event, Emitter<DiaryState> emit) {
+    emit(state.copyWith(navigation: DiaryNavigationToDetail(event.diary)));
   }
 
   // 작성 화면으로 이동 요청
@@ -233,36 +238,7 @@ class DiaryBloc extends Bloc<DiaryEvent, DiaryState> {
     );
   }
 
-  // 다이어리 상세보기
-  Future<void> _onGetDiaryById(
-    GetDiaryById event,
-    Emitter<DiaryState> emit,
-  ) async {
-    emit(state.copyWith(pageState: DiaryPageState.loading));
-
-    final res = await _getDiaryByIdUseCase.call(event.diaryId);
-
-    res.when(
-      success: (diary) {
-        emit(
-          state.copyWith(
-            pageState: DiaryPageState.detailLoaded,
-            selectedDiary: diary,
-          ),
-        );
-      },
-      failure: (failure) {
-        emit(
-          state.copyWith(
-            pageState: DiaryPageState.error,
-            message: failure.message,
-            errorType: failure.errorType,
-          ),
-        );
-      },
-    );
-  }
-
+  // 선택된 다이어리 정보 초기화
   void _onClearSelectedDiary(
     ClearSelectedDiary event,
     Emitter<DiaryState> emit,

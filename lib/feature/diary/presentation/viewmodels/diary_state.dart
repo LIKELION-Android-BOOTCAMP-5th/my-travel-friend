@@ -24,6 +24,11 @@ class DiaryNavigationToEdit extends DiaryNavigation {
   const DiaryNavigationToEdit(this.diary);
 }
 
+class DiaryNavigationToDetail extends DiaryNavigation {
+  final DiaryEntity diary;
+  const DiaryNavigationToDetail(this.diary);
+}
+
 @freezed
 abstract class DiaryState with _$DiaryState {
   const factory DiaryState({
@@ -63,7 +68,6 @@ enum DiaryPageState {
   init, // 초기 상태
   loading, // 로딩 중
   loaded, // 목록 로드 완료
-  detailLoaded, // 상세 조회 완료
   success, // 생성/수정/삭제 성공
   error, // 에러
 }

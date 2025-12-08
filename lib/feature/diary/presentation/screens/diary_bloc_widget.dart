@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart' as authState;
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../core/DI/injection.dart';
 import '../../../../core/widget/toast_pop.dart';
+import '../../../auth/presentation/viewmodel/auth_profile/auth_profile_bloc.dart';
+import '../../../auth/presentation/viewmodel/auth_profile/auth_profile_state.dart';
 import '../viewmodels/diary_bloc.dart';
 import '../viewmodels/diary_event.dart';
 import '../viewmodels/diary_state.dart';
@@ -15,16 +18,19 @@ import 'diary_list_screen.dart';
 
 class DiaryBlocWidget extends StatelessWidget {
   final int tripId;
-  final int userId; // 로그인한 아이디
 
-  const DiaryBlocWidget({
-    super.key,
-    required this.tripId,
-    required this.userId,
-  });
+  const DiaryBlocWidget({super.key, required this.tripId});
 
   @override
   Widget build(BuildContext context) {
+    final user = context.read<AuthProfileBloc>().state;
+
+    if (user is! AuthProfileAuthenticated) {
+      return const Center(child: Text("로그인이 필요합니다"));
+    }
+
+    final userId = user.userInfo.id!;
+
     return BlocProvider(
       create: (_) {
         final bloc = sl<DiaryBloc>();
@@ -46,9 +52,6 @@ class _DiaryBlocConsumer extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocConsumer<DiaryBloc, DiaryState>(
       listener: (context, state) {
-        print(
-          '📌 State: ${state.pageState}, diary: ${state.selectedDiary?.id}',
-        );
         final pageState = state.pageState;
 
         // 성공 상태: 토스트 표시
@@ -59,12 +62,6 @@ class _DiaryBlocConsumer extends StatelessWidget {
         // 에러 상태: 토스트 표시
         if (state.pageState == DiaryPageState.error) {
           ToastPop.show(state.message ?? '오류가 발생했습니다');
-        }
-
-        // 상세 조회 성공: 팝업 띄우기
-        if (state.pageState == DiaryPageState.detailLoaded &&
-            state.selectedDiary != null) {
-          _showDiaryDetailPopUp(context, state.selectedDiary);
         }
       },
 
