@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:my_travel_friend/feature/auth/presentation/viewmodel/auth/auth_event.dart';
 import 'package:my_travel_friend/feature/auth/presentation/viewmodel/auth_profile/auth_profile_bloc.dart';
 import 'package:my_travel_friend/feature/auth/presentation/viewmodel/auth_profile/auth_profile_event.dart';
 import 'package:my_travel_friend/theme/app_colors.dart';
@@ -42,6 +41,10 @@ class TempScreen extends StatelessWidget {
           IconButton(
             onPressed: () => context.push('/mainHome'),
             icon: Icon(AppIcon.home, color: AppColors.lightGreen, size: 30),
+          ),
+          IconButton(
+            onPressed: () => context.push('/alarm'),
+            icon: Icon(AppIcon.alarm, color: AppColors.lightGreen, size: 30),
           ),
         ],
       ),

@@ -55,7 +55,7 @@ extension AlarmEventPatterns on AlarmEvent {
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( GetAlarms value)?  getAlarms,TResult Function( LoadMoreAlarms value)?  loadMore,TResult Function( CheckAnAlarm value)?  checkAnAlarm,TResult Function( CheckAlarms value)?  checkAlarms,TResult Function( GetAlarmById value)?  getAlarmById,TResult Function( ClearSelectedAlarm value)?  clearSelectedAlarm,required TResult orElse(),}){
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( GetAlarms value)?  getAlarms,TResult Function( LoadMoreAlarms value)?  loadMore,TResult Function( CheckAnAlarm value)?  checkAnAlarm,TResult Function( CheckAlarms value)?  checkAlarms,TResult Function( GetAlarmById value)?  getAlarmById,TResult Function( ClearSelectedAlarm value)?  clearSelectedAlarm,TResult Function( RefreshAlarm value)?  refreshAlarm,required TResult orElse(),}){
 final _that = this;
 switch (_that) {
 case GetAlarms() when getAlarms != null:
@@ -64,7 +64,8 @@ return loadMore(_that);case CheckAnAlarm() when checkAnAlarm != null:
 return checkAnAlarm(_that);case CheckAlarms() when checkAlarms != null:
 return checkAlarms(_that);case GetAlarmById() when getAlarmById != null:
 return getAlarmById(_that);case ClearSelectedAlarm() when clearSelectedAlarm != null:
-return clearSelectedAlarm(_that);case _:
+return clearSelectedAlarm(_that);case RefreshAlarm() when refreshAlarm != null:
+return refreshAlarm(_that);case _:
   return orElse();
 
 }
@@ -82,7 +83,7 @@ return clearSelectedAlarm(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( GetAlarms value)  getAlarms,required TResult Function( LoadMoreAlarms value)  loadMore,required TResult Function( CheckAnAlarm value)  checkAnAlarm,required TResult Function( CheckAlarms value)  checkAlarms,required TResult Function( GetAlarmById value)  getAlarmById,required TResult Function( ClearSelectedAlarm value)  clearSelectedAlarm,}){
+@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( GetAlarms value)  getAlarms,required TResult Function( LoadMoreAlarms value)  loadMore,required TResult Function( CheckAnAlarm value)  checkAnAlarm,required TResult Function( CheckAlarms value)  checkAlarms,required TResult Function( GetAlarmById value)  getAlarmById,required TResult Function( ClearSelectedAlarm value)  clearSelectedAlarm,required TResult Function( RefreshAlarm value)  refreshAlarm,}){
 final _that = this;
 switch (_that) {
 case GetAlarms():
@@ -91,7 +92,8 @@ return loadMore(_that);case CheckAnAlarm():
 return checkAnAlarm(_that);case CheckAlarms():
 return checkAlarms(_that);case GetAlarmById():
 return getAlarmById(_that);case ClearSelectedAlarm():
-return clearSelectedAlarm(_that);case _:
+return clearSelectedAlarm(_that);case RefreshAlarm():
+return refreshAlarm(_that);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -108,7 +110,7 @@ return clearSelectedAlarm(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( GetAlarms value)?  getAlarms,TResult? Function( LoadMoreAlarms value)?  loadMore,TResult? Function( CheckAnAlarm value)?  checkAnAlarm,TResult? Function( CheckAlarms value)?  checkAlarms,TResult? Function( GetAlarmById value)?  getAlarmById,TResult? Function( ClearSelectedAlarm value)?  clearSelectedAlarm,}){
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( GetAlarms value)?  getAlarms,TResult? Function( LoadMoreAlarms value)?  loadMore,TResult? Function( CheckAnAlarm value)?  checkAnAlarm,TResult? Function( CheckAlarms value)?  checkAlarms,TResult? Function( GetAlarmById value)?  getAlarmById,TResult? Function( ClearSelectedAlarm value)?  clearSelectedAlarm,TResult? Function( RefreshAlarm value)?  refreshAlarm,}){
 final _that = this;
 switch (_that) {
 case GetAlarms() when getAlarms != null:
@@ -117,7 +119,8 @@ return loadMore(_that);case CheckAnAlarm() when checkAnAlarm != null:
 return checkAnAlarm(_that);case CheckAlarms() when checkAlarms != null:
 return checkAlarms(_that);case GetAlarmById() when getAlarmById != null:
 return getAlarmById(_that);case ClearSelectedAlarm() when clearSelectedAlarm != null:
-return clearSelectedAlarm(_that);case _:
+return clearSelectedAlarm(_that);case RefreshAlarm() when refreshAlarm != null:
+return refreshAlarm(_that);case _:
   return null;
 
 }
@@ -134,15 +137,16 @@ return clearSelectedAlarm(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function( int userId)?  getAlarms,TResult Function( int userId)?  loadMore,TResult Function( int alarmId)?  checkAnAlarm,TResult Function( int userId)?  checkAlarms,TResult Function( int alarmId)?  getAlarmById,TResult Function()?  clearSelectedAlarm,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function( int userId)?  getAlarms,TResult Function()?  loadMore,TResult Function( int alarmId)?  checkAnAlarm,TResult Function()?  checkAlarms,TResult Function( int alarmId)?  getAlarmById,TResult Function()?  clearSelectedAlarm,TResult Function()?  refreshAlarm,required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case GetAlarms() when getAlarms != null:
 return getAlarms(_that.userId);case LoadMoreAlarms() when loadMore != null:
-return loadMore(_that.userId);case CheckAnAlarm() when checkAnAlarm != null:
+return loadMore();case CheckAnAlarm() when checkAnAlarm != null:
 return checkAnAlarm(_that.alarmId);case CheckAlarms() when checkAlarms != null:
-return checkAlarms(_that.userId);case GetAlarmById() when getAlarmById != null:
+return checkAlarms();case GetAlarmById() when getAlarmById != null:
 return getAlarmById(_that.alarmId);case ClearSelectedAlarm() when clearSelectedAlarm != null:
-return clearSelectedAlarm();case _:
+return clearSelectedAlarm();case RefreshAlarm() when refreshAlarm != null:
+return refreshAlarm();case _:
   return orElse();
 
 }
@@ -160,15 +164,16 @@ return clearSelectedAlarm();case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function( int userId)  getAlarms,required TResult Function( int userId)  loadMore,required TResult Function( int alarmId)  checkAnAlarm,required TResult Function( int userId)  checkAlarms,required TResult Function( int alarmId)  getAlarmById,required TResult Function()  clearSelectedAlarm,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function( int userId)  getAlarms,required TResult Function()  loadMore,required TResult Function( int alarmId)  checkAnAlarm,required TResult Function()  checkAlarms,required TResult Function( int alarmId)  getAlarmById,required TResult Function()  clearSelectedAlarm,required TResult Function()  refreshAlarm,}) {final _that = this;
 switch (_that) {
 case GetAlarms():
 return getAlarms(_that.userId);case LoadMoreAlarms():
-return loadMore(_that.userId);case CheckAnAlarm():
+return loadMore();case CheckAnAlarm():
 return checkAnAlarm(_that.alarmId);case CheckAlarms():
-return checkAlarms(_that.userId);case GetAlarmById():
+return checkAlarms();case GetAlarmById():
 return getAlarmById(_that.alarmId);case ClearSelectedAlarm():
-return clearSelectedAlarm();case _:
+return clearSelectedAlarm();case RefreshAlarm():
+return refreshAlarm();case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -185,15 +190,16 @@ return clearSelectedAlarm();case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function( int userId)?  getAlarms,TResult? Function( int userId)?  loadMore,TResult? Function( int alarmId)?  checkAnAlarm,TResult? Function( int userId)?  checkAlarms,TResult? Function( int alarmId)?  getAlarmById,TResult? Function()?  clearSelectedAlarm,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function( int userId)?  getAlarms,TResult? Function()?  loadMore,TResult? Function( int alarmId)?  checkAnAlarm,TResult? Function()?  checkAlarms,TResult? Function( int alarmId)?  getAlarmById,TResult? Function()?  clearSelectedAlarm,TResult? Function()?  refreshAlarm,}) {final _that = this;
 switch (_that) {
 case GetAlarms() when getAlarms != null:
 return getAlarms(_that.userId);case LoadMoreAlarms() when loadMore != null:
-return loadMore(_that.userId);case CheckAnAlarm() when checkAnAlarm != null:
+return loadMore();case CheckAnAlarm() when checkAnAlarm != null:
 return checkAnAlarm(_that.alarmId);case CheckAlarms() when checkAlarms != null:
-return checkAlarms(_that.userId);case GetAlarmById() when getAlarmById != null:
+return checkAlarms();case GetAlarmById() when getAlarmById != null:
 return getAlarmById(_that.alarmId);case ClearSelectedAlarm() when clearSelectedAlarm != null:
-return clearSelectedAlarm();case _:
+return clearSelectedAlarm();case RefreshAlarm() when refreshAlarm != null:
+return refreshAlarm();case _:
   return null;
 
 }
@@ -271,67 +277,33 @@ as int,
 
 
 class LoadMoreAlarms implements AlarmEvent {
-  const LoadMoreAlarms({required this.userId});
+  const LoadMoreAlarms();
   
 
- final  int userId;
 
-/// Create a copy of AlarmEvent
-/// with the given fields replaced by the non-null parameter values.
-@JsonKey(includeFromJson: false, includeToJson: false)
-@pragma('vm:prefer-inline')
-$LoadMoreAlarmsCopyWith<LoadMoreAlarms> get copyWith => _$LoadMoreAlarmsCopyWithImpl<LoadMoreAlarms>(this, _$identity);
+
 
 
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is LoadMoreAlarms&&(identical(other.userId, userId) || other.userId == userId));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is LoadMoreAlarms);
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,userId);
+int get hashCode => runtimeType.hashCode;
 
 @override
 String toString() {
-  return 'AlarmEvent.loadMore(userId: $userId)';
+  return 'AlarmEvent.loadMore()';
 }
 
 
 }
 
-/// @nodoc
-abstract mixin class $LoadMoreAlarmsCopyWith<$Res> implements $AlarmEventCopyWith<$Res> {
-  factory $LoadMoreAlarmsCopyWith(LoadMoreAlarms value, $Res Function(LoadMoreAlarms) _then) = _$LoadMoreAlarmsCopyWithImpl;
-@useResult
-$Res call({
- int userId
-});
 
 
-
-
-}
-/// @nodoc
-class _$LoadMoreAlarmsCopyWithImpl<$Res>
-    implements $LoadMoreAlarmsCopyWith<$Res> {
-  _$LoadMoreAlarmsCopyWithImpl(this._self, this._then);
-
-  final LoadMoreAlarms _self;
-  final $Res Function(LoadMoreAlarms) _then;
-
-/// Create a copy of AlarmEvent
-/// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') $Res call({Object? userId = null,}) {
-  return _then(LoadMoreAlarms(
-userId: null == userId ? _self.userId : userId // ignore: cast_nullable_to_non_nullable
-as int,
-  ));
-}
-
-
-}
 
 /// @nodoc
 
@@ -403,67 +375,33 @@ as int,
 
 
 class CheckAlarms implements AlarmEvent {
-  const CheckAlarms({required this.userId});
+  const CheckAlarms();
   
 
- final  int userId;
 
-/// Create a copy of AlarmEvent
-/// with the given fields replaced by the non-null parameter values.
-@JsonKey(includeFromJson: false, includeToJson: false)
-@pragma('vm:prefer-inline')
-$CheckAlarmsCopyWith<CheckAlarms> get copyWith => _$CheckAlarmsCopyWithImpl<CheckAlarms>(this, _$identity);
+
 
 
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is CheckAlarms&&(identical(other.userId, userId) || other.userId == userId));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is CheckAlarms);
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,userId);
+int get hashCode => runtimeType.hashCode;
 
 @override
 String toString() {
-  return 'AlarmEvent.checkAlarms(userId: $userId)';
+  return 'AlarmEvent.checkAlarms()';
 }
 
 
 }
 
-/// @nodoc
-abstract mixin class $CheckAlarmsCopyWith<$Res> implements $AlarmEventCopyWith<$Res> {
-  factory $CheckAlarmsCopyWith(CheckAlarms value, $Res Function(CheckAlarms) _then) = _$CheckAlarmsCopyWithImpl;
-@useResult
-$Res call({
- int userId
-});
 
 
-
-
-}
-/// @nodoc
-class _$CheckAlarmsCopyWithImpl<$Res>
-    implements $CheckAlarmsCopyWith<$Res> {
-  _$CheckAlarmsCopyWithImpl(this._self, this._then);
-
-  final CheckAlarms _self;
-  final $Res Function(CheckAlarms) _then;
-
-/// Create a copy of AlarmEvent
-/// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') $Res call({Object? userId = null,}) {
-  return _then(CheckAlarms(
-userId: null == userId ? _self.userId : userId // ignore: cast_nullable_to_non_nullable
-as int,
-  ));
-}
-
-
-}
 
 /// @nodoc
 
@@ -555,6 +493,38 @@ int get hashCode => runtimeType.hashCode;
 @override
 String toString() {
   return 'AlarmEvent.clearSelectedAlarm()';
+}
+
+
+}
+
+
+
+
+/// @nodoc
+
+
+class RefreshAlarm implements AlarmEvent {
+  const RefreshAlarm();
+  
+
+
+
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is RefreshAlarm);
+}
+
+
+@override
+int get hashCode => runtimeType.hashCode;
+
+@override
+String toString() {
+  return 'AlarmEvent.refreshAlarm()';
 }
 
 
