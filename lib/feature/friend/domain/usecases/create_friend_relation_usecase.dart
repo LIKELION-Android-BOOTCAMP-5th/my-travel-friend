@@ -1,10 +1,8 @@
-import 'package:injectable/injectable.dart';
-
 import '../entities/friend_entity.dart';
 import '../repositories/friend_repository.dart';
 
 // [엄수빈] 친구 관계 생성 usecase
-@LazySingleton()
+// @LazySingleton()
 class CreateFriendRelationUsecase {
   final FriendRepository _friendRepository;
 

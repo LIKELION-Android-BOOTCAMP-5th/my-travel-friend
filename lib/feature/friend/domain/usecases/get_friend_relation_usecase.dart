@@ -1,10 +1,8 @@
-import 'package:injectable/injectable.dart';
-
 import '../entities/friend_entity.dart';
 import '../repositories/friend_repository.dart';
 
-// [엄수빈] 친구 관계가 있는지 확인
-@LazySingleton()
+// // [엄수빈] 친구 관계가 있는지 확인
+// @LazySingleton()
 class GetFriendRelationUsecase {
   final FriendRepository _friendRepository;
 

@@ -1,6 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:my_travel_friend/feature/trip/domain/entities/trip_entity.dart';
-import 'package:my_travel_friend/feature/trip/presentation/viewmodels/trip_state.dart';
+import 'package:my_travel_friend/feature/trip/presentation/viewmodels/trip/trip_state.dart';
 
 part 'trip_event.freezed.dart';
 

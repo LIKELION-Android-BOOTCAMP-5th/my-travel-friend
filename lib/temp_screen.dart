@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:my_travel_friend/feature/auth/presentation/viewmodel/auth/auth_event.dart';
+import 'package:my_travel_friend/feature/auth/presentation/viewmodel/auth_profile/auth_profile_bloc.dart';
+import 'package:my_travel_friend/feature/auth/presentation/viewmodel/auth_profile/auth_profile_event.dart';
 import 'package:my_travel_friend/theme/app_colors.dart';
 import 'package:my_travel_friend/theme/app_icon.dart';
 
@@ -21,12 +25,23 @@ class TempScreen extends StatelessWidget {
                 onPressed: () => context.push('/login'),
                 child: Text("로그인으로"),
               ),
-              TextButton(onPressed: () => {}, child: Text("로그인아웃")),
+              TextButton(
+                onPressed: () => {
+                  BlocProvider.of<AuthProfileBloc>(
+                    context,
+                  ).add(const AuthProfileEvent.signOut()),
+                },
+                child: Text("로그인아웃"),
+              ),
             ],
           ),
           IconButton(
             onPressed: () => context.push('/diary'),
             icon: Icon(AppIcon.diary, color: AppColors.lightGreen, size: 30),
+          ),
+          IconButton(
+            onPressed: () => context.push('/mainHome'),
+            icon: Icon(AppIcon.home, color: AppColors.lightGreen, size: 30),
           ),
         ],
       ),

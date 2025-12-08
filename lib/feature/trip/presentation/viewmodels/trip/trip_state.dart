@@ -24,6 +24,11 @@ abstract class TripState with _$TripState {
     @Default(TripPageState.init) TripPageState pageState,
     @Default(false) bool hasMore,
     @Default(false) bool isLoadingMore,
+
+    // 메세지 (성공/에러)
+    String? message,
+    String? errorType,
+    String? actionType,
   }) = _TripState;
 }
 
