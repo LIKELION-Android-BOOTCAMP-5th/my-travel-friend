@@ -26,9 +26,9 @@
     },
     {
       "client_info": {
-        "mobilesdk_app_id": "1:712204814478:android:115caf9d135e46ac0de1df",
+        "mobilesdk_app_id": "1:712204814478:android:94c4ab9d0d016d0d0de1df",
         "android_client_info": {
-          "package_name": "com.team1113.myTravelFriend"
+          "package_name": "com.team1113.mytravelfriend"
         }
       },
       "oauth_client": [],

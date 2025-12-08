@@ -1,4 +1,4 @@
-package com.team1113.myTravelFriend
+package com.team1113.mytravelfriend
 
 import io.flutter.embedding.android.FlutterActivity
 
