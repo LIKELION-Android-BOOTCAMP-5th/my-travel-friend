@@ -1,8 +1,12 @@
+import 'package:injectable/injectable.dart';
+
 import '../../../../core/result/result.dart';
 import '../../domain/entities/friend_request_entity.dart';
 import '../../domain/repositories/friend_request_repository.dart';
 import '../datasources/friend_request_data_source.dart';
 
+// [엄수빈] 친구 요청 레포 구현
+@LazySingleton(as: FriendRequestDataSource)
 class FriendRequestRepositoryImpl implements FriendRequestRepository {
   final FriendRequestDataSource _dataSource;
 
