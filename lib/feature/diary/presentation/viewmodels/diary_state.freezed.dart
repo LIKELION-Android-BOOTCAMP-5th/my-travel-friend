@@ -19,9 +19,8 @@ mixin _$DiaryState {
  List<DiaryEntity> get diaries; List<DiaryEntity> get allDiaries; String? get currentFilter;// 상세 조회 데이터
  DiaryEntity? get selectedDiary;// 페이지네이션
  int get currentPage; bool get hasMore; bool get isLoadingMore;// 메세지 (성공/에러)
- String? get message; String? get errorType; String? get actionType;// 네비게이션 (작성 화면 이동)
- bool get navigateToCreate;// 네비게이션 (수정 화면 이동)
- bool get navigateToEdit;// 페이지 상태
+ String? get message; String? get errorType; String? get actionType;// 네비게이션
+ DiaryNavigation get navigation;// 페이지 상태
  DiaryPageState get pageState;
 /// Create a copy of DiaryState
 /// with the given fields replaced by the non-null parameter values.
@@ -33,16 +32,16 @@ $DiaryStateCopyWith<DiaryState> get copyWith => _$DiaryStateCopyWithImpl<DiarySt
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is DiaryState&&(identical(other.tripId, tripId) || other.tripId == tripId)&&(identical(other.userId, userId) || other.userId == userId)&&(identical(other.isMyDiaries, isMyDiaries) || other.isMyDiaries == isMyDiaries)&&const DeepCollectionEquality().equals(other.diaries, diaries)&&const DeepCollectionEquality().equals(other.allDiaries, allDiaries)&&(identical(other.currentFilter, currentFilter) || other.currentFilter == currentFilter)&&(identical(other.selectedDiary, selectedDiary) || other.selectedDiary == selectedDiary)&&(identical(other.currentPage, currentPage) || other.currentPage == currentPage)&&(identical(other.hasMore, hasMore) || other.hasMore == hasMore)&&(identical(other.isLoadingMore, isLoadingMore) || other.isLoadingMore == isLoadingMore)&&(identical(other.message, message) || other.message == message)&&(identical(other.errorType, errorType) || other.errorType == errorType)&&(identical(other.actionType, actionType) || other.actionType == actionType)&&(identical(other.navigateToCreate, navigateToCreate) || other.navigateToCreate == navigateToCreate)&&(identical(other.navigateToEdit, navigateToEdit) || other.navigateToEdit == navigateToEdit)&&(identical(other.pageState, pageState) || other.pageState == pageState));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is DiaryState&&(identical(other.tripId, tripId) || other.tripId == tripId)&&(identical(other.userId, userId) || other.userId == userId)&&(identical(other.isMyDiaries, isMyDiaries) || other.isMyDiaries == isMyDiaries)&&const DeepCollectionEquality().equals(other.diaries, diaries)&&const DeepCollectionEquality().equals(other.allDiaries, allDiaries)&&(identical(other.currentFilter, currentFilter) || other.currentFilter == currentFilter)&&(identical(other.selectedDiary, selectedDiary) || other.selectedDiary == selectedDiary)&&(identical(other.currentPage, currentPage) || other.currentPage == currentPage)&&(identical(other.hasMore, hasMore) || other.hasMore == hasMore)&&(identical(other.isLoadingMore, isLoadingMore) || other.isLoadingMore == isLoadingMore)&&(identical(other.message, message) || other.message == message)&&(identical(other.errorType, errorType) || other.errorType == errorType)&&(identical(other.actionType, actionType) || other.actionType == actionType)&&(identical(other.navigation, navigation) || other.navigation == navigation)&&(identical(other.pageState, pageState) || other.pageState == pageState));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,tripId,userId,isMyDiaries,const DeepCollectionEquality().hash(diaries),const DeepCollectionEquality().hash(allDiaries),currentFilter,selectedDiary,currentPage,hasMore,isLoadingMore,message,errorType,actionType,navigateToCreate,navigateToEdit,pageState);
+int get hashCode => Object.hash(runtimeType,tripId,userId,isMyDiaries,const DeepCollectionEquality().hash(diaries),const DeepCollectionEquality().hash(allDiaries),currentFilter,selectedDiary,currentPage,hasMore,isLoadingMore,message,errorType,actionType,navigation,pageState);
 
 @override
 String toString() {
-  return 'DiaryState(tripId: $tripId, userId: $userId, isMyDiaries: $isMyDiaries, diaries: $diaries, allDiaries: $allDiaries, currentFilter: $currentFilter, selectedDiary: $selectedDiary, currentPage: $currentPage, hasMore: $hasMore, isLoadingMore: $isLoadingMore, message: $message, errorType: $errorType, actionType: $actionType, navigateToCreate: $navigateToCreate, navigateToEdit: $navigateToEdit, pageState: $pageState)';
+  return 'DiaryState(tripId: $tripId, userId: $userId, isMyDiaries: $isMyDiaries, diaries: $diaries, allDiaries: $allDiaries, currentFilter: $currentFilter, selectedDiary: $selectedDiary, currentPage: $currentPage, hasMore: $hasMore, isLoadingMore: $isLoadingMore, message: $message, errorType: $errorType, actionType: $actionType, navigation: $navigation, pageState: $pageState)';
 }
 
 
@@ -53,7 +52,7 @@ abstract mixin class $DiaryStateCopyWith<$Res>  {
   factory $DiaryStateCopyWith(DiaryState value, $Res Function(DiaryState) _then) = _$DiaryStateCopyWithImpl;
 @useResult
 $Res call({
- int tripId, int? userId, bool isMyDiaries, List<DiaryEntity> diaries, List<DiaryEntity> allDiaries, String? currentFilter, DiaryEntity? selectedDiary, int currentPage, bool hasMore, bool isLoadingMore, String? message, String? errorType, String? actionType, bool navigateToCreate, bool navigateToEdit, DiaryPageState pageState
+ int tripId, int? userId, bool isMyDiaries, List<DiaryEntity> diaries, List<DiaryEntity> allDiaries, String? currentFilter, DiaryEntity? selectedDiary, int currentPage, bool hasMore, bool isLoadingMore, String? message, String? errorType, String? actionType, DiaryNavigation navigation, DiaryPageState pageState
 });
 
 
@@ -70,7 +69,7 @@ class _$DiaryStateCopyWithImpl<$Res>
 
 /// Create a copy of DiaryState
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? tripId = null,Object? userId = freezed,Object? isMyDiaries = null,Object? diaries = null,Object? allDiaries = null,Object? currentFilter = freezed,Object? selectedDiary = freezed,Object? currentPage = null,Object? hasMore = null,Object? isLoadingMore = null,Object? message = freezed,Object? errorType = freezed,Object? actionType = freezed,Object? navigateToCreate = null,Object? navigateToEdit = null,Object? pageState = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? tripId = null,Object? userId = freezed,Object? isMyDiaries = null,Object? diaries = null,Object? allDiaries = null,Object? currentFilter = freezed,Object? selectedDiary = freezed,Object? currentPage = null,Object? hasMore = null,Object? isLoadingMore = null,Object? message = freezed,Object? errorType = freezed,Object? actionType = freezed,Object? navigation = null,Object? pageState = null,}) {
   return _then(_self.copyWith(
 tripId: null == tripId ? _self.tripId : tripId // ignore: cast_nullable_to_non_nullable
 as int,userId: freezed == userId ? _self.userId : userId // ignore: cast_nullable_to_non_nullable
@@ -85,9 +84,8 @@ as bool,isLoadingMore: null == isLoadingMore ? _self.isLoadingMore : isLoadingMo
 as bool,message: freezed == message ? _self.message : message // ignore: cast_nullable_to_non_nullable
 as String?,errorType: freezed == errorType ? _self.errorType : errorType // ignore: cast_nullable_to_non_nullable
 as String?,actionType: freezed == actionType ? _self.actionType : actionType // ignore: cast_nullable_to_non_nullable
-as String?,navigateToCreate: null == navigateToCreate ? _self.navigateToCreate : navigateToCreate // ignore: cast_nullable_to_non_nullable
-as bool,navigateToEdit: null == navigateToEdit ? _self.navigateToEdit : navigateToEdit // ignore: cast_nullable_to_non_nullable
-as bool,pageState: null == pageState ? _self.pageState : pageState // ignore: cast_nullable_to_non_nullable
+as String?,navigation: null == navigation ? _self.navigation : navigation // ignore: cast_nullable_to_non_nullable
+as DiaryNavigation,pageState: null == pageState ? _self.pageState : pageState // ignore: cast_nullable_to_non_nullable
 as DiaryPageState,
   ));
 }
@@ -185,10 +183,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int tripId,  int? userId,  bool isMyDiaries,  List<DiaryEntity> diaries,  List<DiaryEntity> allDiaries,  String? currentFilter,  DiaryEntity? selectedDiary,  int currentPage,  bool hasMore,  bool isLoadingMore,  String? message,  String? errorType,  String? actionType,  bool navigateToCreate,  bool navigateToEdit,  DiaryPageState pageState)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int tripId,  int? userId,  bool isMyDiaries,  List<DiaryEntity> diaries,  List<DiaryEntity> allDiaries,  String? currentFilter,  DiaryEntity? selectedDiary,  int currentPage,  bool hasMore,  bool isLoadingMore,  String? message,  String? errorType,  String? actionType,  DiaryNavigation navigation,  DiaryPageState pageState)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _DiaryState() when $default != null:
-return $default(_that.tripId,_that.userId,_that.isMyDiaries,_that.diaries,_that.allDiaries,_that.currentFilter,_that.selectedDiary,_that.currentPage,_that.hasMore,_that.isLoadingMore,_that.message,_that.errorType,_that.actionType,_that.navigateToCreate,_that.navigateToEdit,_that.pageState);case _:
+return $default(_that.tripId,_that.userId,_that.isMyDiaries,_that.diaries,_that.allDiaries,_that.currentFilter,_that.selectedDiary,_that.currentPage,_that.hasMore,_that.isLoadingMore,_that.message,_that.errorType,_that.actionType,_that.navigation,_that.pageState);case _:
   return orElse();
 
 }
@@ -206,10 +204,10 @@ return $default(_that.tripId,_that.userId,_that.isMyDiaries,_that.diaries,_that.
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int tripId,  int? userId,  bool isMyDiaries,  List<DiaryEntity> diaries,  List<DiaryEntity> allDiaries,  String? currentFilter,  DiaryEntity? selectedDiary,  int currentPage,  bool hasMore,  bool isLoadingMore,  String? message,  String? errorType,  String? actionType,  bool navigateToCreate,  bool navigateToEdit,  DiaryPageState pageState)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int tripId,  int? userId,  bool isMyDiaries,  List<DiaryEntity> diaries,  List<DiaryEntity> allDiaries,  String? currentFilter,  DiaryEntity? selectedDiary,  int currentPage,  bool hasMore,  bool isLoadingMore,  String? message,  String? errorType,  String? actionType,  DiaryNavigation navigation,  DiaryPageState pageState)  $default,) {final _that = this;
 switch (_that) {
 case _DiaryState():
-return $default(_that.tripId,_that.userId,_that.isMyDiaries,_that.diaries,_that.allDiaries,_that.currentFilter,_that.selectedDiary,_that.currentPage,_that.hasMore,_that.isLoadingMore,_that.message,_that.errorType,_that.actionType,_that.navigateToCreate,_that.navigateToEdit,_that.pageState);case _:
+return $default(_that.tripId,_that.userId,_that.isMyDiaries,_that.diaries,_that.allDiaries,_that.currentFilter,_that.selectedDiary,_that.currentPage,_that.hasMore,_that.isLoadingMore,_that.message,_that.errorType,_that.actionType,_that.navigation,_that.pageState);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -226,10 +224,10 @@ return $default(_that.tripId,_that.userId,_that.isMyDiaries,_that.diaries,_that.
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int tripId,  int? userId,  bool isMyDiaries,  List<DiaryEntity> diaries,  List<DiaryEntity> allDiaries,  String? currentFilter,  DiaryEntity? selectedDiary,  int currentPage,  bool hasMore,  bool isLoadingMore,  String? message,  String? errorType,  String? actionType,  bool navigateToCreate,  bool navigateToEdit,  DiaryPageState pageState)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int tripId,  int? userId,  bool isMyDiaries,  List<DiaryEntity> diaries,  List<DiaryEntity> allDiaries,  String? currentFilter,  DiaryEntity? selectedDiary,  int currentPage,  bool hasMore,  bool isLoadingMore,  String? message,  String? errorType,  String? actionType,  DiaryNavigation navigation,  DiaryPageState pageState)?  $default,) {final _that = this;
 switch (_that) {
 case _DiaryState() when $default != null:
-return $default(_that.tripId,_that.userId,_that.isMyDiaries,_that.diaries,_that.allDiaries,_that.currentFilter,_that.selectedDiary,_that.currentPage,_that.hasMore,_that.isLoadingMore,_that.message,_that.errorType,_that.actionType,_that.navigateToCreate,_that.navigateToEdit,_that.pageState);case _:
+return $default(_that.tripId,_that.userId,_that.isMyDiaries,_that.diaries,_that.allDiaries,_that.currentFilter,_that.selectedDiary,_that.currentPage,_that.hasMore,_that.isLoadingMore,_that.message,_that.errorType,_that.actionType,_that.navigation,_that.pageState);case _:
   return null;
 
 }
@@ -241,7 +239,7 @@ return $default(_that.tripId,_that.userId,_that.isMyDiaries,_that.diaries,_that.
 
 
 class _DiaryState implements DiaryState {
-  const _DiaryState({this.tripId = 0, this.userId, this.isMyDiaries = false, final  List<DiaryEntity> diaries = const [], final  List<DiaryEntity> allDiaries = const [], this.currentFilter, this.selectedDiary, this.currentPage = 0, this.hasMore = false, this.isLoadingMore = false, this.message, this.errorType, this.actionType, this.navigateToCreate = false, this.navigateToEdit = false, this.pageState = DiaryPageState.init}): _diaries = diaries,_allDiaries = allDiaries;
+  const _DiaryState({this.tripId = 0, this.userId, this.isMyDiaries = false, final  List<DiaryEntity> diaries = const [], final  List<DiaryEntity> allDiaries = const [], this.currentFilter, this.selectedDiary, this.currentPage = 0, this.hasMore = false, this.isLoadingMore = false, this.message, this.errorType, this.actionType, this.navigation = const DiaryNavigationNone(), this.pageState = DiaryPageState.init}): _diaries = diaries,_allDiaries = allDiaries;
   
 
 // 조회 정보
@@ -275,10 +273,8 @@ class _DiaryState implements DiaryState {
 @override final  String? message;
 @override final  String? errorType;
 @override final  String? actionType;
-// 네비게이션 (작성 화면 이동)
-@override@JsonKey() final  bool navigateToCreate;
-// 네비게이션 (수정 화면 이동)
-@override@JsonKey() final  bool navigateToEdit;
+// 네비게이션
+@override@JsonKey() final  DiaryNavigation navigation;
 // 페이지 상태
 @override@JsonKey() final  DiaryPageState pageState;
 
@@ -292,16 +288,16 @@ _$DiaryStateCopyWith<_DiaryState> get copyWith => __$DiaryStateCopyWithImpl<_Dia
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _DiaryState&&(identical(other.tripId, tripId) || other.tripId == tripId)&&(identical(other.userId, userId) || other.userId == userId)&&(identical(other.isMyDiaries, isMyDiaries) || other.isMyDiaries == isMyDiaries)&&const DeepCollectionEquality().equals(other._diaries, _diaries)&&const DeepCollectionEquality().equals(other._allDiaries, _allDiaries)&&(identical(other.currentFilter, currentFilter) || other.currentFilter == currentFilter)&&(identical(other.selectedDiary, selectedDiary) || other.selectedDiary == selectedDiary)&&(identical(other.currentPage, currentPage) || other.currentPage == currentPage)&&(identical(other.hasMore, hasMore) || other.hasMore == hasMore)&&(identical(other.isLoadingMore, isLoadingMore) || other.isLoadingMore == isLoadingMore)&&(identical(other.message, message) || other.message == message)&&(identical(other.errorType, errorType) || other.errorType == errorType)&&(identical(other.actionType, actionType) || other.actionType == actionType)&&(identical(other.navigateToCreate, navigateToCreate) || other.navigateToCreate == navigateToCreate)&&(identical(other.navigateToEdit, navigateToEdit) || other.navigateToEdit == navigateToEdit)&&(identical(other.pageState, pageState) || other.pageState == pageState));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _DiaryState&&(identical(other.tripId, tripId) || other.tripId == tripId)&&(identical(other.userId, userId) || other.userId == userId)&&(identical(other.isMyDiaries, isMyDiaries) || other.isMyDiaries == isMyDiaries)&&const DeepCollectionEquality().equals(other._diaries, _diaries)&&const DeepCollectionEquality().equals(other._allDiaries, _allDiaries)&&(identical(other.currentFilter, currentFilter) || other.currentFilter == currentFilter)&&(identical(other.selectedDiary, selectedDiary) || other.selectedDiary == selectedDiary)&&(identical(other.currentPage, currentPage) || other.currentPage == currentPage)&&(identical(other.hasMore, hasMore) || other.hasMore == hasMore)&&(identical(other.isLoadingMore, isLoadingMore) || other.isLoadingMore == isLoadingMore)&&(identical(other.message, message) || other.message == message)&&(identical(other.errorType, errorType) || other.errorType == errorType)&&(identical(other.actionType, actionType) || other.actionType == actionType)&&(identical(other.navigation, navigation) || other.navigation == navigation)&&(identical(other.pageState, pageState) || other.pageState == pageState));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,tripId,userId,isMyDiaries,const DeepCollectionEquality().hash(_diaries),const DeepCollectionEquality().hash(_allDiaries),currentFilter,selectedDiary,currentPage,hasMore,isLoadingMore,message,errorType,actionType,navigateToCreate,navigateToEdit,pageState);
+int get hashCode => Object.hash(runtimeType,tripId,userId,isMyDiaries,const DeepCollectionEquality().hash(_diaries),const DeepCollectionEquality().hash(_allDiaries),currentFilter,selectedDiary,currentPage,hasMore,isLoadingMore,message,errorType,actionType,navigation,pageState);
 
 @override
 String toString() {
-  return 'DiaryState(tripId: $tripId, userId: $userId, isMyDiaries: $isMyDiaries, diaries: $diaries, allDiaries: $allDiaries, currentFilter: $currentFilter, selectedDiary: $selectedDiary, currentPage: $currentPage, hasMore: $hasMore, isLoadingMore: $isLoadingMore, message: $message, errorType: $errorType, actionType: $actionType, navigateToCreate: $navigateToCreate, navigateToEdit: $navigateToEdit, pageState: $pageState)';
+  return 'DiaryState(tripId: $tripId, userId: $userId, isMyDiaries: $isMyDiaries, diaries: $diaries, allDiaries: $allDiaries, currentFilter: $currentFilter, selectedDiary: $selectedDiary, currentPage: $currentPage, hasMore: $hasMore, isLoadingMore: $isLoadingMore, message: $message, errorType: $errorType, actionType: $actionType, navigation: $navigation, pageState: $pageState)';
 }
 
 
@@ -312,7 +308,7 @@ abstract mixin class _$DiaryStateCopyWith<$Res> implements $DiaryStateCopyWith<$
   factory _$DiaryStateCopyWith(_DiaryState value, $Res Function(_DiaryState) _then) = __$DiaryStateCopyWithImpl;
 @override @useResult
 $Res call({
- int tripId, int? userId, bool isMyDiaries, List<DiaryEntity> diaries, List<DiaryEntity> allDiaries, String? currentFilter, DiaryEntity? selectedDiary, int currentPage, bool hasMore, bool isLoadingMore, String? message, String? errorType, String? actionType, bool navigateToCreate, bool navigateToEdit, DiaryPageState pageState
+ int tripId, int? userId, bool isMyDiaries, List<DiaryEntity> diaries, List<DiaryEntity> allDiaries, String? currentFilter, DiaryEntity? selectedDiary, int currentPage, bool hasMore, bool isLoadingMore, String? message, String? errorType, String? actionType, DiaryNavigation navigation, DiaryPageState pageState
 });
 
 
@@ -329,7 +325,7 @@ class __$DiaryStateCopyWithImpl<$Res>
 
 /// Create a copy of DiaryState
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? tripId = null,Object? userId = freezed,Object? isMyDiaries = null,Object? diaries = null,Object? allDiaries = null,Object? currentFilter = freezed,Object? selectedDiary = freezed,Object? currentPage = null,Object? hasMore = null,Object? isLoadingMore = null,Object? message = freezed,Object? errorType = freezed,Object? actionType = freezed,Object? navigateToCreate = null,Object? navigateToEdit = null,Object? pageState = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? tripId = null,Object? userId = freezed,Object? isMyDiaries = null,Object? diaries = null,Object? allDiaries = null,Object? currentFilter = freezed,Object? selectedDiary = freezed,Object? currentPage = null,Object? hasMore = null,Object? isLoadingMore = null,Object? message = freezed,Object? errorType = freezed,Object? actionType = freezed,Object? navigation = null,Object? pageState = null,}) {
   return _then(_DiaryState(
 tripId: null == tripId ? _self.tripId : tripId // ignore: cast_nullable_to_non_nullable
 as int,userId: freezed == userId ? _self.userId : userId // ignore: cast_nullable_to_non_nullable
@@ -344,9 +340,8 @@ as bool,isLoadingMore: null == isLoadingMore ? _self.isLoadingMore : isLoadingMo
 as bool,message: freezed == message ? _self.message : message // ignore: cast_nullable_to_non_nullable
 as String?,errorType: freezed == errorType ? _self.errorType : errorType // ignore: cast_nullable_to_non_nullable
 as String?,actionType: freezed == actionType ? _self.actionType : actionType // ignore: cast_nullable_to_non_nullable
-as String?,navigateToCreate: null == navigateToCreate ? _self.navigateToCreate : navigateToCreate // ignore: cast_nullable_to_non_nullable
-as bool,navigateToEdit: null == navigateToEdit ? _self.navigateToEdit : navigateToEdit // ignore: cast_nullable_to_non_nullable
-as bool,pageState: null == pageState ? _self.pageState : pageState // ignore: cast_nullable_to_non_nullable
+as String?,navigation: null == navigation ? _self.navigation : navigation // ignore: cast_nullable_to_non_nullable
+as DiaryNavigation,pageState: null == pageState ? _self.pageState : pageState // ignore: cast_nullable_to_non_nullable
 as DiaryPageState,
   ));
 }

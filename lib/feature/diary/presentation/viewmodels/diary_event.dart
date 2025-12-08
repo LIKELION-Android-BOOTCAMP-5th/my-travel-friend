@@ -26,10 +26,9 @@ abstract class DiaryEvent with _$DiaryEvent {
   // 다음 페이지 로드 (무한스크롤)
   const factory DiaryEvent.loadMore() = LoadMore;
 
-  // 다이어리 상세조회
-  // - 다이어리 박스 클릭 시 상세 정보 가져오기
-  // - DiaryDetailPopUp 띄우기 전에 호출
-  const factory DiaryEvent.getDiaryById({required int diaryId}) = GetDiaryById;
+  // 다이어리 상세 팝업 요청 (로컬 데이터 사용)
+  const factory DiaryEvent.requestDetail({required DiaryEntity diary}) =
+      RequestDetail;
 
   // 상세 팝업 닫힘 (상태 초기화)
   const factory DiaryEvent.clearSelectedDiary() = ClearSelectedDiary;

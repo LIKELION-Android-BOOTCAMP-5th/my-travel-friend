@@ -23,7 +23,12 @@ class ProfileBox extends StatelessWidget {
 
     return Row(
       children: [
-        ProfileImg(imageUrl: writer?.profileImg!, radius: 20),
+        writer?.profileImg != null
+            ? ProfileImg(imageUrl: writer?.profileImg!, radius: 20)
+            : CircleAvatar(
+                radius: 20,
+                backgroundImage: AssetImage('assets/images/profile_hearty.png'),
+              ),
         SizedBox(width: 16.0),
         Expanded(
           child: Column(

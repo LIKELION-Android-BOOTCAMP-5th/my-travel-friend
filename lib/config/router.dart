@@ -98,7 +98,7 @@ class AppRouter {
         builder: (context, state) => BlocProvider(
           //bloc 제공자
           create: (context) => GetIt.instance<DiaryBloc>(),
-          child: const DiaryBlocWidget(tripId: 1, userId: 10),
+          child: const DiaryBlocWidget(tripId: 1),
         ),
       ),
 
@@ -106,7 +106,7 @@ class AppRouter {
         path: '/diary/new',
         builder: (context, state) => BlocProvider(
           create: (context) => GetIt.instance<NewDiaryBloc>(),
-          child: const NewDiaryBlocWidget(tripId: 1, userId: 10),
+          child: const NewDiaryBlocWidget(tripId: 1),
         ),
       ),
       GoRoute(

@@ -16,13 +16,15 @@ import 'image_with_actions.dart';
 // [이재은] 다이어리 리스트용 박스 위젯
 class DiaryBox extends StatelessWidget {
   final DiaryEntity diary;
+  final int loginUserId;
 
-  const DiaryBox({super.key, required this.diary});
+  const DiaryBox({super.key, required this.diary, required this.loginUserId});
 
   @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
     final isDark = colorScheme.brightness == Brightness.dark;
+    final isMine = diary.userId == loginUserId;
 
     final rating = diary.rating;
     final cost = diary.cost;
@@ -50,16 +52,17 @@ class DiaryBox extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Expanded(child: ProfileBox(diary: diary)),
-                    IconButton(
-                      onPressed: () => _showEditOrDeleteSheet(context),
-                      icon: Icon(
-                        AppIcon.threeDots,
-                        size: 20,
-                        color: colorScheme.onSurface,
+                    if (isMine)
+                      IconButton(
+                        onPressed: () => _showEditOrDeleteSheet(context),
+                        icon: Icon(
+                          AppIcon.threeDots,
+                          size: 20,
+                          color: colorScheme.onSurface,
+                        ),
+                        padding: EdgeInsets.all(8),
+                        constraints: const BoxConstraints(),
                       ),
-                      padding: EdgeInsets.all(8),
-                      constraints: const BoxConstraints(),
-                    ),
                   ],
                 ),
                 const SizedBox(height: 16),
