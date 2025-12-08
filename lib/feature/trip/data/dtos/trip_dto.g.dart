@@ -18,6 +18,7 @@ _TripDto _$TripDtoFromJson(Map<String, dynamic> json) => _TripDto(
   userId: (json['user_id'] as num).toInt(),
   deletedAt: json['deleted_at'] as String?,
   country: json['country'] as String,
+  crewCount: (json['crew_count'] as num?)?.toInt(),
 );
 
 Map<String, dynamic> _$TripDtoToJson(_TripDto instance) => <String, dynamic>{
@@ -32,4 +33,5 @@ Map<String, dynamic> _$TripDtoToJson(_TripDto instance) => <String, dynamic>{
   'user_id': instance.userId,
   'deleted_at': instance.deletedAt,
   'country': instance.country,
+  'crew_count': instance.crewCount,
 };

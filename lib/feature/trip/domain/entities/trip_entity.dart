@@ -16,5 +16,6 @@ abstract class TripEntity with _$TripEntity {
     required int userId,
     String? deletedAt,
     required String country,
+    int? crewCount,
   }) = _TripEntity;
 }

@@ -22,6 +22,7 @@ abstract class TripDto with _$TripDto {
     @JsonKey(name: 'user_id') required int userId,
     @JsonKey(name: 'deleted_at') String? deletedAt,
     required String country,
+    @JsonKey(name: 'crew_count') int? crewCount,
   }) = _TripDto;
 
   factory TripDto.fromJson(Map<String, dynamic> json) =>
@@ -40,6 +41,7 @@ abstract class TripDto with _$TripDto {
       country: country,
       coverImg: coverImg,
       deletedAt: deletedAt,
+      crewCount: crewCount ?? 1,
     );
   }
 

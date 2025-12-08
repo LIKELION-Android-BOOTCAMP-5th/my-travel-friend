@@ -14,7 +14,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$TripEntity {
 
- int? get id; String? get createdAt; String get title; String get place; String get startAt; String get endAt; String get coverType; String? get coverImg; int get userId; String? get deletedAt; String get country;
+ int? get id; String? get createdAt; String get title; String get place; String get startAt; String get endAt; String get coverType; String? get coverImg; int get userId; String? get deletedAt; String get country; int? get crewCount;
 /// Create a copy of TripEntity
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -25,16 +25,16 @@ $TripEntityCopyWith<TripEntity> get copyWith => _$TripEntityCopyWithImpl<TripEnt
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is TripEntity&&(identical(other.id, id) || other.id == id)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.title, title) || other.title == title)&&(identical(other.place, place) || other.place == place)&&(identical(other.startAt, startAt) || other.startAt == startAt)&&(identical(other.endAt, endAt) || other.endAt == endAt)&&(identical(other.coverType, coverType) || other.coverType == coverType)&&(identical(other.coverImg, coverImg) || other.coverImg == coverImg)&&(identical(other.userId, userId) || other.userId == userId)&&(identical(other.deletedAt, deletedAt) || other.deletedAt == deletedAt)&&(identical(other.country, country) || other.country == country));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is TripEntity&&(identical(other.id, id) || other.id == id)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.title, title) || other.title == title)&&(identical(other.place, place) || other.place == place)&&(identical(other.startAt, startAt) || other.startAt == startAt)&&(identical(other.endAt, endAt) || other.endAt == endAt)&&(identical(other.coverType, coverType) || other.coverType == coverType)&&(identical(other.coverImg, coverImg) || other.coverImg == coverImg)&&(identical(other.userId, userId) || other.userId == userId)&&(identical(other.deletedAt, deletedAt) || other.deletedAt == deletedAt)&&(identical(other.country, country) || other.country == country)&&(identical(other.crewCount, crewCount) || other.crewCount == crewCount));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,id,createdAt,title,place,startAt,endAt,coverType,coverImg,userId,deletedAt,country);
+int get hashCode => Object.hash(runtimeType,id,createdAt,title,place,startAt,endAt,coverType,coverImg,userId,deletedAt,country,crewCount);
 
 @override
 String toString() {
-  return 'TripEntity(id: $id, createdAt: $createdAt, title: $title, place: $place, startAt: $startAt, endAt: $endAt, coverType: $coverType, coverImg: $coverImg, userId: $userId, deletedAt: $deletedAt, country: $country)';
+  return 'TripEntity(id: $id, createdAt: $createdAt, title: $title, place: $place, startAt: $startAt, endAt: $endAt, coverType: $coverType, coverImg: $coverImg, userId: $userId, deletedAt: $deletedAt, country: $country, crewCount: $crewCount)';
 }
 
 
@@ -45,7 +45,7 @@ abstract mixin class $TripEntityCopyWith<$Res>  {
   factory $TripEntityCopyWith(TripEntity value, $Res Function(TripEntity) _then) = _$TripEntityCopyWithImpl;
 @useResult
 $Res call({
- int? id, String? createdAt, String title, String place, String startAt, String endAt, String coverType, String? coverImg, int userId, String? deletedAt, String country
+ int? id, String? createdAt, String title, String place, String startAt, String endAt, String coverType, String? coverImg, int userId, String? deletedAt, String country, int? crewCount
 });
 
 
@@ -62,7 +62,7 @@ class _$TripEntityCopyWithImpl<$Res>
 
 /// Create a copy of TripEntity
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = freezed,Object? createdAt = freezed,Object? title = null,Object? place = null,Object? startAt = null,Object? endAt = null,Object? coverType = null,Object? coverImg = freezed,Object? userId = null,Object? deletedAt = freezed,Object? country = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = freezed,Object? createdAt = freezed,Object? title = null,Object? place = null,Object? startAt = null,Object? endAt = null,Object? coverType = null,Object? coverImg = freezed,Object? userId = null,Object? deletedAt = freezed,Object? country = null,Object? crewCount = freezed,}) {
   return _then(_self.copyWith(
 id: freezed == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as int?,createdAt: freezed == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
@@ -75,7 +75,8 @@ as String,coverImg: freezed == coverImg ? _self.coverImg : coverImg // ignore: c
 as String?,userId: null == userId ? _self.userId : userId // ignore: cast_nullable_to_non_nullable
 as int,deletedAt: freezed == deletedAt ? _self.deletedAt : deletedAt // ignore: cast_nullable_to_non_nullable
 as String?,country: null == country ? _self.country : country // ignore: cast_nullable_to_non_nullable
-as String,
+as String,crewCount: freezed == crewCount ? _self.crewCount : crewCount // ignore: cast_nullable_to_non_nullable
+as int?,
   ));
 }
 
@@ -160,10 +161,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int? id,  String? createdAt,  String title,  String place,  String startAt,  String endAt,  String coverType,  String? coverImg,  int userId,  String? deletedAt,  String country)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int? id,  String? createdAt,  String title,  String place,  String startAt,  String endAt,  String coverType,  String? coverImg,  int userId,  String? deletedAt,  String country,  int? crewCount)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _TripEntity() when $default != null:
-return $default(_that.id,_that.createdAt,_that.title,_that.place,_that.startAt,_that.endAt,_that.coverType,_that.coverImg,_that.userId,_that.deletedAt,_that.country);case _:
+return $default(_that.id,_that.createdAt,_that.title,_that.place,_that.startAt,_that.endAt,_that.coverType,_that.coverImg,_that.userId,_that.deletedAt,_that.country,_that.crewCount);case _:
   return orElse();
 
 }
@@ -181,10 +182,10 @@ return $default(_that.id,_that.createdAt,_that.title,_that.place,_that.startAt,_
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int? id,  String? createdAt,  String title,  String place,  String startAt,  String endAt,  String coverType,  String? coverImg,  int userId,  String? deletedAt,  String country)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int? id,  String? createdAt,  String title,  String place,  String startAt,  String endAt,  String coverType,  String? coverImg,  int userId,  String? deletedAt,  String country,  int? crewCount)  $default,) {final _that = this;
 switch (_that) {
 case _TripEntity():
-return $default(_that.id,_that.createdAt,_that.title,_that.place,_that.startAt,_that.endAt,_that.coverType,_that.coverImg,_that.userId,_that.deletedAt,_that.country);case _:
+return $default(_that.id,_that.createdAt,_that.title,_that.place,_that.startAt,_that.endAt,_that.coverType,_that.coverImg,_that.userId,_that.deletedAt,_that.country,_that.crewCount);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -201,10 +202,10 @@ return $default(_that.id,_that.createdAt,_that.title,_that.place,_that.startAt,_
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int? id,  String? createdAt,  String title,  String place,  String startAt,  String endAt,  String coverType,  String? coverImg,  int userId,  String? deletedAt,  String country)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int? id,  String? createdAt,  String title,  String place,  String startAt,  String endAt,  String coverType,  String? coverImg,  int userId,  String? deletedAt,  String country,  int? crewCount)?  $default,) {final _that = this;
 switch (_that) {
 case _TripEntity() when $default != null:
-return $default(_that.id,_that.createdAt,_that.title,_that.place,_that.startAt,_that.endAt,_that.coverType,_that.coverImg,_that.userId,_that.deletedAt,_that.country);case _:
+return $default(_that.id,_that.createdAt,_that.title,_that.place,_that.startAt,_that.endAt,_that.coverType,_that.coverImg,_that.userId,_that.deletedAt,_that.country,_that.crewCount);case _:
   return null;
 
 }
@@ -216,7 +217,7 @@ return $default(_that.id,_that.createdAt,_that.title,_that.place,_that.startAt,_
 
 
 class _TripEntity implements TripEntity {
-  const _TripEntity({this.id, this.createdAt, required this.title, required this.place, required this.startAt, required this.endAt, required this.coverType, this.coverImg, required this.userId, this.deletedAt, required this.country});
+  const _TripEntity({this.id, this.createdAt, required this.title, required this.place, required this.startAt, required this.endAt, required this.coverType, this.coverImg, required this.userId, this.deletedAt, required this.country, this.crewCount});
   
 
 @override final  int? id;
@@ -230,6 +231,7 @@ class _TripEntity implements TripEntity {
 @override final  int userId;
 @override final  String? deletedAt;
 @override final  String country;
+@override final  int? crewCount;
 
 /// Create a copy of TripEntity
 /// with the given fields replaced by the non-null parameter values.
@@ -241,16 +243,16 @@ _$TripEntityCopyWith<_TripEntity> get copyWith => __$TripEntityCopyWithImpl<_Tri
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _TripEntity&&(identical(other.id, id) || other.id == id)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.title, title) || other.title == title)&&(identical(other.place, place) || other.place == place)&&(identical(other.startAt, startAt) || other.startAt == startAt)&&(identical(other.endAt, endAt) || other.endAt == endAt)&&(identical(other.coverType, coverType) || other.coverType == coverType)&&(identical(other.coverImg, coverImg) || other.coverImg == coverImg)&&(identical(other.userId, userId) || other.userId == userId)&&(identical(other.deletedAt, deletedAt) || other.deletedAt == deletedAt)&&(identical(other.country, country) || other.country == country));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _TripEntity&&(identical(other.id, id) || other.id == id)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.title, title) || other.title == title)&&(identical(other.place, place) || other.place == place)&&(identical(other.startAt, startAt) || other.startAt == startAt)&&(identical(other.endAt, endAt) || other.endAt == endAt)&&(identical(other.coverType, coverType) || other.coverType == coverType)&&(identical(other.coverImg, coverImg) || other.coverImg == coverImg)&&(identical(other.userId, userId) || other.userId == userId)&&(identical(other.deletedAt, deletedAt) || other.deletedAt == deletedAt)&&(identical(other.country, country) || other.country == country)&&(identical(other.crewCount, crewCount) || other.crewCount == crewCount));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,id,createdAt,title,place,startAt,endAt,coverType,coverImg,userId,deletedAt,country);
+int get hashCode => Object.hash(runtimeType,id,createdAt,title,place,startAt,endAt,coverType,coverImg,userId,deletedAt,country,crewCount);
 
 @override
 String toString() {
-  return 'TripEntity(id: $id, createdAt: $createdAt, title: $title, place: $place, startAt: $startAt, endAt: $endAt, coverType: $coverType, coverImg: $coverImg, userId: $userId, deletedAt: $deletedAt, country: $country)';
+  return 'TripEntity(id: $id, createdAt: $createdAt, title: $title, place: $place, startAt: $startAt, endAt: $endAt, coverType: $coverType, coverImg: $coverImg, userId: $userId, deletedAt: $deletedAt, country: $country, crewCount: $crewCount)';
 }
 
 
@@ -261,7 +263,7 @@ abstract mixin class _$TripEntityCopyWith<$Res> implements $TripEntityCopyWith<$
   factory _$TripEntityCopyWith(_TripEntity value, $Res Function(_TripEntity) _then) = __$TripEntityCopyWithImpl;
 @override @useResult
 $Res call({
- int? id, String? createdAt, String title, String place, String startAt, String endAt, String coverType, String? coverImg, int userId, String? deletedAt, String country
+ int? id, String? createdAt, String title, String place, String startAt, String endAt, String coverType, String? coverImg, int userId, String? deletedAt, String country, int? crewCount
 });
 
 
@@ -278,7 +280,7 @@ class __$TripEntityCopyWithImpl<$Res>
 
 /// Create a copy of TripEntity
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = freezed,Object? createdAt = freezed,Object? title = null,Object? place = null,Object? startAt = null,Object? endAt = null,Object? coverType = null,Object? coverImg = freezed,Object? userId = null,Object? deletedAt = freezed,Object? country = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = freezed,Object? createdAt = freezed,Object? title = null,Object? place = null,Object? startAt = null,Object? endAt = null,Object? coverType = null,Object? coverImg = freezed,Object? userId = null,Object? deletedAt = freezed,Object? country = null,Object? crewCount = freezed,}) {
   return _then(_TripEntity(
 id: freezed == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as int?,createdAt: freezed == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
@@ -291,7 +293,8 @@ as String,coverImg: freezed == coverImg ? _self.coverImg : coverImg // ignore: c
 as String?,userId: null == userId ? _self.userId : userId // ignore: cast_nullable_to_non_nullable
 as int,deletedAt: freezed == deletedAt ? _self.deletedAt : deletedAt // ignore: cast_nullable_to_non_nullable
 as String?,country: null == country ? _self.country : country // ignore: cast_nullable_to_non_nullable
-as String,
+as String,crewCount: freezed == crewCount ? _self.crewCount : crewCount // ignore: cast_nullable_to_non_nullable
+as int?,
   ));
 }
 

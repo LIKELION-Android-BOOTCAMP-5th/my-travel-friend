@@ -4,13 +4,10 @@ import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
 import 'package:my_travel_friend/feature/auth/presentation/screens/auth_bloc_widget.dart';
 import 'package:my_travel_friend/feature/auth/presentation/viewmodel/auth/auth_bloc.dart';
-
-import 'package:my_travel_friend/feature/trip/presentation/screens/trip_bloc_widget.dart';
-import 'package:my_travel_friend/feature/trip/presentation/viewmodels/trip_bloc.dart';
-
 import 'package:my_travel_friend/feature/auth/presentation/viewmodel/auth_profile/auth_profile_bloc.dart';
 import 'package:my_travel_friend/feature/auth/presentation/viewmodel/auth_profile/auth_profile_state.dart';
-
+import 'package:my_travel_friend/feature/trip/presentation/screens/trip_bloc_widget.dart';
+import 'package:my_travel_friend/feature/trip/presentation/viewmodels/trip/trip_bloc.dart';
 import 'package:my_travel_friend/splash.dart';
 import 'package:my_travel_friend/temp_screen.dart';
 
@@ -50,6 +47,7 @@ class AppRouter {
         '/setting_alarm_page',
         '/diary',
         '/diary/new',
+        '/mainHome',
       ];
 
       final isGoingToLockedPath = lockedPaths.any(
@@ -92,7 +90,7 @@ class AppRouter {
         builder: (context, state) => BlocProvider(
           //bloc 제공자
           create: (context) => GetIt.instance<TripBloc>(),
-          child: const TripBlocWidget(userId: 10),
+          child: const TripBlocWidget(),
         ),
       ),
       GoRoute(

@@ -22,15 +22,18 @@ class TripDataSourceImpl implements TripDataSource {
       final offset = (page - 1) * limit;
 
       final res = await _supabaseClient
-          .from('trip_crew')
-          .select('trip(*)')
-          .eq('member_id', userId)
-          .order('trip.created_at', ascending: false) // 최신순
+          .from('trip')
+          .select('*, trip_crew(count)')
+          .eq('trip_crew.member_id', userId)
+          .order('created_at', ascending: false)
           .range(offset, offset + limit - 1);
 
-      final trips = (res as List)
-          .map((row) => TripDto.fromJson(row['trip']))
-          .toList();
+      final trips = (res as List).map((row) {
+        return TripDto.fromJson({
+          ...row,
+          'crew_count': row['trip_crew'][0]['count'],
+        });
+      }).toList();
 
       return Result.success(trips);
     } catch (e) {
