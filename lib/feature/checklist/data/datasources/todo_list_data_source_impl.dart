@@ -1,33 +1,33 @@
 import 'package:injectable/injectable.dart';
-import 'package:my_travel_friend/core/result/result.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../../../../core/result/failures.dart';
-import '../dtos/checklist_dto.dart';
-import 'checklist_data_source.dart';
+import '../../../../core/result/result.dart';
+import '../dtos/todo_list_dto.dart';
+import 'todo_list_data_source.dart';
 
-// [이재은] 체크리스트 관련 데이터 소스(구현화)
-@LazySingleton(as: ChecklistDataSource)
-class ChecklistDataSourceImpl implements ChecklistDataSource {
+// [이재은] 투두리스트 관련 데이터 소스(구현화)
+@LazySingleton(as: TodoListDataSource)
+class TodoListDataSourceImpl implements TodoListDataSource {
   // Supabase 의존성 주입
   final SupabaseClient _supabaseClient;
-  ChecklistDataSourceImpl(this._supabaseClient);
+  TodoListDataSourceImpl(this._supabaseClient);
 
-  // 내 체크리스트 가져오기
-  Future<Result<List<ChecklistDTO>>> getMyChecklists({
+  // 내 투두리스트 가져오기
+  Future<Result<List<TodoListDTO>>> getMyTodoLists({
     required int tripId,
     required int userId,
   }) async {
     try {
       final res = await _supabaseClient
-          .from('checklist')
+          .from('todo_list')
           .select()
           .eq('trip_id', tripId)
           .eq('user_id', userId)
           .order('created_at');
 
       final list = (res as List)
-          .map((json) => ChecklistDTO.fromJson(json))
+          .map((json) => TodoListDTO.fromJson(json))
           .toList();
       return Result.success(list);
     } catch (e) {
@@ -35,11 +35,11 @@ class ChecklistDataSourceImpl implements ChecklistDataSource {
     }
   }
 
-  // 체크리스트 생성
+  // 투두리스트 생성
   @override
-  Future<Result<ChecklistDTO>> createChecklist(ChecklistDTO checklist) async {
+  Future<Result<TodoListDTO>> createTodoList(TodoListDTO todolist) async {
     try {
-      final insertData = checklist.toJson()
+      final insertData = todolist.toJson()
         ..remove('id')
         ..remove('trip_id')
         ..remove('user_id')
@@ -47,23 +47,23 @@ class ChecklistDataSourceImpl implements ChecklistDataSource {
         ..remove('is_checked');
 
       final res = await _supabaseClient
-          .from('checklist')
+          .from('todo_list')
           .insert(insertData)
           .select()
           .single();
 
-      final list = ChecklistDTO.fromJson(res);
+      final list = TodoListDTO.fromJson(res);
       return Result.success(list);
     } catch (e) {
       return Result.failure(Failure.serverFailure(message: e.toString()));
     }
   }
 
-  // 체크리스트 삭제
+  // 투두리스트 삭제
   @override
-  Future<Result<void>> deleteChecklist(int id) async {
+  Future<Result<void>> deleteTodoList(int id) async {
     try {
-      await _supabaseClient.from('checklist').delete().eq('id', id);
+      await _supabaseClient.from('todo_list').delete().eq('id', id);
       return const Result.success(null);
     } catch (e) {
       return Result.failure(Failure.serverFailure(message: e.toString()));
