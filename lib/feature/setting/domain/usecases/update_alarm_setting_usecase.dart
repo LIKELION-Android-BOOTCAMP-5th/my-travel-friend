@@ -4,6 +4,7 @@ import 'package:my_travel_friend/feature/setting/domain/repositories/alarm_setti
 
 import '../../../../core/result/result.dart';
 
+// [이재은] 알림 설정 업데이트
 @LazySingleton()
 class UpdateAlarmSettingUseCase {
   final AlarmSettingRepository _alarmSettingRepository;

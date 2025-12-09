@@ -14,7 +14,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$AlarmSettingEntity {
 
- int? get id; bool get entireAlarm; bool get tripRequest; bool get friendRequest; bool get scheduleEdited; bool get scheduleAdded; bool get scheduleDeleted; bool get talkMessage; bool get dDay; int get userId;
+ int get id; bool get entireAlarm; bool get tripRequest; bool get friendRequest; bool get scheduleEdited; bool get scheduleAdded; bool get scheduleDeleted; bool get talkMessage; bool get dDay; int get userId;
 /// Create a copy of AlarmSettingEntity
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -45,7 +45,7 @@ abstract mixin class $AlarmSettingEntityCopyWith<$Res>  {
   factory $AlarmSettingEntityCopyWith(AlarmSettingEntity value, $Res Function(AlarmSettingEntity) _then) = _$AlarmSettingEntityCopyWithImpl;
 @useResult
 $Res call({
- int? id, bool entireAlarm, bool tripRequest, bool friendRequest, bool scheduleEdited, bool scheduleAdded, bool scheduleDeleted, bool talkMessage, bool dDay, int userId
+ int id, bool entireAlarm, bool tripRequest, bool friendRequest, bool scheduleEdited, bool scheduleAdded, bool scheduleDeleted, bool talkMessage, bool dDay, int userId
 });
 
 
@@ -62,10 +62,10 @@ class _$AlarmSettingEntityCopyWithImpl<$Res>
 
 /// Create a copy of AlarmSettingEntity
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = freezed,Object? entireAlarm = null,Object? tripRequest = null,Object? friendRequest = null,Object? scheduleEdited = null,Object? scheduleAdded = null,Object? scheduleDeleted = null,Object? talkMessage = null,Object? dDay = null,Object? userId = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? entireAlarm = null,Object? tripRequest = null,Object? friendRequest = null,Object? scheduleEdited = null,Object? scheduleAdded = null,Object? scheduleDeleted = null,Object? talkMessage = null,Object? dDay = null,Object? userId = null,}) {
   return _then(_self.copyWith(
-id: freezed == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
-as int?,entireAlarm: null == entireAlarm ? _self.entireAlarm : entireAlarm // ignore: cast_nullable_to_non_nullable
+id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
+as int,entireAlarm: null == entireAlarm ? _self.entireAlarm : entireAlarm // ignore: cast_nullable_to_non_nullable
 as bool,tripRequest: null == tripRequest ? _self.tripRequest : tripRequest // ignore: cast_nullable_to_non_nullable
 as bool,friendRequest: null == friendRequest ? _self.friendRequest : friendRequest // ignore: cast_nullable_to_non_nullable
 as bool,scheduleEdited: null == scheduleEdited ? _self.scheduleEdited : scheduleEdited // ignore: cast_nullable_to_non_nullable
@@ -159,7 +159,7 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int? id,  bool entireAlarm,  bool tripRequest,  bool friendRequest,  bool scheduleEdited,  bool scheduleAdded,  bool scheduleDeleted,  bool talkMessage,  bool dDay,  int userId)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int id,  bool entireAlarm,  bool tripRequest,  bool friendRequest,  bool scheduleEdited,  bool scheduleAdded,  bool scheduleDeleted,  bool talkMessage,  bool dDay,  int userId)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _AlarmSettingEntity() when $default != null:
 return $default(_that.id,_that.entireAlarm,_that.tripRequest,_that.friendRequest,_that.scheduleEdited,_that.scheduleAdded,_that.scheduleDeleted,_that.talkMessage,_that.dDay,_that.userId);case _:
@@ -180,7 +180,7 @@ return $default(_that.id,_that.entireAlarm,_that.tripRequest,_that.friendRequest
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int? id,  bool entireAlarm,  bool tripRequest,  bool friendRequest,  bool scheduleEdited,  bool scheduleAdded,  bool scheduleDeleted,  bool talkMessage,  bool dDay,  int userId)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int id,  bool entireAlarm,  bool tripRequest,  bool friendRequest,  bool scheduleEdited,  bool scheduleAdded,  bool scheduleDeleted,  bool talkMessage,  bool dDay,  int userId)  $default,) {final _that = this;
 switch (_that) {
 case _AlarmSettingEntity():
 return $default(_that.id,_that.entireAlarm,_that.tripRequest,_that.friendRequest,_that.scheduleEdited,_that.scheduleAdded,_that.scheduleDeleted,_that.talkMessage,_that.dDay,_that.userId);case _:
@@ -200,7 +200,7 @@ return $default(_that.id,_that.entireAlarm,_that.tripRequest,_that.friendRequest
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int? id,  bool entireAlarm,  bool tripRequest,  bool friendRequest,  bool scheduleEdited,  bool scheduleAdded,  bool scheduleDeleted,  bool talkMessage,  bool dDay,  int userId)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int id,  bool entireAlarm,  bool tripRequest,  bool friendRequest,  bool scheduleEdited,  bool scheduleAdded,  bool scheduleDeleted,  bool talkMessage,  bool dDay,  int userId)?  $default,) {final _that = this;
 switch (_that) {
 case _AlarmSettingEntity() when $default != null:
 return $default(_that.id,_that.entireAlarm,_that.tripRequest,_that.friendRequest,_that.scheduleEdited,_that.scheduleAdded,_that.scheduleDeleted,_that.talkMessage,_that.dDay,_that.userId);case _:
@@ -215,10 +215,10 @@ return $default(_that.id,_that.entireAlarm,_that.tripRequest,_that.friendRequest
 
 
 class _AlarmSettingEntity implements AlarmSettingEntity {
-  const _AlarmSettingEntity({this.id, required this.entireAlarm, required this.tripRequest, required this.friendRequest, required this.scheduleEdited, required this.scheduleAdded, required this.scheduleDeleted, required this.talkMessage, required this.dDay, required this.userId});
+  const _AlarmSettingEntity({required this.id, required this.entireAlarm, required this.tripRequest, required this.friendRequest, required this.scheduleEdited, required this.scheduleAdded, required this.scheduleDeleted, required this.talkMessage, required this.dDay, required this.userId});
   
 
-@override final  int? id;
+@override final  int id;
 @override final  bool entireAlarm;
 @override final  bool tripRequest;
 @override final  bool friendRequest;
@@ -259,7 +259,7 @@ abstract mixin class _$AlarmSettingEntityCopyWith<$Res> implements $AlarmSetting
   factory _$AlarmSettingEntityCopyWith(_AlarmSettingEntity value, $Res Function(_AlarmSettingEntity) _then) = __$AlarmSettingEntityCopyWithImpl;
 @override @useResult
 $Res call({
- int? id, bool entireAlarm, bool tripRequest, bool friendRequest, bool scheduleEdited, bool scheduleAdded, bool scheduleDeleted, bool talkMessage, bool dDay, int userId
+ int id, bool entireAlarm, bool tripRequest, bool friendRequest, bool scheduleEdited, bool scheduleAdded, bool scheduleDeleted, bool talkMessage, bool dDay, int userId
 });
 
 
@@ -276,10 +276,10 @@ class __$AlarmSettingEntityCopyWithImpl<$Res>
 
 /// Create a copy of AlarmSettingEntity
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = freezed,Object? entireAlarm = null,Object? tripRequest = null,Object? friendRequest = null,Object? scheduleEdited = null,Object? scheduleAdded = null,Object? scheduleDeleted = null,Object? talkMessage = null,Object? dDay = null,Object? userId = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? entireAlarm = null,Object? tripRequest = null,Object? friendRequest = null,Object? scheduleEdited = null,Object? scheduleAdded = null,Object? scheduleDeleted = null,Object? talkMessage = null,Object? dDay = null,Object? userId = null,}) {
   return _then(_AlarmSettingEntity(
-id: freezed == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
-as int?,entireAlarm: null == entireAlarm ? _self.entireAlarm : entireAlarm // ignore: cast_nullable_to_non_nullable
+id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
+as int,entireAlarm: null == entireAlarm ? _self.entireAlarm : entireAlarm // ignore: cast_nullable_to_non_nullable
 as bool,tripRequest: null == tripRequest ? _self.tripRequest : tripRequest // ignore: cast_nullable_to_non_nullable
 as bool,friendRequest: null == friendRequest ? _self.friendRequest : friendRequest // ignore: cast_nullable_to_non_nullable
 as bool,scheduleEdited: null == scheduleEdited ? _self.scheduleEdited : scheduleEdited // ignore: cast_nullable_to_non_nullable

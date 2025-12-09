@@ -7,7 +7,7 @@ part 'alarm_setting_entity.freezed.dart';
 @freezed
 abstract class AlarmSettingEntity with _$AlarmSettingEntity {
   const factory AlarmSettingEntity({
-    int? id,
+    required int id,
     required bool entireAlarm,
     required bool tripRequest,
     required bool friendRequest,
