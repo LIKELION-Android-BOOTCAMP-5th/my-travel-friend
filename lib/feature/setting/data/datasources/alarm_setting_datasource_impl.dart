@@ -25,8 +25,8 @@ class AlarmSettingDataSourceImpl implements AlarmSettingDataSource {
           .eq('user_id', userId)
           .single();
 
-      final list = AlarmSettingDTO.fromJson(res);
-      return Result.success(list);
+      final result = AlarmSettingDTO.fromJson(res);
+      return Result.success(result);
     } catch (e) {
       return Result.failure(Failure.serverFailure(message: e.toString()));
     }
@@ -48,8 +48,8 @@ class AlarmSettingDataSourceImpl implements AlarmSettingDataSource {
           .select()
           .single();
 
-      final list = AlarmSettingDTO.fromJson(res);
-      return Result.success(list);
+      final result = AlarmSettingDTO.fromJson(res);
+      return Result.success(result);
     } catch (e) {
       return Result.failure(Failure.serverFailure(message: e.toString()));
     }
