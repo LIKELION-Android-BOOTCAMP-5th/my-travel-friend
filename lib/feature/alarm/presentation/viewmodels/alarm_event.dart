@@ -1,5 +1,7 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
+import '../../domain/entities/alarm_entity.dart';
+
 part 'alarm_event.freezed.dart';
 
 // [이재은] 알림 이벤트
@@ -28,4 +30,11 @@ class AlarmEvent with _$AlarmEvent {
 
   // 새로고침
   const factory AlarmEvent.refreshAlarm() = RefreshAlarm;
+
+  // 네비게이션 이동 요청
+  const factory AlarmEvent.requestNavigate({required AlarmEntity alarm}) =
+      RequestNavigate;
+
+  // 네비게이션 처리완료(플래그 초기화)
+  const factory AlarmEvent.navigationHandled() = NavigationHandled;
 }
