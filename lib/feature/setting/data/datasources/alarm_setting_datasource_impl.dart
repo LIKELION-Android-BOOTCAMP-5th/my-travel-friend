@@ -15,7 +15,9 @@ class AlarmSettingDataSourceImpl implements AlarmSettingDataSource {
 
   // 내 알림 설정 조회
   @override
-  Future<Result<AlarmSettingDTO>> getMyAlarmSetting(int userId) async {
+  Future<Result<AlarmSettingDTO>> getMyAlarmSetting({
+    required int userId,
+  }) async {
     try {
       final res = await _supabaseClient
           .from('alarm_setting')
