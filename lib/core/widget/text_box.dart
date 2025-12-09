@@ -40,9 +40,11 @@ class TextBox extends StatefulWidget {
   final bool enabled;
   final bool readOnly; // 보이지만 수정불가
   final bool obscureText;
+  final bool autofocus; // 자동 포커스
   final TextInputType? keyboardType;
   final TextInputAction? textInputAction; // 키보드 완료 버튼 타입
   final ValueChanged<String>? onChanged; // 텍스트 변경될때 호출 되는 콜백
+  final ValueChanged<String>? onSubmitted; // 키보드 완료 버튼 눌렀을 때 콜백
   final VoidCallback? onTap; // 탭했을 때 호출
   final Widget? prefixIcon; // 왼쪽 아이콘
   final Widget? suffixIcon; // 오른쪽 아이콘
@@ -78,9 +80,11 @@ class TextBox extends StatefulWidget {
     this.enabled = true,
     this.readOnly = false,
     this.obscureText = false,
+    this.autofocus = false,
     this.keyboardType,
     this.textInputAction,
     this.onChanged,
+    this.onSubmitted,
     this.onTap,
     this.prefixIcon,
     this.suffixIcon,
@@ -122,9 +126,11 @@ class _TextBoxState extends State<TextBox> {
       enabled: widget.enabled,
       readOnly: widget.readOnly,
       obscureText: widget.obscureText,
+      autofocus: widget.autofocus,
       keyboardType: widget.keyboardType,
       textInputAction: widget.textInputAction,
       onChanged: widget.onChanged,
+      onSubmitted: widget.onSubmitted,
       onTap: widget.onTap,
 
       // 텍스트 스타일

@@ -143,16 +143,16 @@ return toggleTodoList(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function( int tripId,  int userId)?  load,TResult Function( ListsTab tab)?  changeTab,TResult Function( String content)?  changeContent,TResult Function()?  createChecklist,TResult Function( int id)?  deleteChecklist,TResult Function( int id,  bool isChecked)?  toggleChecklist,TResult Function()?  createTodoList,TResult Function( int id)?  deleteTodoList,TResult Function( int id,  bool isChecked)?  toggleTodoList,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function( int tripId,  int userId)?  load,TResult Function( ListsTab tab)?  changeTab,TResult Function( String content)?  changeContent,TResult Function( String content)?  createChecklist,TResult Function( int id)?  deleteChecklist,TResult Function( int id,  bool isChecked)?  toggleChecklist,TResult Function( String content)?  createTodoList,TResult Function( int id)?  deleteTodoList,TResult Function( int id,  bool isChecked)?  toggleTodoList,required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case Load() when load != null:
 return load(_that.tripId,_that.userId);case ChangeTab() when changeTab != null:
 return changeTab(_that.tab);case ChangeContent() when changeContent != null:
 return changeContent(_that.content);case CreateChecklist() when createChecklist != null:
-return createChecklist();case DeleteChecklist() when deleteChecklist != null:
+return createChecklist(_that.content);case DeleteChecklist() when deleteChecklist != null:
 return deleteChecklist(_that.id);case ToggleChecklist() when toggleChecklist != null:
 return toggleChecklist(_that.id,_that.isChecked);case CreateTodoList() when createTodoList != null:
-return createTodoList();case DeleteTodoList() when deleteTodoList != null:
+return createTodoList(_that.content);case DeleteTodoList() when deleteTodoList != null:
 return deleteTodoList(_that.id);case ToggleTodoList() when toggleTodoList != null:
 return toggleTodoList(_that.id,_that.isChecked);case _:
   return orElse();
@@ -172,16 +172,16 @@ return toggleTodoList(_that.id,_that.isChecked);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function( int tripId,  int userId)  load,required TResult Function( ListsTab tab)  changeTab,required TResult Function( String content)  changeContent,required TResult Function()  createChecklist,required TResult Function( int id)  deleteChecklist,required TResult Function( int id,  bool isChecked)  toggleChecklist,required TResult Function()  createTodoList,required TResult Function( int id)  deleteTodoList,required TResult Function( int id,  bool isChecked)  toggleTodoList,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function( int tripId,  int userId)  load,required TResult Function( ListsTab tab)  changeTab,required TResult Function( String content)  changeContent,required TResult Function( String content)  createChecklist,required TResult Function( int id)  deleteChecklist,required TResult Function( int id,  bool isChecked)  toggleChecklist,required TResult Function( String content)  createTodoList,required TResult Function( int id)  deleteTodoList,required TResult Function( int id,  bool isChecked)  toggleTodoList,}) {final _that = this;
 switch (_that) {
 case Load():
 return load(_that.tripId,_that.userId);case ChangeTab():
 return changeTab(_that.tab);case ChangeContent():
 return changeContent(_that.content);case CreateChecklist():
-return createChecklist();case DeleteChecklist():
+return createChecklist(_that.content);case DeleteChecklist():
 return deleteChecklist(_that.id);case ToggleChecklist():
 return toggleChecklist(_that.id,_that.isChecked);case CreateTodoList():
-return createTodoList();case DeleteTodoList():
+return createTodoList(_that.content);case DeleteTodoList():
 return deleteTodoList(_that.id);case ToggleTodoList():
 return toggleTodoList(_that.id,_that.isChecked);case _:
   throw StateError('Unexpected subclass');
@@ -200,16 +200,16 @@ return toggleTodoList(_that.id,_that.isChecked);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function( int tripId,  int userId)?  load,TResult? Function( ListsTab tab)?  changeTab,TResult? Function( String content)?  changeContent,TResult? Function()?  createChecklist,TResult? Function( int id)?  deleteChecklist,TResult? Function( int id,  bool isChecked)?  toggleChecklist,TResult? Function()?  createTodoList,TResult? Function( int id)?  deleteTodoList,TResult? Function( int id,  bool isChecked)?  toggleTodoList,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function( int tripId,  int userId)?  load,TResult? Function( ListsTab tab)?  changeTab,TResult? Function( String content)?  changeContent,TResult? Function( String content)?  createChecklist,TResult? Function( int id)?  deleteChecklist,TResult? Function( int id,  bool isChecked)?  toggleChecklist,TResult? Function( String content)?  createTodoList,TResult? Function( int id)?  deleteTodoList,TResult? Function( int id,  bool isChecked)?  toggleTodoList,}) {final _that = this;
 switch (_that) {
 case Load() when load != null:
 return load(_that.tripId,_that.userId);case ChangeTab() when changeTab != null:
 return changeTab(_that.tab);case ChangeContent() when changeContent != null:
 return changeContent(_that.content);case CreateChecklist() when createChecklist != null:
-return createChecklist();case DeleteChecklist() when deleteChecklist != null:
+return createChecklist(_that.content);case DeleteChecklist() when deleteChecklist != null:
 return deleteChecklist(_that.id);case ToggleChecklist() when toggleChecklist != null:
 return toggleChecklist(_that.id,_that.isChecked);case CreateTodoList() when createTodoList != null:
-return createTodoList();case DeleteTodoList() when deleteTodoList != null:
+return createTodoList(_that.content);case DeleteTodoList() when deleteTodoList != null:
 return deleteTodoList(_that.id);case ToggleTodoList() when toggleTodoList != null:
 return toggleTodoList(_that.id,_that.isChecked);case _:
   return null;
@@ -423,33 +423,67 @@ as String,
 
 
 class CreateChecklist extends ListsEvent {
-  const CreateChecklist(): super._();
+  const CreateChecklist({required this.content}): super._();
   
 
+ final  String content;
 
-
+/// Create a copy of ListsEvent
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$CreateChecklistCopyWith<CreateChecklist> get copyWith => _$CreateChecklistCopyWithImpl<CreateChecklist>(this, _$identity);
 
 
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is CreateChecklist);
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is CreateChecklist&&(identical(other.content, content) || other.content == content));
 }
 
 
 @override
-int get hashCode => runtimeType.hashCode;
+int get hashCode => Object.hash(runtimeType,content);
 
 @override
 String toString() {
-  return 'ListsEvent.createChecklist()';
+  return 'ListsEvent.createChecklist(content: $content)';
 }
 
 
 }
 
+/// @nodoc
+abstract mixin class $CreateChecklistCopyWith<$Res> implements $ListsEventCopyWith<$Res> {
+  factory $CreateChecklistCopyWith(CreateChecklist value, $Res Function(CreateChecklist) _then) = _$CreateChecklistCopyWithImpl;
+@useResult
+$Res call({
+ String content
+});
 
 
+
+
+}
+/// @nodoc
+class _$CreateChecklistCopyWithImpl<$Res>
+    implements $CreateChecklistCopyWith<$Res> {
+  _$CreateChecklistCopyWithImpl(this._self, this._then);
+
+  final CreateChecklist _self;
+  final $Res Function(CreateChecklist) _then;
+
+/// Create a copy of ListsEvent
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') $Res call({Object? content = null,}) {
+  return _then(CreateChecklist(
+content: null == content ? _self.content : content // ignore: cast_nullable_to_non_nullable
+as String,
+  ));
+}
+
+
+}
 
 /// @nodoc
 
@@ -589,33 +623,67 @@ as bool,
 
 
 class CreateTodoList extends ListsEvent {
-  const CreateTodoList(): super._();
+  const CreateTodoList({required this.content}): super._();
   
 
+ final  String content;
 
-
+/// Create a copy of ListsEvent
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$CreateTodoListCopyWith<CreateTodoList> get copyWith => _$CreateTodoListCopyWithImpl<CreateTodoList>(this, _$identity);
 
 
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is CreateTodoList);
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is CreateTodoList&&(identical(other.content, content) || other.content == content));
 }
 
 
 @override
-int get hashCode => runtimeType.hashCode;
+int get hashCode => Object.hash(runtimeType,content);
 
 @override
 String toString() {
-  return 'ListsEvent.createTodoList()';
+  return 'ListsEvent.createTodoList(content: $content)';
 }
 
 
 }
 
+/// @nodoc
+abstract mixin class $CreateTodoListCopyWith<$Res> implements $ListsEventCopyWith<$Res> {
+  factory $CreateTodoListCopyWith(CreateTodoList value, $Res Function(CreateTodoList) _then) = _$CreateTodoListCopyWithImpl;
+@useResult
+$Res call({
+ String content
+});
 
 
+
+
+}
+/// @nodoc
+class _$CreateTodoListCopyWithImpl<$Res>
+    implements $CreateTodoListCopyWith<$Res> {
+  _$CreateTodoListCopyWithImpl(this._self, this._then);
+
+  final CreateTodoList _self;
+  final $Res Function(CreateTodoList) _then;
+
+/// Create a copy of ListsEvent
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') $Res call({Object? content = null,}) {
+  return _then(CreateTodoList(
+content: null == content ? _self.content : content // ignore: cast_nullable_to_non_nullable
+as String,
+  ));
+}
+
+
+}
 
 /// @nodoc
 

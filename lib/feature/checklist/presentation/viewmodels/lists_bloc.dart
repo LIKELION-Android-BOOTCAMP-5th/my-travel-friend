@@ -106,25 +106,32 @@ class ListsBloc extends Bloc<ListsEvent, ListsState> {
     CreateChecklist event,
     Emitter<ListsState> emit,
   ) async {
-    if (state.newItemContent.trim().isEmpty) return;
+    final content = event.content.trim();
+    if (content.isEmpty) return;
+
+    print('🔵 createChecklist called');
+    print('🔵 content: "${event.content}"'); // 또는 event.content
+    print('🔵 tripId: ${state.tripId}, userId: ${state.userId}');
 
     final newItem = ChecklistEntity(
       id: null,
       tripId: state.tripId,
       userId: state.userId,
-      content: state.newItemContent.trim(),
+      content: content,
       isChecked: false,
     );
-
     final res = await _createChecklistUseCase.call(newItem);
 
     res.when(
       success: (created) {
+        print('✅ 성공: $created');
         final updated = List<ChecklistEntity>.from(state.checklists);
         updated.add(created);
         emit(state.copyWith(checklists: updated, newItemContent: ''));
       },
       failure: (failure) {
+        print('❌ 실패: ${failure.message}'); // ← 이거 추가!
+        print('❌ 에러 상세: $failure'); // ← 이것도 추가!
         emit(state.copyWith(message: '체크리스트 추가 실패'));
       },
     );
@@ -188,13 +195,14 @@ class ListsBloc extends Bloc<ListsEvent, ListsState> {
     CreateTodoList event,
     Emitter<ListsState> emit,
   ) async {
-    if (state.newItemContent.trim().isEmpty) return;
+    final content = event.content.trim();
+    if (content.isEmpty) return; // ← event.content 사용
 
     final newItem = TodoListEntity(
       id: null,
       tripId: state.tripId,
       userId: state.userId,
-      content: state.newItemContent.trim(),
+      content: content, // ← event.content 사용
       isChecked: false,
     );
 

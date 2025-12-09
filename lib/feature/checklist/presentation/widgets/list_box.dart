@@ -57,7 +57,11 @@ class ListBox extends StatelessWidget {
           if (onDelete != null)
             IconButton(
               onPressed: onDelete,
-              icon: Icon(AppIcon.delete, color: colorScheme.error, size: 20),
+              icon: Icon(
+                AppIcon.delete,
+                color: colorScheme.secondary,
+                size: 20,
+              ),
             ),
         ],
       ),

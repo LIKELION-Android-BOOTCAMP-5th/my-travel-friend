@@ -22,7 +22,8 @@ abstract class ListsEvent with _$ListsEvent {
 
   // 체크리스트
   // 생성
-  const factory ListsEvent.createChecklist() = CreateChecklist;
+  const factory ListsEvent.createChecklist({required String content}) =
+      CreateChecklist;
 
   // 삭제
   const factory ListsEvent.deleteChecklist({required int id}) = DeleteChecklist;
@@ -35,7 +36,8 @@ abstract class ListsEvent with _$ListsEvent {
 
   // 투두리스트
   // 생성
-  const factory ListsEvent.createTodoList() = CreateTodoList;
+  const factory ListsEvent.createTodoList({required String content}) =
+      CreateTodoList;
 
   // 삭제
   const factory ListsEvent.deleteTodoList({required int id}) = DeleteTodoList;

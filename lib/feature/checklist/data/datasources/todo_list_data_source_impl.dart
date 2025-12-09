@@ -41,10 +41,7 @@ class TodoListDataSourceImpl implements TodoListDataSource {
     try {
       final insertData = todolist.toJson()
         ..remove('id')
-        ..remove('trip_id')
-        ..remove('user_id')
-        ..remove('created_at')
-        ..remove('is_checked');
+        ..remove('created_at');
 
       final res = await _supabaseClient
           .from('todo_list')
