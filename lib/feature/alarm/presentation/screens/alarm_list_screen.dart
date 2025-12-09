@@ -159,6 +159,10 @@ class _AlarmListScreenState extends State<AlarmListScreen> {
           return const SizedBox.shrink();
         }
 
+        if (alarms.isEmpty) {
+          return _buildEmptyView(context);
+        }
+
         return RefreshIndicator(
           onRefresh: () async {
             context.read<AlarmBloc>().add(
@@ -191,6 +195,32 @@ class _AlarmListScreenState extends State<AlarmListScreen> {
           ),
         );
       },
+    );
+  }
+
+  // 알림 없을 때 (가입 초기) 빈 화면
+  Widget _buildEmptyView(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(
+            AppIcon.alarm,
+            size: 64,
+            color: colorScheme.onSurfaceVariant.withOpacity(0.5),
+          ),
+          const SizedBox(height: 16),
+          Text(
+            '받은 알림이 없습니다\n새로운 소식이 오면 여기에 표시돼요',
+            style: AppFont.regular.copyWith(
+              color: colorScheme.onSurfaceVariant,
+            ),
+            textAlign: TextAlign.center,
+          ),
+        ],
+      ),
     );
   }
 
