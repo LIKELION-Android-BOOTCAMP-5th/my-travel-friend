@@ -20,6 +20,8 @@ import '../feature/diary/presentation/screens/edit_diary_bloc_widget.dart';
 import '../feature/diary/presentation/screens/new_diary_bloc_widget.dart';
 import '../feature/diary/presentation/viewmodels/diary_bloc.dart';
 import '../feature/diary/presentation/viewmodels/new_diary_bloc.dart';
+import '../feature/trip/domain/entities/trip_entity.dart';
+import '../feature/trip/presentation/screens/edit_trip_bloc_widget.dart';
 
 final getIt = GetIt.instance;
 
@@ -100,10 +102,26 @@ class AppRouter {
       ),
       GoRoute(
         path: '/trip/create',
-        builder: (context, state) => BlocProvider(
-          create: (context) => GetIt.instance<CreateTripBloc>(),
-          child: const CreateTripBlocWidget(userId: 10),
-        ),
+        builder: (context, state) {
+          final authState = context.read<AuthProfileBloc>().state;
+          final userId = (authState is AuthProfileAuthenticated)
+              ? authState.userInfo.id!
+              : 0;
+
+          return BlocProvider(
+            create: (context) => GetIt.instance<CreateTripBloc>(),
+            child: CreateTripBlocWidget(userId: userId),
+          );
+        },
+      ),
+      GoRoute(
+        path: '/trip/edit',
+        builder: (context, state) {
+          final extra = state.extra as Map<String, dynamic>;
+          final trip = extra['trip'] as TripEntity;
+
+          return EditTripBlocWidget(trip: trip);
+        },
       ),
       GoRoute(
         path: '/diary',

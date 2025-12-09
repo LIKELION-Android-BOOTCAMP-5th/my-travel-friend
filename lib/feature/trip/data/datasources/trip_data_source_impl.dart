@@ -28,21 +28,33 @@ class TripDataSourceImpl implements TripDataSource {
       final offset = (page - 1) * limit;
 
       final res = await _supabaseClient
-          .from('trip')
+          .from('trip_crew')
           .select('''
-      *,
-      crew_count:trip_crew(count)
-    ''')
-          .eq('trip_crew.member_id', userId)
-          .order('created_at', ascending: false)
+          trip (
+            id,
+            created_at,
+            title,
+            place,
+            start_at,
+            end_at,
+            cover_type,
+            cover_img,
+            user_id,
+            country,
+            trip_crew (member_id)
+          )
+        ''')
+          .eq('member_id', userId)
+          .order('trip(created_at)', ascending: false)
           .range(offset, offset + limit - 1);
 
       final trips = (res as List).map((row) {
-        final crew = row['crew_count'] as List?;
-        final crewCnt = (crew != null && crew.isNotEmpty)
-            ? crew.first['count'] as int
-            : 1;
-        return TripDto.fromJson({...row, 'crew_count': crewCnt});
+        final tripData = row['trip'];
+
+        final crewList = tripData['trip_crew'] as List? ?? [];
+        final crewCount = crewList.length;
+
+        return TripDto.fromJson({...tripData, 'crew_count': crewCount});
       }).toList();
 
       return Result.success(trips);
@@ -89,12 +101,21 @@ class TripDataSourceImpl implements TripDataSource {
     try {
       final res = await _supabaseClient
           .from('trip')
-          .update(trip.toJson())
+          .update({
+            "title": trip.title,
+            "place": trip.place,
+            "country": trip.country,
+            "start_at": trip.startAt,
+            "end_at": trip.endAt,
+            "cover_type": trip.coverType,
+            "cover_img": trip.coverImg,
+          })
           .eq('id', trip.id!)
-          .select()
+          .select('*')
           .single();
-      final list = TripDto.fromJson(res);
-      return Result.success(list);
+
+      final dto = TripDto.fromJson(res);
+      return Result.success(dto);
     } catch (e) {
       return Result.failure(Failure.serverFailure(message: e.toString()));
     }
@@ -129,7 +150,7 @@ class TripDataSourceImpl implements TripDataSource {
     try {
       final crew = await _supabaseClient
           .from('trip_crew')
-          .select('id')
+          .select('member_id')
           .eq('trip_id', tripId);
       final int crewmember = crew.length;
 

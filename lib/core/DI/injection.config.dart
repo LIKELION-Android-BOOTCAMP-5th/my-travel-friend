@@ -92,6 +92,7 @@ import '../../feature/trip/data/repositories/trip_repository_impl.dart'
 import '../../feature/trip/domain/repositories/trip_repository.dart' as _i161;
 import '../../feature/trip/domain/usecases/create_trip_usecase.dart' as _i779;
 import '../../feature/trip/domain/usecases/delete_trip_usecase.dart' as _i832;
+import '../../feature/trip/domain/usecases/deletr_img_usecase.dart' as _i778;
 import '../../feature/trip/domain/usecases/edit_trip_usecase.dart' as _i637;
 import '../../feature/trip/domain/usecases/get_crew_member_count_usecase.dart'
     as _i267;
@@ -100,6 +101,8 @@ import '../../feature/trip/domain/usecases/give_up_trip_usecase.dart' as _i317;
 import '../../feature/trip/domain/usecases/search_trip_usecase.dart' as _i437;
 import '../../feature/trip/presentation/viewmodels/create_trip/create_trip_bloc.dart'
     as _i873;
+import '../../feature/trip/presentation/viewmodels/edit_trip/edit_trip_bloc.dart'
+    as _i703;
 import '../../feature/trip/presentation/viewmodels/trip/trip_bloc.dart'
     as _i616;
 import '../service/internal/deep_link_service.dart' as _i507;
@@ -182,6 +185,9 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i832.DeleteTripUsecase>(
       () => _i832.DeleteTripUsecase(gh<_i161.TripRepository>()),
     );
+    gh.lazySingleton<_i778.DeleteImgUsecase>(
+      () => _i778.DeleteImgUsecase(gh<_i161.TripRepository>()),
+    );
     gh.lazySingleton<_i637.EditTripUsecase>(
       () => _i637.EditTripUsecase(gh<_i161.TripRepository>()),
     );
@@ -226,15 +232,6 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i699.DeleteDiaryUseCase>(),
       ),
     );
-    gh.factory<_i616.TripBloc>(
-      () => _i616.TripBloc(
-        gh<_i521.GetMyTripUsecase>(),
-        gh<_i267.GetCrewMemberCountUsecase>(),
-        gh<_i832.DeleteTripUsecase>(),
-        gh<_i317.GiveUpTripUsecase>(),
-        gh<_i437.SearchTripUsecase>(),
-      ),
-    );
     gh.lazySingleton<_i529.GetCurrentUserUseCase>(
       () => _i529.GetCurrentUserUseCase(gh<_i488.AuthRepository>()),
     );
@@ -244,11 +241,27 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i420.SocialSignInUseCase>(
       () => _i420.SocialSignInUseCase(gh<_i488.AuthRepository>()),
     );
+    gh.factory<_i703.EditTripBloc>(
+      () => _i703.EditTripBloc(
+        gh<_i637.EditTripUsecase>(),
+        gh<_i161.TripRepository>(),
+      ),
+    );
     gh.lazySingleton<_i739.CancelOauthUseCase>(
       () => _i739.CancelOauthUseCase(gh<_i488.AuthRepository>()),
     );
     gh.singleton<_i456.WatchAuthStateUseCase>(
       () => _i456.WatchAuthStateUseCase(gh<_i488.AuthRepository>()),
+    );
+    gh.factory<_i616.TripBloc>(
+      () => _i616.TripBloc(
+        gh<_i521.GetMyTripUsecase>(),
+        gh<_i267.GetCrewMemberCountUsecase>(),
+        gh<_i832.DeleteTripUsecase>(),
+        gh<_i317.GiveUpTripUsecase>(),
+        gh<_i437.SearchTripUsecase>(),
+        gh<_i778.DeleteImgUsecase>(),
+      ),
     );
     gh.factory<_i1041.NewDiaryBloc>(
       () => _i1041.NewDiaryBloc(

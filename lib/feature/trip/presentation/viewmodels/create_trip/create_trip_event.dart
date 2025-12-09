@@ -21,6 +21,7 @@ abstract class CreateTripEvent with _$CreateTripEvent {
 
   // 날짜 입력 후 검증
   const factory CreateTripEvent.validateDate() = ValidateDate;
+
   const factory CreateTripEvent.dismissSameDayDialog() = DismissSameDayDialog;
   // 날짜가 동일함을 Bloc에서 감지했을 때
   const factory CreateTripEvent.sameDayDetected() = SameDayDetected;

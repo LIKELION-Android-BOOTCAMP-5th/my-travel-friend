@@ -32,20 +32,19 @@ class _TripListScreenState extends State<TripListScreen> {
   void initState() {
     super.initState();
 
-    /// 무한 스크롤 처리
-    _scrollController.addListener(() {
-      final bloc = context.read<TripBloc>();
-      final authState = context.read<AuthProfileBloc>().state;
+    final bloc = context.read<TripBloc>();
+    final authState = context.read<AuthProfileBloc>().state;
 
-      if (authState is! AuthProfileAuthenticated) return;
-
+    if (authState is AuthProfileAuthenticated) {
       final userId = authState.userInfo.id!;
 
-      if (_scrollController.position.pixels >=
-          _scrollController.position.maxScrollExtent - 200) {
-        bloc.add(TripEvent.loadMoreTrips(userId: userId));
-      }
-    });
+      _scrollController.addListener(() {
+        if (_scrollController.position.pixels >=
+            _scrollController.position.maxScrollExtent - 200) {
+          bloc.add(TripEvent.loadMoreTrips(userId: userId));
+        }
+      });
+    }
   }
 
   @override
@@ -120,12 +119,41 @@ class _TripListScreenState extends State<TripListScreen> {
         BlocListener<TripBloc, TripState>(
           listenWhen: (prev, curr) =>
               prev.navigateToCreate != curr.navigateToCreate,
-          listener: (context, state) {
+          listener: (context, state) async {
             if (state.navigateToCreate) {
               context.read<TripBloc>().add(const TripEvent.navigationHandled());
 
-              //여행 생성 화면 이동
-              context.push('/trip/create', extra: {"userId": userId});
+              final result = await context.push(
+                '/trip/create',
+                extra: {"userId": userId},
+              );
+
+              if (result == true) {
+                context.read<TripBloc>().add(
+                  TripEvent.refreshTrips(userId: userId),
+                );
+              }
+            }
+          },
+        ),
+
+        BlocListener<TripBloc, TripState>(
+          listenWhen: (prev, curr) =>
+              prev.navigateToEdit != curr.navigateToEdit,
+          listener: (context, state) async {
+            if (state.navigateToEdit && state.selectedTrip != null) {
+              context.read<TripBloc>().add(const TripEvent.navigationHandled());
+
+              final result = await context.push(
+                '/trip/edit',
+                extra: {"trip": state.selectedTrip},
+              );
+
+              if (result == true) {
+                context.read<TripBloc>().add(
+                  TripEvent.refreshTrips(userId: userId),
+                );
+              }
             }
           },
         ),
@@ -204,9 +232,13 @@ class _TripListScreenState extends State<TripListScreen> {
                                     startDate: formatDate(trip.startAt),
                                     endDate: formatDate(trip.endAt),
                                     peopleCount: trip.crewCount,
-                                    backgroundColor: getCoverColor(
-                                      trip.coverType,
-                                    ),
+                                    backgroundColor: trip.coverType == "IMAGE"
+                                        ? null
+                                        : getCoverColor(trip.coverType),
+                                    backgroundImageUrl:
+                                        trip.coverType == "IMAGE"
+                                        ? trip.coverImg
+                                        : null,
                                     onTap: () {
                                       bloc.add(
                                         TripEvent.selectTrip(trip: trip),
@@ -257,12 +289,18 @@ class _TripListScreenState extends State<TripListScreen> {
 
   Color getCoverColor(String coverType) {
     switch (coverType) {
-      case "pink":
+      case "Pink":
         return AppColors.lightPink;
-      case "yellow":
+      case "YELLOW":
         return AppColors.tertiary;
-      case "blue":
+      case "BLUE":
         return AppColors.primaryLight;
+      case "VIOLET":
+        return AppColors.lightPurple;
+      case "GREEN":
+        return AppColors.lightGreen;
+      case "RED":
+        return AppColors.secondary;
       default:
         return AppColors.primaryLight;
     }

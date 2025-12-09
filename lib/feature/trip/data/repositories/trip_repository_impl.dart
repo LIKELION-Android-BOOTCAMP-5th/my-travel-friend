@@ -29,6 +29,7 @@ class TripRepositoryImpl implements TripRepository {
   @override
   Future<Result<TripEntity>> editTrip(TripEntity trip) async {
     final dto = TripDto(
+      id: trip.id,
       title: trip.title,
       place: trip.place,
       startAt: trip.startAt,
