@@ -69,4 +69,22 @@ class TodoListDataSourceImpl implements TodoListDataSource {
       return Result.failure(Failure.serverFailure(message: e.toString()));
     }
   }
+
+  @override
+  Future<Result<TodoListDTO>> toggleTodoList({
+    required int id,
+    required bool isChecked,
+  }) async {
+    try {
+      final res = await _supabaseClient
+          .from('todo_list')
+          .update({'is_checked': isChecked})
+          .eq('id', id)
+          .select()
+          .single();
+      return Result.success(TodoListDTO.fromJson(res));
+    } catch (e) {
+      return Result.failure(Failure.serverFailure(message: e.toString()));
+    }
+  }
 }

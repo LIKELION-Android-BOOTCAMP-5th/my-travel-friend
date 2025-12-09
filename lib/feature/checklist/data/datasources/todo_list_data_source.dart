@@ -15,4 +15,10 @@ abstract class TodoListDataSource {
 
   // 투두리스트 삭제
   Future<Result<void>> deleteTodoList(int id);
+
+  // 투두리스트 체크 토글
+  Future<Result<TodoListDTO>> toggleTodoList({
+    required int id,
+    required bool isChecked,
+  });
 }

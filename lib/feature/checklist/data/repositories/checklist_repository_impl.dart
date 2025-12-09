@@ -48,4 +48,18 @@ class ChecklistRepositoryImpl implements ChecklistRepository {
   Future<Result<void>> deleteChecklist(int id) async {
     return await _dataSource.deleteChecklist(id);
   }
+
+  // 체크리스트 토글
+  @override
+  Future<Result<ChecklistEntity>> toggleChecklist(
+    int id,
+    bool isChecked,
+  ) async {
+    final res = await _dataSource.toggleChecklist(id: id, isChecked: isChecked);
+
+    return res.when(
+      success: (data) => Result.success(data.toEntity()),
+      failure: (failure) => Result.failure(failure),
+    );
+  }
 }

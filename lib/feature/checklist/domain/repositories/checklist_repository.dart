@@ -13,4 +13,7 @@ abstract class ChecklistRepository {
 
   // 체크리스트 삭제
   Future<Result<void>> deleteChecklist(int id);
+
+  // 체크리스트 체크 토글
+  Future<Result<ChecklistEntity>> toggleChecklist(int id, bool isChecked);
 }

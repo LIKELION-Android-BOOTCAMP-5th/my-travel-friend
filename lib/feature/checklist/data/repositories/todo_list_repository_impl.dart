@@ -46,4 +46,14 @@ class TodoListRepositoryImpl implements TodoListRepository {
   Future<Result<void>> deleteTodoList(int id) async {
     return await _dataSource.deleteTodoList(id);
   }
+
+  // 투두리스트 체크 토글
+  @override
+  Future<Result<TodoListEntity>> toggleTodoList(int id, bool isChecked) async {
+    final res = await _dataSource.toggleTodoList(id: id, isChecked: isChecked);
+    return res.when(
+      success: (data) => Result.success(data.toEntity()),
+      failure: (failure) => Result.failure(failure),
+    );
+  }
 }

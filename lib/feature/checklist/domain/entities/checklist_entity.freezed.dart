@@ -14,7 +14,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$ChecklistEntity {
 
- int get id; String? get createdAt; int get tripId; int get userId; String get content; bool get isChecked;
+ int? get id; String? get createdAt; int get tripId; int get userId; String get content; bool get isChecked;
 /// Create a copy of ChecklistEntity
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -45,7 +45,7 @@ abstract mixin class $ChecklistEntityCopyWith<$Res>  {
   factory $ChecklistEntityCopyWith(ChecklistEntity value, $Res Function(ChecklistEntity) _then) = _$ChecklistEntityCopyWithImpl;
 @useResult
 $Res call({
- int id, String? createdAt, int tripId, int userId, String content, bool isChecked
+ int? id, String? createdAt, int tripId, int userId, String content, bool isChecked
 });
 
 
@@ -62,10 +62,10 @@ class _$ChecklistEntityCopyWithImpl<$Res>
 
 /// Create a copy of ChecklistEntity
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? createdAt = freezed,Object? tripId = null,Object? userId = null,Object? content = null,Object? isChecked = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = freezed,Object? createdAt = freezed,Object? tripId = null,Object? userId = null,Object? content = null,Object? isChecked = null,}) {
   return _then(_self.copyWith(
-id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
-as int,createdAt: freezed == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
+id: freezed == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
+as int?,createdAt: freezed == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
 as String?,tripId: null == tripId ? _self.tripId : tripId // ignore: cast_nullable_to_non_nullable
 as int,userId: null == userId ? _self.userId : userId // ignore: cast_nullable_to_non_nullable
 as int,content: null == content ? _self.content : content // ignore: cast_nullable_to_non_nullable
@@ -155,7 +155,7 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int id,  String? createdAt,  int tripId,  int userId,  String content,  bool isChecked)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int? id,  String? createdAt,  int tripId,  int userId,  String content,  bool isChecked)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _ChecklistEntity() when $default != null:
 return $default(_that.id,_that.createdAt,_that.tripId,_that.userId,_that.content,_that.isChecked);case _:
@@ -176,7 +176,7 @@ return $default(_that.id,_that.createdAt,_that.tripId,_that.userId,_that.content
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int id,  String? createdAt,  int tripId,  int userId,  String content,  bool isChecked)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int? id,  String? createdAt,  int tripId,  int userId,  String content,  bool isChecked)  $default,) {final _that = this;
 switch (_that) {
 case _ChecklistEntity():
 return $default(_that.id,_that.createdAt,_that.tripId,_that.userId,_that.content,_that.isChecked);case _:
@@ -196,7 +196,7 @@ return $default(_that.id,_that.createdAt,_that.tripId,_that.userId,_that.content
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int id,  String? createdAt,  int tripId,  int userId,  String content,  bool isChecked)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int? id,  String? createdAt,  int tripId,  int userId,  String content,  bool isChecked)?  $default,) {final _that = this;
 switch (_that) {
 case _ChecklistEntity() when $default != null:
 return $default(_that.id,_that.createdAt,_that.tripId,_that.userId,_that.content,_that.isChecked);case _:
@@ -211,10 +211,10 @@ return $default(_that.id,_that.createdAt,_that.tripId,_that.userId,_that.content
 
 
 class _ChecklistEntity implements ChecklistEntity {
-  const _ChecklistEntity({required this.id, this.createdAt, required this.tripId, required this.userId, required this.content, required this.isChecked});
+  const _ChecklistEntity({this.id, this.createdAt, required this.tripId, required this.userId, required this.content, required this.isChecked});
   
 
-@override final  int id;
+@override final  int? id;
 @override final  String? createdAt;
 @override final  int tripId;
 @override final  int userId;
@@ -251,7 +251,7 @@ abstract mixin class _$ChecklistEntityCopyWith<$Res> implements $ChecklistEntity
   factory _$ChecklistEntityCopyWith(_ChecklistEntity value, $Res Function(_ChecklistEntity) _then) = __$ChecklistEntityCopyWithImpl;
 @override @useResult
 $Res call({
- int id, String? createdAt, int tripId, int userId, String content, bool isChecked
+ int? id, String? createdAt, int tripId, int userId, String content, bool isChecked
 });
 
 
@@ -268,10 +268,10 @@ class __$ChecklistEntityCopyWithImpl<$Res>
 
 /// Create a copy of ChecklistEntity
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? createdAt = freezed,Object? tripId = null,Object? userId = null,Object? content = null,Object? isChecked = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = freezed,Object? createdAt = freezed,Object? tripId = null,Object? userId = null,Object? content = null,Object? isChecked = null,}) {
   return _then(_ChecklistEntity(
-id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
-as int,createdAt: freezed == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
+id: freezed == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
+as int?,createdAt: freezed == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
 as String?,tripId: null == tripId ? _self.tripId : tripId // ignore: cast_nullable_to_non_nullable
 as int,userId: null == userId ? _self.userId : userId // ignore: cast_nullable_to_non_nullable
 as int,content: null == content ? _self.content : content // ignore: cast_nullable_to_non_nullable

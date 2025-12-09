@@ -7,7 +7,7 @@ part of 'todo_list_dto.dart';
 // **************************************************************************
 
 _TodoListDTO _$TodoListDTOFromJson(Map<String, dynamic> json) => _TodoListDTO(
-  id: (json['id'] as num).toInt(),
+  id: (json['id'] as num?)?.toInt(),
   tripId: (json['trip_id'] as num).toInt(),
   userId: (json['user_id'] as num).toInt(),
   content: json['content'] as String,

@@ -15,4 +15,10 @@ abstract class ChecklistDataSource {
 
   // 체크리스트 삭제
   Future<Result<void>> deleteChecklist(int id);
+
+  // 체크 토글
+  Future<Result<ChecklistDTO>> toggleChecklist({
+    required int id,
+    required bool isChecked,
+  });
 }

@@ -13,4 +13,7 @@ abstract class TodoListRepository {
 
   // 투두리스트 삭제
   Future<Result<void>> deleteTodoList(int id);
+
+  // 투두리스트 체크 토글
+  Future<Result<TodoListEntity>> toggleTodoList(int id, bool isChecked);
 }

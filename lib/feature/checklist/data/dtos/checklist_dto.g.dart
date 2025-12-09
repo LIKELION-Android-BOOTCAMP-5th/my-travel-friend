@@ -8,7 +8,7 @@ part of 'checklist_dto.dart';
 
 _ChecklistDTO _$ChecklistDTOFromJson(Map<String, dynamic> json) =>
     _ChecklistDTO(
-      id: (json['id'] as num).toInt(),
+      id: (json['id'] as num?)?.toInt(),
       tripId: (json['trip_id'] as num).toInt(),
       userId: (json['user_id'] as num).toInt(),
       content: json['content'] as String,

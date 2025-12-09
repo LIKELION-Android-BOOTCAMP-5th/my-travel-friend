@@ -69,4 +69,24 @@ class ChecklistDataSourceImpl implements ChecklistDataSource {
       return Result.failure(Failure.serverFailure(message: e.toString()));
     }
   }
+
+  // 체크리스트 토글
+  @override
+  Future<Result<ChecklistDTO>> toggleChecklist({
+    required int id,
+    required bool isChecked,
+  }) async {
+    try {
+      final res = await _supabaseClient
+          .from('checklist')
+          .update({'is_checked': isChecked})
+          .eq('id', id)
+          .select()
+          .single();
+
+      return Result.success(ChecklistDTO.fromJson(res));
+    } catch (e) {
+      return Result.failure(Failure.serverFailure(message: e.toString()));
+    }
+  }
 }
