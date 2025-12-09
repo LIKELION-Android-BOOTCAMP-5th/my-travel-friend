@@ -61,6 +61,7 @@ class AlarmSettingScreen extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          SizedBox(height: 16),
           _buildEntire(
             context: context,
             child: AlarmSettingBox(

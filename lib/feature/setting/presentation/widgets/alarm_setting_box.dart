@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:my_travel_friend/core/widget/toggle_switch.dart';
 
+import '../../../../theme/app_colors.dart';
 import '../../../../theme/app_font.dart';
 
 class AlarmSettingBox extends StatelessWidget {
@@ -33,7 +34,9 @@ class AlarmSettingBox extends StatelessWidget {
               Text(
                 type,
                 style: AppFont.regular.copyWith(
-                  color: colorScheme.onSurfaceVariant,
+                  color: isDark
+                      ? AppColors.light
+                      : colorScheme.onSurfaceVariant,
                 ),
               ),
             ],
