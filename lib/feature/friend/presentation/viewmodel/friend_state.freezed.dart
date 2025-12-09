@@ -14,7 +14,11 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$FriendState {
 
- int get userId; FriendPageState get pageState;
+/// 내 userId
+ int get userId;/// 친구 목록 데이터
+ List<FriendEntity> get friends;/// 성공/에러 메시지
+ String? get message; String? get errorType; String? get actionType;/// 현재 페이지 상태
+ FriendPageState get pageState;
 /// Create a copy of FriendState
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -25,16 +29,16 @@ $FriendStateCopyWith<FriendState> get copyWith => _$FriendStateCopyWithImpl<Frie
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is FriendState&&(identical(other.userId, userId) || other.userId == userId)&&(identical(other.pageState, pageState) || other.pageState == pageState));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is FriendState&&(identical(other.userId, userId) || other.userId == userId)&&const DeepCollectionEquality().equals(other.friends, friends)&&(identical(other.message, message) || other.message == message)&&(identical(other.errorType, errorType) || other.errorType == errorType)&&(identical(other.actionType, actionType) || other.actionType == actionType)&&(identical(other.pageState, pageState) || other.pageState == pageState));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,userId,pageState);
+int get hashCode => Object.hash(runtimeType,userId,const DeepCollectionEquality().hash(friends),message,errorType,actionType,pageState);
 
 @override
 String toString() {
-  return 'FriendState(userId: $userId, pageState: $pageState)';
+  return 'FriendState(userId: $userId, friends: $friends, message: $message, errorType: $errorType, actionType: $actionType, pageState: $pageState)';
 }
 
 
@@ -45,11 +49,11 @@ abstract mixin class $FriendStateCopyWith<$Res>  {
   factory $FriendStateCopyWith(FriendState value, $Res Function(FriendState) _then) = _$FriendStateCopyWithImpl;
 @useResult
 $Res call({
- int userId, FriendPageState pageState
+ int userId, List<FriendEntity> friends, String? message, String? errorType, String? actionType, FriendPageState pageState
 });
 
 
-$FriendPageStateCopyWith<$Res> get pageState;
+
 
 }
 /// @nodoc
@@ -62,23 +66,18 @@ class _$FriendStateCopyWithImpl<$Res>
 
 /// Create a copy of FriendState
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? userId = null,Object? pageState = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? userId = null,Object? friends = null,Object? message = freezed,Object? errorType = freezed,Object? actionType = freezed,Object? pageState = null,}) {
   return _then(_self.copyWith(
 userId: null == userId ? _self.userId : userId // ignore: cast_nullable_to_non_nullable
-as int,pageState: null == pageState ? _self.pageState : pageState // ignore: cast_nullable_to_non_nullable
+as int,friends: null == friends ? _self.friends : friends // ignore: cast_nullable_to_non_nullable
+as List<FriendEntity>,message: freezed == message ? _self.message : message // ignore: cast_nullable_to_non_nullable
+as String?,errorType: freezed == errorType ? _self.errorType : errorType // ignore: cast_nullable_to_non_nullable
+as String?,actionType: freezed == actionType ? _self.actionType : actionType // ignore: cast_nullable_to_non_nullable
+as String?,pageState: null == pageState ? _self.pageState : pageState // ignore: cast_nullable_to_non_nullable
 as FriendPageState,
   ));
 }
-/// Create a copy of FriendState
-/// with the given fields replaced by the non-null parameter values.
-@override
-@pragma('vm:prefer-inline')
-$FriendPageStateCopyWith<$Res> get pageState {
-  
-  return $FriendPageStateCopyWith<$Res>(_self.pageState, (value) {
-    return _then(_self.copyWith(pageState: value));
-  });
-}
+
 }
 
 
@@ -160,10 +159,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int userId,  FriendPageState pageState)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int userId,  List<FriendEntity> friends,  String? message,  String? errorType,  String? actionType,  FriendPageState pageState)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _FriendState() when $default != null:
-return $default(_that.userId,_that.pageState);case _:
+return $default(_that.userId,_that.friends,_that.message,_that.errorType,_that.actionType,_that.pageState);case _:
   return orElse();
 
 }
@@ -181,10 +180,10 @@ return $default(_that.userId,_that.pageState);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int userId,  FriendPageState pageState)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int userId,  List<FriendEntity> friends,  String? message,  String? errorType,  String? actionType,  FriendPageState pageState)  $default,) {final _that = this;
 switch (_that) {
 case _FriendState():
-return $default(_that.userId,_that.pageState);case _:
+return $default(_that.userId,_that.friends,_that.message,_that.errorType,_that.actionType,_that.pageState);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -201,10 +200,10 @@ return $default(_that.userId,_that.pageState);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int userId,  FriendPageState pageState)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int userId,  List<FriendEntity> friends,  String? message,  String? errorType,  String? actionType,  FriendPageState pageState)?  $default,) {final _that = this;
 switch (_that) {
 case _FriendState() when $default != null:
-return $default(_that.userId,_that.pageState);case _:
+return $default(_that.userId,_that.friends,_that.message,_that.errorType,_that.actionType,_that.pageState);case _:
   return null;
 
 }
@@ -216,10 +215,25 @@ return $default(_that.userId,_that.pageState);case _:
 
 
 class _FriendState implements FriendState {
-  const _FriendState({this.userId = 0, this.pageState = const FriendPageState.initial()});
+  const _FriendState({this.userId = 0, final  List<FriendEntity> friends = const [], this.message, this.errorType, this.actionType, this.pageState = FriendPageState.init}): _friends = friends;
   
 
+/// 내 userId
 @override@JsonKey() final  int userId;
+/// 친구 목록 데이터
+ final  List<FriendEntity> _friends;
+/// 친구 목록 데이터
+@override@JsonKey() List<FriendEntity> get friends {
+  if (_friends is EqualUnmodifiableListView) return _friends;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableListView(_friends);
+}
+
+/// 성공/에러 메시지
+@override final  String? message;
+@override final  String? errorType;
+@override final  String? actionType;
+/// 현재 페이지 상태
 @override@JsonKey() final  FriendPageState pageState;
 
 /// Create a copy of FriendState
@@ -232,16 +246,16 @@ _$FriendStateCopyWith<_FriendState> get copyWith => __$FriendStateCopyWithImpl<_
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _FriendState&&(identical(other.userId, userId) || other.userId == userId)&&(identical(other.pageState, pageState) || other.pageState == pageState));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _FriendState&&(identical(other.userId, userId) || other.userId == userId)&&const DeepCollectionEquality().equals(other._friends, _friends)&&(identical(other.message, message) || other.message == message)&&(identical(other.errorType, errorType) || other.errorType == errorType)&&(identical(other.actionType, actionType) || other.actionType == actionType)&&(identical(other.pageState, pageState) || other.pageState == pageState));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,userId,pageState);
+int get hashCode => Object.hash(runtimeType,userId,const DeepCollectionEquality().hash(_friends),message,errorType,actionType,pageState);
 
 @override
 String toString() {
-  return 'FriendState(userId: $userId, pageState: $pageState)';
+  return 'FriendState(userId: $userId, friends: $friends, message: $message, errorType: $errorType, actionType: $actionType, pageState: $pageState)';
 }
 
 
@@ -252,11 +266,11 @@ abstract mixin class _$FriendStateCopyWith<$Res> implements $FriendStateCopyWith
   factory _$FriendStateCopyWith(_FriendState value, $Res Function(_FriendState) _then) = __$FriendStateCopyWithImpl;
 @override @useResult
 $Res call({
- int userId, FriendPageState pageState
+ int userId, List<FriendEntity> friends, String? message, String? errorType, String? actionType, FriendPageState pageState
 });
 
 
-@override $FriendPageStateCopyWith<$Res> get pageState;
+
 
 }
 /// @nodoc
@@ -269,24 +283,19 @@ class __$FriendStateCopyWithImpl<$Res>
 
 /// Create a copy of FriendState
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? userId = null,Object? pageState = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? userId = null,Object? friends = null,Object? message = freezed,Object? errorType = freezed,Object? actionType = freezed,Object? pageState = null,}) {
   return _then(_FriendState(
 userId: null == userId ? _self.userId : userId // ignore: cast_nullable_to_non_nullable
-as int,pageState: null == pageState ? _self.pageState : pageState // ignore: cast_nullable_to_non_nullable
+as int,friends: null == friends ? _self._friends : friends // ignore: cast_nullable_to_non_nullable
+as List<FriendEntity>,message: freezed == message ? _self.message : message // ignore: cast_nullable_to_non_nullable
+as String?,errorType: freezed == errorType ? _self.errorType : errorType // ignore: cast_nullable_to_non_nullable
+as String?,actionType: freezed == actionType ? _self.actionType : actionType // ignore: cast_nullable_to_non_nullable
+as String?,pageState: null == pageState ? _self.pageState : pageState // ignore: cast_nullable_to_non_nullable
 as FriendPageState,
   ));
 }
 
-/// Create a copy of FriendState
-/// with the given fields replaced by the non-null parameter values.
-@override
-@pragma('vm:prefer-inline')
-$FriendPageStateCopyWith<$Res> get pageState {
-  
-  return $FriendPageStateCopyWith<$Res>(_self.pageState, (value) {
-    return _then(_self.copyWith(pageState: value));
-  });
-}
+
 }
 
 // dart format on
