@@ -8,7 +8,9 @@ import '../../../auth/presentation/viewmodel/auth_profile/auth_profile_state.dar
 import '../viewmodels/alarm_setting_bloc.dart';
 import '../viewmodels/alarm_setting_event.dart';
 import '../viewmodels/alarm_setting_state.dart';
+import 'alarm_setting_screen.dart';
 
+// [이재은] 알림설정을 감싸는 위젯
 class AlarmSettingBlocWidget extends StatelessWidget {
   const AlarmSettingBlocWidget({super.key});
 

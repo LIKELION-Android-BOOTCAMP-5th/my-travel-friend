@@ -24,6 +24,7 @@ abstract class AlarmSettingState with _$AlarmSettingState {
   // 개별 알림 상태
   bool get tripRequest => setting?.tripRequest ?? true;
   bool get friendRequest => setting?.friendRequest ?? true;
+  bool get newFriend => setting?.newFriend ?? true;
   bool get scheduleAdded => setting?.scheduleAdded ?? true;
   bool get scheduleEdited => setting?.scheduleEdited ?? true;
   bool get scheduleDeleted => setting?.scheduleDeleted ?? true;

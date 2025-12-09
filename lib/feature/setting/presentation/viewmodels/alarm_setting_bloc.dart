@@ -10,6 +10,7 @@ import '../../domain/entities/alarm_setting_entity.dart';
 import 'alarm_setting_event.dart';
 import 'alarm_setting_state.dart';
 
+// [이재은] 알림설정 bloc
 @injectable
 class AlarmSettingBloc extends Bloc<AlarmSettingEvent, AlarmSettingState> {
   final GetMyAlarmSettingUseCase _getMyAlarmSettingUseCase;
@@ -82,6 +83,7 @@ class AlarmSettingBloc extends Bloc<AlarmSettingEvent, AlarmSettingState> {
         entireAlarm: false,
         tripRequest: false,
         friendRequest: false,
+        newFriend: false,
         scheduleEdited: false,
         scheduleAdded: false,
         scheduleDeleted: false,
@@ -125,7 +127,8 @@ class AlarmSettingBloc extends Bloc<AlarmSettingEvent, AlarmSettingState> {
   ) {
     return switch (type) {
       'tripRequest' => current.copyWith(tripRequest: value),
-      'friendReqest' => current.copyWith(friendRequest: value),
+      'friendRequest' => current.copyWith(friendRequest: value),
+      'newFriend' => current.copyWith(newFriend: value),
       'scheduleEdited' => current.copyWith(scheduleEdited: value),
       'scheduleAdded' => current.copyWith(scheduleAdded: value),
       'scheduleDeleted' => current.copyWith(scheduleDeleted: value),
@@ -149,6 +152,7 @@ class AlarmSettingBloc extends Bloc<AlarmSettingEvent, AlarmSettingState> {
     final allOff =
         !setting.tripRequest &&
         !setting.friendRequest &&
+        !setting.newFriend &&
         !setting.scheduleDeleted &&
         !setting.scheduleEdited &&
         !setting.scheduleAdded &&
