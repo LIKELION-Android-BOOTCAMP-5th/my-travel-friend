@@ -55,7 +55,7 @@ extension TripEventPatterns on TripEvent {
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( GetMyTrips value)?  getMyTrips,TResult Function( LoadMoreTrips value)?  loadMoreTrips,TResult Function( ChangeSorting value)?  changeSorting,TResult Function( SearchKeywordChanged value)?  searchKeywordChanged,TResult Function( SearchTrips value)?  searchTrips,TResult Function( ToggleSearch value)?  toggleSearch,TResult Function( SelectTrip value)?  selectTrip,TResult Function( CreateNewTrip value)?  createNewTrip,TResult Function( OpenTripMenu value)?  openTripMenu,TResult Function( UpdateTrip value)?  updateTrip,TResult Function( LeaveTrip value)?  leaveTrip,TResult Function( DeleteTrip value)?  deleteTrip,TResult Function( RefreshTrips value)?  refreshTrips,required TResult orElse(),}){
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( GetMyTrips value)?  getMyTrips,TResult Function( LoadMoreTrips value)?  loadMoreTrips,TResult Function( ChangeSorting value)?  changeSorting,TResult Function( SearchKeywordChanged value)?  searchKeywordChanged,TResult Function( SearchTrips value)?  searchTrips,TResult Function( ToggleSearch value)?  toggleSearch,TResult Function( SelectTrip value)?  selectTrip,TResult Function( CreateNewTrip value)?  createNewTrip,TResult Function( NavigationHandled value)?  navigationHandled,TResult Function( OpenTripMenu value)?  openTripMenu,TResult Function( UpdateTrip value)?  updateTrip,TResult Function( LeaveTrip value)?  leaveTrip,TResult Function( DeleteTrip value)?  deleteTrip,TResult Function( RefreshTrips value)?  refreshTrips,required TResult orElse(),}){
 final _that = this;
 switch (_that) {
 case GetMyTrips() when getMyTrips != null:
@@ -66,7 +66,8 @@ return searchKeywordChanged(_that);case SearchTrips() when searchTrips != null:
 return searchTrips(_that);case ToggleSearch() when toggleSearch != null:
 return toggleSearch(_that);case SelectTrip() when selectTrip != null:
 return selectTrip(_that);case CreateNewTrip() when createNewTrip != null:
-return createNewTrip(_that);case OpenTripMenu() when openTripMenu != null:
+return createNewTrip(_that);case NavigationHandled() when navigationHandled != null:
+return navigationHandled(_that);case OpenTripMenu() when openTripMenu != null:
 return openTripMenu(_that);case UpdateTrip() when updateTrip != null:
 return updateTrip(_that);case LeaveTrip() when leaveTrip != null:
 return leaveTrip(_that);case DeleteTrip() when deleteTrip != null:
@@ -89,7 +90,7 @@ return refreshTrips(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( GetMyTrips value)  getMyTrips,required TResult Function( LoadMoreTrips value)  loadMoreTrips,required TResult Function( ChangeSorting value)  changeSorting,required TResult Function( SearchKeywordChanged value)  searchKeywordChanged,required TResult Function( SearchTrips value)  searchTrips,required TResult Function( ToggleSearch value)  toggleSearch,required TResult Function( SelectTrip value)  selectTrip,required TResult Function( CreateNewTrip value)  createNewTrip,required TResult Function( OpenTripMenu value)  openTripMenu,required TResult Function( UpdateTrip value)  updateTrip,required TResult Function( LeaveTrip value)  leaveTrip,required TResult Function( DeleteTrip value)  deleteTrip,required TResult Function( RefreshTrips value)  refreshTrips,}){
+@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( GetMyTrips value)  getMyTrips,required TResult Function( LoadMoreTrips value)  loadMoreTrips,required TResult Function( ChangeSorting value)  changeSorting,required TResult Function( SearchKeywordChanged value)  searchKeywordChanged,required TResult Function( SearchTrips value)  searchTrips,required TResult Function( ToggleSearch value)  toggleSearch,required TResult Function( SelectTrip value)  selectTrip,required TResult Function( CreateNewTrip value)  createNewTrip,required TResult Function( NavigationHandled value)  navigationHandled,required TResult Function( OpenTripMenu value)  openTripMenu,required TResult Function( UpdateTrip value)  updateTrip,required TResult Function( LeaveTrip value)  leaveTrip,required TResult Function( DeleteTrip value)  deleteTrip,required TResult Function( RefreshTrips value)  refreshTrips,}){
 final _that = this;
 switch (_that) {
 case GetMyTrips():
@@ -100,7 +101,8 @@ return searchKeywordChanged(_that);case SearchTrips():
 return searchTrips(_that);case ToggleSearch():
 return toggleSearch(_that);case SelectTrip():
 return selectTrip(_that);case CreateNewTrip():
-return createNewTrip(_that);case OpenTripMenu():
+return createNewTrip(_that);case NavigationHandled():
+return navigationHandled(_that);case OpenTripMenu():
 return openTripMenu(_that);case UpdateTrip():
 return updateTrip(_that);case LeaveTrip():
 return leaveTrip(_that);case DeleteTrip():
@@ -122,7 +124,7 @@ return refreshTrips(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( GetMyTrips value)?  getMyTrips,TResult? Function( LoadMoreTrips value)?  loadMoreTrips,TResult? Function( ChangeSorting value)?  changeSorting,TResult? Function( SearchKeywordChanged value)?  searchKeywordChanged,TResult? Function( SearchTrips value)?  searchTrips,TResult? Function( ToggleSearch value)?  toggleSearch,TResult? Function( SelectTrip value)?  selectTrip,TResult? Function( CreateNewTrip value)?  createNewTrip,TResult? Function( OpenTripMenu value)?  openTripMenu,TResult? Function( UpdateTrip value)?  updateTrip,TResult? Function( LeaveTrip value)?  leaveTrip,TResult? Function( DeleteTrip value)?  deleteTrip,TResult? Function( RefreshTrips value)?  refreshTrips,}){
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( GetMyTrips value)?  getMyTrips,TResult? Function( LoadMoreTrips value)?  loadMoreTrips,TResult? Function( ChangeSorting value)?  changeSorting,TResult? Function( SearchKeywordChanged value)?  searchKeywordChanged,TResult? Function( SearchTrips value)?  searchTrips,TResult? Function( ToggleSearch value)?  toggleSearch,TResult? Function( SelectTrip value)?  selectTrip,TResult? Function( CreateNewTrip value)?  createNewTrip,TResult? Function( NavigationHandled value)?  navigationHandled,TResult? Function( OpenTripMenu value)?  openTripMenu,TResult? Function( UpdateTrip value)?  updateTrip,TResult? Function( LeaveTrip value)?  leaveTrip,TResult? Function( DeleteTrip value)?  deleteTrip,TResult? Function( RefreshTrips value)?  refreshTrips,}){
 final _that = this;
 switch (_that) {
 case GetMyTrips() when getMyTrips != null:
@@ -133,7 +135,8 @@ return searchKeywordChanged(_that);case SearchTrips() when searchTrips != null:
 return searchTrips(_that);case ToggleSearch() when toggleSearch != null:
 return toggleSearch(_that);case SelectTrip() when selectTrip != null:
 return selectTrip(_that);case CreateNewTrip() when createNewTrip != null:
-return createNewTrip(_that);case OpenTripMenu() when openTripMenu != null:
+return createNewTrip(_that);case NavigationHandled() when navigationHandled != null:
+return navigationHandled(_that);case OpenTripMenu() when openTripMenu != null:
 return openTripMenu(_that);case UpdateTrip() when updateTrip != null:
 return updateTrip(_that);case LeaveTrip() when leaveTrip != null:
 return leaveTrip(_that);case DeleteTrip() when deleteTrip != null:
@@ -155,7 +158,7 @@ return refreshTrips(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function( int userId)?  getMyTrips,TResult Function( int userId)?  loadMoreTrips,TResult Function( SortingTrip sorting)?  changeSorting,TResult Function( String keyword)?  searchKeywordChanged,TResult Function( int userId,  String keyword)?  searchTrips,TResult Function()?  toggleSearch,TResult Function( TripEntity trip)?  selectTrip,TResult Function()?  createNewTrip,TResult Function( TripEntity trip)?  openTripMenu,TResult Function( TripEntity trip)?  updateTrip,TResult Function( int tripId,  int userId)?  leaveTrip,TResult Function( int tripId)?  deleteTrip,TResult Function( int userId)?  refreshTrips,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function( int userId)?  getMyTrips,TResult Function( int userId)?  loadMoreTrips,TResult Function( SortingTrip sorting)?  changeSorting,TResult Function( String keyword)?  searchKeywordChanged,TResult Function( int userId,  String keyword)?  searchTrips,TResult Function()?  toggleSearch,TResult Function( TripEntity trip)?  selectTrip,TResult Function()?  createNewTrip,TResult Function()?  navigationHandled,TResult Function( TripEntity trip)?  openTripMenu,TResult Function( TripEntity trip)?  updateTrip,TResult Function( int tripId,  int userId)?  leaveTrip,TResult Function( int tripId)?  deleteTrip,TResult Function( int userId)?  refreshTrips,required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case GetMyTrips() when getMyTrips != null:
 return getMyTrips(_that.userId);case LoadMoreTrips() when loadMoreTrips != null:
@@ -165,7 +168,8 @@ return searchKeywordChanged(_that.keyword);case SearchTrips() when searchTrips !
 return searchTrips(_that.userId,_that.keyword);case ToggleSearch() when toggleSearch != null:
 return toggleSearch();case SelectTrip() when selectTrip != null:
 return selectTrip(_that.trip);case CreateNewTrip() when createNewTrip != null:
-return createNewTrip();case OpenTripMenu() when openTripMenu != null:
+return createNewTrip();case NavigationHandled() when navigationHandled != null:
+return navigationHandled();case OpenTripMenu() when openTripMenu != null:
 return openTripMenu(_that.trip);case UpdateTrip() when updateTrip != null:
 return updateTrip(_that.trip);case LeaveTrip() when leaveTrip != null:
 return leaveTrip(_that.tripId,_that.userId);case DeleteTrip() when deleteTrip != null:
@@ -188,7 +192,7 @@ return refreshTrips(_that.userId);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function( int userId)  getMyTrips,required TResult Function( int userId)  loadMoreTrips,required TResult Function( SortingTrip sorting)  changeSorting,required TResult Function( String keyword)  searchKeywordChanged,required TResult Function( int userId,  String keyword)  searchTrips,required TResult Function()  toggleSearch,required TResult Function( TripEntity trip)  selectTrip,required TResult Function()  createNewTrip,required TResult Function( TripEntity trip)  openTripMenu,required TResult Function( TripEntity trip)  updateTrip,required TResult Function( int tripId,  int userId)  leaveTrip,required TResult Function( int tripId)  deleteTrip,required TResult Function( int userId)  refreshTrips,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function( int userId)  getMyTrips,required TResult Function( int userId)  loadMoreTrips,required TResult Function( SortingTrip sorting)  changeSorting,required TResult Function( String keyword)  searchKeywordChanged,required TResult Function( int userId,  String keyword)  searchTrips,required TResult Function()  toggleSearch,required TResult Function( TripEntity trip)  selectTrip,required TResult Function()  createNewTrip,required TResult Function()  navigationHandled,required TResult Function( TripEntity trip)  openTripMenu,required TResult Function( TripEntity trip)  updateTrip,required TResult Function( int tripId,  int userId)  leaveTrip,required TResult Function( int tripId)  deleteTrip,required TResult Function( int userId)  refreshTrips,}) {final _that = this;
 switch (_that) {
 case GetMyTrips():
 return getMyTrips(_that.userId);case LoadMoreTrips():
@@ -198,7 +202,8 @@ return searchKeywordChanged(_that.keyword);case SearchTrips():
 return searchTrips(_that.userId,_that.keyword);case ToggleSearch():
 return toggleSearch();case SelectTrip():
 return selectTrip(_that.trip);case CreateNewTrip():
-return createNewTrip();case OpenTripMenu():
+return createNewTrip();case NavigationHandled():
+return navigationHandled();case OpenTripMenu():
 return openTripMenu(_that.trip);case UpdateTrip():
 return updateTrip(_that.trip);case LeaveTrip():
 return leaveTrip(_that.tripId,_that.userId);case DeleteTrip():
@@ -220,7 +225,7 @@ return refreshTrips(_that.userId);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function( int userId)?  getMyTrips,TResult? Function( int userId)?  loadMoreTrips,TResult? Function( SortingTrip sorting)?  changeSorting,TResult? Function( String keyword)?  searchKeywordChanged,TResult? Function( int userId,  String keyword)?  searchTrips,TResult? Function()?  toggleSearch,TResult? Function( TripEntity trip)?  selectTrip,TResult? Function()?  createNewTrip,TResult? Function( TripEntity trip)?  openTripMenu,TResult? Function( TripEntity trip)?  updateTrip,TResult? Function( int tripId,  int userId)?  leaveTrip,TResult? Function( int tripId)?  deleteTrip,TResult? Function( int userId)?  refreshTrips,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function( int userId)?  getMyTrips,TResult? Function( int userId)?  loadMoreTrips,TResult? Function( SortingTrip sorting)?  changeSorting,TResult? Function( String keyword)?  searchKeywordChanged,TResult? Function( int userId,  String keyword)?  searchTrips,TResult? Function()?  toggleSearch,TResult? Function( TripEntity trip)?  selectTrip,TResult? Function()?  createNewTrip,TResult? Function()?  navigationHandled,TResult? Function( TripEntity trip)?  openTripMenu,TResult? Function( TripEntity trip)?  updateTrip,TResult? Function( int tripId,  int userId)?  leaveTrip,TResult? Function( int tripId)?  deleteTrip,TResult? Function( int userId)?  refreshTrips,}) {final _that = this;
 switch (_that) {
 case GetMyTrips() when getMyTrips != null:
 return getMyTrips(_that.userId);case LoadMoreTrips() when loadMoreTrips != null:
@@ -230,7 +235,8 @@ return searchKeywordChanged(_that.keyword);case SearchTrips() when searchTrips !
 return searchTrips(_that.userId,_that.keyword);case ToggleSearch() when toggleSearch != null:
 return toggleSearch();case SelectTrip() when selectTrip != null:
 return selectTrip(_that.trip);case CreateNewTrip() when createNewTrip != null:
-return createNewTrip();case OpenTripMenu() when openTripMenu != null:
+return createNewTrip();case NavigationHandled() when navigationHandled != null:
+return navigationHandled();case OpenTripMenu() when openTripMenu != null:
 return openTripMenu(_that.trip);case UpdateTrip() when updateTrip != null:
 return updateTrip(_that.trip);case LeaveTrip() when leaveTrip != null:
 return leaveTrip(_that.tripId,_that.userId);case DeleteTrip() when deleteTrip != null:
@@ -706,6 +712,38 @@ int get hashCode => runtimeType.hashCode;
 @override
 String toString() {
   return 'TripEvent.createNewTrip()';
+}
+
+
+}
+
+
+
+
+/// @nodoc
+
+
+class NavigationHandled implements TripEvent {
+  const NavigationHandled();
+  
+
+
+
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is NavigationHandled);
+}
+
+
+@override
+int get hashCode => runtimeType.hashCode;
+
+@override
+String toString() {
+  return 'TripEvent.navigationHandled()';
 }
 
 

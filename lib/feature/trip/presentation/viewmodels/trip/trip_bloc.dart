@@ -37,6 +37,10 @@ class TripBloc extends Bloc<TripEvent, TripState> {
     on<ChangeSorting>(_onChangeSorting);
     on<CreateNewTrip>(_onCreateNewTrip);
     on<UpdateTrip>(_onUpdateTrip);
+    //네비게이션
+    on<NavigationHandled>((event, emit) {
+      emit(state.copyWith(navigateToCreate: false, navigateToEdit: false));
+    });
   }
 
   Future<void> _onGetMyTrips(GetMyTrips event, Emitter<TripState> emit) async {
@@ -190,13 +194,12 @@ class TripBloc extends Bloc<TripEvent, TripState> {
     emit(state.copyWith(sorting: event.sorting, currentPage: 1));
   }
 
-  //  새로운 여행 생성 시 선택한 Trip 해제
   void _onCreateNewTrip(CreateNewTrip event, Emitter<TripState> emit) {
-    emit(state.copyWith(selectedTrip: null));
+    emit(state.copyWith(selectedTrip: null, navigateToCreate: true));
   }
 
   // 수정할 Trip 저장 (이후 UI에서 이동 처리)
   void _onUpdateTrip(UpdateTrip event, Emitter<TripState> emit) {
-    emit(state.copyWith(selectedTrip: event.trip));
+    emit(state.copyWith(selectedTrip: event.trip, navigateToEdit: true));
   }
 }

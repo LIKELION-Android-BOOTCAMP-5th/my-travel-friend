@@ -6,7 +6,9 @@ import 'package:my_travel_friend/feature/auth/presentation/screens/auth_bloc_wid
 import 'package:my_travel_friend/feature/auth/presentation/viewmodel/auth/auth_bloc.dart';
 import 'package:my_travel_friend/feature/auth/presentation/viewmodel/auth_profile/auth_profile_bloc.dart';
 import 'package:my_travel_friend/feature/auth/presentation/viewmodel/auth_profile/auth_profile_state.dart';
+import 'package:my_travel_friend/feature/trip/presentation/screens/create_trip_bloc_widget.dart';
 import 'package:my_travel_friend/feature/trip/presentation/screens/trip_bloc_widget.dart';
+import 'package:my_travel_friend/feature/trip/presentation/viewmodels/create_trip/create_trip_bloc.dart';
 import 'package:my_travel_friend/feature/trip/presentation/viewmodels/trip/trip_bloc.dart';
 import 'package:my_travel_friend/splash.dart';
 import 'package:my_travel_friend/temp_screen.dart';
@@ -94,6 +96,13 @@ class AppRouter {
           //bloc 제공자
           create: (context) => GetIt.instance<TripBloc>(),
           child: const TripBlocWidget(),
+        ),
+      ),
+      GoRoute(
+        path: '/trip/create',
+        builder: (context, state) => BlocProvider(
+          create: (context) => GetIt.instance<CreateTripBloc>(),
+          child: const CreateTripBlocWidget(userId: 10),
         ),
       ),
       GoRoute(

@@ -98,6 +98,8 @@ import '../../feature/trip/domain/usecases/get_crew_member_count_usecase.dart'
 import '../../feature/trip/domain/usecases/get_my_trip_usecase.dart' as _i521;
 import '../../feature/trip/domain/usecases/give_up_trip_usecase.dart' as _i317;
 import '../../feature/trip/domain/usecases/search_trip_usecase.dart' as _i437;
+import '../../feature/trip/presentation/viewmodels/create_trip/create_trip_bloc.dart'
+    as _i873;
 import '../../feature/trip/presentation/viewmodels/trip/trip_bloc.dart'
     as _i616;
 import '../service/internal/deep_link_service.dart' as _i507;
@@ -252,6 +254,12 @@ extension GetItInjectableX on _i174.GetIt {
       () => _i1041.NewDiaryBloc(
         gh<_i27.CreateDiaryUseCase>(),
         gh<_i871.DiaryRepository>(),
+      ),
+    );
+    gh.factory<_i873.CreateTripBloc>(
+      () => _i873.CreateTripBloc(
+        gh<_i779.CreateTripUsecase>(),
+        gh<_i161.TripRepository>(),
       ),
     );
     gh.factory<_i703.EditDiaryBloc>(
