@@ -78,6 +78,12 @@ import '../../feature/diary/presentation/viewmodels/edit_diary_bloc.dart'
     as _i703;
 import '../../feature/diary/presentation/viewmodels/new_diary_bloc.dart'
     as _i1041;
+import '../../feature/setting/data/datasources/alarm_setting_datasource.dart'
+    as _i766;
+import '../../feature/setting/data/datasources/alarm_setting_datasource_impl.dart'
+    as _i746;
+import '../../feature/setting/data/repositories/alarm_setting_repository_impl.dart'
+    as _i124;
 import '../../feature/setting/domain/repositories/alarm_setting_repository.dart'
     as _i212;
 import '../../feature/setting/domain/usecases/get_my_alarm_setting_usecase.dart'
@@ -143,17 +149,14 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i881.DiaryDataSource>(
       () => _i663.DiaryDataSourceImpl(gh<_i454.SupabaseClient>()),
     );
-    gh.lazySingleton<_i980.GetMyAlarmSettingUseCase>(
-      () => _i980.GetMyAlarmSettingUseCase(gh<_i212.AlarmSettingRepository>()),
-    );
-    gh.lazySingleton<_i50.UpdateAlarmSettingUseCase>(
-      () => _i50.UpdateAlarmSettingUseCase(gh<_i212.AlarmSettingRepository>()),
-    );
     gh.lazySingleton<_i1063.TripDataSource>(
       () => _i386.TripDataSourceImpl(gh<_i454.SupabaseClient>()),
     );
     gh.lazySingleton<_i58.AlarmDataSource>(
       () => _i1049.AlarmDataSourceImpl(gh<_i454.SupabaseClient>()),
+    );
+    gh.lazySingleton<_i766.AlarmSettingDataSource>(
+      () => _i746.AlarmSettingDataSourceImpl(gh<_i454.SupabaseClient>()),
     );
     gh.lazySingleton<_i871.DiaryRepository>(
       () => _i148.DiaryRepositoryImpl(gh<_i881.DiaryDataSource>()),
@@ -224,6 +227,10 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i699.DeleteDiaryUseCase>(),
       ),
     );
+    gh.lazySingleton<_i212.AlarmSettingRepository>(
+      () =>
+          _i124.AlarmSettingRepositoryImpl(gh<_i766.AlarmSettingDataSource>()),
+    );
     gh.factory<_i616.TripBloc>(
       () => _i616.TripBloc(
         gh<_i521.GetMyTripUsecase>(),
@@ -271,6 +278,12 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.lazySingleton<_i135.GetAlarmsUseCase>(
       () => _i135.GetAlarmsUseCase(gh<_i831.AlarmRepository>()),
+    );
+    gh.lazySingleton<_i980.GetMyAlarmSettingUseCase>(
+      () => _i980.GetMyAlarmSettingUseCase(gh<_i212.AlarmSettingRepository>()),
+    );
+    gh.lazySingleton<_i50.UpdateAlarmSettingUseCase>(
+      () => _i50.UpdateAlarmSettingUseCase(gh<_i212.AlarmSettingRepository>()),
     );
     gh.lazySingleton<_i474.AuthBloc>(
       () => _i474.AuthBloc(
