@@ -106,6 +106,8 @@ import '../../feature/setting/domain/usecases/get_my_alarm_setting_usecase.dart'
     as _i980;
 import '../../feature/setting/domain/usecases/update_alarm_setting_usecase.dart'
     as _i50;
+import '../../feature/setting/presentation/viewmodels/alarm_setting_bloc.dart'
+    as _i871;
 import '../../feature/trip/data/datasources/trip_data_source.dart' as _i1063;
 import '../../feature/trip/data/datasources/trip_data_source_impl.dart'
     as _i386;
@@ -339,6 +341,12 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i820.GetAlarmByIdUseCase>(),
         gh<_i539.CheckAnAlarmUseCase>(),
         gh<_i889.CheckAlarmsUseCase>(),
+      ),
+    );
+    gh.factory<_i871.AlarmSettingBloc>(
+      () => _i871.AlarmSettingBloc(
+        gh<_i980.GetMyAlarmSettingUseCase>(),
+        gh<_i50.UpdateAlarmSettingUseCase>(),
       ),
     );
     return this;

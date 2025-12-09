@@ -64,28 +64,34 @@ class _AlarmListScreenState extends State<AlarmListScreen> {
     final colorScheme = Theme.of(context).colorScheme;
     final isDark = colorScheme.brightness == Brightness.dark;
 
-    return SafeArea(
-      child: Scaffold(
-        backgroundColor: isDark ? AppColors.navy : AppColors.darkGray,
-        appBar: CustomButtonAppBar(
-          title: '알림',
-          leading: Button(
-            width: 40,
-            height: 40,
-            icon: Icon(AppIcon.back),
-            contentColor: isDark ? colorScheme.onSurface : AppColors.light,
-            borderRadius: 20,
-            onTap: () => context.pop(),
+    return BlocListener<AlarmBloc, AlarmState>(
+      listenWhen: (prev, curr) => prev.navigation != curr.navigation,
+      listener: (context, state) {
+        _handleNavigation(state.navigation);
+      },
+      child: SafeArea(
+        child: Scaffold(
+          backgroundColor: isDark ? AppColors.navy : AppColors.darkGray,
+          appBar: CustomButtonAppBar(
+            title: '알림',
+            leading: Button(
+              width: 40,
+              height: 40,
+              icon: Icon(AppIcon.back),
+              contentColor: isDark ? colorScheme.onSurface : AppColors.light,
+              borderRadius: 20,
+              onTap: () => context.pop(),
+            ),
           ),
-        ),
-        body: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            children: [
-              _buildHeader(context),
-              const SizedBox(height: 16),
-              Expanded(child: _buildAlarmList(context)),
-            ],
+          body: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              children: [
+                _buildHeader(context),
+                const SizedBox(height: 16),
+                Expanded(child: _buildAlarmList(context)),
+              ],
+            ),
           ),
         ),
       ),
@@ -159,6 +165,10 @@ class _AlarmListScreenState extends State<AlarmListScreen> {
           return const SizedBox.shrink();
         }
 
+        if (alarms.isEmpty) {
+          return _buildEmptyView(context);
+        }
+
         return RefreshIndicator(
           onRefresh: () async {
             context.read<AlarmBloc>().add(
@@ -194,6 +204,43 @@ class _AlarmListScreenState extends State<AlarmListScreen> {
     );
   }
 
+  // 알림 없을 때 (가입 초기) 빈 화면
+  Widget _buildEmptyView(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(
+            AppIcon.alarm,
+            size: 64,
+            color: colorScheme.onSurfaceVariant.withOpacity(0.5),
+          ),
+          const SizedBox(height: 16),
+          Text(
+            '받은 알림이 없습니다\n새로운 소식이 오면 여기에 표시돼요',
+            style: AppFont.regular.copyWith(
+              color: colorScheme.onSurfaceVariant,
+            ),
+            textAlign: TextAlign.center,
+          ),
+        ],
+      ),
+    );
+  }
+
+  // 네비게이션 상태에 따라 라우팅 수행
+  void _handleNavigation(AlarmNavigation navigation) {
+    switch (navigation) {
+      case AlarmNavigationTo(path: final path):
+        context.read<AlarmBloc>().add(const AlarmEvent.navigationHandled());
+        context.push(path);
+      case AlarmNavigationNone():
+        break;
+    }
+  }
+
   // 알림 클릭 시 처리
   void _onAlarmTap(alarm) {
     // 읽지 않은 알림이면 읽음 처리
@@ -203,56 +250,7 @@ class _AlarmListScreenState extends State<AlarmListScreen> {
       );
     }
 
-    // 알림 타입에 따라 해당 페이지로 이동
-    _navigateByAlarmType(alarm);
-  }
-
-  // 알림 타입별 네비게이션
-  void _navigateByAlarmType(alarm) {
-    final data = alarm.data;
-    if (data == null) return;
-
-    switch (alarm.type) {
-      case 'TRIP_REQUEST':
-        final tripId = data['trip_id'];
-        if (tripId != null) {
-          // 내가 받은 여행 페이지로 이동
-        }
-        break;
-
-      case 'FRIEND_REQUEST':
-        // 친구 요청 페이지로 이동
-        break;
-
-      case 'NEW_FRIEND':
-        // 친구 목록 페이지로 이동
-        break;
-
-      case 'SCHEDULE_EDITED':
-      case 'SCHEDULE_ADDED':
-      case 'SCHEDULE_DELETED':
-        final tripId = data['trip_id'];
-        if (tripId != null) {
-          // 해당 일정 페이지로 이동
-        }
-        break;
-
-      case 'TALK_MESSAGE':
-        final tripId = data['trip_id'];
-        if (tripId != null) {
-          // 톡톡 페이지로 이동
-        }
-        break;
-
-      case 'D_DAY':
-        final tripId = data['trip_id'];
-        if (tripId != null) {
-          // 해당 여행 홈으로 이동
-        }
-        break;
-
-      default:
-        break;
-    }
+    // bloc에 네비게이션 요청
+    context.read<AlarmBloc>().add(AlarmEvent.requestNavigate(alarm: alarm));
   }
 }

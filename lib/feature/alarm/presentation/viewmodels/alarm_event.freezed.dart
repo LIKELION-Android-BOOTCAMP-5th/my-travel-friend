@@ -55,7 +55,7 @@ extension AlarmEventPatterns on AlarmEvent {
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( GetAlarms value)?  getAlarms,TResult Function( LoadMoreAlarms value)?  loadMore,TResult Function( CheckAnAlarm value)?  checkAnAlarm,TResult Function( CheckAlarms value)?  checkAlarms,TResult Function( GetAlarmById value)?  getAlarmById,TResult Function( ClearSelectedAlarm value)?  clearSelectedAlarm,TResult Function( RefreshAlarm value)?  refreshAlarm,required TResult orElse(),}){
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( GetAlarms value)?  getAlarms,TResult Function( LoadMoreAlarms value)?  loadMore,TResult Function( CheckAnAlarm value)?  checkAnAlarm,TResult Function( CheckAlarms value)?  checkAlarms,TResult Function( GetAlarmById value)?  getAlarmById,TResult Function( ClearSelectedAlarm value)?  clearSelectedAlarm,TResult Function( RefreshAlarm value)?  refreshAlarm,TResult Function( RequestNavigate value)?  requestNavigate,TResult Function( NavigationHandled value)?  navigationHandled,required TResult orElse(),}){
 final _that = this;
 switch (_that) {
 case GetAlarms() when getAlarms != null:
@@ -65,7 +65,9 @@ return checkAnAlarm(_that);case CheckAlarms() when checkAlarms != null:
 return checkAlarms(_that);case GetAlarmById() when getAlarmById != null:
 return getAlarmById(_that);case ClearSelectedAlarm() when clearSelectedAlarm != null:
 return clearSelectedAlarm(_that);case RefreshAlarm() when refreshAlarm != null:
-return refreshAlarm(_that);case _:
+return refreshAlarm(_that);case RequestNavigate() when requestNavigate != null:
+return requestNavigate(_that);case NavigationHandled() when navigationHandled != null:
+return navigationHandled(_that);case _:
   return orElse();
 
 }
@@ -83,7 +85,7 @@ return refreshAlarm(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( GetAlarms value)  getAlarms,required TResult Function( LoadMoreAlarms value)  loadMore,required TResult Function( CheckAnAlarm value)  checkAnAlarm,required TResult Function( CheckAlarms value)  checkAlarms,required TResult Function( GetAlarmById value)  getAlarmById,required TResult Function( ClearSelectedAlarm value)  clearSelectedAlarm,required TResult Function( RefreshAlarm value)  refreshAlarm,}){
+@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( GetAlarms value)  getAlarms,required TResult Function( LoadMoreAlarms value)  loadMore,required TResult Function( CheckAnAlarm value)  checkAnAlarm,required TResult Function( CheckAlarms value)  checkAlarms,required TResult Function( GetAlarmById value)  getAlarmById,required TResult Function( ClearSelectedAlarm value)  clearSelectedAlarm,required TResult Function( RefreshAlarm value)  refreshAlarm,required TResult Function( RequestNavigate value)  requestNavigate,required TResult Function( NavigationHandled value)  navigationHandled,}){
 final _that = this;
 switch (_that) {
 case GetAlarms():
@@ -93,7 +95,9 @@ return checkAnAlarm(_that);case CheckAlarms():
 return checkAlarms(_that);case GetAlarmById():
 return getAlarmById(_that);case ClearSelectedAlarm():
 return clearSelectedAlarm(_that);case RefreshAlarm():
-return refreshAlarm(_that);case _:
+return refreshAlarm(_that);case RequestNavigate():
+return requestNavigate(_that);case NavigationHandled():
+return navigationHandled(_that);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -110,7 +114,7 @@ return refreshAlarm(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( GetAlarms value)?  getAlarms,TResult? Function( LoadMoreAlarms value)?  loadMore,TResult? Function( CheckAnAlarm value)?  checkAnAlarm,TResult? Function( CheckAlarms value)?  checkAlarms,TResult? Function( GetAlarmById value)?  getAlarmById,TResult? Function( ClearSelectedAlarm value)?  clearSelectedAlarm,TResult? Function( RefreshAlarm value)?  refreshAlarm,}){
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( GetAlarms value)?  getAlarms,TResult? Function( LoadMoreAlarms value)?  loadMore,TResult? Function( CheckAnAlarm value)?  checkAnAlarm,TResult? Function( CheckAlarms value)?  checkAlarms,TResult? Function( GetAlarmById value)?  getAlarmById,TResult? Function( ClearSelectedAlarm value)?  clearSelectedAlarm,TResult? Function( RefreshAlarm value)?  refreshAlarm,TResult? Function( RequestNavigate value)?  requestNavigate,TResult? Function( NavigationHandled value)?  navigationHandled,}){
 final _that = this;
 switch (_that) {
 case GetAlarms() when getAlarms != null:
@@ -120,7 +124,9 @@ return checkAnAlarm(_that);case CheckAlarms() when checkAlarms != null:
 return checkAlarms(_that);case GetAlarmById() when getAlarmById != null:
 return getAlarmById(_that);case ClearSelectedAlarm() when clearSelectedAlarm != null:
 return clearSelectedAlarm(_that);case RefreshAlarm() when refreshAlarm != null:
-return refreshAlarm(_that);case _:
+return refreshAlarm(_that);case RequestNavigate() when requestNavigate != null:
+return requestNavigate(_that);case NavigationHandled() when navigationHandled != null:
+return navigationHandled(_that);case _:
   return null;
 
 }
@@ -137,7 +143,7 @@ return refreshAlarm(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function( int userId)?  getAlarms,TResult Function()?  loadMore,TResult Function( int alarmId)?  checkAnAlarm,TResult Function()?  checkAlarms,TResult Function( int alarmId)?  getAlarmById,TResult Function()?  clearSelectedAlarm,TResult Function()?  refreshAlarm,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function( int userId)?  getAlarms,TResult Function()?  loadMore,TResult Function( int alarmId)?  checkAnAlarm,TResult Function()?  checkAlarms,TResult Function( int alarmId)?  getAlarmById,TResult Function()?  clearSelectedAlarm,TResult Function()?  refreshAlarm,TResult Function( AlarmEntity alarm)?  requestNavigate,TResult Function()?  navigationHandled,required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case GetAlarms() when getAlarms != null:
 return getAlarms(_that.userId);case LoadMoreAlarms() when loadMore != null:
@@ -146,7 +152,9 @@ return checkAnAlarm(_that.alarmId);case CheckAlarms() when checkAlarms != null:
 return checkAlarms();case GetAlarmById() when getAlarmById != null:
 return getAlarmById(_that.alarmId);case ClearSelectedAlarm() when clearSelectedAlarm != null:
 return clearSelectedAlarm();case RefreshAlarm() when refreshAlarm != null:
-return refreshAlarm();case _:
+return refreshAlarm();case RequestNavigate() when requestNavigate != null:
+return requestNavigate(_that.alarm);case NavigationHandled() when navigationHandled != null:
+return navigationHandled();case _:
   return orElse();
 
 }
@@ -164,7 +172,7 @@ return refreshAlarm();case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function( int userId)  getAlarms,required TResult Function()  loadMore,required TResult Function( int alarmId)  checkAnAlarm,required TResult Function()  checkAlarms,required TResult Function( int alarmId)  getAlarmById,required TResult Function()  clearSelectedAlarm,required TResult Function()  refreshAlarm,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function( int userId)  getAlarms,required TResult Function()  loadMore,required TResult Function( int alarmId)  checkAnAlarm,required TResult Function()  checkAlarms,required TResult Function( int alarmId)  getAlarmById,required TResult Function()  clearSelectedAlarm,required TResult Function()  refreshAlarm,required TResult Function( AlarmEntity alarm)  requestNavigate,required TResult Function()  navigationHandled,}) {final _that = this;
 switch (_that) {
 case GetAlarms():
 return getAlarms(_that.userId);case LoadMoreAlarms():
@@ -173,7 +181,9 @@ return checkAnAlarm(_that.alarmId);case CheckAlarms():
 return checkAlarms();case GetAlarmById():
 return getAlarmById(_that.alarmId);case ClearSelectedAlarm():
 return clearSelectedAlarm();case RefreshAlarm():
-return refreshAlarm();case _:
+return refreshAlarm();case RequestNavigate():
+return requestNavigate(_that.alarm);case NavigationHandled():
+return navigationHandled();case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -190,7 +200,7 @@ return refreshAlarm();case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function( int userId)?  getAlarms,TResult? Function()?  loadMore,TResult? Function( int alarmId)?  checkAnAlarm,TResult? Function()?  checkAlarms,TResult? Function( int alarmId)?  getAlarmById,TResult? Function()?  clearSelectedAlarm,TResult? Function()?  refreshAlarm,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function( int userId)?  getAlarms,TResult? Function()?  loadMore,TResult? Function( int alarmId)?  checkAnAlarm,TResult? Function()?  checkAlarms,TResult? Function( int alarmId)?  getAlarmById,TResult? Function()?  clearSelectedAlarm,TResult? Function()?  refreshAlarm,TResult? Function( AlarmEntity alarm)?  requestNavigate,TResult? Function()?  navigationHandled,}) {final _that = this;
 switch (_that) {
 case GetAlarms() when getAlarms != null:
 return getAlarms(_that.userId);case LoadMoreAlarms() when loadMore != null:
@@ -199,7 +209,9 @@ return checkAnAlarm(_that.alarmId);case CheckAlarms() when checkAlarms != null:
 return checkAlarms();case GetAlarmById() when getAlarmById != null:
 return getAlarmById(_that.alarmId);case ClearSelectedAlarm() when clearSelectedAlarm != null:
 return clearSelectedAlarm();case RefreshAlarm() when refreshAlarm != null:
-return refreshAlarm();case _:
+return refreshAlarm();case RequestNavigate() when requestNavigate != null:
+return requestNavigate(_that.alarm);case NavigationHandled() when navigationHandled != null:
+return navigationHandled();case _:
   return null;
 
 }
@@ -525,6 +537,113 @@ int get hashCode => runtimeType.hashCode;
 @override
 String toString() {
   return 'AlarmEvent.refreshAlarm()';
+}
+
+
+}
+
+
+
+
+/// @nodoc
+
+
+class RequestNavigate implements AlarmEvent {
+  const RequestNavigate({required this.alarm});
+  
+
+ final  AlarmEntity alarm;
+
+/// Create a copy of AlarmEvent
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$RequestNavigateCopyWith<RequestNavigate> get copyWith => _$RequestNavigateCopyWithImpl<RequestNavigate>(this, _$identity);
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is RequestNavigate&&(identical(other.alarm, alarm) || other.alarm == alarm));
+}
+
+
+@override
+int get hashCode => Object.hash(runtimeType,alarm);
+
+@override
+String toString() {
+  return 'AlarmEvent.requestNavigate(alarm: $alarm)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class $RequestNavigateCopyWith<$Res> implements $AlarmEventCopyWith<$Res> {
+  factory $RequestNavigateCopyWith(RequestNavigate value, $Res Function(RequestNavigate) _then) = _$RequestNavigateCopyWithImpl;
+@useResult
+$Res call({
+ AlarmEntity alarm
+});
+
+
+$AlarmEntityCopyWith<$Res> get alarm;
+
+}
+/// @nodoc
+class _$RequestNavigateCopyWithImpl<$Res>
+    implements $RequestNavigateCopyWith<$Res> {
+  _$RequestNavigateCopyWithImpl(this._self, this._then);
+
+  final RequestNavigate _self;
+  final $Res Function(RequestNavigate) _then;
+
+/// Create a copy of AlarmEvent
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') $Res call({Object? alarm = null,}) {
+  return _then(RequestNavigate(
+alarm: null == alarm ? _self.alarm : alarm // ignore: cast_nullable_to_non_nullable
+as AlarmEntity,
+  ));
+}
+
+/// Create a copy of AlarmEvent
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$AlarmEntityCopyWith<$Res> get alarm {
+  
+  return $AlarmEntityCopyWith<$Res>(_self.alarm, (value) {
+    return _then(_self.copyWith(alarm: value));
+  });
+}
+}
+
+/// @nodoc
+
+
+class NavigationHandled implements AlarmEvent {
+  const NavigationHandled();
+  
+
+
+
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is NavigationHandled);
+}
+
+
+@override
+int get hashCode => runtimeType.hashCode;
+
+@override
+String toString() {
+  return 'AlarmEvent.navigationHandled()';
 }
 
 
