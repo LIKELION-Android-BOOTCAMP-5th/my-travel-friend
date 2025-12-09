@@ -6,7 +6,7 @@ import '../../domain/repositories/friend_request_repository.dart';
 import '../datasources/friend_request_data_source.dart';
 
 // [엄수빈] 친구 요청 레포 구현
-@LazySingleton(as: FriendRequestDataSource)
+@LazySingleton(as: FriendRequestRepository)
 class FriendRequestRepositoryImpl implements FriendRequestRepository {
   final FriendRequestDataSource _dataSource;
 
