@@ -11,6 +11,7 @@ abstract class AlarmSettingEntity with _$AlarmSettingEntity {
     required bool entireAlarm,
     required bool tripRequest,
     required bool friendRequest,
+    required bool newFriend,
     required bool scheduleEdited,
     required bool scheduleAdded,
     required bool scheduleDeleted,
