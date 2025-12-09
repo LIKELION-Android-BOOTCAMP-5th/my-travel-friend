@@ -78,6 +78,12 @@ import '../../feature/diary/presentation/viewmodels/edit_diary_bloc.dart'
     as _i703;
 import '../../feature/diary/presentation/viewmodels/new_diary_bloc.dart'
     as _i1041;
+import '../../feature/setting/domain/repositories/alarm_setting_repository.dart'
+    as _i212;
+import '../../feature/setting/domain/usecases/get_my_alarm_setting_usecase.dart'
+    as _i980;
+import '../../feature/setting/domain/usecases/update_alarm_setting_usecase.dart'
+    as _i50;
 import '../../feature/trip/data/datasources/trip_data_source.dart' as _i1063;
 import '../../feature/trip/data/datasources/trip_data_source_impl.dart'
     as _i386;
@@ -94,6 +100,7 @@ import '../../feature/trip/domain/usecases/give_up_trip_usecase.dart' as _i317;
 import '../../feature/trip/domain/usecases/search_trip_usecase.dart' as _i437;
 import '../../feature/trip/presentation/viewmodels/trip/trip_bloc.dart'
     as _i616;
+import '../service/internal/deep_link_service.dart' as _i507;
 import '../service/internal/push_notification_service.dart' as _i737;
 import 'register_module.dart' as _i291;
 
@@ -123,6 +130,7 @@ extension GetItInjectableX on _i174.GetIt {
       () => registerModule.initializeGoogleSignIn(),
       preResolve: true,
     );
+    gh.lazySingleton<_i507.DeepLinkService>(() => _i507.DeepLinkService());
     gh.lazySingleton<_i278.AppleAuthDataSource>(
       () => _i45.AppleAuthDataSourceImpl(gh<_i454.SupabaseClient>()),
     );
@@ -134,6 +142,12 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.lazySingleton<_i881.DiaryDataSource>(
       () => _i663.DiaryDataSourceImpl(gh<_i454.SupabaseClient>()),
+    );
+    gh.lazySingleton<_i980.GetMyAlarmSettingUseCase>(
+      () => _i980.GetMyAlarmSettingUseCase(gh<_i212.AlarmSettingRepository>()),
+    );
+    gh.lazySingleton<_i50.UpdateAlarmSettingUseCase>(
+      () => _i50.UpdateAlarmSettingUseCase(gh<_i212.AlarmSettingRepository>()),
     );
     gh.lazySingleton<_i1063.TripDataSource>(
       () => _i386.TripDataSourceImpl(gh<_i454.SupabaseClient>()),
