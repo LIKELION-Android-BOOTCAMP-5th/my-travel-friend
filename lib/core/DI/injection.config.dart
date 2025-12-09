@@ -94,6 +94,7 @@ import '../../feature/trip/domain/usecases/give_up_trip_usecase.dart' as _i317;
 import '../../feature/trip/domain/usecases/search_trip_usecase.dart' as _i437;
 import '../../feature/trip/presentation/viewmodels/trip/trip_bloc.dart'
     as _i616;
+import '../service/internal/deep_link_service.dart' as _i507;
 import '../service/internal/push_notification_service.dart' as _i737;
 import 'register_module.dart' as _i291;
 
@@ -123,6 +124,7 @@ extension GetItInjectableX on _i174.GetIt {
       () => registerModule.initializeGoogleSignIn(),
       preResolve: true,
     );
+    gh.lazySingleton<_i507.DeepLinkService>(() => _i507.DeepLinkService());
     gh.lazySingleton<_i278.AppleAuthDataSource>(
       () => _i45.AppleAuthDataSourceImpl(gh<_i454.SupabaseClient>()),
     );
