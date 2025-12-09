@@ -18,6 +18,7 @@ import '../feature/diary/presentation/screens/edit_diary_bloc_widget.dart';
 import '../feature/diary/presentation/screens/new_diary_bloc_widget.dart';
 import '../feature/diary/presentation/viewmodels/diary_bloc.dart';
 import '../feature/diary/presentation/viewmodels/new_diary_bloc.dart';
+import '../feature/setting/presentation/screens/alarm_setting_bloc_widget.dart';
 
 final getIt = GetIt.instance;
 
@@ -123,6 +124,10 @@ class AppRouter {
       GoRoute(
         path: '/alarm',
         builder: (context, state) => const AlarmBlocWidget(),
+      ),
+      GoRoute(
+        path: '/alarmSetting',
+        builder: (context, state) => const AlarmSettingBlocWidget(),
       ),
     ],
   );
