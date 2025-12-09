@@ -12,6 +12,7 @@ extension AlarmTypeExtension on String {
     return switch (this) {
       "TRIP_REQUEST" => (AppIcon.airplane, colorScheme.primary),
       "FRIEND_REQUEST" => (AppIcon.invite, colorScheme.secondary),
+      "NEW_FRIEND" => (AppIcon.crews, colorScheme.secondary),
       "SCHEDULE_EDITED" => (AppIcon.calendar, colorScheme.tertiary),
       "SCHEDULE_ADDED" => (AppIcon.calendar, colorScheme.tertiary),
       "SCHEDULE_DELETED" => (AppIcon.calendar, colorScheme.tertiary),

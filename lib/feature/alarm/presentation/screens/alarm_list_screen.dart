@@ -224,6 +224,10 @@ class _AlarmListScreenState extends State<AlarmListScreen> {
         // 친구 요청 페이지로 이동
         break;
 
+      case 'NEW_FRIEND':
+        // 친구 목록 페이지로 이동
+        break;
+
       case 'SCHEDULE_EDITED':
       case 'SCHEDULE_ADDED':
       case 'SCHEDULE_DELETED':
