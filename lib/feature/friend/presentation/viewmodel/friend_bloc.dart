@@ -2,11 +2,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../../../core/result/result.dart';
-import '../../domain/entities/friend_entity.dart';
 import '../../domain/usecases/delete_friend_usecase.dart';
 import '../../domain/usecases/get_friends_usecase.dart';
 import 'friend_event.dart';
-import 'friend_page_state.dart';
 import 'friend_state.dart';
 
 // [엄수빈] 친구 블록
@@ -37,29 +35,21 @@ class FriendBloc extends Bloc<FriendEvent, FriendState> {
     Emitter<FriendState> emit,
   ) async {
     emit(
-      state.copyWith(
-        userId: event.userId,
-        pageState: const FriendPageState.loading(),
-      ),
+      state.copyWith(userId: event.userId, pageState: FriendPageState.loading),
     );
 
-    final Result<List<FriendEntity>> res = await _getFriendUsecase.call(
-      event.userId,
-    );
+    final res = await _getFriendUsecase.call(event.userId);
 
     res.when(
       success: (friends) {
-        emit(
-          state.copyWith(pageState: FriendPageState.loaded(friends: friends)),
-        );
+        emit(state.copyWith(pageState: FriendPageState.loaded));
       },
       failure: (failure) {
         emit(
           state.copyWith(
-            pageState: FriendPageState.error(
-              message: failure.message,
-              errorType: _getErrorType(failure),
-            ),
+            pageState: FriendPageState.error,
+            message: failure.message,
+            errorType: _getErrorType(failure),
           ),
         );
       },
@@ -71,7 +61,7 @@ class FriendBloc extends Bloc<FriendEvent, FriendState> {
     DeleteFriend event,
     Emitter<FriendState> emit,
   ) async {
-    emit(state.copyWith(pageState: const FriendPageState.loading()));
+    emit(state.copyWith(pageState: FriendPageState.loading));
 
     final Result<void> res = await _deleteFriendUsecase.call(
       event.myUserId,
@@ -83,10 +73,7 @@ class FriendBloc extends Bloc<FriendEvent, FriendState> {
         emit(
           state.copyWith(
             userId: event.myUserId,
-            pageState: const FriendPageState.success(
-              message: '친구를 삭제했습니다',
-              actionType: 'delete',
-            ),
+            pageState: FriendPageState.success,
           ),
         );
 
@@ -96,10 +83,9 @@ class FriendBloc extends Bloc<FriendEvent, FriendState> {
       failure: (failure) {
         emit(
           state.copyWith(
-            pageState: FriendPageState.error(
-              message: '친구 삭제 실패: ${failure.message}',
-              errorType: _getErrorType(failure),
-            ),
+            pageState: FriendPageState.error,
+            message: failure.message,
+            errorType: _getErrorType(failure),
           ),
         );
       },
@@ -111,10 +97,8 @@ class FriendBloc extends Bloc<FriendEvent, FriendState> {
     emit(
       state.copyWith(
         userId: event.myUserId,
-        pageState: const FriendPageState.success(
-          message: '친구와 여행을 떠나볼까요?',
-          actionType: 'goTravel',
-        ),
+        pageState: FriendPageState.success,
+        actionType: 'go_travel',
       ),
     );
   }

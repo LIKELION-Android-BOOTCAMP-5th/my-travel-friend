@@ -6,6 +6,7 @@ import 'package:my_travel_friend/feature/auth/presentation/screens/auth_bloc_wid
 import 'package:my_travel_friend/feature/auth/presentation/viewmodel/auth/auth_bloc.dart';
 import 'package:my_travel_friend/feature/auth/presentation/viewmodel/auth_profile/auth_profile_bloc.dart';
 import 'package:my_travel_friend/feature/auth/presentation/viewmodel/auth_profile/auth_profile_state.dart';
+import 'package:my_travel_friend/feature/friend/presentation/screen/friend_bloc_widget.dart';
 import 'package:my_travel_friend/feature/trip/presentation/screens/trip_bloc_widget.dart';
 import 'package:my_travel_friend/feature/trip/presentation/viewmodels/trip/trip_bloc.dart';
 import 'package:my_travel_friend/splash.dart';
@@ -123,6 +124,10 @@ class AppRouter {
       GoRoute(
         path: '/alarm',
         builder: (context, state) => const AlarmBlocWidget(),
+      ),
+      GoRoute(
+        path: '/friend',
+        builder: (context, state) => const FriendBlocWidget(userId: 10),
       ),
     ],
   );
