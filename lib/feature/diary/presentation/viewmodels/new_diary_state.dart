@@ -28,6 +28,8 @@ abstract class NewDiaryState with _$NewDiaryState {
     @Default(true) bool isPublic,
     int? scheduleId,
 
+    // 일정 관련
+
     // 생성된 다이어리
     DiaryEntity? createdDiary,
 

@@ -55,7 +55,7 @@ extension NewDiaryEventPatterns on NewDiaryEvent {
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( CreateDiary value)?  createDiary,TResult Function( ChangeType value)?  changeType,TResult Function( ChangeTitle value)?  changeTitle,TResult Function( ChangeContent value)?  changeContent,TResult Function( ChangeRating value)?  changeRating,TResult Function( SelectImg value)?  selectImg,TResult Function( RemoveImg value)?  removeImg,TResult Function( ChangeCost value)?  changeCost,TResult Function( ChangePublic value)?  changePublic,TResult Function( ChooseSchedule value)?  chooseSchedule,TResult Function( Reset value)?  reset,required TResult orElse(),}){
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( CreateDiary value)?  createDiary,TResult Function( ChangeType value)?  changeType,TResult Function( ChangeTitle value)?  changeTitle,TResult Function( ChangeContent value)?  changeContent,TResult Function( ChangeRating value)?  changeRating,TResult Function( SelectImg value)?  selectImg,TResult Function( RemoveImg value)?  removeImg,TResult Function( ChangeCost value)?  changeCost,TResult Function( ChangePublic value)?  changePublic,TResult Function( LoadSchedules value)?  loadSchedules,TResult Function( ChooseSchedule value)?  chooseSchedule,TResult Function( ClearSchedule value)?  clearSchedule,TResult Function( Reset value)?  reset,required TResult orElse(),}){
 final _that = this;
 switch (_that) {
 case CreateDiary() when createDiary != null:
@@ -67,8 +67,10 @@ return changeRating(_that);case SelectImg() when selectImg != null:
 return selectImg(_that);case RemoveImg() when removeImg != null:
 return removeImg(_that);case ChangeCost() when changeCost != null:
 return changeCost(_that);case ChangePublic() when changePublic != null:
-return changePublic(_that);case ChooseSchedule() when chooseSchedule != null:
-return chooseSchedule(_that);case Reset() when reset != null:
+return changePublic(_that);case LoadSchedules() when loadSchedules != null:
+return loadSchedules(_that);case ChooseSchedule() when chooseSchedule != null:
+return chooseSchedule(_that);case ClearSchedule() when clearSchedule != null:
+return clearSchedule(_that);case Reset() when reset != null:
 return reset(_that);case _:
   return orElse();
 
@@ -87,7 +89,7 @@ return reset(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( CreateDiary value)  createDiary,required TResult Function( ChangeType value)  changeType,required TResult Function( ChangeTitle value)  changeTitle,required TResult Function( ChangeContent value)  changeContent,required TResult Function( ChangeRating value)  changeRating,required TResult Function( SelectImg value)  selectImg,required TResult Function( RemoveImg value)  removeImg,required TResult Function( ChangeCost value)  changeCost,required TResult Function( ChangePublic value)  changePublic,required TResult Function( ChooseSchedule value)  chooseSchedule,required TResult Function( Reset value)  reset,}){
+@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( CreateDiary value)  createDiary,required TResult Function( ChangeType value)  changeType,required TResult Function( ChangeTitle value)  changeTitle,required TResult Function( ChangeContent value)  changeContent,required TResult Function( ChangeRating value)  changeRating,required TResult Function( SelectImg value)  selectImg,required TResult Function( RemoveImg value)  removeImg,required TResult Function( ChangeCost value)  changeCost,required TResult Function( ChangePublic value)  changePublic,required TResult Function( LoadSchedules value)  loadSchedules,required TResult Function( ChooseSchedule value)  chooseSchedule,required TResult Function( ClearSchedule value)  clearSchedule,required TResult Function( Reset value)  reset,}){
 final _that = this;
 switch (_that) {
 case CreateDiary():
@@ -99,8 +101,10 @@ return changeRating(_that);case SelectImg():
 return selectImg(_that);case RemoveImg():
 return removeImg(_that);case ChangeCost():
 return changeCost(_that);case ChangePublic():
-return changePublic(_that);case ChooseSchedule():
-return chooseSchedule(_that);case Reset():
+return changePublic(_that);case LoadSchedules():
+return loadSchedules(_that);case ChooseSchedule():
+return chooseSchedule(_that);case ClearSchedule():
+return clearSchedule(_that);case Reset():
 return reset(_that);case _:
   throw StateError('Unexpected subclass');
 
@@ -118,7 +122,7 @@ return reset(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( CreateDiary value)?  createDiary,TResult? Function( ChangeType value)?  changeType,TResult? Function( ChangeTitle value)?  changeTitle,TResult? Function( ChangeContent value)?  changeContent,TResult? Function( ChangeRating value)?  changeRating,TResult? Function( SelectImg value)?  selectImg,TResult? Function( RemoveImg value)?  removeImg,TResult? Function( ChangeCost value)?  changeCost,TResult? Function( ChangePublic value)?  changePublic,TResult? Function( ChooseSchedule value)?  chooseSchedule,TResult? Function( Reset value)?  reset,}){
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( CreateDiary value)?  createDiary,TResult? Function( ChangeType value)?  changeType,TResult? Function( ChangeTitle value)?  changeTitle,TResult? Function( ChangeContent value)?  changeContent,TResult? Function( ChangeRating value)?  changeRating,TResult? Function( SelectImg value)?  selectImg,TResult? Function( RemoveImg value)?  removeImg,TResult? Function( ChangeCost value)?  changeCost,TResult? Function( ChangePublic value)?  changePublic,TResult? Function( LoadSchedules value)?  loadSchedules,TResult? Function( ChooseSchedule value)?  chooseSchedule,TResult? Function( ClearSchedule value)?  clearSchedule,TResult? Function( Reset value)?  reset,}){
 final _that = this;
 switch (_that) {
 case CreateDiary() when createDiary != null:
@@ -130,8 +134,10 @@ return changeRating(_that);case SelectImg() when selectImg != null:
 return selectImg(_that);case RemoveImg() when removeImg != null:
 return removeImg(_that);case ChangeCost() when changeCost != null:
 return changeCost(_that);case ChangePublic() when changePublic != null:
-return changePublic(_that);case ChooseSchedule() when chooseSchedule != null:
-return chooseSchedule(_that);case Reset() when reset != null:
+return changePublic(_that);case LoadSchedules() when loadSchedules != null:
+return loadSchedules(_that);case ChooseSchedule() when chooseSchedule != null:
+return chooseSchedule(_that);case ClearSchedule() when clearSchedule != null:
+return clearSchedule(_that);case Reset() when reset != null:
 return reset(_that);case _:
   return null;
 
@@ -149,7 +155,7 @@ return reset(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  createDiary,TResult Function( String type)?  changeType,TResult Function( String title)?  changeTitle,TResult Function( String content)?  changeContent,TResult Function( double rating)?  changeRating,TResult Function( File file)?  selectImg,TResult Function()?  removeImg,TResult Function( int? cost)?  changeCost,TResult Function( bool isPublic)?  changePublic,TResult Function( int? scheduleId)?  chooseSchedule,TResult Function()?  reset,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  createDiary,TResult Function( String type)?  changeType,TResult Function( String title)?  changeTitle,TResult Function( String content)?  changeContent,TResult Function( double rating)?  changeRating,TResult Function( File file)?  selectImg,TResult Function()?  removeImg,TResult Function( int? cost)?  changeCost,TResult Function( bool isPublic)?  changePublic,TResult Function()?  loadSchedules,TResult Function( int? scheduleId)?  chooseSchedule,TResult Function()?  clearSchedule,TResult Function()?  reset,required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case CreateDiary() when createDiary != null:
 return createDiary();case ChangeType() when changeType != null:
@@ -160,8 +166,10 @@ return changeRating(_that.rating);case SelectImg() when selectImg != null:
 return selectImg(_that.file);case RemoveImg() when removeImg != null:
 return removeImg();case ChangeCost() when changeCost != null:
 return changeCost(_that.cost);case ChangePublic() when changePublic != null:
-return changePublic(_that.isPublic);case ChooseSchedule() when chooseSchedule != null:
-return chooseSchedule(_that.scheduleId);case Reset() when reset != null:
+return changePublic(_that.isPublic);case LoadSchedules() when loadSchedules != null:
+return loadSchedules();case ChooseSchedule() when chooseSchedule != null:
+return chooseSchedule(_that.scheduleId);case ClearSchedule() when clearSchedule != null:
+return clearSchedule();case Reset() when reset != null:
 return reset();case _:
   return orElse();
 
@@ -180,7 +188,7 @@ return reset();case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  createDiary,required TResult Function( String type)  changeType,required TResult Function( String title)  changeTitle,required TResult Function( String content)  changeContent,required TResult Function( double rating)  changeRating,required TResult Function( File file)  selectImg,required TResult Function()  removeImg,required TResult Function( int? cost)  changeCost,required TResult Function( bool isPublic)  changePublic,required TResult Function( int? scheduleId)  chooseSchedule,required TResult Function()  reset,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  createDiary,required TResult Function( String type)  changeType,required TResult Function( String title)  changeTitle,required TResult Function( String content)  changeContent,required TResult Function( double rating)  changeRating,required TResult Function( File file)  selectImg,required TResult Function()  removeImg,required TResult Function( int? cost)  changeCost,required TResult Function( bool isPublic)  changePublic,required TResult Function()  loadSchedules,required TResult Function( int? scheduleId)  chooseSchedule,required TResult Function()  clearSchedule,required TResult Function()  reset,}) {final _that = this;
 switch (_that) {
 case CreateDiary():
 return createDiary();case ChangeType():
@@ -191,8 +199,10 @@ return changeRating(_that.rating);case SelectImg():
 return selectImg(_that.file);case RemoveImg():
 return removeImg();case ChangeCost():
 return changeCost(_that.cost);case ChangePublic():
-return changePublic(_that.isPublic);case ChooseSchedule():
-return chooseSchedule(_that.scheduleId);case Reset():
+return changePublic(_that.isPublic);case LoadSchedules():
+return loadSchedules();case ChooseSchedule():
+return chooseSchedule(_that.scheduleId);case ClearSchedule():
+return clearSchedule();case Reset():
 return reset();case _:
   throw StateError('Unexpected subclass');
 
@@ -210,7 +220,7 @@ return reset();case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  createDiary,TResult? Function( String type)?  changeType,TResult? Function( String title)?  changeTitle,TResult? Function( String content)?  changeContent,TResult? Function( double rating)?  changeRating,TResult? Function( File file)?  selectImg,TResult? Function()?  removeImg,TResult? Function( int? cost)?  changeCost,TResult? Function( bool isPublic)?  changePublic,TResult? Function( int? scheduleId)?  chooseSchedule,TResult? Function()?  reset,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  createDiary,TResult? Function( String type)?  changeType,TResult? Function( String title)?  changeTitle,TResult? Function( String content)?  changeContent,TResult? Function( double rating)?  changeRating,TResult? Function( File file)?  selectImg,TResult? Function()?  removeImg,TResult? Function( int? cost)?  changeCost,TResult? Function( bool isPublic)?  changePublic,TResult? Function()?  loadSchedules,TResult? Function( int? scheduleId)?  chooseSchedule,TResult? Function()?  clearSchedule,TResult? Function()?  reset,}) {final _that = this;
 switch (_that) {
 case CreateDiary() when createDiary != null:
 return createDiary();case ChangeType() when changeType != null:
@@ -221,8 +231,10 @@ return changeRating(_that.rating);case SelectImg() when selectImg != null:
 return selectImg(_that.file);case RemoveImg() when removeImg != null:
 return removeImg();case ChangeCost() when changeCost != null:
 return changeCost(_that.cost);case ChangePublic() when changePublic != null:
-return changePublic(_that.isPublic);case ChooseSchedule() when chooseSchedule != null:
-return chooseSchedule(_that.scheduleId);case Reset() when reset != null:
+return changePublic(_that.isPublic);case LoadSchedules() when loadSchedules != null:
+return loadSchedules();case ChooseSchedule() when chooseSchedule != null:
+return chooseSchedule(_that.scheduleId);case ClearSchedule() when clearSchedule != null:
+return clearSchedule();case Reset() when reset != null:
 return reset();case _:
   return null;
 
@@ -760,6 +772,38 @@ as bool,
 /// @nodoc
 
 
+class LoadSchedules implements NewDiaryEvent {
+  const LoadSchedules();
+  
+
+
+
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is LoadSchedules);
+}
+
+
+@override
+int get hashCode => runtimeType.hashCode;
+
+@override
+String toString() {
+  return 'NewDiaryEvent.loadSchedules()';
+}
+
+
+}
+
+
+
+
+/// @nodoc
+
+
 class ChooseSchedule implements NewDiaryEvent {
   const ChooseSchedule({required this.scheduleId});
   
@@ -822,6 +866,38 @@ as int?,
 
 
 }
+
+/// @nodoc
+
+
+class ClearSchedule implements NewDiaryEvent {
+  const ClearSchedule();
+  
+
+
+
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ClearSchedule);
+}
+
+
+@override
+int get hashCode => runtimeType.hashCode;
+
+@override
+String toString() {
+  return 'NewDiaryEvent.clearSchedule()';
+}
+
+
+}
+
+
+
 
 /// @nodoc
 

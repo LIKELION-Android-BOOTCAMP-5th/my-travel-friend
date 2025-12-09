@@ -14,9 +14,13 @@ class NewDiaryBloc extends Bloc<NewDiaryEvent, NewDiaryState> {
   // usecase 주입
   final CreateDiaryUseCase _createDiaryUseCase;
   final DiaryRepository _diaryRepository;
+  // schedule 관련 필요
 
-  NewDiaryBloc(this._createDiaryUseCase, this._diaryRepository)
-    : super(const NewDiaryState()) {
+  NewDiaryBloc(
+    this._createDiaryUseCase,
+    this._diaryRepository,
+    // schedule 관련 필요
+  ) : super(const NewDiaryState()) {
     on<CreateDiary>(_onCreateDiary);
     on<ChangeType>(_onChangeType);
     on<ChangeTitle>(_onChangeTitle);
@@ -28,6 +32,7 @@ class NewDiaryBloc extends Bloc<NewDiaryEvent, NewDiaryState> {
     on<ChangePublic>(_onChangePublic);
     on<ChooseSchedule>(_onChooseSchedule);
     on<Reset>(_onReset);
+    // 일정 관련
   }
 
   // 핸들러
@@ -204,4 +209,6 @@ class NewDiaryBloc extends Bloc<NewDiaryEvent, NewDiaryState> {
   Future<void> _onReset(Reset event, Emitter<NewDiaryState> emit) async {
     emit(const NewDiaryState());
   }
+
+  // 일정 목록 로드
 }
