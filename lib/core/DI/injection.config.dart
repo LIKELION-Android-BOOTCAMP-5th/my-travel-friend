@@ -30,6 +30,7 @@ import '../../feature/alarm/domain/usecases/check_an_alarm_usecase.dart'
 import '../../feature/alarm/domain/usecases/get_alarm_by_id_usecase.dart'
     as _i820;
 import '../../feature/alarm/domain/usecases/get_alarms_usecase.dart' as _i135;
+import '../../feature/alarm/domain/usecases/watch_alarms_usecase.dart' as _i25;
 import '../../feature/alarm/presentation/viewmodels/alarm_bloc.dart' as _i693;
 import '../../feature/auth/data/datasources/apple_auth_data_source.dart'
     as _i278;
@@ -387,6 +388,9 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i135.GetAlarmsUseCase>(
       () => _i135.GetAlarmsUseCase(gh<_i831.AlarmRepository>()),
     );
+    gh.lazySingleton<_i25.WatchAlarmsUseCase>(
+      () => _i25.WatchAlarmsUseCase(gh<_i831.AlarmRepository>()),
+    );
     gh.lazySingleton<_i980.GetMyAlarmSettingUseCase>(
       () => _i980.GetMyAlarmSettingUseCase(gh<_i212.AlarmSettingRepository>()),
     );
@@ -413,6 +417,8 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i820.GetAlarmByIdUseCase>(),
         gh<_i539.CheckAnAlarmUseCase>(),
         gh<_i889.CheckAlarmsUseCase>(),
+        gh<_i25.WatchAlarmsUseCase>(),
+        gh<_i831.AlarmRepository>(),
       ),
     );
     gh.factory<_i871.AlarmSettingBloc>(

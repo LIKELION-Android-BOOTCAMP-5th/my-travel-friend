@@ -37,4 +37,17 @@ class AlarmEvent with _$AlarmEvent {
 
   // 네비게이션 처리완료(플래그 초기화)
   const factory AlarmEvent.navigationHandled() = NavigationHandled;
+
+  // Realtime 구독 시작
+  const factory AlarmEvent.startWatching({required int userId}) = StartWatching;
+
+  // Realtime 알림 수신(성공)
+  const factory AlarmEvent.alarmsReceived({required List<AlarmEntity> alarms}) =
+      AlarmsReceived;
+
+  // Realtime 에러 수신
+  const factory AlarmEvent.watchError({required String message}) = WatchError;
+
+  // 구독 해제
+  const factory AlarmEvent.stopWatching() = StopWatching;
 }

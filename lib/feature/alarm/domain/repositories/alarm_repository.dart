@@ -14,4 +14,10 @@ abstract class AlarmRepository {
 
   // 알림 리스트 전체 읽음 처리
   Future<Result<List<AlarmEntity>>> checkAlarms(int userId);
+
+  // Realtime 스트림
+  Stream<Result<List<AlarmEntity>>> watchAlarms(int userId);
+
+  // 구독해제
+  Future<void> unsubscribeAlarms();
 }

@@ -13,9 +13,15 @@ abstract class AlarmDataSource {
   // 알림 상세 조회
   Future<Result<AlarmDTO>> getAlarmById(int id);
 
-  // 알림 하나 삭제
+  // 알림 하나 읽음 처리
   Future<Result<List<AlarmDTO>>> checkAnAlarm(int id);
 
-  // 알림 전체 삭제
+  // 알림 전체 읽음 처리
   Future<Result<List<AlarmDTO>>> checkAlarms(int userId);
+
+  // 리얼타임 구독
+  Stream<Result<List<AlarmDTO>>> watchAlarms(int userId);
+
+  // 구독 해제
+  Future<void> unsubscribeAlarms();
 }
