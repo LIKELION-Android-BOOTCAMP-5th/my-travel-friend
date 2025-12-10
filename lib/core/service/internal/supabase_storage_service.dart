@@ -1,7 +1,9 @@
 import 'dart:io';
 
+import 'package:injectable/injectable.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
+@LazySingleton()
 class SupabaseStorageService {
   final SupabaseClient client;
 

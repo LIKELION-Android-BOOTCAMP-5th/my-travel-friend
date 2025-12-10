@@ -30,6 +30,8 @@ import '../../feature/alarm/domain/usecases/check_an_alarm_usecase.dart'
 import '../../feature/alarm/domain/usecases/get_alarm_by_id_usecase.dart'
     as _i820;
 import '../../feature/alarm/domain/usecases/get_alarms_usecase.dart' as _i135;
+import '../../feature/alarm/domain/usecases/unsubscribe_alarms_usecase.dart'
+    as _i1067;
 import '../../feature/alarm/domain/usecases/watch_alarms_usecase.dart' as _i25;
 import '../../feature/alarm/presentation/viewmodels/alarm_bloc.dart' as _i693;
 import '../../feature/auth/data/datasources/apple_auth_data_source.dart'
@@ -185,6 +187,9 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.lazySingleton<_i153.GoogleAuthDataSource>(
       () => _i795.SocialAuthDataSourceImpl(gh<_i116.GoogleSignIn>()),
+    );
+    gh.lazySingleton<_i1051.SupabaseStorageService>(
+      () => _i1051.SupabaseStorageService(gh<_i454.SupabaseClient>()),
     );
     gh.lazySingleton<_i1063.TripDataSource>(
       () => _i386.TripDataSourceImpl(
@@ -388,6 +393,9 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i135.GetAlarmsUseCase>(
       () => _i135.GetAlarmsUseCase(gh<_i831.AlarmRepository>()),
     );
+    gh.lazySingleton<_i1067.UnsubscribeAlarmsUseCase>(
+      () => _i1067.UnsubscribeAlarmsUseCase(gh<_i831.AlarmRepository>()),
+    );
     gh.lazySingleton<_i25.WatchAlarmsUseCase>(
       () => _i25.WatchAlarmsUseCase(gh<_i831.AlarmRepository>()),
     );
@@ -411,6 +419,12 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i858.SignOutUseCase>(),
       ),
     );
+    gh.factory<_i871.AlarmSettingBloc>(
+      () => _i871.AlarmSettingBloc(
+        gh<_i980.GetMyAlarmSettingUseCase>(),
+        gh<_i50.UpdateAlarmSettingUseCase>(),
+      ),
+    );
     gh.factory<_i693.AlarmBloc>(
       () => _i693.AlarmBloc(
         gh<_i135.GetAlarmsUseCase>(),
@@ -418,13 +432,7 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i539.CheckAnAlarmUseCase>(),
         gh<_i889.CheckAlarmsUseCase>(),
         gh<_i25.WatchAlarmsUseCase>(),
-        gh<_i831.AlarmRepository>(),
-      ),
-    );
-    gh.factory<_i871.AlarmSettingBloc>(
-      () => _i871.AlarmSettingBloc(
-        gh<_i980.GetMyAlarmSettingUseCase>(),
-        gh<_i50.UpdateAlarmSettingUseCase>(),
+        gh<_i1067.UnsubscribeAlarmsUseCase>(),
       ),
     );
     return this;
