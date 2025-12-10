@@ -19,9 +19,12 @@ class ProfileEvent with _$ProfileEvent {
   // 이미지 제거
   const factory ProfileEvent.removeImg() = RemoveImg;
 
-  // 닉네임 변경
+  // 닉네임 변경 (입력할 때마다)
   const factory ProfileEvent.changeNickname({required String nickname}) =
       ChangeNickname;
+
+  // 닉네임 중복 체크 (debounce 후 호출)
+  const factory ProfileEvent.checkNicknameDuplicate() = CheckNicknameDuplicate;
 
   // 변경 사항 저장하기
   const factory ProfileEvent.updateProfile() = UpdateProfile;

@@ -19,7 +19,8 @@ mixin _$ProfileState {
  String get nickname; String? get imgUrl;// 서버에 저장된 이미지 URL
  File? get localImgFile;// 로컬에서 선택한 새 이미지
 // 이미지 삭제 플래그 (기존 이미지 삭제 요청)
- bool get isImgRemoved;// 상태
+ bool get isImgRemoved;// 닉네임 상태
+ NicknameStatus get nicknameStatus;// 상태
  ProfilePageState get pageState; bool get isUploading; String? get message;
 /// Create a copy of ProfileState
 /// with the given fields replaced by the non-null parameter values.
@@ -31,16 +32,16 @@ $ProfileStateCopyWith<ProfileState> get copyWith => _$ProfileStateCopyWithImpl<P
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is ProfileState&&(identical(other.originalProfile, originalProfile) || other.originalProfile == originalProfile)&&(identical(other.nickname, nickname) || other.nickname == nickname)&&(identical(other.imgUrl, imgUrl) || other.imgUrl == imgUrl)&&(identical(other.localImgFile, localImgFile) || other.localImgFile == localImgFile)&&(identical(other.isImgRemoved, isImgRemoved) || other.isImgRemoved == isImgRemoved)&&(identical(other.pageState, pageState) || other.pageState == pageState)&&(identical(other.isUploading, isUploading) || other.isUploading == isUploading)&&(identical(other.message, message) || other.message == message));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ProfileState&&(identical(other.originalProfile, originalProfile) || other.originalProfile == originalProfile)&&(identical(other.nickname, nickname) || other.nickname == nickname)&&(identical(other.imgUrl, imgUrl) || other.imgUrl == imgUrl)&&(identical(other.localImgFile, localImgFile) || other.localImgFile == localImgFile)&&(identical(other.isImgRemoved, isImgRemoved) || other.isImgRemoved == isImgRemoved)&&(identical(other.nicknameStatus, nicknameStatus) || other.nicknameStatus == nicknameStatus)&&(identical(other.pageState, pageState) || other.pageState == pageState)&&(identical(other.isUploading, isUploading) || other.isUploading == isUploading)&&(identical(other.message, message) || other.message == message));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,originalProfile,nickname,imgUrl,localImgFile,isImgRemoved,pageState,isUploading,message);
+int get hashCode => Object.hash(runtimeType,originalProfile,nickname,imgUrl,localImgFile,isImgRemoved,nicknameStatus,pageState,isUploading,message);
 
 @override
 String toString() {
-  return 'ProfileState(originalProfile: $originalProfile, nickname: $nickname, imgUrl: $imgUrl, localImgFile: $localImgFile, isImgRemoved: $isImgRemoved, pageState: $pageState, isUploading: $isUploading, message: $message)';
+  return 'ProfileState(originalProfile: $originalProfile, nickname: $nickname, imgUrl: $imgUrl, localImgFile: $localImgFile, isImgRemoved: $isImgRemoved, nicknameStatus: $nicknameStatus, pageState: $pageState, isUploading: $isUploading, message: $message)';
 }
 
 
@@ -51,7 +52,7 @@ abstract mixin class $ProfileStateCopyWith<$Res>  {
   factory $ProfileStateCopyWith(ProfileState value, $Res Function(ProfileState) _then) = _$ProfileStateCopyWithImpl;
 @useResult
 $Res call({
- UserEntity? originalProfile, String nickname, String? imgUrl, File? localImgFile, bool isImgRemoved, ProfilePageState pageState, bool isUploading, String? message
+ UserEntity? originalProfile, String nickname, String? imgUrl, File? localImgFile, bool isImgRemoved, NicknameStatus nicknameStatus, ProfilePageState pageState, bool isUploading, String? message
 });
 
 
@@ -68,14 +69,15 @@ class _$ProfileStateCopyWithImpl<$Res>
 
 /// Create a copy of ProfileState
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? originalProfile = freezed,Object? nickname = null,Object? imgUrl = freezed,Object? localImgFile = freezed,Object? isImgRemoved = null,Object? pageState = null,Object? isUploading = null,Object? message = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? originalProfile = freezed,Object? nickname = null,Object? imgUrl = freezed,Object? localImgFile = freezed,Object? isImgRemoved = null,Object? nicknameStatus = null,Object? pageState = null,Object? isUploading = null,Object? message = freezed,}) {
   return _then(_self.copyWith(
 originalProfile: freezed == originalProfile ? _self.originalProfile : originalProfile // ignore: cast_nullable_to_non_nullable
 as UserEntity?,nickname: null == nickname ? _self.nickname : nickname // ignore: cast_nullable_to_non_nullable
 as String,imgUrl: freezed == imgUrl ? _self.imgUrl : imgUrl // ignore: cast_nullable_to_non_nullable
 as String?,localImgFile: freezed == localImgFile ? _self.localImgFile : localImgFile // ignore: cast_nullable_to_non_nullable
 as File?,isImgRemoved: null == isImgRemoved ? _self.isImgRemoved : isImgRemoved // ignore: cast_nullable_to_non_nullable
-as bool,pageState: null == pageState ? _self.pageState : pageState // ignore: cast_nullable_to_non_nullable
+as bool,nicknameStatus: null == nicknameStatus ? _self.nicknameStatus : nicknameStatus // ignore: cast_nullable_to_non_nullable
+as NicknameStatus,pageState: null == pageState ? _self.pageState : pageState // ignore: cast_nullable_to_non_nullable
 as ProfilePageState,isUploading: null == isUploading ? _self.isUploading : isUploading // ignore: cast_nullable_to_non_nullable
 as bool,message: freezed == message ? _self.message : message // ignore: cast_nullable_to_non_nullable
 as String?,
@@ -175,10 +177,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( UserEntity? originalProfile,  String nickname,  String? imgUrl,  File? localImgFile,  bool isImgRemoved,  ProfilePageState pageState,  bool isUploading,  String? message)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( UserEntity? originalProfile,  String nickname,  String? imgUrl,  File? localImgFile,  bool isImgRemoved,  NicknameStatus nicknameStatus,  ProfilePageState pageState,  bool isUploading,  String? message)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _ProfileState() when $default != null:
-return $default(_that.originalProfile,_that.nickname,_that.imgUrl,_that.localImgFile,_that.isImgRemoved,_that.pageState,_that.isUploading,_that.message);case _:
+return $default(_that.originalProfile,_that.nickname,_that.imgUrl,_that.localImgFile,_that.isImgRemoved,_that.nicknameStatus,_that.pageState,_that.isUploading,_that.message);case _:
   return orElse();
 
 }
@@ -196,10 +198,10 @@ return $default(_that.originalProfile,_that.nickname,_that.imgUrl,_that.localImg
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( UserEntity? originalProfile,  String nickname,  String? imgUrl,  File? localImgFile,  bool isImgRemoved,  ProfilePageState pageState,  bool isUploading,  String? message)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( UserEntity? originalProfile,  String nickname,  String? imgUrl,  File? localImgFile,  bool isImgRemoved,  NicknameStatus nicknameStatus,  ProfilePageState pageState,  bool isUploading,  String? message)  $default,) {final _that = this;
 switch (_that) {
 case _ProfileState():
-return $default(_that.originalProfile,_that.nickname,_that.imgUrl,_that.localImgFile,_that.isImgRemoved,_that.pageState,_that.isUploading,_that.message);case _:
+return $default(_that.originalProfile,_that.nickname,_that.imgUrl,_that.localImgFile,_that.isImgRemoved,_that.nicknameStatus,_that.pageState,_that.isUploading,_that.message);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -216,10 +218,10 @@ return $default(_that.originalProfile,_that.nickname,_that.imgUrl,_that.localImg
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( UserEntity? originalProfile,  String nickname,  String? imgUrl,  File? localImgFile,  bool isImgRemoved,  ProfilePageState pageState,  bool isUploading,  String? message)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( UserEntity? originalProfile,  String nickname,  String? imgUrl,  File? localImgFile,  bool isImgRemoved,  NicknameStatus nicknameStatus,  ProfilePageState pageState,  bool isUploading,  String? message)?  $default,) {final _that = this;
 switch (_that) {
 case _ProfileState() when $default != null:
-return $default(_that.originalProfile,_that.nickname,_that.imgUrl,_that.localImgFile,_that.isImgRemoved,_that.pageState,_that.isUploading,_that.message);case _:
+return $default(_that.originalProfile,_that.nickname,_that.imgUrl,_that.localImgFile,_that.isImgRemoved,_that.nicknameStatus,_that.pageState,_that.isUploading,_that.message);case _:
   return null;
 
 }
@@ -231,7 +233,7 @@ return $default(_that.originalProfile,_that.nickname,_that.imgUrl,_that.localImg
 
 
 class _ProfileState extends ProfileState {
-  const _ProfileState({this.originalProfile, this.nickname = '', this.imgUrl, this.localImgFile, this.isImgRemoved = false, this.pageState = ProfilePageState.initial, this.isUploading = false, this.message}): super._();
+  const _ProfileState({this.originalProfile, this.nickname = '', this.imgUrl, this.localImgFile, this.isImgRemoved = false, this.nicknameStatus = NicknameStatus.initial, this.pageState = ProfilePageState.initial, this.isUploading = false, this.message}): super._();
   
 
 // 원본 프로필 (변경 감지용)
@@ -244,6 +246,8 @@ class _ProfileState extends ProfileState {
 // 로컬에서 선택한 새 이미지
 // 이미지 삭제 플래그 (기존 이미지 삭제 요청)
 @override@JsonKey() final  bool isImgRemoved;
+// 닉네임 상태
+@override@JsonKey() final  NicknameStatus nicknameStatus;
 // 상태
 @override@JsonKey() final  ProfilePageState pageState;
 @override@JsonKey() final  bool isUploading;
@@ -259,16 +263,16 @@ _$ProfileStateCopyWith<_ProfileState> get copyWith => __$ProfileStateCopyWithImp
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ProfileState&&(identical(other.originalProfile, originalProfile) || other.originalProfile == originalProfile)&&(identical(other.nickname, nickname) || other.nickname == nickname)&&(identical(other.imgUrl, imgUrl) || other.imgUrl == imgUrl)&&(identical(other.localImgFile, localImgFile) || other.localImgFile == localImgFile)&&(identical(other.isImgRemoved, isImgRemoved) || other.isImgRemoved == isImgRemoved)&&(identical(other.pageState, pageState) || other.pageState == pageState)&&(identical(other.isUploading, isUploading) || other.isUploading == isUploading)&&(identical(other.message, message) || other.message == message));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ProfileState&&(identical(other.originalProfile, originalProfile) || other.originalProfile == originalProfile)&&(identical(other.nickname, nickname) || other.nickname == nickname)&&(identical(other.imgUrl, imgUrl) || other.imgUrl == imgUrl)&&(identical(other.localImgFile, localImgFile) || other.localImgFile == localImgFile)&&(identical(other.isImgRemoved, isImgRemoved) || other.isImgRemoved == isImgRemoved)&&(identical(other.nicknameStatus, nicknameStatus) || other.nicknameStatus == nicknameStatus)&&(identical(other.pageState, pageState) || other.pageState == pageState)&&(identical(other.isUploading, isUploading) || other.isUploading == isUploading)&&(identical(other.message, message) || other.message == message));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,originalProfile,nickname,imgUrl,localImgFile,isImgRemoved,pageState,isUploading,message);
+int get hashCode => Object.hash(runtimeType,originalProfile,nickname,imgUrl,localImgFile,isImgRemoved,nicknameStatus,pageState,isUploading,message);
 
 @override
 String toString() {
-  return 'ProfileState(originalProfile: $originalProfile, nickname: $nickname, imgUrl: $imgUrl, localImgFile: $localImgFile, isImgRemoved: $isImgRemoved, pageState: $pageState, isUploading: $isUploading, message: $message)';
+  return 'ProfileState(originalProfile: $originalProfile, nickname: $nickname, imgUrl: $imgUrl, localImgFile: $localImgFile, isImgRemoved: $isImgRemoved, nicknameStatus: $nicknameStatus, pageState: $pageState, isUploading: $isUploading, message: $message)';
 }
 
 
@@ -279,7 +283,7 @@ abstract mixin class _$ProfileStateCopyWith<$Res> implements $ProfileStateCopyWi
   factory _$ProfileStateCopyWith(_ProfileState value, $Res Function(_ProfileState) _then) = __$ProfileStateCopyWithImpl;
 @override @useResult
 $Res call({
- UserEntity? originalProfile, String nickname, String? imgUrl, File? localImgFile, bool isImgRemoved, ProfilePageState pageState, bool isUploading, String? message
+ UserEntity? originalProfile, String nickname, String? imgUrl, File? localImgFile, bool isImgRemoved, NicknameStatus nicknameStatus, ProfilePageState pageState, bool isUploading, String? message
 });
 
 
@@ -296,14 +300,15 @@ class __$ProfileStateCopyWithImpl<$Res>
 
 /// Create a copy of ProfileState
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? originalProfile = freezed,Object? nickname = null,Object? imgUrl = freezed,Object? localImgFile = freezed,Object? isImgRemoved = null,Object? pageState = null,Object? isUploading = null,Object? message = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? originalProfile = freezed,Object? nickname = null,Object? imgUrl = freezed,Object? localImgFile = freezed,Object? isImgRemoved = null,Object? nicknameStatus = null,Object? pageState = null,Object? isUploading = null,Object? message = freezed,}) {
   return _then(_ProfileState(
 originalProfile: freezed == originalProfile ? _self.originalProfile : originalProfile // ignore: cast_nullable_to_non_nullable
 as UserEntity?,nickname: null == nickname ? _self.nickname : nickname // ignore: cast_nullable_to_non_nullable
 as String,imgUrl: freezed == imgUrl ? _self.imgUrl : imgUrl // ignore: cast_nullable_to_non_nullable
 as String?,localImgFile: freezed == localImgFile ? _self.localImgFile : localImgFile // ignore: cast_nullable_to_non_nullable
 as File?,isImgRemoved: null == isImgRemoved ? _self.isImgRemoved : isImgRemoved // ignore: cast_nullable_to_non_nullable
-as bool,pageState: null == pageState ? _self.pageState : pageState // ignore: cast_nullable_to_non_nullable
+as bool,nicknameStatus: null == nicknameStatus ? _self.nicknameStatus : nicknameStatus // ignore: cast_nullable_to_non_nullable
+as NicknameStatus,pageState: null == pageState ? _self.pageState : pageState // ignore: cast_nullable_to_non_nullable
 as ProfilePageState,isUploading: null == isUploading ? _self.isUploading : isUploading // ignore: cast_nullable_to_non_nullable
 as bool,message: freezed == message ? _self.message : message // ignore: cast_nullable_to_non_nullable
 as String?,

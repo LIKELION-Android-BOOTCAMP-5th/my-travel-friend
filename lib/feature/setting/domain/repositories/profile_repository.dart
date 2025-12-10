@@ -17,4 +17,7 @@ abstract class ProfileRepository {
 
   // 이미지 삭제
   Future<Result<void>> deleteImg(String imgUrl);
+
+  // 닉네임 중복 체크
+  Future<Result<bool>> checkNicknameDuplicate(String nickname);
 }

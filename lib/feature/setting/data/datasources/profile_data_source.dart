@@ -15,4 +15,7 @@ abstract class ProfileDataSource {
 
   // 이미지 삭제
   Future<Result<void>> deleteImg(String imgUrl);
+
+  // 닉네임 중복 체크(true: 중복)
+  Future<Result<bool>> checkNicknameDuplicate(String nickname);
 }

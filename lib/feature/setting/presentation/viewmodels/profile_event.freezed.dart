@@ -55,14 +55,15 @@ extension ProfileEventPatterns on ProfileEvent {
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( LoadProfile value)?  loadProfile,TResult Function( SelectImg value)?  selectImg,TResult Function( RemoveImg value)?  removeImg,TResult Function( ChangeNickname value)?  changeNickname,TResult Function( UpdateProfile value)?  updateProfile,required TResult orElse(),}){
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( LoadProfile value)?  loadProfile,TResult Function( SelectImg value)?  selectImg,TResult Function( RemoveImg value)?  removeImg,TResult Function( ChangeNickname value)?  changeNickname,TResult Function( CheckNicknameDuplicate value)?  checkNicknameDuplicate,TResult Function( UpdateProfile value)?  updateProfile,required TResult orElse(),}){
 final _that = this;
 switch (_that) {
 case LoadProfile() when loadProfile != null:
 return loadProfile(_that);case SelectImg() when selectImg != null:
 return selectImg(_that);case RemoveImg() when removeImg != null:
 return removeImg(_that);case ChangeNickname() when changeNickname != null:
-return changeNickname(_that);case UpdateProfile() when updateProfile != null:
+return changeNickname(_that);case CheckNicknameDuplicate() when checkNicknameDuplicate != null:
+return checkNicknameDuplicate(_that);case UpdateProfile() when updateProfile != null:
 return updateProfile(_that);case _:
   return orElse();
 
@@ -81,14 +82,15 @@ return updateProfile(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( LoadProfile value)  loadProfile,required TResult Function( SelectImg value)  selectImg,required TResult Function( RemoveImg value)  removeImg,required TResult Function( ChangeNickname value)  changeNickname,required TResult Function( UpdateProfile value)  updateProfile,}){
+@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( LoadProfile value)  loadProfile,required TResult Function( SelectImg value)  selectImg,required TResult Function( RemoveImg value)  removeImg,required TResult Function( ChangeNickname value)  changeNickname,required TResult Function( CheckNicknameDuplicate value)  checkNicknameDuplicate,required TResult Function( UpdateProfile value)  updateProfile,}){
 final _that = this;
 switch (_that) {
 case LoadProfile():
 return loadProfile(_that);case SelectImg():
 return selectImg(_that);case RemoveImg():
 return removeImg(_that);case ChangeNickname():
-return changeNickname(_that);case UpdateProfile():
+return changeNickname(_that);case CheckNicknameDuplicate():
+return checkNicknameDuplicate(_that);case UpdateProfile():
 return updateProfile(_that);case _:
   throw StateError('Unexpected subclass');
 
@@ -106,14 +108,15 @@ return updateProfile(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( LoadProfile value)?  loadProfile,TResult? Function( SelectImg value)?  selectImg,TResult? Function( RemoveImg value)?  removeImg,TResult? Function( ChangeNickname value)?  changeNickname,TResult? Function( UpdateProfile value)?  updateProfile,}){
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( LoadProfile value)?  loadProfile,TResult? Function( SelectImg value)?  selectImg,TResult? Function( RemoveImg value)?  removeImg,TResult? Function( ChangeNickname value)?  changeNickname,TResult? Function( CheckNicknameDuplicate value)?  checkNicknameDuplicate,TResult? Function( UpdateProfile value)?  updateProfile,}){
 final _that = this;
 switch (_that) {
 case LoadProfile() when loadProfile != null:
 return loadProfile(_that);case SelectImg() when selectImg != null:
 return selectImg(_that);case RemoveImg() when removeImg != null:
 return removeImg(_that);case ChangeNickname() when changeNickname != null:
-return changeNickname(_that);case UpdateProfile() when updateProfile != null:
+return changeNickname(_that);case CheckNicknameDuplicate() when checkNicknameDuplicate != null:
+return checkNicknameDuplicate(_that);case UpdateProfile() when updateProfile != null:
 return updateProfile(_that);case _:
   return null;
 
@@ -131,13 +134,14 @@ return updateProfile(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function( UserEntity profile)?  loadProfile,TResult Function( File file)?  selectImg,TResult Function()?  removeImg,TResult Function( String nickname)?  changeNickname,TResult Function()?  updateProfile,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function( UserEntity profile)?  loadProfile,TResult Function( File file)?  selectImg,TResult Function()?  removeImg,TResult Function( String nickname)?  changeNickname,TResult Function()?  checkNicknameDuplicate,TResult Function()?  updateProfile,required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case LoadProfile() when loadProfile != null:
 return loadProfile(_that.profile);case SelectImg() when selectImg != null:
 return selectImg(_that.file);case RemoveImg() when removeImg != null:
 return removeImg();case ChangeNickname() when changeNickname != null:
-return changeNickname(_that.nickname);case UpdateProfile() when updateProfile != null:
+return changeNickname(_that.nickname);case CheckNicknameDuplicate() when checkNicknameDuplicate != null:
+return checkNicknameDuplicate();case UpdateProfile() when updateProfile != null:
 return updateProfile();case _:
   return orElse();
 
@@ -156,13 +160,14 @@ return updateProfile();case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function( UserEntity profile)  loadProfile,required TResult Function( File file)  selectImg,required TResult Function()  removeImg,required TResult Function( String nickname)  changeNickname,required TResult Function()  updateProfile,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function( UserEntity profile)  loadProfile,required TResult Function( File file)  selectImg,required TResult Function()  removeImg,required TResult Function( String nickname)  changeNickname,required TResult Function()  checkNicknameDuplicate,required TResult Function()  updateProfile,}) {final _that = this;
 switch (_that) {
 case LoadProfile():
 return loadProfile(_that.profile);case SelectImg():
 return selectImg(_that.file);case RemoveImg():
 return removeImg();case ChangeNickname():
-return changeNickname(_that.nickname);case UpdateProfile():
+return changeNickname(_that.nickname);case CheckNicknameDuplicate():
+return checkNicknameDuplicate();case UpdateProfile():
 return updateProfile();case _:
   throw StateError('Unexpected subclass');
 
@@ -180,13 +185,14 @@ return updateProfile();case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function( UserEntity profile)?  loadProfile,TResult? Function( File file)?  selectImg,TResult? Function()?  removeImg,TResult? Function( String nickname)?  changeNickname,TResult? Function()?  updateProfile,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function( UserEntity profile)?  loadProfile,TResult? Function( File file)?  selectImg,TResult? Function()?  removeImg,TResult? Function( String nickname)?  changeNickname,TResult? Function()?  checkNicknameDuplicate,TResult? Function()?  updateProfile,}) {final _that = this;
 switch (_that) {
 case LoadProfile() when loadProfile != null:
 return loadProfile(_that.profile);case SelectImg() when selectImg != null:
 return selectImg(_that.file);case RemoveImg() when removeImg != null:
 return removeImg();case ChangeNickname() when changeNickname != null:
-return changeNickname(_that.nickname);case UpdateProfile() when updateProfile != null:
+return changeNickname(_that.nickname);case CheckNicknameDuplicate() when checkNicknameDuplicate != null:
+return checkNicknameDuplicate();case UpdateProfile() when updateProfile != null:
 return updateProfile();case _:
   return null;
 
@@ -433,6 +439,38 @@ as String,
 
 
 }
+
+/// @nodoc
+
+
+class CheckNicknameDuplicate implements ProfileEvent {
+  const CheckNicknameDuplicate();
+  
+
+
+
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is CheckNicknameDuplicate);
+}
+
+
+@override
+int get hashCode => runtimeType.hashCode;
+
+@override
+String toString() {
+  return 'ProfileEvent.checkNicknameDuplicate()';
+}
+
+
+}
+
+
+
 
 /// @nodoc
 

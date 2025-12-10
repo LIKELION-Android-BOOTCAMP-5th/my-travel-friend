@@ -9,6 +9,9 @@ part 'profile_state.freezed.dart';
 // [이재은] 프로필 설정 페이지 상태
 enum ProfilePageState { initial, loading, loaded, saving, success, error }
 
+// 닉네임 검증 상태
+enum NicknameStatus { initial, checking, available, duplicated, empty, tooLong }
+
 @freezed
 abstract class ProfileState with _$ProfileState {
   const ProfileState._();
@@ -24,11 +27,21 @@ abstract class ProfileState with _$ProfileState {
     // 이미지 삭제 플래그 (기존 이미지 삭제 요청)
     @Default(false) bool isImgRemoved,
 
+    // 닉네임 상태
+    @Default(NicknameStatus.initial) NicknameStatus nicknameStatus,
+
     // 상태
     @Default(ProfilePageState.initial) ProfilePageState pageState,
     @Default(false) bool isUploading,
     String? message,
   }) = _ProfileState;
+
+  // 닉네임 유효한지
+  bool get isNicknameValid {
+    return nicknameStatus == NicknameStatus.available ||
+        (nicknameStatus == NicknameStatus.initial &&
+            nickname == originalProfile?.nickname);
+  }
 
   // 변경사항 있는지 확인
   bool get hasChanges {
@@ -45,11 +58,14 @@ abstract class ProfileState with _$ProfileState {
     if (originalProfile == null) return false;
     if (nickname.trim().isEmpty) return false;
     if (pageState == ProfilePageState.saving) return false;
+    if (nicknameStatus == NicknameStatus.duplicated) return false;
+    if (nicknameStatus == NicknameStatus.checking) return false;
+    if (pageState == ProfilePageState.saving) return false;
 
     return hasChanges;
   }
 
-  // 현재 표시할 이미지 (로컬 선택 > 서버 URL > null)
+  // 현재 표시할 이미지 (로컬 선택 - 서버 URL - null)
   dynamic get displayImage {
     if (localImgFile != null) return localImgFile;
     if (!isImgRemoved && imgUrl != null) return imgUrl;

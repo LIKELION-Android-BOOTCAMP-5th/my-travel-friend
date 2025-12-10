@@ -106,4 +106,21 @@ class ProfileDataSourceImpl implements ProfileDataSource {
       return Result.failure(Failure.serverFailure(message: "이미지 삭제 실패 : $e"));
     }
   }
+
+  // 닉네임 중복 체크
+  @override
+  Future<Result<bool>> checkNicknameDuplicate(String nickname) async {
+    try {
+      final res = await _supabaseClient
+          .from('user')
+          .select('id')
+          .eq('nickname', nickname)
+          .maybeSingle();
+
+      final isDuplicate = res != null;
+      return Result.success(isDuplicate);
+    } catch (e) {
+      return Result.failure(Failure.serverFailure(message: e.toString()));
+    }
+  }
 }

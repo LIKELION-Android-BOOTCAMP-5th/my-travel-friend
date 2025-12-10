@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:my_travel_friend/feature/setting/presentation/screens/profile_screen.dart';
 
 import '../../../../core/DI/injection.dart';
 import '../../../../core/widget/toast_pop.dart';
@@ -46,7 +47,8 @@ class _ProfileBlocConsumer extends StatelessWidget {
       listener: (context, state) {
         switch (state.pageState) {
           case ProfilePageState.success:
-            // AuthProfileBloc 업데이트 (전역 상태 동기화)
+
+            // AuthProfileBloc 업데이트
             if (state.originalProfile != null) {
               context.read<AuthProfileBloc>().add(
                 AuthProfileEvent.updateUserInfo(
@@ -66,8 +68,18 @@ class _ProfileBlocConsumer extends StatelessWidget {
             break;
         }
       },
+      buildWhen: (prev, curr) =>
+          prev.pageState != curr.pageState ||
+          prev.originalProfile != curr.originalProfile,
       builder: (context, state) {
-        return const ProfileScreen();
+        // 프로필 로드 전이면 로딩 표시
+        if (state.originalProfile == null) {
+          return const Scaffold(
+            body: Center(child: CircularProgressIndicator()),
+          );
+        }
+
+        return ProfileScreen(profile: state.originalProfile!);
       },
     );
   }

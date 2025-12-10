@@ -51,4 +51,10 @@ class ProfileRepositoryImpl implements ProfileRepository {
   Future<Result<void>> deleteImg(String imgUrl) async {
     return await _dataSource.deleteImg(imgUrl);
   }
+
+  // 닉네임 중복 체크
+  @override
+  Future<Result<bool>> checkNicknameDuplicate(String nickname) async {
+    return await _dataSource.checkNicknameDuplicate(nickname);
+  }
 }
