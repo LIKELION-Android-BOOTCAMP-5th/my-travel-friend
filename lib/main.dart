@@ -35,6 +35,10 @@ void main() async {
   //백그라운드 핸들러
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
 
+  final pushService = GetIt.instance<PushNotificationService>();
+  //푸시메시지 초기화
+  await pushService.initialize();
+
   runApp(
     MultiBlocProvider(
       providers: [
