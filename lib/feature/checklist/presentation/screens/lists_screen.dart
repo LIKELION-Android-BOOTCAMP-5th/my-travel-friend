@@ -61,7 +61,7 @@ class ListsScreen extends StatelessWidget {
     );
   }
 
-  // 탭 버튼 (짐 목록 / 가기전 해야할일)
+  // 탭 버튼 (짐 목록 / 가기 전 해야 할 일)
   Widget _buildTabs(BuildContext context) {
     return BlocBuilder<ListsBloc, ListsState>(
       buildWhen: (prev, curr) => prev.currentTab != curr.currentTab,

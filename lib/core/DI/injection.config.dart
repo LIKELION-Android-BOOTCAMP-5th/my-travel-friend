@@ -291,14 +291,6 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i57.ToggleTodoListUseCase>(
       () => _i57.ToggleTodoListUseCase(gh<_i579.TodoListRepository>()),
     );
-    gh.factory<_i611.DiaryBloc>(
-      () => _i611.DiaryBloc(
-        gh<_i849.GetOurDiariesUseCase>(),
-        gh<_i730.GetMyDiariesUseCase>(),
-        gh<_i236.GetDiaryByIdUseCase>(),
-        gh<_i699.DeleteDiaryUseCase>(),
-      ),
-    );
     gh.lazySingleton<_i212.AlarmSettingRepository>(
       () =>
           _i124.AlarmSettingRepositoryImpl(gh<_i766.AlarmSettingDataSource>()),
@@ -338,6 +330,13 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.singleton<_i456.WatchAuthStateUseCase>(
       () => _i456.WatchAuthStateUseCase(gh<_i488.AuthRepository>()),
+    );
+    gh.factory<_i611.DiaryBloc>(
+      () => _i611.DiaryBloc(
+        gh<_i849.GetOurDiariesUseCase>(),
+        gh<_i730.GetMyDiariesUseCase>(),
+        gh<_i699.DeleteDiaryUseCase>(),
+      ),
     );
     gh.factory<_i1041.NewDiaryBloc>(
       () => _i1041.NewDiaryBloc(
