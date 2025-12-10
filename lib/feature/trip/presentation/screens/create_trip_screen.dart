@@ -462,7 +462,8 @@ class _InfoBox extends StatelessWidget {
             SizedBox(width: 24),
             Expanded(
               child: Text(
-                "여행을 만들고 나서 크루를 초대하면\n함께 일정을 계획할 수 있어요!",
+                "여행을 만들고 나서 크루를 초대하면 함께 일정을 계획할 수 있어요!",
+                overflow: TextOverflow.visible,
                 style: AppFont.regular.copyWith(
                   color: isDark ? AppColors.light : AppColors.dark,
                 ),

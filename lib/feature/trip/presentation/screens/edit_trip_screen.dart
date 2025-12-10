@@ -483,6 +483,7 @@ class _InfoBox extends StatelessWidget {
           Expanded(
             child: Text(
               "수정 후 저장하면 크루에게도 변경 사항이 공유돼요!",
+              overflow: TextOverflow.visible,
               style: AppFont.regular.copyWith(
                 color: isDark ? AppColors.light : AppColors.dark,
               ),
