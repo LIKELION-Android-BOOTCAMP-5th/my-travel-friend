@@ -185,8 +185,21 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i278.AppleAuthDataSource>(
       () => _i45.AppleAuthDataSourceImpl(gh<_i454.SupabaseClient>()),
     );
+    gh.lazySingleton<_i737.PushNotificationService>(
+      () => _i737.PushNotificationService(
+        gh<_i892.FirebaseMessaging>(),
+        gh<_i507.DeepLinkService>(),
+        gh<_i163.FlutterLocalNotificationsPlugin>(),
+      ),
+    );
     gh.lazySingleton<_i153.GoogleAuthDataSource>(
       () => _i795.SocialAuthDataSourceImpl(gh<_i116.GoogleSignIn>()),
+    );
+    gh.lazySingleton<_i1040.SupabaseAuthDataSource>(
+      () => _i436.SupabaseAuthDataSourceImpl(
+        gh<_i454.SupabaseClient>(),
+        gh<_i737.PushNotificationService>(),
+      ),
     );
     gh.lazySingleton<_i1051.SupabaseStorageService>(
       () => _i1051.SupabaseStorageService(gh<_i454.SupabaseClient>()),
@@ -197,8 +210,12 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i1051.SupabaseStorageService>(),
       ),
     );
-    gh.lazySingleton<_i737.PushNotificationService>(
-      () => _i737.PushNotificationService(gh<_i892.FirebaseMessaging>()),
+    gh.singleton<_i488.AuthRepository>(
+      () => _i263.AuthRepositoryImpl(
+        gh<_i153.GoogleAuthDataSource>(),
+        gh<_i278.AppleAuthDataSource>(),
+        gh<_i1040.SupabaseAuthDataSource>(),
+      ),
     );
     gh.lazySingleton<_i540.TodoListDataSource>(
       () => _i79.TodoListDataSourceImpl(gh<_i454.SupabaseClient>()),
@@ -251,16 +268,19 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i871.DiaryRepository>(
       () => _i148.DiaryRepositoryImpl(gh<_i881.DiaryDataSource>()),
     );
+    gh.lazySingleton<_i529.GetCurrentUserUseCase>(
+      () => _i529.GetCurrentUserUseCase(gh<_i488.AuthRepository>()),
+    );
+    gh.lazySingleton<_i858.SignOutUseCase>(
+      () => _i858.SignOutUseCase(gh<_i488.AuthRepository>()),
+    );
+    gh.lazySingleton<_i420.SocialSignInUseCase>(
+      () => _i420.SocialSignInUseCase(gh<_i488.AuthRepository>()),
+    );
     gh.factory<_i703.EditTripBloc>(
       () => _i703.EditTripBloc(
         gh<_i637.EditTripUsecase>(),
         gh<_i161.TripRepository>(),
-      ),
-    );
-    gh.lazySingleton<_i1040.SupabaseAuthDataSource>(
-      () => _i436.SupabaseAuthDataSourceImpl(
-        gh<_i454.SupabaseClient>(),
-        gh<_i737.PushNotificationService>(),
       ),
     );
     gh.lazySingleton<_i181.ChecklistRepository>(
@@ -276,17 +296,16 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i202.DeleteImgUsecase>(),
       ),
     );
+    gh.lazySingleton<_i739.CancelOauthUseCase>(
+      () => _i739.CancelOauthUseCase(gh<_i488.AuthRepository>()),
+    );
+    gh.singleton<_i456.WatchAuthStateUseCase>(
+      () => _i456.WatchAuthStateUseCase(gh<_i488.AuthRepository>()),
+    );
     gh.factory<_i873.CreateTripBloc>(
       () => _i873.CreateTripBloc(
         gh<_i779.CreateTripUsecase>(),
         gh<_i161.TripRepository>(),
-      ),
-    );
-    gh.singleton<_i488.AuthRepository>(
-      () => _i263.AuthRepositoryImpl(
-        gh<_i153.GoogleAuthDataSource>(),
-        gh<_i278.AppleAuthDataSource>(),
-        gh<_i1040.SupabaseAuthDataSource>(),
       ),
     );
     gh.lazySingleton<_i622.CreateChecklistUseCase>(
@@ -322,6 +341,13 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i1039.UpdateDiaryUseCase>(
       () => _i1039.UpdateDiaryUseCase(gh<_i871.DiaryRepository>()),
     );
+    gh.lazySingleton<_i474.AuthBloc>(
+      () => _i474.AuthBloc(
+        gh<_i420.SocialSignInUseCase>(),
+        gh<_i858.SignOutUseCase>(),
+        gh<_i739.CancelOauthUseCase>(),
+      ),
+    );
     gh.lazySingleton<_i1051.CreateTodoListUseCase>(
       () => _i1051.CreateTodoListUseCase(gh<_i579.TodoListRepository>()),
     );
@@ -335,14 +361,12 @@ extension GetItInjectableX on _i174.GetIt {
       () =>
           _i124.AlarmSettingRepositoryImpl(gh<_i766.AlarmSettingDataSource>()),
     );
-    gh.lazySingleton<_i529.GetCurrentUserUseCase>(
-      () => _i529.GetCurrentUserUseCase(gh<_i488.AuthRepository>()),
-    );
-    gh.lazySingleton<_i858.SignOutUseCase>(
-      () => _i858.SignOutUseCase(gh<_i488.AuthRepository>()),
-    );
-    gh.lazySingleton<_i420.SocialSignInUseCase>(
-      () => _i420.SocialSignInUseCase(gh<_i488.AuthRepository>()),
+    gh.singleton<_i387.AuthProfileBloc>(
+      () => _i387.AuthProfileBloc(
+        gh<_i456.WatchAuthStateUseCase>(),
+        gh<_i529.GetCurrentUserUseCase>(),
+        gh<_i858.SignOutUseCase>(),
+      ),
     );
     gh.factory<_i130.ListsBloc>(
       () => _i130.ListsBloc(
@@ -355,12 +379,6 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i349.ToggleChecklistUseCase>(),
         gh<_i57.ToggleTodoListUseCase>(),
       ),
-    );
-    gh.lazySingleton<_i739.CancelOauthUseCase>(
-      () => _i739.CancelOauthUseCase(gh<_i488.AuthRepository>()),
-    );
-    gh.singleton<_i456.WatchAuthStateUseCase>(
-      () => _i456.WatchAuthStateUseCase(gh<_i488.AuthRepository>()),
     );
     gh.factory<_i611.DiaryBloc>(
       () => _i611.DiaryBloc(
@@ -404,20 +422,6 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.lazySingleton<_i50.UpdateAlarmSettingUseCase>(
       () => _i50.UpdateAlarmSettingUseCase(gh<_i212.AlarmSettingRepository>()),
-    );
-    gh.lazySingleton<_i474.AuthBloc>(
-      () => _i474.AuthBloc(
-        gh<_i420.SocialSignInUseCase>(),
-        gh<_i858.SignOutUseCase>(),
-        gh<_i739.CancelOauthUseCase>(),
-      ),
-    );
-    gh.singleton<_i387.AuthProfileBloc>(
-      () => _i387.AuthProfileBloc(
-        gh<_i456.WatchAuthStateUseCase>(),
-        gh<_i529.GetCurrentUserUseCase>(),
-        gh<_i858.SignOutUseCase>(),
-      ),
     );
     gh.factory<_i871.AlarmSettingBloc>(
       () => _i871.AlarmSettingBloc(
