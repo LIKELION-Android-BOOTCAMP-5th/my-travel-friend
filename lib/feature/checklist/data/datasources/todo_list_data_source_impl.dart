@@ -41,10 +41,7 @@ class TodoListDataSourceImpl implements TodoListDataSource {
     try {
       final insertData = todolist.toJson()
         ..remove('id')
-        ..remove('trip_id')
-        ..remove('user_id')
-        ..remove('created_at')
-        ..remove('is_checked');
+        ..remove('created_at');
 
       final res = await _supabaseClient
           .from('todo_list')
@@ -65,6 +62,24 @@ class TodoListDataSourceImpl implements TodoListDataSource {
     try {
       await _supabaseClient.from('todo_list').delete().eq('id', id);
       return const Result.success(null);
+    } catch (e) {
+      return Result.failure(Failure.serverFailure(message: e.toString()));
+    }
+  }
+
+  @override
+  Future<Result<TodoListDTO>> toggleTodoList({
+    required int id,
+    required bool isChecked,
+  }) async {
+    try {
+      final res = await _supabaseClient
+          .from('todo_list')
+          .update({'is_checked': isChecked})
+          .eq('id', id)
+          .select()
+          .single();
+      return Result.success(TodoListDTO.fromJson(res));
     } catch (e) {
       return Result.failure(Failure.serverFailure(message: e.toString()));
     }

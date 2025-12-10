@@ -7,7 +7,7 @@ part 'checklist_entity.freezed.dart';
 @freezed
 abstract class ChecklistEntity with _$ChecklistEntity {
   const factory ChecklistEntity({
-    required int id,
+    int? id,
     String? createdAt,
     required int tripId,
     required int userId,

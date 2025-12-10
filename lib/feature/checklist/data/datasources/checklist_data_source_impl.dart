@@ -41,10 +41,7 @@ class ChecklistDataSourceImpl implements ChecklistDataSource {
     try {
       final insertData = checklist.toJson()
         ..remove('id')
-        ..remove('trip_id')
-        ..remove('user_id')
-        ..remove('created_at')
-        ..remove('is_checked');
+        ..remove('created_at');
 
       final res = await _supabaseClient
           .from('checklist')
@@ -65,6 +62,26 @@ class ChecklistDataSourceImpl implements ChecklistDataSource {
     try {
       await _supabaseClient.from('checklist').delete().eq('id', id);
       return const Result.success(null);
+    } catch (e) {
+      return Result.failure(Failure.serverFailure(message: e.toString()));
+    }
+  }
+
+  // 체크리스트 토글
+  @override
+  Future<Result<ChecklistDTO>> toggleChecklist({
+    required int id,
+    required bool isChecked,
+  }) async {
+    try {
+      final res = await _supabaseClient
+          .from('checklist')
+          .update({'is_checked': isChecked})
+          .eq('id', id)
+          .select()
+          .single();
+
+      return Result.success(ChecklistDTO.fromJson(res));
     } catch (e) {
       return Result.failure(Failure.serverFailure(message: e.toString()));
     }

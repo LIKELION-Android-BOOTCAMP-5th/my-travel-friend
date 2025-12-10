@@ -12,6 +12,7 @@ import 'package:my_travel_friend/splash.dart';
 import 'package:my_travel_friend/temp_screen.dart';
 
 import '../feature/alarm/presentation/screens/alarm_bloc_widget.dart';
+import '../feature/checklist/presentation/screens/lists_bloc_widget.dart';
 import '../feature/diary/domain/entities/diary_entity.dart';
 import '../feature/diary/presentation/screens/diary_bloc_widget.dart';
 import '../feature/diary/presentation/screens/edit_diary_bloc_widget.dart';
@@ -52,6 +53,7 @@ class AppRouter {
         '/diary/edit',
         '/mainHome',
         '/alarm',
+        '/checklist',
       ];
 
       final isGoingToLockedPath = lockedPaths.any(
@@ -128,6 +130,10 @@ class AppRouter {
       GoRoute(
         path: '/alarmSetting',
         builder: (context, state) => const AlarmSettingBlocWidget(),
+      ),
+      GoRoute(
+        path: '/checklist',
+        builder: (context, state) => const ListsBlocWidget(tripId: 1),
       ),
     ],
   );

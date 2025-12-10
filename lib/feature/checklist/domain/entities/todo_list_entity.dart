@@ -6,7 +6,7 @@ part 'todo_list_entity.freezed.dart';
 @freezed
 abstract class TodoListEntity with _$TodoListEntity {
   const factory TodoListEntity({
-    required int id,
+    int? id,
     String? createdAt,
     required int tripId,
     required int userId,

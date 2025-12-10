@@ -11,7 +11,7 @@ abstract class TodoListDTO with _$TodoListDTO {
   const TodoListDTO._();
 
   const factory TodoListDTO({
-    required int id,
+    int? id,
     @JsonKey(name: 'trip_id') required int tripId,
     @JsonKey(name: 'user_id') required int userId,
     required String content,
