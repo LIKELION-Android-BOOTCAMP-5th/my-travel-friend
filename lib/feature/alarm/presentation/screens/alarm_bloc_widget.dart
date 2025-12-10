@@ -31,6 +31,7 @@ class AlarmBlocWidget extends StatelessWidget {
       create: (_) {
         final bloc = sl<AlarmBloc>();
         bloc.add(AlarmEvent.getAlarms(userId: userId));
+        bloc.add(AlarmEvent.startWatching(userId: userId));
         return bloc;
       },
       child: _AlarmBlocConsumer(userId: userId),
@@ -38,10 +39,22 @@ class AlarmBlocWidget extends StatelessWidget {
   }
 }
 
-class _AlarmBlocConsumer extends StatelessWidget {
+class _AlarmBlocConsumer extends StatefulWidget {
   final int userId;
 
   const _AlarmBlocConsumer({required this.userId});
+
+  @override
+  State<_AlarmBlocConsumer> createState() => _AlarmBlocConsumerState();
+}
+
+class _AlarmBlocConsumerState extends State<_AlarmBlocConsumer> {
+  @override
+  void dispose() {
+    // 화면 종료 시 Realtime 구독 해제
+    context.read<AlarmBloc>().add(const AlarmEvent.stopWatching());
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -64,7 +77,7 @@ class _AlarmBlocConsumer extends StatelessWidget {
         if (state.pageState == AlarmPageState.loading) {
           return Stack(
             children: [
-              AlarmListScreen(userId: userId),
+              AlarmListScreen(userId: widget.userId),
               Container(
                 color: Colors.black.withOpacity(0.3),
                 child: const Center(child: CircularProgressIndicator()),
@@ -73,7 +86,7 @@ class _AlarmBlocConsumer extends StatelessWidget {
           );
         }
 
-        return AlarmListScreen(userId: userId);
+        return AlarmListScreen(userId: widget.userId);
       },
     );
   }

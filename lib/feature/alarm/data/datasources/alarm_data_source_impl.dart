@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:injectable/injectable.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -11,6 +13,12 @@ import 'alarm_data_source.dart';
 class AlarmDataSourceImpl implements AlarmDataSource {
   // Supabase 의존성 주입
   final SupabaseClient _supabaseClient;
+
+  // Realtime 채널 관리
+  RealtimeChannel? _alarmChannel;
+  final _alarmStreamController =
+      StreamController<Result<List<AlarmDTO>>>.broadcast();
+
   AlarmDataSourceImpl(this._supabaseClient);
 
   // 알림 리스트 조회
@@ -88,5 +96,54 @@ class AlarmDataSourceImpl implements AlarmDataSource {
     } catch (e) {
       return Result.failure(Failure.serverFailure(message: e.toString()));
     }
+  }
+
+  // 리얼타임 구독 - userId로 필터링
+  @override
+  Stream<Result<List<AlarmDTO>>> watchAlarms(int userId) {
+    // 기존 채널 정리
+    _alarmChannel?.unsubscribe();
+
+    _alarmChannel = _supabaseClient
+        .channel('alarm_user_$userId')
+        .onPostgresChanges(
+          event: PostgresChangeEvent.all,
+          schema: 'public',
+          table: 'alarm',
+          filter: PostgresChangeFilter(
+            type: PostgresChangeFilterType.eq,
+            column: 'user_id',
+            value: userId,
+          ),
+          callback: (payload) {
+            _handleRealtimeEvent(payload, userId);
+          },
+        )
+        .subscribe();
+
+    return _alarmStreamController.stream;
+  }
+
+  // Realtime 이벤트 처리
+  Future<void> _handleRealtimeEvent(
+    PostgresChangePayload payload,
+    int userId,
+  ) async {
+    // 변경 발생 시 전체 리스트 다시 조회
+    final res = await getAlarms(userId: userId, page: 0, limit: 50);
+    _alarmStreamController.add(res);
+  }
+
+  // 구독 해제
+  @override
+  Future<void> unsubscribeAlarms() async {
+    await _alarmChannel?.unsubscribe();
+    _alarmChannel = null;
+  }
+
+  // 리소스 정리
+  void dispose() {
+    _alarmChannel?.unsubscribe();
+    _alarmStreamController.close();
   }
 }

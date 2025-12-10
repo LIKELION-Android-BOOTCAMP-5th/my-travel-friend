@@ -1,11 +1,15 @@
+import 'dart:async';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 import 'package:my_travel_friend/feature/alarm/domain/usecases/check_an_alarm_usecase.dart';
 
 import '../../../../core/result/result.dart';
+import '../../domain/repositories/alarm_repository.dart';
 import '../../domain/usecases/check_alarms_usecase.dart';
 import '../../domain/usecases/get_alarm_by_id_usecase.dart';
 import '../../domain/usecases/get_alarms_usecase.dart';
+import '../../domain/usecases/watch_alarms_usecase.dart';
 import 'alarm_event.dart';
 import 'alarm_state.dart';
 
@@ -16,14 +20,21 @@ class AlarmBloc extends Bloc<AlarmEvent, AlarmState> {
   final GetAlarmByIdUseCase _getAlarmByIdUseCase;
   final CheckAnAlarmUseCase _checkAnAlarmUseCase;
   final CheckAlarmsUseCase _checkAlarmsUseCase;
+  final WatchAlarmsUseCase _watchAlarmsUseCase;
+  final AlarmRepository _alarmRepository; // 구독 해제용
 
   static const int _limit = 20;
+
+  // Realtime 구독 관리
+  StreamSubscription? _alarmSubscription;
 
   AlarmBloc(
     this._getAlarmsUseCase,
     this._getAlarmByIdUseCase,
     this._checkAnAlarmUseCase,
     this._checkAlarmsUseCase,
+    this._watchAlarmsUseCase,
+    this._alarmRepository,
   ) : super(const AlarmState()) {
     on<GetAlarms>(_onGetAlarms);
     on<LoadMoreAlarms>(_onLoadMore);
@@ -34,6 +45,62 @@ class AlarmBloc extends Bloc<AlarmEvent, AlarmState> {
     on<RefreshAlarm>(_onRefresh);
     on<RequestNavigate>(_onRequestNavigate);
     on<NavigationHandled>(_onNavigationHandled);
+    on<StartWatching>(_onStartWatching);
+    on<AlarmsReceived>(_onAlarmsReceived);
+    on<WatchError>(_onWatchError);
+    on<StopWatching>(_onStopWatching);
+  }
+
+  // Realtime 구독 시작
+  Future<void> _onStartWatching(
+    StartWatching event,
+    Emitter<AlarmState> emit,
+  ) async {
+    // 기존 구독 해제
+    await _alarmSubscription?.cancel();
+
+    emit(state.copyWith(userId: event.userId));
+
+    // 스트림 구독
+    _alarmSubscription = _watchAlarmsUseCase(event.userId).listen((res) {
+      res.when(
+        success: (alarms) => add(AlarmEvent.alarmsReceived(alarms: alarms)),
+        failure: (failure) =>
+            add(AlarmEvent.watchError(message: failure.message)),
+      );
+    });
+  }
+
+  // Realtime 알림 수신(성공)
+  void _onAlarmsReceived(AlarmsReceived event, Emitter<AlarmState> emit) {
+    emit(
+      state.copyWith(pageState: AlarmPageState.loaded, alarms: event.alarms),
+    );
+  }
+
+  // Realtime 에러 수신
+  void _onWatchError(WatchError event, Emitter<AlarmState> emit) {
+    emit(
+      state.copyWith(pageState: AlarmPageState.error, message: event.message),
+    );
+  }
+
+  // Realtime 구독 해제
+  Future<void> _onStopWatching(
+    StopWatching event,
+    Emitter<AlarmState> emit,
+  ) async {
+    await _alarmSubscription?.cancel();
+    _alarmSubscription = null;
+    await _alarmRepository.unsubscribeAlarms();
+  }
+
+  // Bloc 종료 시 정리
+  @override
+  Future<void> close() {
+    _alarmSubscription?.cancel();
+    _alarmRepository.unsubscribeAlarms();
+    return super.close();
   }
 
   // 자동 새로고침
