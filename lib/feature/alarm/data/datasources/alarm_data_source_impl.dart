@@ -16,8 +16,7 @@ class AlarmDataSourceImpl implements AlarmDataSource {
 
   // Realtime 채널 관리
   RealtimeChannel? _alarmChannel;
-  final _alarmStreamController =
-      StreamController<Result<List<AlarmDTO>>>.broadcast();
+  StreamController<Result<List<AlarmDTO>>>? _alarmStreamController;
 
   AlarmDataSourceImpl(this._supabaseClient);
 
@@ -103,6 +102,11 @@ class AlarmDataSourceImpl implements AlarmDataSource {
   Stream<Result<List<AlarmDTO>>> watchAlarms(int userId) {
     // 기존 채널 정리
     _alarmChannel?.unsubscribe();
+    _alarmStreamController?.close();
+
+    // 새 생성
+    _alarmStreamController =
+        StreamController<Result<List<AlarmDTO>>>.broadcast();
 
     _alarmChannel = _supabaseClient
         .channel('alarm_user_$userId')
@@ -121,7 +125,7 @@ class AlarmDataSourceImpl implements AlarmDataSource {
         )
         .subscribe();
 
-    return _alarmStreamController.stream;
+    return _alarmStreamController!.stream;
   }
 
   // Realtime 이벤트 처리
@@ -131,7 +135,7 @@ class AlarmDataSourceImpl implements AlarmDataSource {
   ) async {
     // 변경 발생 시 전체 리스트 다시 조회
     final res = await getAlarms(userId: userId, page: 0, limit: 50);
-    _alarmStreamController.add(res);
+    _alarmStreamController?.add(res);
   }
 
   // 구독 해제
@@ -139,11 +143,7 @@ class AlarmDataSourceImpl implements AlarmDataSource {
   Future<void> unsubscribeAlarms() async {
     await _alarmChannel?.unsubscribe();
     _alarmChannel = null;
-  }
-
-  // 리소스 정리
-  void dispose() {
-    _alarmChannel?.unsubscribe();
-    _alarmStreamController.close();
+    await _alarmStreamController?.close();
+    _alarmStreamController = null;
   }
 }
