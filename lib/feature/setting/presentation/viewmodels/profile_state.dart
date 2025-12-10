@@ -10,7 +10,15 @@ part 'profile_state.freezed.dart';
 enum ProfilePageState { initial, loading, loaded, saving, success, error }
 
 // 닉네임 검증 상태
-enum NicknameStatus { initial, checking, available, duplicated, empty, tooLong }
+enum NicknameStatus {
+  initial,
+  checking,
+  available,
+  duplicated,
+  empty,
+  tooLong,
+  tooShort,
+}
 
 @freezed
 abstract class ProfileState with _$ProfileState {

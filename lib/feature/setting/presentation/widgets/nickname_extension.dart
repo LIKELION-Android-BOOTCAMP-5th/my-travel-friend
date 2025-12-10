@@ -5,9 +5,10 @@ extension NicknameStatusExtension on NicknameStatus {
   // 에러 메시지
   String? get errorMessage {
     return switch (this) {
-      NicknameStatus.duplicated => '이미 사용 중인 닉네임입니다',
+      NicknameStatus.duplicated => '이미 사용 중인 닉네임이에요',
       NicknameStatus.empty => '닉네임을 입력해주세요',
-      NicknameStatus.tooLong => '닉네임은 10자 이하로 입력해주세요',
+      NicknameStatus.tooLong => '닉네임은 10글자 이하여야 해요',
+      NicknameStatus.tooShort => '닉네임은 2글자 이상이어야 해요',
       _ => null,
     };
   }

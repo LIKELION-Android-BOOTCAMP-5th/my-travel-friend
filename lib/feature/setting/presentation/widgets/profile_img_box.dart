@@ -47,7 +47,7 @@ class _ProfileImgBoxState extends State<ProfileImgBox> {
                 ProfileImg(
                   imageUrl: displayImage is String ? displayImage : null,
                   imageFile: displayImage is File ? displayImage : null,
-                  radius: 70,
+                  radius: 60,
                 ),
                 // 카메라 버튼
                 Positioned(
@@ -62,7 +62,7 @@ class _ProfileImgBoxState extends State<ProfileImgBox> {
                       ),
                       child: Center(
                         child: Padding(
-                          padding: EdgeInsets.all(16.0),
+                          padding: EdgeInsets.all(8.0),
                           child: Icon(
                             AppIcon.camera,
                             color: colorScheme.onPrimary,
@@ -102,7 +102,7 @@ class _ProfileImgBoxState extends State<ProfileImgBox> {
       if (hasImage)
         BottomSheetAction(
           icon: const Icon(Icons.delete_outline),
-          iconBgColor: colorScheme.error,
+          iconBgColor: colorScheme.tertiary,
           title: '이미지 삭제',
           onTap: () {
             context.read<ProfileBloc>().add(const ProfileEvent.removeImg());

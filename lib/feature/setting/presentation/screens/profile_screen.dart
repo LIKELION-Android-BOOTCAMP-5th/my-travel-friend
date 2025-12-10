@@ -8,55 +8,82 @@ import 'package:my_travel_friend/feature/setting/presentation/widgets/profile_im
 import '../../../../core/widget/button.dart';
 import '../../../../theme/app_colors.dart';
 import '../../../../theme/app_icon.dart';
-import '../../../auth/domain/entities/user_entity.dart';
+import '../viewmodels/profile_event.dart';
 import '../viewmodels/profile_state.dart';
+import '../widgets/email_box.dart';
 import '../widgets/nickname_box.dart';
 
 // [이재은] 프로필 설정 화면
 class ProfileScreen extends StatelessWidget {
-  final UserEntity profile;
-  const ProfileScreen({super.key, required this.profile});
+  const ProfileScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
     final isDark = colorScheme.brightness == Brightness.dark;
 
-    return SafeArea(
-      child: Scaffold(
-        backgroundColor: isDark ? AppColors.navy : AppColors.darkGray,
-        appBar: CustomButtonAppBar(
-          title: '프로필 설정',
-          leading: Button(
-            width: 40,
-            height: 40,
-            icon: Icon(AppIcon.back),
-            contentColor: isDark ? colorScheme.onSurface : AppColors.light,
-            borderRadius: 20,
-            onTap: () => context.pop(),
+    return BlocBuilder<ProfileBloc, ProfileState>(
+      builder: (context, state) {
+        final isSaving = state.pageState == ProfilePageState.saving;
+        final canSave = state.canSave;
+
+        return SafeArea(
+          child: Scaffold(
+            backgroundColor: isDark ? AppColors.navy : AppColors.darkGray,
+            appBar: CustomButtonAppBar(
+              title: '프로필 설정',
+              leading: Button(
+                width: 40,
+                height: 40,
+                icon: Icon(AppIcon.back),
+                contentColor: isDark ? colorScheme.onSurface : AppColors.light,
+                borderRadius: 20,
+                onTap: () => context.pop(),
+              ),
+              actions: [
+                Button(
+                  width: 40,
+                  height: 40,
+                  icon: isSaving || state.isUploading
+                      ? SizedBox(
+                          width: 20,
+                          height: 20,
+                          child: CircularProgressIndicator(
+                            strokeWidth: 2,
+                            color: isDark
+                                ? colorScheme.onSurface
+                                : AppColors.light,
+                          ),
+                        )
+                      : AppIcon.save,
+                  contentColor: isDark
+                      ? colorScheme.onSurface
+                      : AppColors.light,
+                  borderRadius: 20,
+                  onTap: canSave && !isSaving && !state.isUploading
+                      ? () {
+                          context.read<ProfileBloc>().add(
+                            const ProfileEvent.updateProfile(),
+                          );
+                        }
+                      : null,
+                ),
+              ],
+            ),
+            body: _buildProfileList(context, state),
           ),
-        ),
-        body: BlocBuilder<ProfileBloc, ProfileState>(
-          builder: (context, state) {
-            if (state.pageState == ProfilePageState.loading) {
-              return const Center(child: CircularProgressIndicator());
-            }
-
-            if (state.pageState == ProfilePageState.error) {
-              return Center(child: Text(state.message ?? "오류가 발생했습니다"));
-            }
-
-            return _buildProfileList(context, state);
-          },
-        ),
-      ),
+        );
+      },
     );
   }
 
   // 설정 화면
   Widget _buildProfileList(BuildContext context, ProfileState state) {
     final colorScheme = Theme.of(context).colorScheme;
-    final isDark = colorScheme.brightness == Brightness.dark;
+
+    if (state.pageState == ProfilePageState.loading) {
+      return const Center(child: CircularProgressIndicator());
+    }
 
     return SingleChildScrollView(
       child: Padding(
@@ -68,7 +95,9 @@ class ProfileScreen extends StatelessWidget {
             ProfileImgBox(),
             SizedBox(height: 16),
             NicknameBox(),
-            SizedBox(height: 8),
+            SizedBox(height: 16),
+            EmailBox(),
+            SizedBox(height: 16),
           ],
         ),
       ),

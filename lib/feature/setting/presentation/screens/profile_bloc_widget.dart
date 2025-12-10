@@ -32,7 +32,7 @@ class ProfileBlocWidget extends StatelessWidget {
         bloc.add(ProfileEvent.loadProfile(profile: userInfo));
         return bloc;
       },
-      child: const _ProfileBlocConsumer(),
+      child: _ProfileBlocConsumer(),
     );
   }
 }
@@ -45,41 +45,34 @@ class _ProfileBlocConsumer extends StatelessWidget {
     return BlocConsumer<ProfileBloc, ProfileState>(
       listenWhen: (prev, curr) => prev.pageState != curr.pageState,
       listener: (context, state) {
-        switch (state.pageState) {
-          case ProfilePageState.success:
+        if (state.pageState == ProfilePageState.success) {
+          // AuthProfileBloc 업데이트 (전역 상태 동기화)
+          if (state.originalProfile != null) {
+            context.read<AuthProfileBloc>().add(
+              AuthProfileEvent.updateUserInfo(userInfo: state.originalProfile!),
+            );
+          }
+          ToastPop.show(state.message ?? '프로필을 업데이트했습니다');
 
-            // AuthProfileBloc 업데이트
-            if (state.originalProfile != null) {
-              context.read<AuthProfileBloc>().add(
-                AuthProfileEvent.updateUserInfo(
-                  userInfo: state.originalProfile!,
-                ),
-              );
+          Future.delayed(const Duration(milliseconds: 300), () {
+            if (context.mounted) {
+              context.pop(true);
             }
-            ToastPop.show(state.message ?? '저장되었습니다');
-            context.pop();
-            break;
+          });
+        }
 
-          case ProfilePageState.error:
-            ToastPop.show(state.message ?? '오류가 발생했습니다');
-            break;
-
-          default:
-            break;
+        if (state.pageState == ProfilePageState.error) {
+          ToastPop.show(state.message ?? '오류가 발생했습니다');
         }
       },
-      buildWhen: (prev, curr) =>
-          prev.pageState != curr.pageState ||
-          prev.originalProfile != curr.originalProfile,
       builder: (context, state) {
-        // 프로필 로드 전이면 로딩 표시
         if (state.originalProfile == null) {
           return const Scaffold(
             body: Center(child: CircularProgressIndicator()),
           );
         }
 
-        return ProfileScreen(profile: state.originalProfile!);
+        return ProfileScreen();
       },
     );
   }

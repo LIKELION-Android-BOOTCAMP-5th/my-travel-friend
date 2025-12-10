@@ -1,4 +1,6 @@
 // [이재은] 프로필 설정 bloc
+import 'dart:async';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 import 'package:my_travel_friend/feature/setting/presentation/viewmodels/profile_event.dart';
@@ -13,13 +15,23 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
   final ProfileRepository _profileRepository;
   final UpdateProfileUseCase _updateProfileUseCase;
 
+  // 닉네임 중복 체크 debounce
+  Timer? _nicknameDebounceTimer;
+
   ProfileBloc(this._profileRepository, this._updateProfileUseCase)
     : super(const ProfileState()) {
     on<LoadProfile>(_onLoadProfile);
     on<SelectImg>(_onSelectImg);
     on<RemoveImg>(_onRemoveImg);
     on<ChangeNickname>(_onChangeNickname);
+    on<CheckNicknameDuplicate>(_onCheckNicknameDuplicate);
     on<UpdateProfile>(_onUpdateProfile);
+  }
+
+  @override
+  Future<void> close() {
+    _nicknameDebounceTimer?.cancel();
+    return super.close();
   }
 
   // 프로필 불러오기
@@ -66,7 +78,108 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     ChangeNickname event,
     Emitter<ProfileState> emit,
   ) async {
-    emit(state.copyWith(nickname: event.nickname));
+    final nickname = event.nickname.trim();
+
+    // 빈 값 체크
+    if (nickname.isEmpty) {
+      emit(
+        state.copyWith(
+          nickname: event.nickname,
+          nicknameStatus: NicknameStatus.empty,
+        ),
+      );
+      return;
+    }
+
+    // 길이 체크 (10자 이상)
+    if (nickname.length > 10) {
+      emit(
+        state.copyWith(
+          nickname: event.nickname,
+          nicknameStatus: NicknameStatus.tooLong,
+        ),
+      );
+      return;
+    }
+
+    // 길이 체크 (2자 미만)
+    if (nickname.length < 2) {
+      emit(
+        state.copyWith(
+          nickname: event.nickname,
+          nicknameStatus: NicknameStatus.tooShort,
+        ),
+      );
+      return;
+    }
+
+    // 원본과 같으면 중복 체크 불필요
+    if (nickname == state.originalProfile?.nickname) {
+      emit(
+        state.copyWith(
+          nickname: event.nickname,
+          nicknameStatus: NicknameStatus.initial,
+        ),
+      );
+      return;
+    }
+
+    // 닉네임 업데이트 + 체크 중 상태
+    emit(
+      state.copyWith(
+        nickname: event.nickname,
+        nicknameStatus: NicknameStatus.checking,
+      ),
+    );
+
+    // 기존 타이머 취소
+    _nicknameDebounceTimer?.cancel();
+
+    // 500ms 이후 중복 체크
+    _nicknameDebounceTimer = Timer(const Duration(milliseconds: 500), () {
+      add(const ProfileEvent.checkNicknameDuplicate());
+    });
+  }
+
+  // 닉네임 중복 체크
+  Future<void> _onCheckNicknameDuplicate(
+    CheckNicknameDuplicate event,
+    Emitter<ProfileState> emit,
+  ) async {
+    final nickname = state.nickname.trim();
+
+    // 빈 값이면 체크 안 함
+    if (nickname.isEmpty) {
+      emit(state.copyWith(nicknameStatus: NicknameStatus.empty));
+      return;
+    }
+
+    // 원본과 같으면 체크 안 함
+    if (nickname == state.originalProfile?.nickname) {
+      emit(state.copyWith(nicknameStatus: NicknameStatus.initial));
+      return;
+    }
+
+    try {
+      final res = await _profileRepository.checkNicknameDuplicate(nickname);
+
+      res.when(
+        success: (isDuplicate) {
+          emit(
+            state.copyWith(
+              nicknameStatus: isDuplicate
+                  ? NicknameStatus.duplicated
+                  : NicknameStatus.available,
+            ),
+          );
+        },
+        failure: (failure) {
+          emit(state.copyWith(nicknameStatus: NicknameStatus.initial));
+        },
+      );
+    } catch (e) {
+      emit(state.copyWith(nicknameStatus: NicknameStatus.initial));
+    }
   }
 
   // 프로필 저장

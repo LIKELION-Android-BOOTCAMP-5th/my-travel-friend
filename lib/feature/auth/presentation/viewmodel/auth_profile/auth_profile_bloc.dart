@@ -29,6 +29,7 @@ class AuthProfileBloc extends Bloc<AuthProfileEvent, AuthProfileState> {
     on<AuthStateChanged>(_onAuthStateChanged);
     on<FetchUserProfile>(_onFetchUserProfile);
     on<UserRefreshed>(_onUserRefreshed);
+    on<UpdateUserInfo>(_onUpdateUserInfo);
     on<SignOut>(_onSignOut);
     on<Error>(_onError);
 
@@ -99,7 +100,7 @@ class AuthProfileBloc extends Bloc<AuthProfileEvent, AuthProfileState> {
     );
   }
 
-  // 유저 정보 업데이트 시 처리 (UserUpdated 이벤트 등에 해당)유저 프로필 업데이트 하는곳에서사용
+  // 유저 정보 업데이트 시 처리 (UserUpdated 이벤트 등에 해당)유저 프로필 업데이트 하는 곳에서 사용
   Future<void> _onUserRefreshed(
     UserRefreshed event,
     Emitter<AuthProfileState> emit,
@@ -126,6 +127,22 @@ class AuthProfileBloc extends Bloc<AuthProfileEvent, AuthProfileState> {
   Future<void> _onError(Error event, Emitter<AuthProfileState> emit) async {
     ///TODO:에러 상태시 처리
     print(event.message);
+  }
+
+  Future<void> _onUpdateUserInfo(
+    UpdateUserInfo event,
+    Emitter<AuthProfileState> emit,
+  ) async {
+    // 현재 상태가 인증된 상태일 때만 업데이트
+    if (state is AuthProfileAuthenticated) {
+      final currentState = state as AuthProfileAuthenticated;
+      emit(
+        AuthProfileState.authenticated(
+          uuid: currentState.uuid,
+          userInfo: event.userInfo, // 새로운 유저 정보로 교체
+        ),
+      );
+    }
   }
 
   // BLoC이 닫힐 때 스트림 구독 취소

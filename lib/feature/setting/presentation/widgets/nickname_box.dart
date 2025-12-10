@@ -17,14 +17,8 @@ class NicknameBox extends StatefulWidget {
 }
 
 class _NicknameBoxState extends State<NicknameBox> {
-  late TextEditingController _controller;
-
-  @override
-  void initState() {
-    super.initState();
-    final state = context.read<ProfileBloc>().state;
-    _controller = TextEditingController(text: state.nickname);
-  }
+  final TextEditingController _controller = TextEditingController();
+  bool _isUserEditing = false;
 
   @override
   void dispose() {
@@ -43,6 +37,14 @@ class _NicknameBoxState extends State<NicknameBox> {
       builder: (context, state) {
         final status = state.nicknameStatus;
 
+        // 사용자가 직접 입력 중이 아닐 때만 컨트롤러 업데이트
+        if (!_isUserEditing && _controller.text != state.nickname) {
+          _controller.text = state.nickname;
+          _controller.selection = TextSelection.fromPosition(
+            TextPosition(offset: _controller.text.length),
+          );
+        }
+
         return Container(
           width: double.infinity,
           padding: const EdgeInsets.all(20),
@@ -55,7 +57,9 @@ class _NicknameBoxState extends State<NicknameBox> {
             children: [
               Text(
                 '닉네임',
-                style: AppFont.medium.copyWith(color: colorScheme.onSurface),
+                style: AppFont.regularBold.copyWith(
+                  color: colorScheme.onSurface,
+                ),
               ),
               const SizedBox(height: 12),
               TextBox(
