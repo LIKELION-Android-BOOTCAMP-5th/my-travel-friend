@@ -40,6 +40,7 @@ abstract class ListsState with _$ListsState {
     // 페이지 상태
     @Default(ListsPageState.initial) ListsPageState pageState,
     @Default(false) bool isLoading,
+    @Default(false) bool isToggling,
     // AI 추천 관련 추가
   }) = _ListsState;
 

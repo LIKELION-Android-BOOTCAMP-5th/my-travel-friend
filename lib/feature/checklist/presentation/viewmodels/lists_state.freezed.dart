@@ -21,7 +21,7 @@ mixin _$ListsState {
  List<TodoListEntity> get todolists;// 입력필드 (새 항목 추가용)
  String get newItemContent;// 메시지
  String? get message;// 페이지 상태
- ListsPageState get pageState; bool get isLoading;
+ ListsPageState get pageState; bool get isLoading; bool get isToggling;
 /// Create a copy of ListsState
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -32,16 +32,16 @@ $ListsStateCopyWith<ListsState> get copyWith => _$ListsStateCopyWithImpl<ListsSt
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is ListsState&&(identical(other.tripId, tripId) || other.tripId == tripId)&&(identical(other.userId, userId) || other.userId == userId)&&(identical(other.currentTab, currentTab) || other.currentTab == currentTab)&&const DeepCollectionEquality().equals(other.checklists, checklists)&&const DeepCollectionEquality().equals(other.todolists, todolists)&&(identical(other.newItemContent, newItemContent) || other.newItemContent == newItemContent)&&(identical(other.message, message) || other.message == message)&&(identical(other.pageState, pageState) || other.pageState == pageState)&&(identical(other.isLoading, isLoading) || other.isLoading == isLoading));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ListsState&&(identical(other.tripId, tripId) || other.tripId == tripId)&&(identical(other.userId, userId) || other.userId == userId)&&(identical(other.currentTab, currentTab) || other.currentTab == currentTab)&&const DeepCollectionEquality().equals(other.checklists, checklists)&&const DeepCollectionEquality().equals(other.todolists, todolists)&&(identical(other.newItemContent, newItemContent) || other.newItemContent == newItemContent)&&(identical(other.message, message) || other.message == message)&&(identical(other.pageState, pageState) || other.pageState == pageState)&&(identical(other.isLoading, isLoading) || other.isLoading == isLoading)&&(identical(other.isToggling, isToggling) || other.isToggling == isToggling));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,tripId,userId,currentTab,const DeepCollectionEquality().hash(checklists),const DeepCollectionEquality().hash(todolists),newItemContent,message,pageState,isLoading);
+int get hashCode => Object.hash(runtimeType,tripId,userId,currentTab,const DeepCollectionEquality().hash(checklists),const DeepCollectionEquality().hash(todolists),newItemContent,message,pageState,isLoading,isToggling);
 
 @override
 String toString() {
-  return 'ListsState(tripId: $tripId, userId: $userId, currentTab: $currentTab, checklists: $checklists, todolists: $todolists, newItemContent: $newItemContent, message: $message, pageState: $pageState, isLoading: $isLoading)';
+  return 'ListsState(tripId: $tripId, userId: $userId, currentTab: $currentTab, checklists: $checklists, todolists: $todolists, newItemContent: $newItemContent, message: $message, pageState: $pageState, isLoading: $isLoading, isToggling: $isToggling)';
 }
 
 
@@ -52,7 +52,7 @@ abstract mixin class $ListsStateCopyWith<$Res>  {
   factory $ListsStateCopyWith(ListsState value, $Res Function(ListsState) _then) = _$ListsStateCopyWithImpl;
 @useResult
 $Res call({
- int tripId, int userId, ListsTab currentTab, List<ChecklistEntity> checklists, List<TodoListEntity> todolists, String newItemContent, String? message, ListsPageState pageState, bool isLoading
+ int tripId, int userId, ListsTab currentTab, List<ChecklistEntity> checklists, List<TodoListEntity> todolists, String newItemContent, String? message, ListsPageState pageState, bool isLoading, bool isToggling
 });
 
 
@@ -69,7 +69,7 @@ class _$ListsStateCopyWithImpl<$Res>
 
 /// Create a copy of ListsState
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? tripId = null,Object? userId = null,Object? currentTab = null,Object? checklists = null,Object? todolists = null,Object? newItemContent = null,Object? message = freezed,Object? pageState = null,Object? isLoading = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? tripId = null,Object? userId = null,Object? currentTab = null,Object? checklists = null,Object? todolists = null,Object? newItemContent = null,Object? message = freezed,Object? pageState = null,Object? isLoading = null,Object? isToggling = null,}) {
   return _then(_self.copyWith(
 tripId: null == tripId ? _self.tripId : tripId // ignore: cast_nullable_to_non_nullable
 as int,userId: null == userId ? _self.userId : userId // ignore: cast_nullable_to_non_nullable
@@ -80,6 +80,7 @@ as List<TodoListEntity>,newItemContent: null == newItemContent ? _self.newItemCo
 as String,message: freezed == message ? _self.message : message // ignore: cast_nullable_to_non_nullable
 as String?,pageState: null == pageState ? _self.pageState : pageState // ignore: cast_nullable_to_non_nullable
 as ListsPageState,isLoading: null == isLoading ? _self.isLoading : isLoading // ignore: cast_nullable_to_non_nullable
+as bool,isToggling: null == isToggling ? _self.isToggling : isToggling // ignore: cast_nullable_to_non_nullable
 as bool,
   ));
 }
@@ -165,10 +166,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int tripId,  int userId,  ListsTab currentTab,  List<ChecklistEntity> checklists,  List<TodoListEntity> todolists,  String newItemContent,  String? message,  ListsPageState pageState,  bool isLoading)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int tripId,  int userId,  ListsTab currentTab,  List<ChecklistEntity> checklists,  List<TodoListEntity> todolists,  String newItemContent,  String? message,  ListsPageState pageState,  bool isLoading,  bool isToggling)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _ListsState() when $default != null:
-return $default(_that.tripId,_that.userId,_that.currentTab,_that.checklists,_that.todolists,_that.newItemContent,_that.message,_that.pageState,_that.isLoading);case _:
+return $default(_that.tripId,_that.userId,_that.currentTab,_that.checklists,_that.todolists,_that.newItemContent,_that.message,_that.pageState,_that.isLoading,_that.isToggling);case _:
   return orElse();
 
 }
@@ -186,10 +187,10 @@ return $default(_that.tripId,_that.userId,_that.currentTab,_that.checklists,_tha
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int tripId,  int userId,  ListsTab currentTab,  List<ChecklistEntity> checklists,  List<TodoListEntity> todolists,  String newItemContent,  String? message,  ListsPageState pageState,  bool isLoading)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int tripId,  int userId,  ListsTab currentTab,  List<ChecklistEntity> checklists,  List<TodoListEntity> todolists,  String newItemContent,  String? message,  ListsPageState pageState,  bool isLoading,  bool isToggling)  $default,) {final _that = this;
 switch (_that) {
 case _ListsState():
-return $default(_that.tripId,_that.userId,_that.currentTab,_that.checklists,_that.todolists,_that.newItemContent,_that.message,_that.pageState,_that.isLoading);case _:
+return $default(_that.tripId,_that.userId,_that.currentTab,_that.checklists,_that.todolists,_that.newItemContent,_that.message,_that.pageState,_that.isLoading,_that.isToggling);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -206,10 +207,10 @@ return $default(_that.tripId,_that.userId,_that.currentTab,_that.checklists,_tha
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int tripId,  int userId,  ListsTab currentTab,  List<ChecklistEntity> checklists,  List<TodoListEntity> todolists,  String newItemContent,  String? message,  ListsPageState pageState,  bool isLoading)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int tripId,  int userId,  ListsTab currentTab,  List<ChecklistEntity> checklists,  List<TodoListEntity> todolists,  String newItemContent,  String? message,  ListsPageState pageState,  bool isLoading,  bool isToggling)?  $default,) {final _that = this;
 switch (_that) {
 case _ListsState() when $default != null:
-return $default(_that.tripId,_that.userId,_that.currentTab,_that.checklists,_that.todolists,_that.newItemContent,_that.message,_that.pageState,_that.isLoading);case _:
+return $default(_that.tripId,_that.userId,_that.currentTab,_that.checklists,_that.todolists,_that.newItemContent,_that.message,_that.pageState,_that.isLoading,_that.isToggling);case _:
   return null;
 
 }
@@ -221,7 +222,7 @@ return $default(_that.tripId,_that.userId,_that.currentTab,_that.checklists,_tha
 
 
 class _ListsState extends ListsState {
-  const _ListsState({this.tripId = 0, this.userId = 0, this.currentTab = ListsTab.checklist, final  List<ChecklistEntity> checklists = const [], final  List<TodoListEntity> todolists = const [], this.newItemContent = '', this.message, this.pageState = ListsPageState.initial, this.isLoading = false}): _checklists = checklists,_todolists = todolists,super._();
+  const _ListsState({this.tripId = 0, this.userId = 0, this.currentTab = ListsTab.checklist, final  List<ChecklistEntity> checklists = const [], final  List<TodoListEntity> todolists = const [], this.newItemContent = '', this.message, this.pageState = ListsPageState.initial, this.isLoading = false, this.isToggling = false}): _checklists = checklists,_todolists = todolists,super._();
   
 
 // 정보 조회
@@ -254,6 +255,7 @@ class _ListsState extends ListsState {
 // 페이지 상태
 @override@JsonKey() final  ListsPageState pageState;
 @override@JsonKey() final  bool isLoading;
+@override@JsonKey() final  bool isToggling;
 
 /// Create a copy of ListsState
 /// with the given fields replaced by the non-null parameter values.
@@ -265,16 +267,16 @@ _$ListsStateCopyWith<_ListsState> get copyWith => __$ListsStateCopyWithImpl<_Lis
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ListsState&&(identical(other.tripId, tripId) || other.tripId == tripId)&&(identical(other.userId, userId) || other.userId == userId)&&(identical(other.currentTab, currentTab) || other.currentTab == currentTab)&&const DeepCollectionEquality().equals(other._checklists, _checklists)&&const DeepCollectionEquality().equals(other._todolists, _todolists)&&(identical(other.newItemContent, newItemContent) || other.newItemContent == newItemContent)&&(identical(other.message, message) || other.message == message)&&(identical(other.pageState, pageState) || other.pageState == pageState)&&(identical(other.isLoading, isLoading) || other.isLoading == isLoading));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ListsState&&(identical(other.tripId, tripId) || other.tripId == tripId)&&(identical(other.userId, userId) || other.userId == userId)&&(identical(other.currentTab, currentTab) || other.currentTab == currentTab)&&const DeepCollectionEquality().equals(other._checklists, _checklists)&&const DeepCollectionEquality().equals(other._todolists, _todolists)&&(identical(other.newItemContent, newItemContent) || other.newItemContent == newItemContent)&&(identical(other.message, message) || other.message == message)&&(identical(other.pageState, pageState) || other.pageState == pageState)&&(identical(other.isLoading, isLoading) || other.isLoading == isLoading)&&(identical(other.isToggling, isToggling) || other.isToggling == isToggling));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,tripId,userId,currentTab,const DeepCollectionEquality().hash(_checklists),const DeepCollectionEquality().hash(_todolists),newItemContent,message,pageState,isLoading);
+int get hashCode => Object.hash(runtimeType,tripId,userId,currentTab,const DeepCollectionEquality().hash(_checklists),const DeepCollectionEquality().hash(_todolists),newItemContent,message,pageState,isLoading,isToggling);
 
 @override
 String toString() {
-  return 'ListsState(tripId: $tripId, userId: $userId, currentTab: $currentTab, checklists: $checklists, todolists: $todolists, newItemContent: $newItemContent, message: $message, pageState: $pageState, isLoading: $isLoading)';
+  return 'ListsState(tripId: $tripId, userId: $userId, currentTab: $currentTab, checklists: $checklists, todolists: $todolists, newItemContent: $newItemContent, message: $message, pageState: $pageState, isLoading: $isLoading, isToggling: $isToggling)';
 }
 
 
@@ -285,7 +287,7 @@ abstract mixin class _$ListsStateCopyWith<$Res> implements $ListsStateCopyWith<$
   factory _$ListsStateCopyWith(_ListsState value, $Res Function(_ListsState) _then) = __$ListsStateCopyWithImpl;
 @override @useResult
 $Res call({
- int tripId, int userId, ListsTab currentTab, List<ChecklistEntity> checklists, List<TodoListEntity> todolists, String newItemContent, String? message, ListsPageState pageState, bool isLoading
+ int tripId, int userId, ListsTab currentTab, List<ChecklistEntity> checklists, List<TodoListEntity> todolists, String newItemContent, String? message, ListsPageState pageState, bool isLoading, bool isToggling
 });
 
 
@@ -302,7 +304,7 @@ class __$ListsStateCopyWithImpl<$Res>
 
 /// Create a copy of ListsState
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? tripId = null,Object? userId = null,Object? currentTab = null,Object? checklists = null,Object? todolists = null,Object? newItemContent = null,Object? message = freezed,Object? pageState = null,Object? isLoading = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? tripId = null,Object? userId = null,Object? currentTab = null,Object? checklists = null,Object? todolists = null,Object? newItemContent = null,Object? message = freezed,Object? pageState = null,Object? isLoading = null,Object? isToggling = null,}) {
   return _then(_ListsState(
 tripId: null == tripId ? _self.tripId : tripId // ignore: cast_nullable_to_non_nullable
 as int,userId: null == userId ? _self.userId : userId // ignore: cast_nullable_to_non_nullable
@@ -313,6 +315,7 @@ as List<TodoListEntity>,newItemContent: null == newItemContent ? _self.newItemCo
 as String,message: freezed == message ? _self.message : message // ignore: cast_nullable_to_non_nullable
 as String?,pageState: null == pageState ? _self.pageState : pageState // ignore: cast_nullable_to_non_nullable
 as ListsPageState,isLoading: null == isLoading ? _self.isLoading : isLoading // ignore: cast_nullable_to_non_nullable
+as bool,isToggling: null == isToggling ? _self.isToggling : isToggling // ignore: cast_nullable_to_non_nullable
 as bool,
   ));
 }

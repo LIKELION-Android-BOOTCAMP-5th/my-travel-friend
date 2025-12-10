@@ -154,6 +154,12 @@ class ListsBloc extends Bloc<ListsEvent, ListsState> {
     ToggleChecklist event,
     Emitter<ListsState> emit,
   ) async {
+    // 이미 토글 중이면 무시
+    if (state.isToggling) return;
+
+    // 토글 시작
+    emit(state.copyWith(isToggling: true));
+
     // UI 먼저 변경
     final originalList = List<ChecklistEntity>.from(state.checklists);
     final updated = List<ChecklistEntity>.from(state.checklists);
@@ -168,19 +174,27 @@ class ListsBloc extends Bloc<ListsEvent, ListsState> {
     emit(state.copyWith(checklists: updated));
 
     // 서버 요청
-    final res = await _toggleChecklistUseCase.call(
+    final resFuture = _toggleChecklistUseCase.call(
       id: event.id,
       isChecked: event.isChecked,
     );
 
-    res.when(
-      success: (_) {
-        // 성공 - 아무것도 안 함
-      },
-      failure: (failure) {
-        emit(state.copyWith(checklists: originalList, message: '변경 실패'));
-      },
-    );
+    resFuture.then((res) {
+      res.when(
+        success: (_) {
+          emit(state.copyWith(isToggling: false));
+        },
+        failure: (failue) {
+          emit(
+            state.copyWith(
+              checklists: originalList,
+              isToggling: false,
+              message: '변경실패',
+            ),
+          );
+        },
+      );
+    });
   }
 
   // 투두리스트 생성
@@ -237,6 +251,12 @@ class ListsBloc extends Bloc<ListsEvent, ListsState> {
     ToggleTodoList event,
     Emitter<ListsState> emit,
   ) async {
+    // 이미 토글 중이면 무시
+    if (state.isToggling) return;
+
+    // 토글 시작
+    emit(state.copyWith(isToggling: true));
+
     // UI 먼저 변경
     final originalList = List<TodoListEntity>.from(state.todolists);
     final updated = List<TodoListEntity>.from(state.todolists);
@@ -251,18 +271,26 @@ class ListsBloc extends Bloc<ListsEvent, ListsState> {
     emit(state.copyWith(todolists: updated));
 
     // 서버 요청
-    final res = await _toggleTodoListUseCase.call(
+    final resFuture = _toggleTodoListUseCase.call(
       id: event.id,
       isChecked: event.isChecked,
     );
 
-    res.when(
-      success: (_) {
-        // 성공 - 아무것도 안 함
-      },
-      failure: (failure) {
-        emit(state.copyWith(todolists: originalList, message: '변경 실패'));
-      },
-    );
+    resFuture.then((res) {
+      res.when(
+        success: (_) {
+          emit(state.copyWith(isToggling: false));
+        },
+        failure: (failure) {
+          emit(
+            state.copyWith(
+              todolists: originalList,
+              isToggling: false,
+              message: '변경 실패',
+            ),
+          );
+        },
+      );
+    });
   }
 }

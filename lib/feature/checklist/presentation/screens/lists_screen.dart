@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:my_travel_friend/core/widget/text_box.dart';
 
-import '../../../../core/widget/button.dart';
 import '../../../../core/widget/floating_button.dart';
 import '../../../../theme/app_colors.dart';
 import '../../../../theme/app_font.dart';
@@ -10,6 +8,7 @@ import '../../../../theme/app_icon.dart';
 import '../viewmodels/lists_bloc.dart';
 import '../viewmodels/lists_event.dart';
 import '../viewmodels/lists_state.dart';
+import '../widgets/add_item_pop_up.dart';
 import '../widgets/check_todo_tab.dart';
 import '../widgets/list_box.dart';
 
@@ -264,128 +263,12 @@ class ListsScreen extends StatelessWidget {
 
   // 항목 추가 Popup Dialog
   void _showAddItemDialog(BuildContext context) {
-    final colorScheme = Theme.of(context).colorScheme;
-    final isDark = colorScheme.brightness == Brightness.dark;
     final bloc = context.read<ListsBloc>();
     final currentTab = bloc.state.currentTab;
-    final TextEditingController controller = TextEditingController();
-    final isChecklist = currentTab == ListsTab.checklist;
+
     showDialog(
       context: context,
-      builder: (dialogContext) {
-        return Dialog(
-          backgroundColor: colorScheme.surfaceContainerHighest,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(24),
-          ),
-          insetPadding: const EdgeInsets.symmetric(horizontal: 24),
-          child: Padding(
-            padding: const EdgeInsets.all(24),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                // 헤더
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      isChecklist ? "체크리스트 추가" : "투두리스트 추가",
-                      style: AppFont.big.copyWith(color: colorScheme.onSurface),
-                    ),
-                    IconButton(
-                      onPressed: () => Navigator.pop(dialogContext),
-                      icon: Icon(
-                        AppIcon.close,
-                        color: colorScheme.onSurfaceVariant,
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 16),
-
-                // 입력 필드
-                TextBox(
-                  controller: controller,
-                  hintText: isChecklist ? "챙길 것을 적어보세요" : "해야할 일을 적어보세요",
-                  autofocus: true,
-                  onSubmitted: (_) =>
-                      _submitItem(dialogContext, bloc, currentTab, controller),
-                ),
-                const SizedBox(height: 16),
-
-                // AI 추천 버튼 (추후 구현용 placeholder)
-                // GestureDetector(
-                //   onTap: () {
-                //     // TODO: AI 추천 기능 구현
-                //   },
-                //   child: Container(
-                //     width: double.infinity,
-                //     padding: const EdgeInsets.symmetric(vertical: 14),
-                //     decoration: BoxDecoration(
-                //       color: AppColors.tertiary.withOpacity(0.3),
-                //       borderRadius: BorderRadius.circular(12),
-                //     ),
-                //     child: Row(
-                //       mainAxisAlignment: MainAxisAlignment.center,
-                //       children: [
-                //         Icon(
-                //           CupertinoIcons.sparkles,
-                //           color: isDark ? colorScheme.tertiaryContainer : colorScheme.onTertiaryContainer,
-                //           size: 20,
-                //         ),
-                //         const SizedBox(width: 8),
-                //         Text(
-                //           'AI 추천 보기',
-                //           style: AppFont.regular.copyWith(
-                //             color: isDark ? colorScheme.tertiaryContainer : colorScheme.onTertiaryContainer,
-                //           ),
-                //         ),
-                //       ],
-                //     ),
-                //   ),
-                // ),
-                // const SizedBox(height: 12),
-
-                // 추가 버튼
-                Button(
-                  text: '추가하기',
-                  onTap: () =>
-                      _submitItem(dialogContext, bloc, currentTab, controller),
-                  width: double.infinity,
-                  height: 50,
-                  borderRadius: 12,
-                  backgroundColor: colorScheme.primary,
-                  contentColor: colorScheme.onPrimary,
-                ),
-              ],
-            ),
-          ),
-        );
-      },
+      builder: (_) => AddItemPopUp(bloc: bloc, currentTab: currentTab),
     );
-  }
-
-  // 항목 추가 submit 처리
-  void _submitItem(
-    BuildContext dialogContext,
-    ListsBloc bloc,
-    ListsTab tab,
-    TextEditingController controller,
-  ) {
-    final content = controller.text.trim();
-    if (content.isEmpty) return;
-
-    _addItem(bloc, tab, content);
-    Navigator.pop(dialogContext);
-  }
-
-  // 항목 추가 처리
-  void _addItem(ListsBloc bloc, ListsTab tab, String content) {
-    if (tab == ListsTab.checklist) {
-      bloc.add(ListsEvent.createChecklist(content: content));
-    } else {
-      bloc.add(ListsEvent.createTodoList(content: content));
-    }
   }
 }
