@@ -3,9 +3,9 @@ import 'dart:async';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 import 'package:my_travel_friend/feature/alarm/domain/usecases/check_an_alarm_usecase.dart';
+import 'package:my_travel_friend/feature/alarm/domain/usecases/unsubscribe_alarms_usecase.dart';
 
 import '../../../../core/result/result.dart';
-import '../../domain/repositories/alarm_repository.dart';
 import '../../domain/usecases/check_alarms_usecase.dart';
 import '../../domain/usecases/get_alarm_by_id_usecase.dart';
 import '../../domain/usecases/get_alarms_usecase.dart';
@@ -21,7 +21,7 @@ class AlarmBloc extends Bloc<AlarmEvent, AlarmState> {
   final CheckAnAlarmUseCase _checkAnAlarmUseCase;
   final CheckAlarmsUseCase _checkAlarmsUseCase;
   final WatchAlarmsUseCase _watchAlarmsUseCase;
-  final AlarmRepository _alarmRepository; // 구독 해제용
+  final UnsubscribeAlarmsUseCase _unsubscribeAlarmsUseCase;
 
   static const int _limit = 20;
 
@@ -34,7 +34,7 @@ class AlarmBloc extends Bloc<AlarmEvent, AlarmState> {
     this._checkAnAlarmUseCase,
     this._checkAlarmsUseCase,
     this._watchAlarmsUseCase,
-    this._alarmRepository,
+    this._unsubscribeAlarmsUseCase,
   ) : super(const AlarmState()) {
     on<GetAlarms>(_onGetAlarms);
     on<LoadMoreAlarms>(_onLoadMore);
@@ -92,14 +92,14 @@ class AlarmBloc extends Bloc<AlarmEvent, AlarmState> {
   ) async {
     await _alarmSubscription?.cancel();
     _alarmSubscription = null;
-    await _alarmRepository.unsubscribeAlarms();
+    await _unsubscribeAlarmsUseCase();
   }
 
   // Bloc 종료 시 정리
   @override
   Future<void> close() {
     _alarmSubscription?.cancel();
-    _alarmRepository.unsubscribeAlarms();
+    _unsubscribeAlarmsUseCase();
     return super.close();
   }
 
