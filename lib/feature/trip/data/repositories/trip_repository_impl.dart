@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:injectable/injectable.dart';
 import 'package:my_travel_friend/core/result/result.dart';
 import 'package:my_travel_friend/feature/trip/data/datasources/trip_data_source.dart';
@@ -27,6 +29,7 @@ class TripRepositoryImpl implements TripRepository {
   @override
   Future<Result<TripEntity>> editTrip(TripEntity trip) async {
     final dto = TripDto(
+      id: trip.id,
       title: trip.title,
       place: trip.place,
       startAt: trip.startAt,
@@ -93,5 +96,17 @@ class TripRepositoryImpl implements TripRepository {
           Result.success(data.map((dto) => dto.toEntity()).toList()),
       failure: (failure) => Result.failure(failure),
     );
+  }
+
+  // 이미지 업로드
+  @override
+  Future<Result<String>> uploadImg({required File file}) async {
+    return await _dataSource.uploadImg(file: file);
+  }
+
+  // 이미지 삭제
+  @override
+  Future<Result<void>> deleteImg(String imgUrl) async {
+    return await _dataSource.deleteImg(imgUrl);
   }
 }

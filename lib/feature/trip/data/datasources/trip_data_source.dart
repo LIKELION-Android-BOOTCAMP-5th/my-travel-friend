@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:my_travel_friend/core/result/result.dart';
 import 'package:my_travel_friend/feature/trip/data/dtos/trip_dto.dart';
 
@@ -19,7 +21,11 @@ abstract class TripDataSource {
 
   //여행 삭제
   Future<Result<void>> deleteTrip(int tripId);
+  // 이미지 업로드
+  Future<Result<String>> uploadImg({required File file});
 
+  // 이미지 삭제
+  Future<Result<void>> deleteImg(String imgUrl);
   //여행 검색
   Future<Result<List<TripDto>>> searchTrips(
     int userId,

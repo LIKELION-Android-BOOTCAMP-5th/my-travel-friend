@@ -6,7 +6,9 @@ import 'package:my_travel_friend/feature/auth/presentation/screens/auth_bloc_wid
 import 'package:my_travel_friend/feature/auth/presentation/viewmodel/auth/auth_bloc.dart';
 import 'package:my_travel_friend/feature/auth/presentation/viewmodel/auth_profile/auth_profile_bloc.dart';
 import 'package:my_travel_friend/feature/auth/presentation/viewmodel/auth_profile/auth_profile_state.dart';
+import 'package:my_travel_friend/feature/trip/presentation/screens/create_trip_bloc_widget.dart';
 import 'package:my_travel_friend/feature/trip/presentation/screens/trip_bloc_widget.dart';
+import 'package:my_travel_friend/feature/trip/presentation/viewmodels/create_trip/create_trip_bloc.dart';
 import 'package:my_travel_friend/feature/trip/presentation/viewmodels/trip/trip_bloc.dart';
 import 'package:my_travel_friend/splash.dart';
 import 'package:my_travel_friend/temp_screen.dart';
@@ -20,6 +22,8 @@ import '../feature/diary/presentation/screens/new_diary_bloc_widget.dart';
 import '../feature/diary/presentation/viewmodels/diary_bloc.dart';
 import '../feature/diary/presentation/viewmodels/new_diary_bloc.dart';
 import '../feature/setting/presentation/screens/alarm_setting_bloc_widget.dart';
+import '../feature/trip/domain/entities/trip_entity.dart';
+import '../feature/trip/presentation/screens/edit_trip_bloc_widget.dart';
 
 final getIt = GetIt.instance;
 
@@ -98,6 +102,29 @@ class AppRouter {
           create: (context) => GetIt.instance<TripBloc>(),
           child: const TripBlocWidget(),
         ),
+      ),
+      GoRoute(
+        path: '/trip/create',
+        builder: (context, state) {
+          final authState = context.read<AuthProfileBloc>().state;
+          final userId = (authState is AuthProfileAuthenticated)
+              ? authState.userInfo.id!
+              : 0;
+
+          return BlocProvider(
+            create: (context) => GetIt.instance<CreateTripBloc>(),
+            child: CreateTripBlocWidget(userId: userId),
+          );
+        },
+      ),
+      GoRoute(
+        path: '/trip/edit',
+        builder: (context, state) {
+          final extra = state.extra as Map<String, dynamic>;
+          final trip = extra['trip'] as TripEntity;
+
+          return EditTripBlocWidget(trip: trip);
+        },
       ),
       GoRoute(
         path: '/diary',

@@ -34,6 +34,7 @@ abstract class TripEvent with _$TripEvent {
 
   //여행 생성하기 버튼 → 작성 화면 이동
   const factory TripEvent.createNewTrip() = CreateNewTrip;
+  const factory TripEvent.navigationHandled() = NavigationHandled;
 
   //여행 카드의 점3개 버튼 클릭 → 하단 바텀시트 표시 조건 발생
   const factory TripEvent.openTripMenu({required TripEntity trip}) =
