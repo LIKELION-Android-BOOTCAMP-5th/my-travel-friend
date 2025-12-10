@@ -124,14 +124,11 @@ class ListsBloc extends Bloc<ListsEvent, ListsState> {
 
     res.when(
       success: (created) {
-        print('✅ 성공: $created');
         final updated = List<ChecklistEntity>.from(state.checklists);
         updated.add(created);
         emit(state.copyWith(checklists: updated, newItemContent: ''));
       },
       failure: (failure) {
-        print('❌ 실패: ${failure.message}'); // ← 이거 추가!
-        print('❌ 에러 상세: $failure'); // ← 이것도 추가!
         emit(state.copyWith(message: '체크리스트 추가 실패'));
       },
     );
