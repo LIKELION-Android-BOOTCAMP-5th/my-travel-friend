@@ -22,10 +22,13 @@ abstract class TripDataSource {
   //여행 삭제
   Future<Result<void>> deleteTrip(int tripId);
   // 이미지 업로드
-  Future<Result<String>> uploadImg({required File file});
+  Future<Result<String>> uploadImg({
+    required File file,
+    required String bucketName,
+  });
 
   // 이미지 삭제
-  Future<Result<void>> deleteImg(String imgUrl);
+  Future<Result<void>> deleteImg(String imgUrl, {required String bucketName});
   //여행 검색
   Future<Result<List<TripDto>>> searchTrips(
     int userId,

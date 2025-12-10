@@ -101,12 +101,15 @@ class TripRepositoryImpl implements TripRepository {
   // 이미지 업로드
   @override
   Future<Result<String>> uploadImg({required File file}) async {
-    return await _dataSource.uploadImg(file: file);
+    return await _dataSource.uploadImg(
+      file: file,
+      bucketName: 'trip_cover_image',
+    );
   }
 
   // 이미지 삭제
   @override
   Future<Result<void>> deleteImg(String imgUrl) async {
-    return await _dataSource.deleteImg(imgUrl);
+    return await _dataSource.deleteImg(imgUrl, bucketName: 'trip_cover_image');
   }
 }

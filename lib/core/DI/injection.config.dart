@@ -133,8 +133,8 @@ import '../../feature/trip/data/repositories/trip_repository_impl.dart'
     as _i840;
 import '../../feature/trip/domain/repositories/trip_repository.dart' as _i161;
 import '../../feature/trip/domain/usecases/create_trip_usecase.dart' as _i779;
+import '../../feature/trip/domain/usecases/delete_img_usecase.dart' as _i202;
 import '../../feature/trip/domain/usecases/delete_trip_usecase.dart' as _i832;
-import '../../feature/trip/domain/usecases/deletr_img_usecase.dart' as _i778;
 import '../../feature/trip/domain/usecases/edit_trip_usecase.dart' as _i637;
 import '../../feature/trip/domain/usecases/get_crew_member_count_usecase.dart'
     as _i267;
@@ -149,6 +149,7 @@ import '../../feature/trip/presentation/viewmodels/trip/trip_bloc.dart'
     as _i616;
 import '../service/internal/deep_link_service.dart' as _i507;
 import '../service/internal/push_notification_service.dart' as _i737;
+import '../service/internal/supabase_storage_service.dart' as _i1051;
 import 'register_module.dart' as _i291;
 
 extension GetItInjectableX on _i174.GetIt {
@@ -184,11 +185,20 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i153.GoogleAuthDataSource>(
       () => _i795.SocialAuthDataSourceImpl(gh<_i116.GoogleSignIn>()),
     );
+    gh.lazySingleton<_i1063.TripDataSource>(
+      () => _i386.TripDataSourceImpl(
+        gh<_i454.SupabaseClient>(),
+        gh<_i1051.SupabaseStorageService>(),
+      ),
+    );
     gh.lazySingleton<_i737.PushNotificationService>(
       () => _i737.PushNotificationService(gh<_i892.FirebaseMessaging>()),
     );
     gh.lazySingleton<_i540.TodoListDataSource>(
       () => _i79.TodoListDataSourceImpl(gh<_i454.SupabaseClient>()),
+    );
+    gh.lazySingleton<_i161.TripRepository>(
+      () => _i840.TripRepositoryImpl(gh<_i1063.TripDataSource>()),
     );
     gh.lazySingleton<_i877.ChecklistDataSource>(
       () => _i694.ChecklistDataSourceImpl(gh<_i454.SupabaseClient>()),
@@ -196,8 +206,29 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i881.DiaryDataSource>(
       () => _i663.DiaryDataSourceImpl(gh<_i454.SupabaseClient>()),
     );
-    gh.lazySingleton<_i1063.TripDataSource>(
-      () => _i386.TripDataSourceImpl(gh<_i454.SupabaseClient>()),
+    gh.lazySingleton<_i779.CreateTripUsecase>(
+      () => _i779.CreateTripUsecase(gh<_i161.TripRepository>()),
+    );
+    gh.lazySingleton<_i202.DeleteImgUsecase>(
+      () => _i202.DeleteImgUsecase(gh<_i161.TripRepository>()),
+    );
+    gh.lazySingleton<_i832.DeleteTripUsecase>(
+      () => _i832.DeleteTripUsecase(gh<_i161.TripRepository>()),
+    );
+    gh.lazySingleton<_i637.EditTripUsecase>(
+      () => _i637.EditTripUsecase(gh<_i161.TripRepository>()),
+    );
+    gh.lazySingleton<_i267.GetCrewMemberCountUsecase>(
+      () => _i267.GetCrewMemberCountUsecase(gh<_i161.TripRepository>()),
+    );
+    gh.lazySingleton<_i521.GetMyTripUsecase>(
+      () => _i521.GetMyTripUsecase(gh<_i161.TripRepository>()),
+    );
+    gh.lazySingleton<_i317.GiveUpTripUsecase>(
+      () => _i317.GiveUpTripUsecase(gh<_i161.TripRepository>()),
+    );
+    gh.lazySingleton<_i437.SearchTripUsecase>(
+      () => _i437.SearchTripUsecase(gh<_i161.TripRepository>()),
     );
     gh.lazySingleton<_i58.AlarmDataSource>(
       () => _i1049.AlarmDataSourceImpl(gh<_i454.SupabaseClient>()),
@@ -214,6 +245,12 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i871.DiaryRepository>(
       () => _i148.DiaryRepositoryImpl(gh<_i881.DiaryDataSource>()),
     );
+    gh.factory<_i703.EditTripBloc>(
+      () => _i703.EditTripBloc(
+        gh<_i637.EditTripUsecase>(),
+        gh<_i161.TripRepository>(),
+      ),
+    );
     gh.lazySingleton<_i1040.SupabaseAuthDataSource>(
       () => _i436.SupabaseAuthDataSourceImpl(
         gh<_i454.SupabaseClient>(),
@@ -223,39 +260,28 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i181.ChecklistRepository>(
       () => _i418.ChecklistRepositoryImpl(gh<_i877.ChecklistDataSource>()),
     );
+    gh.factory<_i616.TripBloc>(
+      () => _i616.TripBloc(
+        gh<_i521.GetMyTripUsecase>(),
+        gh<_i267.GetCrewMemberCountUsecase>(),
+        gh<_i832.DeleteTripUsecase>(),
+        gh<_i317.GiveUpTripUsecase>(),
+        gh<_i437.SearchTripUsecase>(),
+        gh<_i202.DeleteImgUsecase>(),
+      ),
+    );
+    gh.factory<_i873.CreateTripBloc>(
+      () => _i873.CreateTripBloc(
+        gh<_i779.CreateTripUsecase>(),
+        gh<_i161.TripRepository>(),
+      ),
+    );
     gh.singleton<_i488.AuthRepository>(
       () => _i263.AuthRepositoryImpl(
         gh<_i153.GoogleAuthDataSource>(),
         gh<_i278.AppleAuthDataSource>(),
         gh<_i1040.SupabaseAuthDataSource>(),
       ),
-    );
-    gh.lazySingleton<_i161.TripRepository>(
-      () => _i840.TripRepositoryImpl(gh<_i1063.TripDataSource>()),
-    );
-    gh.lazySingleton<_i779.CreateTripUsecase>(
-      () => _i779.CreateTripUsecase(gh<_i161.TripRepository>()),
-    );
-    gh.lazySingleton<_i832.DeleteTripUsecase>(
-      () => _i832.DeleteTripUsecase(gh<_i161.TripRepository>()),
-    );
-    gh.lazySingleton<_i778.DeleteImgUsecase>(
-      () => _i778.DeleteImgUsecase(gh<_i161.TripRepository>()),
-    );
-    gh.lazySingleton<_i637.EditTripUsecase>(
-      () => _i637.EditTripUsecase(gh<_i161.TripRepository>()),
-    );
-    gh.lazySingleton<_i267.GetCrewMemberCountUsecase>(
-      () => _i267.GetCrewMemberCountUsecase(gh<_i161.TripRepository>()),
-    );
-    gh.lazySingleton<_i521.GetMyTripUsecase>(
-      () => _i521.GetMyTripUsecase(gh<_i161.TripRepository>()),
-    );
-    gh.lazySingleton<_i317.GiveUpTripUsecase>(
-      () => _i317.GiveUpTripUsecase(gh<_i161.TripRepository>()),
-    );
-    gh.lazySingleton<_i437.SearchTripUsecase>(
-      () => _i437.SearchTripUsecase(gh<_i161.TripRepository>()),
     );
     gh.lazySingleton<_i622.CreateChecklistUseCase>(
       () => _i622.CreateChecklistUseCase(gh<_i181.ChecklistRepository>()),
@@ -312,12 +338,6 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i420.SocialSignInUseCase>(
       () => _i420.SocialSignInUseCase(gh<_i488.AuthRepository>()),
     );
-    gh.factory<_i703.EditTripBloc>(
-      () => _i703.EditTripBloc(
-        gh<_i637.EditTripUsecase>(),
-        gh<_i161.TripRepository>(),
-      ),
-    );
     gh.factory<_i130.ListsBloc>(
       () => _i130.ListsBloc(
         gh<_i979.GetMyChecklistUseCase>(),
@@ -336,16 +356,6 @@ extension GetItInjectableX on _i174.GetIt {
     gh.singleton<_i456.WatchAuthStateUseCase>(
       () => _i456.WatchAuthStateUseCase(gh<_i488.AuthRepository>()),
     );
-    gh.factory<_i616.TripBloc>(
-      () => _i616.TripBloc(
-        gh<_i521.GetMyTripUsecase>(),
-        gh<_i267.GetCrewMemberCountUsecase>(),
-        gh<_i832.DeleteTripUsecase>(),
-        gh<_i317.GiveUpTripUsecase>(),
-        gh<_i437.SearchTripUsecase>(),
-        gh<_i778.DeleteImgUsecase>(),
-      ),
-    );
     gh.factory<_i611.DiaryBloc>(
       () => _i611.DiaryBloc(
         gh<_i849.GetOurDiariesUseCase>(),
@@ -357,12 +367,6 @@ extension GetItInjectableX on _i174.GetIt {
       () => _i1041.NewDiaryBloc(
         gh<_i27.CreateDiaryUseCase>(),
         gh<_i871.DiaryRepository>(),
-      ),
-    );
-    gh.factory<_i873.CreateTripBloc>(
-      () => _i873.CreateTripBloc(
-        gh<_i779.CreateTripUsecase>(),
-        gh<_i161.TripRepository>(),
       ),
     );
     gh.factory<_i703.EditDiaryBloc>(
