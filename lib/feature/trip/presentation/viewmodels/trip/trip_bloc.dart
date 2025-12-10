@@ -10,7 +10,7 @@ import 'package:my_travel_friend/feature/trip/domain/usecases/search_trip_usecas
 import 'package:my_travel_friend/feature/trip/presentation/viewmodels/trip/trip_event.dart';
 import 'package:my_travel_friend/feature/trip/presentation/viewmodels/trip/trip_state.dart';
 
-import '../../../domain/usecases/deletr_img_usecase.dart';
+import '../../../domain/usecases/delete_img_usecase.dart';
 
 @injectable
 class TripBloc extends Bloc<TripEvent, TripState> {

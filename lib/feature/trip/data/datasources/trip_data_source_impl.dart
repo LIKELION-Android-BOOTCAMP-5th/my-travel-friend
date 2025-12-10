@@ -1,12 +1,12 @@
 import 'dart:io';
 
 import 'package:injectable/injectable.dart';
-import 'package:my_travel_friend/core/extension/extract_Url_path_extension.dart';
 import 'package:my_travel_friend/core/result/failures.dart';
 import 'package:my_travel_friend/core/result/result.dart';
 import 'package:my_travel_friend/feature/trip/data/dtos/trip_dto.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
+import '../../../../core/service/internal/supabase_storage_service.dart';
 import 'trip_data_source.dart';
 
 // 신강현
@@ -15,8 +15,9 @@ import 'trip_data_source.dart';
 @LazySingleton(as: TripDataSource)
 class TripDataSourceImpl implements TripDataSource {
   final SupabaseClient _supabaseClient;
+  final SupabaseStorageService _storageService;
 
-  TripDataSourceImpl(this._supabaseClient);
+  TripDataSourceImpl(this._supabaseClient, this._storageService);
 
   // Storage 버킷 이름
   static const String _bucketName = 'trip_cover_image';
@@ -188,48 +189,32 @@ class TripDataSourceImpl implements TripDataSource {
     }
   }
 
-  // 이미지 업로드
   @override
-  Future<Result<String>> uploadImg({required File file}) async {
+  Future<Result<String>> uploadImg({
+    required File file,
+    required String bucketName,
+  }) async {
     try {
-      // 파일 이름 생성 : timestamp_userID.jpg
-      final timestamp = DateTime.now().millisecondsSinceEpoch;
-      final fileName = '${timestamp}_.jpg';
-
-      final storagePath = '$fileName';
-
-      // 업로드
-      await _supabaseClient.storage.from(_bucketName).upload(storagePath, file);
-
-      // 공개 URL 생성
-      final publicUrl = _supabaseClient.storage
-          .from(_bucketName)
-          .getPublicUrl(storagePath);
-
-      return Result.success(publicUrl);
+      final url = await _storageService.uploadImage(
+        file,
+        bucketName: _bucketName,
+      );
+      return Result.success(url);
     } catch (e) {
-      return Result.failure(Failure.serverFailure(message: '이미지 업로드 실패 : $e'));
+      return Result.failure(Failure.serverFailure(message: e.toString()));
     }
   }
 
-  // 이미지 삭제
   @override
-  Future<Result<void>> deleteImg(String imgUrl) async {
+  Future<Result<void>> deleteImg(
+    String imgUrl, {
+    required String bucketName,
+  }) async {
     try {
-      // URL에서 storage path 추출
-      final storagePath = imgUrl.extractStoragePath(_bucketName);
-
-      if (storagePath == null) {
-        return Result.failure(
-          const Failure.undefined(message: '유효하지 않은 이미지 URL'),
-        );
-      }
-
-      await _supabaseClient.storage.from(_bucketName).remove([storagePath]);
-
+      await _storageService.deleteImage(imgUrl, bucketName: _bucketName);
       return const Result.success(null);
     } catch (e) {
-      return Result.failure(Failure.serverFailure(message: "이미지 삭제 실패 : $e"));
+      return Result.failure(Failure.serverFailure(message: e.toString()));
     }
   }
 }
