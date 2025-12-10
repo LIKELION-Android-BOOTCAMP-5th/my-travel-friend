@@ -16,7 +16,10 @@ import 'package:my_travel_friend/feature/trip/presentation/viewmodels/edit_trip/
 import 'package:my_travel_friend/feature/trip/presentation/widgets/date_picker.dart';
 import 'package:my_travel_friend/theme/app_font.dart';
 
+import '../../../../core/widget/app_bar.dart';
+import '../../../../core/widget/button.dart';
 import '../../../../theme/app_colors.dart';
+import '../../../../theme/app_icon.dart';
 
 class EditTripScreen extends StatefulWidget {
   final TripEntity trip;
@@ -47,6 +50,9 @@ class _EditTripScreenState extends State<EditTripScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    final isDark = colorScheme.brightness == Brightness.dark;
+
     return BlocConsumer<EditTripBloc, EditTripState>(
       listener: (context, state) {
         if (state.pageState == EditTripPageState.success) {
@@ -64,27 +70,42 @@ class _EditTripScreenState extends State<EditTripScreen> {
       },
       builder: (context, state) {
         return Scaffold(
-          appBar: AppBar(
-            leading: IconButton(
-              icon: const Icon(Icons.arrow_back),
-              onPressed: () => context.pop(),
+          backgroundColor: isDark ? AppColors.navy : AppColors.darkGray,
+          appBar: CustomButtonAppBar(
+            leading: Button(
+              width: 40,
+              height: 40,
+              icon: Icon(AppIcon.back),
+              contentColor: isDark ? colorScheme.onSurface : AppColors.light,
+              borderRadius: 20,
+              onTap: () => context.pop(),
             ),
-            title: const Text("여행 수정하기"),
+            title: "여행 계획 수정하기",
             actions: [
-              TextButton(
-                onPressed: state.isValid
+              Button(
+                width: 40,
+                height: 40,
+                icon:
+                    state.isUploading ||
+                        state.pageState == EditTripPageState.loading
+                    ? SizedBox(
+                        width: 20,
+                        height: 20,
+                        child: CircularProgressIndicator(
+                          strokeWidth: 2,
+                          color: state.isValid
+                              ? Colors.white
+                              : Colors.white.withOpacity(0.4),
+                        ),
+                      )
+                    : AppIcon.save,
+                contentColor: isDark ? colorScheme.onSurface : AppColors.light,
+                borderRadius: 20,
+                onTap: state.isValid
                     ? () => context.read<EditTripBloc>().add(
                         const EditTripEvent.saveTrip(),
                       )
                     : null,
-                child: Text(
-                  "저장",
-                  style: TextStyle(
-                    color: state.isValid
-                        ? Colors.white
-                        : Colors.white.withOpacity(0.4),
-                  ),
-                ),
               ),
             ],
           ),
@@ -97,112 +118,127 @@ class _EditTripScreenState extends State<EditTripScreen> {
   }
 
   Widget _editForm(BuildContext context, EditTripState state) {
-    return SingleChildScrollView(
-      padding: const EdgeInsets.all(16),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const Text("여행 제목"),
-          TextBox(
-            controller: _titleController,
-            onChanged: (text) => context.read<EditTripBloc>().add(
-              EditTripEvent.changeTitle(title: text),
-            ),
-          ),
-          const SizedBox(height: 16),
+    final colorScheme = Theme.of(context).colorScheme;
+    final isDark = colorScheme.brightness == Brightness.dark;
 
-          const Text("여행 장소"),
-          TextBox(
-            controller: _placeController,
-            prefixIcon: const Icon(Icons.place, color: Colors.grey),
-            onChanged: (text) => context.read<EditTripBloc>().add(
-              EditTripEvent.changePlace(place: text),
-            ),
-          ),
-
-          const SizedBox(height: 16),
-
-          const Text("여행 날짜"),
-          Row(
-            children: [
-              Expanded(
-                child: DatePickerBox(
-                  label: "시작일",
-                  value: formatDate(state.startAt),
-                  onTap: () async {
-                    final picked = await showDatePicker(
-                      context: context,
-                      initialDate: DateTime.parse(state.startAt),
-                      firstDate: DateTime(2000),
-                      lastDate: DateTime(2100),
-                    );
-                    if (picked != null) {
-                      final formatted =
-                          "${picked.year}-${_two(picked.month)}-${_two(picked.day)}";
-                      context.read<EditTripBloc>().add(
-                        EditTripEvent.changeStartAt(startAt: formatted),
-                      );
-                    }
-                  },
-                ),
+    return Container(
+      color: isDark ? AppColors.navy : AppColors.darkGray,
+      child: SingleChildScrollView(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text("여행 제목", style: AppFont.regular),
+            TextBox(
+              controller: _titleController,
+              onChanged: (text) => context.read<EditTripBloc>().add(
+                EditTripEvent.changeTitle(title: text),
               ),
-              const SizedBox(width: 12),
-              Expanded(
-                child: DatePickerBox(
-                  label: "종료일",
-                  value: formatDate(state.endAt),
-                  onTap: () async {
-                    final picked = await showDatePicker(
-                      context: context,
-                      initialDate: DateTime.parse(state.endAt),
-                      firstDate: DateTime.parse(state.startAt),
-                      lastDate: DateTime(2100),
-                    );
-                    if (picked != null) {
-                      final formatted =
-                          "${picked.year}-${_two(picked.month)}-${_two(picked.day)}";
-                      context.read<EditTripBloc>().add(
-                        EditTripEvent.changeEndAt(endAt: formatted),
-                      );
-                    }
-                  },
-                ),
+            ),
+            const SizedBox(height: 16),
+
+            const Text("여행 장소", style: AppFont.regular),
+            TextBox(
+              controller: _placeController,
+              prefixIcon: const Icon(Icons.place, color: Colors.grey),
+              onChanged: (text) => context.read<EditTripBloc>().add(
+                EditTripEvent.changePlace(place: text),
               ),
+            ),
+
+            const SizedBox(height: 16),
+
+            const Text("여행 날짜", style: AppFont.regular),
+            Row(
+              children: [
+                Expanded(
+                  child: DatePickerBox(
+                    label: "시작일",
+                    value: formatDate(state.startAt),
+                    onTap: () async {
+                      final picked = await showDatePicker(
+                        context: context,
+                        initialDate: DateTime.parse(state.startAt),
+                        firstDate: DateTime(2000),
+                        lastDate: DateTime(2100),
+                      );
+                      if (picked != null) {
+                        final formatted =
+                            "${picked.year}-${_two(picked.month)}-${_two(picked.day)}";
+                        context.read<EditTripBloc>().add(
+                          EditTripEvent.changeStartAt(startAt: formatted),
+                        );
+                      }
+                    },
+                  ),
+                ),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: DatePickerBox(
+                    label: "종료일",
+                    value: formatDate(state.endAt),
+                    onTap: () async {
+                      final picked = await showDatePicker(
+                        context: context,
+                        initialDate: DateTime.parse(state.endAt),
+                        firstDate: DateTime.parse(state.startAt),
+                        lastDate: DateTime(2100),
+                      );
+                      if (picked != null) {
+                        final formatted =
+                            "${picked.year}-${_two(picked.month)}-${_two(picked.day)}";
+                        context.read<EditTripBloc>().add(
+                          EditTripEvent.changeEndAt(endAt: formatted),
+                        );
+                      }
+                    },
+                  ),
+                ),
+              ],
+            ),
+
+            const SizedBox(height: 20),
+
+            const Text("커버 타입", style: AppFont.regular),
+            Row(
+              children: [
+                _typeTab(context, "COLOR", state.coverStyle == "COLOR"),
+                const SizedBox(width: 12),
+                _typeTab(context, "IMAGE", state.coverStyle == "IMAGE"),
+              ],
+            ),
+            const SizedBox(height: 14),
+
+            if (state.coverStyle == "COLOR") ...[
+              const Text(
+                "커버 색상",
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(height: 10),
+              _colorPickSection(context, state),
             ],
-          ),
 
-          const SizedBox(height: 20),
-
-          const Text("커버 타입"),
-          Row(
-            children: [
-              _typeTab(context, "COLOR", state.coverStyle == "COLOR"),
-              const SizedBox(width: 12),
-              _typeTab(context, "IMAGE", state.coverStyle == "IMAGE"),
+            if (state.coverStyle == "IMAGE") ...[
+              const Text(
+                "커버 이미지",
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(height: 10),
+              _imagePickSection(context, state),
             ],
-          ),
-          const SizedBox(height: 14),
 
-          if (state.coverStyle == "COLOR") ...[
-            const Text("커버 색상", style: TextStyle(fontWeight: FontWeight.bold)),
-            const SizedBox(height: 10),
-            _colorPickSection(context, state),
+            const SizedBox(height: 20),
+            _InfoBox(),
           ],
-
-          if (state.coverStyle == "IMAGE") ...[
-            const Text("커버 이미지", style: TextStyle(fontWeight: FontWeight.bold)),
-            const SizedBox(height: 10),
-            _imagePickSection(context, state),
-          ],
-
-          const SizedBox(height: 20),
-          _InfoBox(),
-        ],
+        ),
       ),
     );
   }
 
   Widget _typeTab(BuildContext context, String style, bool selected) {
+    final colorScheme = Theme.of(context).colorScheme;
+    final isDark = colorScheme.brightness == Brightness.dark;
+
     return Expanded(
       child: GestureDetector(
         onTap: () => context.read<EditTripBloc>().add(
@@ -211,14 +247,23 @@ class _EditTripScreenState extends State<EditTripScreen> {
         child: Container(
           padding: const EdgeInsets.all(14),
           decoration: BoxDecoration(
-            color: selected ? Colors.blue : Colors.white,
-            border: Border.all(color: Colors.blue),
-            borderRadius: BorderRadius.circular(10),
+            color: selected
+                ? colorScheme.primary
+                : isDark
+                ? AppColors.navy
+                : AppColors.darkGray,
+            borderRadius: BorderRadius.circular(12),
           ),
           alignment: Alignment.center,
           child: Text(
             style == "COLOR" ? "색상" : "이미지",
-            style: TextStyle(color: selected ? Colors.white : Colors.blue),
+            style: AppFont.regular.copyWith(
+              color: selected
+                  ? colorScheme.onSurface
+                  : isDark
+                  ? AppColors.light
+                  : AppColors.dark,
+            ),
           ),
         ),
       ),
@@ -283,6 +328,8 @@ class _EditTripScreenState extends State<EditTripScreen> {
 
   Widget _imagePickSection(BuildContext context, EditTripState state) {
     final bloc = context.read<EditTripBloc>();
+    final colorScheme = Theme.of(context).colorScheme;
+    final isDark = colorScheme.brightness == Brightness.dark;
 
     if (state.localImgFile == null && (state.coverImg?.isEmpty ?? true)) {
       return GestureDetector(
@@ -292,15 +339,24 @@ class _EditTripScreenState extends State<EditTripScreen> {
           height: 180,
           alignment: Alignment.center,
           decoration: BoxDecoration(
-            border: Border.all(color: Colors.grey.shade400),
+            border: Border.all(color: colorScheme.onSurfaceVariant),
             borderRadius: BorderRadius.circular(10),
           ),
-          child: const Column(
+          child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(Icons.photo, size: 36),
-              SizedBox(height: 8),
-              Text("이미지 선택"),
+              Icon(
+                AppIcon.image,
+                size: 32,
+                color: colorScheme.onSurfaceVariant,
+              ),
+              const SizedBox(height: 8),
+              Text(
+                "이미지 선택",
+                style: AppFont.small.copyWith(
+                  color: colorScheme.onSurfaceVariant,
+                ),
+              ),
             ],
           ),
         ),
@@ -332,11 +388,15 @@ class _EditTripScreenState extends State<EditTripScreen> {
             onTap: () => bloc.add(const EditTripEvent.removeCoverImg()),
             child: Container(
               decoration: BoxDecoration(
-                color: Colors.black45,
+                color: isDark ? AppColors.navy : AppColors.darkGray,
                 shape: BoxShape.circle,
               ),
               padding: const EdgeInsets.all(6),
-              child: const Icon(Icons.close, color: Colors.white, size: 18),
+              child: Icon(
+                AppIcon.close,
+                size: 18,
+                color: colorScheme.onSurfaceVariant,
+              ),
             ),
           ),
         ),
@@ -406,6 +466,9 @@ class _InfoBox extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    final isDark = colorScheme.brightness == Brightness.dark;
+
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.all(12),
@@ -413,9 +476,19 @@ class _InfoBox extends StatelessWidget {
         color: const Color(0xffE8F0FE),
         borderRadius: BorderRadius.circular(12),
       ),
-      child: const Text(
-        "💡 수정 후 저장하면 크루에게도 변경 사항이 공유돼요!",
-        style: AppFont.regular,
+      child: Row(
+        children: [
+          Icon(AppIcon.crews, color: colorScheme.primary, size: 24),
+          SizedBox(width: 24),
+          Expanded(
+            child: Text(
+              "수정 후 저장하면 크루에게도 변경 사항이 공유돼요!",
+              style: AppFont.regular.copyWith(
+                color: isDark ? AppColors.light : AppColors.dark,
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
