@@ -221,6 +221,7 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i1039.UpdateDiaryUseCase>(
       () => _i1039.UpdateDiaryUseCase(gh<_i871.DiaryRepository>()),
     );
+<<<<<<< Updated upstream
     gh.factory<_i611.DiaryBloc>(
       () => _i611.DiaryBloc(
         gh<_i849.GetOurDiariesUseCase>(),
@@ -228,6 +229,16 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i236.GetDiaryByIdUseCase>(),
         gh<_i699.DeleteDiaryUseCase>(),
       ),
+=======
+    gh.lazySingleton<_i1051.CreateTodoListUseCase>(
+      () => _i1051.CreateTodoListUseCase(gh<_i579.TodoListRepository>()),
+    );
+    gh.lazySingleton<_i311.DeleteTodoListUseCase>(
+      () => _i311.DeleteTodoListUseCase(gh<_i579.TodoListRepository>()),
+    );
+    gh.lazySingleton<_i57.ToggleTodoListUseCase>(
+      () => _i57.ToggleTodoListUseCase(gh<_i579.TodoListRepository>()),
+>>>>>>> Stashed changes
     );
     gh.lazySingleton<_i212.AlarmSettingRepository>(
       () =>
@@ -256,6 +267,13 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.singleton<_i456.WatchAuthStateUseCase>(
       () => _i456.WatchAuthStateUseCase(gh<_i488.AuthRepository>()),
+    );
+    gh.factory<_i611.DiaryBloc>(
+      () => _i611.DiaryBloc(
+        gh<_i849.GetOurDiariesUseCase>(),
+        gh<_i730.GetMyDiariesUseCase>(),
+        gh<_i699.DeleteDiaryUseCase>(),
+      ),
     );
     gh.factory<_i1041.NewDiaryBloc>(
       () => _i1041.NewDiaryBloc(

@@ -3,7 +3,6 @@ import 'package:injectable/injectable.dart';
 import 'package:my_travel_friend/core/extension/failure_extension.dart';
 import 'package:my_travel_friend/feature/diary/domain/entities/diary_entity.dart';
 import 'package:my_travel_friend/feature/diary/domain/usecases/delete_diary_usecase.dart';
-import 'package:my_travel_friend/feature/diary/domain/usecases/get_diary_by_id_usecase.dart';
 import 'package:my_travel_friend/feature/diary/domain/usecases/get_my_diaries_usecase.dart';
 import 'package:my_travel_friend/feature/diary/domain/usecases/get_our_diaries_usecase.dart';
 
@@ -18,7 +17,6 @@ class DiaryBloc extends Bloc<DiaryEvent, DiaryState> {
   // usecase 주입
   final GetOurDiariesUseCase _getOurDiariesUseCase;
   final GetMyDiariesUseCase _getMyDiariesUseCase;
-  final GetDiaryByIdUseCase _getDiaryByIdUseCase;
   final DeleteDiaryUseCase _deleteDiaryUseCase;
 
   static const int _pageLimit = 7;
@@ -26,7 +24,6 @@ class DiaryBloc extends Bloc<DiaryEvent, DiaryState> {
   DiaryBloc(
     this._getOurDiariesUseCase,
     this._getMyDiariesUseCase,
-    this._getDiaryByIdUseCase,
     this._deleteDiaryUseCase,
   ) : super(const DiaryState()) {
     on<GetOurDiaries>(_onGetOurDiaries);
