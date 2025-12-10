@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:my_travel_friend/core/widget/app_bar.dart';
 import 'package:my_travel_friend/feature/setting/presentation/viewmodels/profile_bloc.dart';
+import 'package:my_travel_friend/feature/setting/presentation/widgets/delete_profile_button.dart';
 import 'package:my_travel_friend/feature/setting/presentation/widgets/profile_img_box.dart';
 
 import '../../../../core/widget/button.dart';
@@ -98,6 +99,7 @@ class ProfileScreen extends StatelessWidget {
             SizedBox(height: 16),
             EmailBox(),
             SizedBox(height: 16),
+            DeleteProfileButton(),
           ],
         ),
       ),
