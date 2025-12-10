@@ -32,6 +32,8 @@ class AlarmBloc extends Bloc<AlarmEvent, AlarmState> {
     on<GetAlarmById>(_onGetAlarmById);
     on<ClearSelectedAlarm>(_onClearSelectedAlarm);
     on<RefreshAlarm>(_onRefresh);
+    on<RequestNavigate>(_onRequestNavigate);
+    on<NavigationHandled>(_onNavigationHandled);
   }
 
   // 자동 새로고침
@@ -218,5 +220,70 @@ class AlarmBloc extends Bloc<AlarmEvent, AlarmState> {
   // 새로고침
   Future<void> _onRefresh(RefreshAlarm event, Emitter<AlarmState> emit) async {
     _refreshList();
+  }
+
+  // 네비게이션 핸들러
+  // 알림 클릭 시 네비게이션 상태 결정
+  void _onRequestNavigate(RequestNavigate event, Emitter<AlarmState> emit) {
+    final alarm = event.alarm;
+    final navigation = _getNavigationRoute(alarm.type, alarm.data);
+    emit(state.copyWith(navigation: navigation));
+  }
+
+  // 알림 타입 -> 네비게이션 경로 + 데이터 가져오기
+  AlarmNavigation _getNavigationRoute(String type, Map<String, dynamic>? data) {
+    // data에서 필요한 Id 가져오기
+    final tripId = data?['trip_id'] as int?;
+    final scheduleId = data?['schedule_id'] as int?;
+
+    return switch (type) {
+      // 설정 쪽 - 친구, 여행 초대
+      // 여행 초대 알림 -> 설정 - 여행 초대
+      'TRIP_REQUEST' => const AlarmNavigationTo('여행 초대 주소'),
+      // 친구 요청 알림 -> 설정 - 친구 요청
+      'FRIEND_REQUEST' => const AlarmNavigationTo('친구 요청'),
+      // 친구 수락 알림 -> 설정 - 친구 목록
+      'NEW_FRIEND' => const AlarmNavigationTo('친구 목록'),
+
+      // 여행 상세 쪽 - 스케줄, 톡톡
+      // 스케줄 생성, 수정 -> 여행 - 일정 - 해당 스케줄 포커스
+      'SCHEDULE_ADDED' when tripId != null => AlarmNavigationTo(
+        _buildPath(tripId, scheduleId),
+      ),
+      'SCHEDULE_EDITED' when tripId != null => AlarmNavigationTo(
+        _buildPath(tripId, scheduleId),
+      ),
+
+      // 스케줄 삭제 -> 여행 - 일정 (스케줄 아이디 없음)
+      'SCHEDULE_DELETED' when tripId != null => AlarmNavigationTo(
+        '/trip/$tripId/schedule',
+      ),
+
+      // 톡톡 메세지 알림 -> 여행 - 톡톡탭
+      'TALK_MESSAGE' when tripId != null => AlarmNavigationTo(
+        '/trip/$tripId/talk',
+      ),
+
+      // D-Day 알림 -> 여행 - 홈
+      'D_DAY' when tripId != null => AlarmNavigationTo('/trip/$tripId'),
+
+      _ => const AlarmNavigationNone(),
+    };
+  }
+
+  // 스케줄 경로 생성 헬퍼
+  String _buildPath(int tripId, int? scheduleId) {
+    final basePath = '/trip/$tripId/schedule';
+    if (scheduleId != null) {
+      return '$basePath?scheduleId=$scheduleId';
+    }
+    return basePath;
+  }
+
+  // 네비게이션 플래그 리셋
+  // - Screen에서 실제 라우팅 수행 후 호출
+  // - 중복 네비게이션 방지
+  void _onNavigationHandled(NavigationHandled event, Emitter<AlarmState> emit) {
+    emit(state.copyWith(navigation: const AlarmNavigationNone()));
   }
 }
