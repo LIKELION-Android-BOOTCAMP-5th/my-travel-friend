@@ -133,10 +133,16 @@ import '../../feature/setting/domain/repositories/profile_repository.dart'
     as _i565;
 import '../../feature/setting/domain/usecases/get_my_alarm_setting_usecase.dart'
     as _i980;
+import '../../feature/setting/domain/usecases/get_my_profile_usecase.dart'
+    as _i203;
 import '../../feature/setting/domain/usecases/update_alarm_setting_usecase.dart'
     as _i50;
+import '../../feature/setting/domain/usecases/update_profile_usecase.dart'
+    as _i90;
 import '../../feature/setting/presentation/viewmodels/alarm_setting_bloc.dart'
     as _i871;
+import '../../feature/setting/presentation/viewmodels/profile_bloc.dart'
+    as _i912;
 import '../../feature/trip/data/datasources/trip_data_source.dart' as _i1063;
 import '../../feature/trip/data/datasources/trip_data_source_impl.dart'
     as _i386;
@@ -389,6 +395,12 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i871.DiaryRepository>(),
       ),
     );
+    gh.lazySingleton<_i203.GetMyProfileUseCase>(
+      () => _i203.GetMyProfileUseCase(gh<_i565.ProfileRepository>()),
+    );
+    gh.lazySingleton<_i90.UpdateProfileUseCase>(
+      () => _i90.UpdateProfileUseCase(gh<_i565.ProfileRepository>()),
+    );
     gh.factory<_i703.EditDiaryBloc>(
       () => _i703.EditDiaryBloc(
         gh<_i1039.UpdateDiaryUseCase>(),
@@ -431,6 +443,12 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i456.WatchAuthStateUseCase>(),
         gh<_i529.GetCurrentUserUseCase>(),
         gh<_i858.SignOutUseCase>(),
+      ),
+    );
+    gh.factory<_i912.ProfileBloc>(
+      () => _i912.ProfileBloc(
+        gh<_i565.ProfileRepository>(),
+        gh<_i90.UpdateProfileUseCase>(),
       ),
     );
     gh.factory<_i871.AlarmSettingBloc>(

@@ -12,6 +12,7 @@ import '../viewmodels/alarm_setting_event.dart';
 import '../viewmodels/alarm_setting_state.dart';
 import '../widgets/alarm_setting_box.dart';
 
+// [이재은] 알림 설정 화면
 class AlarmSettingScreen extends StatelessWidget {
   const AlarmSettingScreen({super.key});
 
