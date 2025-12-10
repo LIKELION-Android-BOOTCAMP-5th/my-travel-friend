@@ -158,4 +158,10 @@ class AppIcon {
 
   // 저장
   static const save = Icon(FeatherIcons.save);
+
+  // 빈 사각형(체크박스용)
+  static const emptyBox = FontAwesomeIcons.square;
+
+  // 체워진 사각형(체크박스용)
+  static const checkedBox = FontAwesomeIcons.solidSquareCheck;
 }

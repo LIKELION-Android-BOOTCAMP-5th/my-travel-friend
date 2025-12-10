@@ -50,6 +50,14 @@ class TempScreen extends StatelessWidget {
             onPressed: () => context.push('/alarmSetting'),
             icon: Icon(AppIcon.setting, color: AppColors.lightGreen, size: 30),
           ),
+          IconButton(
+            onPressed: () => context.push('/checklist'),
+            icon: Icon(
+              AppIcon.checklist,
+              color: AppColors.lightGreen,
+              size: 30,
+            ),
+          ),
         ],
       ),
     );

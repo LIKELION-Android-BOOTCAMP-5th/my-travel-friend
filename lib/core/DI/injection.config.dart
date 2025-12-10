@@ -57,6 +57,40 @@ import '../../feature/auth/domain/usecases/watch_auth_state_usecase.dart'
 import '../../feature/auth/presentation/viewmodel/auth/auth_bloc.dart' as _i474;
 import '../../feature/auth/presentation/viewmodel/auth_profile/auth_profile_bloc.dart'
     as _i387;
+import '../../feature/checklist/data/datasources/checklist_data_source.dart'
+    as _i877;
+import '../../feature/checklist/data/datasources/checklist_data_source_impl.dart'
+    as _i694;
+import '../../feature/checklist/data/datasources/todo_list_data_source.dart'
+    as _i540;
+import '../../feature/checklist/data/datasources/todo_list_data_source_impl.dart'
+    as _i79;
+import '../../feature/checklist/data/repositories/checklist_repository_impl.dart'
+    as _i418;
+import '../../feature/checklist/data/repositories/todo_list_repository_impl.dart'
+    as _i438;
+import '../../feature/checklist/domain/repositories/checklist_repository.dart'
+    as _i181;
+import '../../feature/checklist/domain/repositories/todo_list_repository.dart'
+    as _i579;
+import '../../feature/checklist/domain/usecases/create_checklist_usecase.dart'
+    as _i622;
+import '../../feature/checklist/domain/usecases/create_todo_list_usecase.dart'
+    as _i1051;
+import '../../feature/checklist/domain/usecases/delete_checklist_usecase.dart'
+    as _i95;
+import '../../feature/checklist/domain/usecases/delete_todo_list_usecase.dart'
+    as _i311;
+import '../../feature/checklist/domain/usecases/get_my_checklist_usecase.dart'
+    as _i979;
+import '../../feature/checklist/domain/usecases/get_my_todo_list_usecase.dart'
+    as _i30;
+import '../../feature/checklist/domain/usecases/toggle_checklist_usecase.dart'
+    as _i349;
+import '../../feature/checklist/domain/usecases/toggle_todo_list_usecase.dart'
+    as _i57;
+import '../../feature/checklist/presentation/viewmodels/lists_bloc.dart'
+    as _i130;
 import '../../feature/diary/data/datasources/diary_data_source.dart' as _i881;
 import '../../feature/diary/data/datasources/diary_data_source_impl.dart'
     as _i663;
@@ -148,6 +182,12 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i737.PushNotificationService>(
       () => _i737.PushNotificationService(gh<_i892.FirebaseMessaging>()),
     );
+    gh.lazySingleton<_i540.TodoListDataSource>(
+      () => _i79.TodoListDataSourceImpl(gh<_i454.SupabaseClient>()),
+    );
+    gh.lazySingleton<_i877.ChecklistDataSource>(
+      () => _i694.ChecklistDataSourceImpl(gh<_i454.SupabaseClient>()),
+    );
     gh.lazySingleton<_i881.DiaryDataSource>(
       () => _i663.DiaryDataSourceImpl(gh<_i454.SupabaseClient>()),
     );
@@ -157,8 +197,14 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i58.AlarmDataSource>(
       () => _i1049.AlarmDataSourceImpl(gh<_i454.SupabaseClient>()),
     );
+    gh.lazySingleton<_i579.TodoListRepository>(
+      () => _i438.TodoListRepositoryImpl(gh<_i540.TodoListDataSource>()),
+    );
     gh.lazySingleton<_i766.AlarmSettingDataSource>(
       () => _i746.AlarmSettingDataSourceImpl(gh<_i454.SupabaseClient>()),
+    );
+    gh.lazySingleton<_i30.GetMyTodoListUseCase>(
+      () => _i30.GetMyTodoListUseCase(gh<_i579.TodoListRepository>()),
     );
     gh.lazySingleton<_i871.DiaryRepository>(
       () => _i148.DiaryRepositoryImpl(gh<_i881.DiaryDataSource>()),
@@ -168,6 +214,9 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i454.SupabaseClient>(),
         gh<_i737.PushNotificationService>(),
       ),
+    );
+    gh.lazySingleton<_i181.ChecklistRepository>(
+      () => _i418.ChecklistRepositoryImpl(gh<_i877.ChecklistDataSource>()),
     );
     gh.singleton<_i488.AuthRepository>(
       () => _i263.AuthRepositoryImpl(
@@ -200,6 +249,18 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i437.SearchTripUsecase>(
       () => _i437.SearchTripUsecase(gh<_i161.TripRepository>()),
     );
+    gh.lazySingleton<_i622.CreateChecklistUseCase>(
+      () => _i622.CreateChecklistUseCase(gh<_i181.ChecklistRepository>()),
+    );
+    gh.lazySingleton<_i95.DeleteChecklistUseCase>(
+      () => _i95.DeleteChecklistUseCase(gh<_i181.ChecklistRepository>()),
+    );
+    gh.lazySingleton<_i979.GetMyChecklistUseCase>(
+      () => _i979.GetMyChecklistUseCase(gh<_i181.ChecklistRepository>()),
+    );
+    gh.lazySingleton<_i349.ToggleChecklistUseCase>(
+      () => _i349.ToggleChecklistUseCase(gh<_i181.ChecklistRepository>()),
+    );
     gh.lazySingleton<_i831.AlarmRepository>(
       () => _i915.AlarmRepositoryImpl(gh<_i58.AlarmDataSource>()),
     );
@@ -221,13 +282,14 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i1039.UpdateDiaryUseCase>(
       () => _i1039.UpdateDiaryUseCase(gh<_i871.DiaryRepository>()),
     );
-    gh.factory<_i611.DiaryBloc>(
-      () => _i611.DiaryBloc(
-        gh<_i849.GetOurDiariesUseCase>(),
-        gh<_i730.GetMyDiariesUseCase>(),
-        gh<_i236.GetDiaryByIdUseCase>(),
-        gh<_i699.DeleteDiaryUseCase>(),
-      ),
+    gh.lazySingleton<_i1051.CreateTodoListUseCase>(
+      () => _i1051.CreateTodoListUseCase(gh<_i579.TodoListRepository>()),
+    );
+    gh.lazySingleton<_i311.DeleteTodoListUseCase>(
+      () => _i311.DeleteTodoListUseCase(gh<_i579.TodoListRepository>()),
+    );
+    gh.lazySingleton<_i57.ToggleTodoListUseCase>(
+      () => _i57.ToggleTodoListUseCase(gh<_i579.TodoListRepository>()),
     );
     gh.lazySingleton<_i212.AlarmSettingRepository>(
       () =>
@@ -251,11 +313,30 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i420.SocialSignInUseCase>(
       () => _i420.SocialSignInUseCase(gh<_i488.AuthRepository>()),
     );
+    gh.factory<_i130.ListsBloc>(
+      () => _i130.ListsBloc(
+        gh<_i979.GetMyChecklistUseCase>(),
+        gh<_i30.GetMyTodoListUseCase>(),
+        gh<_i622.CreateChecklistUseCase>(),
+        gh<_i1051.CreateTodoListUseCase>(),
+        gh<_i95.DeleteChecklistUseCase>(),
+        gh<_i311.DeleteTodoListUseCase>(),
+        gh<_i349.ToggleChecklistUseCase>(),
+        gh<_i57.ToggleTodoListUseCase>(),
+      ),
+    );
     gh.lazySingleton<_i739.CancelOauthUseCase>(
       () => _i739.CancelOauthUseCase(gh<_i488.AuthRepository>()),
     );
     gh.singleton<_i456.WatchAuthStateUseCase>(
       () => _i456.WatchAuthStateUseCase(gh<_i488.AuthRepository>()),
+    );
+    gh.factory<_i611.DiaryBloc>(
+      () => _i611.DiaryBloc(
+        gh<_i849.GetOurDiariesUseCase>(),
+        gh<_i730.GetMyDiariesUseCase>(),
+        gh<_i699.DeleteDiaryUseCase>(),
+      ),
     );
     gh.factory<_i1041.NewDiaryBloc>(
       () => _i1041.NewDiaryBloc(
