@@ -109,10 +109,6 @@ class ListsBloc extends Bloc<ListsEvent, ListsState> {
     final content = event.content.trim();
     if (content.isEmpty) return;
 
-    print('🔵 createChecklist called');
-    print('🔵 content: "${event.content}"'); // 또는 event.content
-    print('🔵 tripId: ${state.tripId}, userId: ${state.userId}');
-
     final newItem = ChecklistEntity(
       id: null,
       tripId: state.tripId,
