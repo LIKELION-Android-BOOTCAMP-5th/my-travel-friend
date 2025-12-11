@@ -3,23 +3,31 @@ import 'dart:async';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
+import 'package:my_travel_friend/feature/setting/domain/usecases/profile/delete_img_usecase.dart';
+import 'package:my_travel_friend/feature/setting/domain/usecases/profile/upload_img_usecase.dart';
 import 'package:my_travel_friend/feature/setting/presentation/viewmodels/profile/profile_event.dart';
 import 'package:my_travel_friend/feature/setting/presentation/viewmodels/profile/profile_state.dart';
 
 import '../../../../../core/result/result.dart';
-import '../../../domain/repositories/profile_repository.dart';
+import '../../../domain/usecases/profile/check_nickname_duplicate_usecase.dart';
 import '../../../domain/usecases/profile/update_profile_usecase.dart';
 
 @injectable
 class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
-  final ProfileRepository _profileRepository;
+  final CheckNicknameDuplicateUseCase _checkNicknameDuplicateUseCase;
   final UpdateProfileUseCase _updateProfileUseCase;
+  final UploadImgUseCase _uploadImgUseCase;
+  final DeleteImgUseCase _deleteImgUseCase;
 
   // 닉네임 중복 체크 debounce
   Timer? _nicknameDebounceTimer;
 
-  ProfileBloc(this._profileRepository, this._updateProfileUseCase)
-    : super(const ProfileState()) {
+  ProfileBloc(
+    this._checkNicknameDuplicateUseCase,
+    this._updateProfileUseCase,
+    this._uploadImgUseCase,
+    this._deleteImgUseCase,
+  ) : super(const ProfileState()) {
     on<LoadProfile>(_onLoadProfile);
     on<SelectImg>(_onSelectImg);
     on<RemoveImg>(_onRemoveImg);
@@ -161,7 +169,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     }
 
     try {
-      final res = await _profileRepository.checkNicknameDuplicate(nickname);
+      final res = await _checkNicknameDuplicateUseCase(nickname);
 
       res.when(
         success: (isDuplicate) {
@@ -198,19 +206,19 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
 
       // 기존 이미지 삭제 필요한 경우
       if (state.isImgRemoved && originalImgUrl != null) {
-        await _profileRepository.deleteImg(originalImgUrl);
+        await _deleteImgUseCase(originalImgUrl);
       }
 
       // 새 이미지 업로드
       if (state.localImgFile != null) {
         // 기존 이미지가 있으면 먼저 삭제
         if (originalImgUrl != null && !state.isImgRemoved) {
-          await _profileRepository.deleteImg(originalImgUrl);
+          await _deleteImgUseCase(originalImgUrl);
         }
 
         emit(state.copyWith(isUploading: true));
 
-        final uploadResult = await _profileRepository.uploadImg(
+        final uploadResult = await _uploadImgUseCase(
           file: state.localImgFile!,
           id: userId,
         );

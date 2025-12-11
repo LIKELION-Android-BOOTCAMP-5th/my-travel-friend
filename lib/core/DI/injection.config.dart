@@ -136,8 +136,14 @@ import '../../feature/setting/domain/usecases/alarm/get_my_alarm_setting_usecase
     as _i420;
 import '../../feature/setting/domain/usecases/alarm/update_alarm_setting_usecase.dart'
     as _i87;
+import '../../feature/setting/domain/usecases/profile/check_nickname_duplicate_usecase.dart'
+    as _i945;
+import '../../feature/setting/domain/usecases/profile/delete_img_usecase.dart'
+    as _i715;
 import '../../feature/setting/domain/usecases/profile/update_profile_usecase.dart'
     as _i473;
+import '../../feature/setting/domain/usecases/profile/upload_img_usecase.dart'
+    as _i304;
 import '../../feature/setting/presentation/viewmodels/alarm/alarm_setting_bloc.dart'
     as _i695;
 import '../../feature/setting/presentation/viewmodels/profile/profile_bloc.dart'
@@ -409,6 +415,9 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i57.ToggleTodoListUseCase>(),
       ),
     );
+    gh.lazySingleton<_i945.CheckNicknameDuplicateUseCase>(
+      () => _i945.CheckNicknameDuplicateUseCase(gh<_i565.ProfileRepository>()),
+    );
     gh.factory<_i27.DiaryBloc>(
       () => _i27.DiaryBloc(
         gh<_i849.GetOurDiariesUseCase>(),
@@ -422,16 +431,17 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i871.DiaryRepository>(),
       ),
     );
-<<<<<<< HEAD
+    gh.lazySingleton<_i715.DeleteImgUseCase>(
+      () => _i715.DeleteImgUseCase(gh<_i565.ProfileRepository>()),
+    );
     gh.lazySingleton<_i473.UpdateProfileUseCase>(
       () => _i473.UpdateProfileUseCase(gh<_i565.ProfileRepository>()),
     );
-    gh.factory<_i703.EditDiaryBloc>(
-      () => _i703.EditDiaryBloc(
-=======
+    gh.lazySingleton<_i304.UploadImgUseCase>(
+      () => _i304.UploadImgUseCase(gh<_i565.ProfileRepository>()),
+    );
     gh.factory<_i935.EditDiaryBloc>(
       () => _i935.EditDiaryBloc(
->>>>>>> dcaaef2b2d10b94a52ae271d8d25f4545100d05b
         gh<_i1039.UpdateDiaryUseCase>(),
         gh<_i871.DiaryRepository>(),
       ),
@@ -462,8 +472,10 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.factory<_i557.ProfileBloc>(
       () => _i557.ProfileBloc(
-        gh<_i565.ProfileRepository>(),
+        gh<_i945.CheckNicknameDuplicateUseCase>(),
         gh<_i473.UpdateProfileUseCase>(),
+        gh<_i304.UploadImgUseCase>(),
+        gh<_i715.DeleteImgUseCase>(),
       ),
     );
     gh.factory<_i693.AlarmBloc>(
