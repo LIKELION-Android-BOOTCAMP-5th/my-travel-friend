@@ -17,7 +17,7 @@ abstract class TripRepository {
   Future<Result<TripEntity>> editTrip(TripEntity trip);
 
   //여행 포기
-  Future<Result<void>> giveUpTrip(int userId, int id);
+  Future<Result<void>> giveUpTrip(int tripId, int userId);
 
   //트립 크루 인원수 (여행 삭제를 위한)
   Future<Result<int>> countTripCrew(int tripId);

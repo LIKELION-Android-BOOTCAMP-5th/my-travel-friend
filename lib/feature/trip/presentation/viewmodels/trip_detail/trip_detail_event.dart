@@ -17,4 +17,10 @@ abstract class TripDetailEvent with _$TripDetailEvent {
 
   // 여행 새로고침
   const factory TripDetailEvent.refreshTripDetail() = RefreshTripDetail;
+
+  // 여행 포기
+  const factory TripDetailEvent.leaveTrip({
+    required int tripId,
+    required int userId,
+  }) = LeaveTrip;
 }

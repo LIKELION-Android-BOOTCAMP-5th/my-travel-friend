@@ -3,6 +3,7 @@ import 'package:injectable/injectable.dart';
 
 import '../../../../../core/result/result.dart';
 import '../../../domain/usecases/get_trip_by_id_usecase.dart';
+import '../../../domain/usecases/give_up_trip_usecase.dart';
 import 'trip_detail_event.dart';
 import 'trip_detail_state.dart';
 
@@ -10,13 +11,16 @@ import 'trip_detail_state.dart';
 @injectable
 class TripDetailBloc extends Bloc<TripDetailEvent, TripDetailState> {
   final GetTripByIdUseCase _getTripByIdUsecase;
+  final GiveUpTripUseCase _giveUpTripUsecase;
 
   int? _currentTripId;
 
-  TripDetailBloc(this._getTripByIdUsecase) : super(const TripDetailState()) {
+  TripDetailBloc(this._getTripByIdUsecase, this._giveUpTripUsecase)
+    : super(const TripDetailState()) {
     on<LoadTripDetail>(_onLoadTripDetail);
     on<UpdateTripDetail>(_onUpdateTripDetail);
     on<RefreshTripDetail>(_onRefreshTripDetail);
+    on<LeaveTrip>(_onLeaveTrip);
   }
 
   // Trip 상세 정보 로드
@@ -79,6 +83,30 @@ class TripDetailBloc extends Bloc<TripDetailEvent, TripDetailState> {
             errorMessage: null,
           ),
         );
+      },
+      failure: (failure) {
+        emit(
+          state.copyWith(
+            pageState: TripDetailPageState.error,
+            errorMessage: failure.message,
+          ),
+        );
+      },
+    );
+  }
+
+  // 여행 포기
+  Future<void> _onLeaveTrip(
+    LeaveTrip event,
+    Emitter<TripDetailState> emit,
+  ) async {
+    emit(state.copyWith(pageState: TripDetailPageState.loading));
+
+    final res = await _giveUpTripUsecase(event.tripId, event.userId);
+
+    res.when(
+      success: (_) {
+        emit(state.copyWith(pageState: TripDetailPageState.left));
       },
       failure: (failure) {
         emit(

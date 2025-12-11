@@ -12,9 +12,8 @@ import '../../../../theme/app_icon.dart';
 import '../../../auth/presentation/viewmodel/auth_profile/auth_profile_bloc.dart';
 import '../../../auth/presentation/viewmodel/auth_profile/auth_profile_state.dart';
 import '../../domain/entities/trip_entity.dart';
-import '../viewmodels/trip/trip_bloc.dart';
-import '../viewmodels/trip/trip_event.dart';
 import '../viewmodels/trip_detail/trip_detail_bloc.dart';
+import '../viewmodels/trip_detail/trip_detail_event.dart';
 import '../viewmodels/trip_detail/trip_detail_state.dart';
 import 'edit_trip_screen.dart';
 
@@ -148,8 +147,19 @@ class TripShellScaffold extends StatelessWidget {
           icon: Icon(AppIcon.edit),
           iconBgColor: AppColors.primaryLight,
           title: "여행계획 수정하기",
-          onTap: () {
-            context.push('/trip/edit', extra: {'trip': trip});
+          onTap: () async {
+            // push 결과로 받기
+            final result = await context.push<bool>(
+              '/trip/edit',
+              extra: {'trip': trip},
+            );
+
+            // 수정 완료 시 새로고침
+            if (result == true && context.mounted) {
+              context.read<TripDetailBloc>().add(
+                const TripDetailEvent.refreshTripDetail(),
+              );
+            }
           },
         ),
         BottomSheetAction(
@@ -174,8 +184,8 @@ class TripShellScaffold extends StatelessWidget {
         message: "참여 중인 여행에서 제외됩니다.",
         rightText: "포기하기",
         onRight: () {
-          context.read<TripBloc>().add(
-            TripEvent.leaveTrip(tripId: trip.id!, userId: userId),
+          context.read<TripDetailBloc>().add(
+            TripDetailEvent.leaveTrip(tripId: trip.id!, userId: userId),
           );
           context.go('/home');
         },
