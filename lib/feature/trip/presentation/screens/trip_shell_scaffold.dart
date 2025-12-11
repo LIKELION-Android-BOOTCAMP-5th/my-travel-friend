@@ -7,6 +7,7 @@ import '../../../../core/widget/bottom_navigation.dart';
 import '../../../../core/widget/bottom_sheat.dart';
 import '../../../../core/widget/button.dart';
 import '../../../../core/widget/pop_up_box.dart';
+import '../../../../core/widget/toast_pop.dart';
 import '../../../../theme/app_colors.dart';
 import '../../../../theme/app_icon.dart';
 import '../../../auth/presentation/viewmodel/auth_profile/auth_profile_bloc.dart';
@@ -28,7 +29,15 @@ class TripShellScaffold extends StatelessWidget {
     final colorScheme = Theme.of(context).colorScheme;
     final isDark = colorScheme.brightness == Brightness.dark;
 
-    return BlocBuilder<TripDetailBloc, TripDetailState>(
+    return BlocConsumer<TripDetailBloc, TripDetailState>(
+      listenWhen: (prev, curr) => prev.pageState != curr.pageState,
+      listener: (context, state) {
+        // 여행 포기 성공 시
+        if (state.pageState == TripDetailPageState.left) {
+          ToastPop.show('여행을 포기했습니다');
+          context.go('/home');
+        }
+      },
       builder: (context, state) {
         // 로딩 중
         if (state.pageState == TripDetailPageState.loading ||
@@ -174,7 +183,7 @@ class TripShellScaffold extends StatelessWidget {
     );
   }
 
-  /// 여행 포기 PopUp
+  // 여행 포기 PopUp
   void _showLeavePopUp(BuildContext context, TripEntity trip, int userId) {
     showDialog(
       context: context,
@@ -187,7 +196,6 @@ class TripShellScaffold extends StatelessWidget {
           context.read<TripDetailBloc>().add(
             TripDetailEvent.leaveTrip(tripId: trip.id!, userId: userId),
           );
-          context.go('/home');
         },
       ),
     );
