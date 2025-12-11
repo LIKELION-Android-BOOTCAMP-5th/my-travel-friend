@@ -17,14 +17,14 @@ class TripBloc extends Bloc<TripEvent, TripState> {
   final GetMyTripUsecase _getMyTripUsecase;
   final GetCrewMemberCountUsecase _getCrewMemberCountUsecase;
   final DeleteTripUsecase _deleteTripUsecase;
-  final GiveUpTripUsecase _giveUpTripUsecase;
+  final GiveUpTripUseCase _giveUpTripUseCase;
   final SearchTripUsecase _searchTripUsecase;
   final DeleteImgUsecase _deleteImgUsecase;
   TripBloc(
     this._getMyTripUsecase,
     this._getCrewMemberCountUsecase,
     this._deleteTripUsecase,
-    this._giveUpTripUsecase,
+    this._giveUpTripUseCase,
     this._searchTripUsecase,
     this._deleteImgUsecase,
   ) : super(TripState(trips: [])) {
@@ -189,10 +189,10 @@ class TripBloc extends Bloc<TripEvent, TripState> {
       success: (crewCount) async {
         if (crewCount > 1) {
           // 2명 이상 → 나만 trip_crew에서 제거
-          await _giveUpTripUsecase(event.userId, event.tripId);
+          await _giveUpTripUseCase(event.userId, event.tripId);
         } else {
           // 마지막 사용자 → trip_crew 전체 삭제
-          await _giveUpTripUsecase(event.userId, event.tripId);
+          await _giveUpTripUseCase(event.userId, event.tripId);
 
           final trip = state.trips?.firstWhere(
             (t) => t.id == event.tripId,

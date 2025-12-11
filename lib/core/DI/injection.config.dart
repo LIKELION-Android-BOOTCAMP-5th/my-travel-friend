@@ -270,8 +270,8 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i521.GetMyTripUsecase>(
       () => _i521.GetMyTripUsecase(gh<_i161.TripRepository>()),
     );
-    gh.lazySingleton<_i317.GiveUpTripUsecase>(
-      () => _i317.GiveUpTripUsecase(gh<_i161.TripRepository>()),
+    gh.lazySingleton<_i317.GiveUpTripUseCase>(
+      () => _i317.GiveUpTripUseCase(gh<_i161.TripRepository>()),
     );
     gh.lazySingleton<_i437.SearchTripUsecase>(
       () => _i437.SearchTripUsecase(gh<_i161.TripRepository>()),
@@ -284,6 +284,16 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.lazySingleton<_i579.TodoListRepository>(
       () => _i438.TodoListRepositoryImpl(gh<_i540.TodoListDataSource>()),
+    );
+    gh.factory<_i616.TripBloc>(
+      () => _i616.TripBloc(
+        gh<_i521.GetMyTripUsecase>(),
+        gh<_i267.GetCrewMemberCountUsecase>(),
+        gh<_i832.DeleteTripUsecase>(),
+        gh<_i317.GiveUpTripUseCase>(),
+        gh<_i437.SearchTripUsecase>(),
+        gh<_i202.DeleteImgUsecase>(),
+      ),
     );
     gh.lazySingleton<_i766.AlarmSettingDataSource>(
       () => _i746.AlarmSettingDataSourceImpl(gh<_i454.SupabaseClient>()),
@@ -312,27 +322,20 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i161.TripRepository>(),
       ),
     );
+    gh.factory<_i1000.TripDetailBloc>(
+      () => _i1000.TripDetailBloc(
+        gh<_i277.GetTripByIdUseCase>(),
+        gh<_i317.GiveUpTripUseCase>(),
+      ),
+    );
     gh.lazySingleton<_i181.ChecklistRepository>(
       () => _i418.ChecklistRepositoryImpl(gh<_i877.ChecklistDataSource>()),
-    );
-    gh.factory<_i616.TripBloc>(
-      () => _i616.TripBloc(
-        gh<_i521.GetMyTripUsecase>(),
-        gh<_i267.GetCrewMemberCountUsecase>(),
-        gh<_i832.DeleteTripUsecase>(),
-        gh<_i317.GiveUpTripUsecase>(),
-        gh<_i437.SearchTripUsecase>(),
-        gh<_i202.DeleteImgUsecase>(),
-      ),
     );
     gh.lazySingleton<_i739.CancelOauthUseCase>(
       () => _i739.CancelOauthUseCase(gh<_i488.AuthRepository>()),
     );
     gh.singleton<_i456.WatchAuthStateUseCase>(
       () => _i456.WatchAuthStateUseCase(gh<_i488.AuthRepository>()),
-    );
-    gh.factory<_i1000.TripDetailBloc>(
-      () => _i1000.TripDetailBloc(gh<_i277.GetTripByIdUseCase>()),
     );
     gh.factory<_i873.CreateTripBloc>(
       () => _i873.CreateTripBloc(
