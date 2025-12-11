@@ -13,17 +13,17 @@ import 'package:my_travel_friend/theme/app_font.dart';
 import 'package:path/path.dart' as path;
 import 'package:path_provider/path_provider.dart';
 
-import '../../../../core/widget/app_bar.dart';
-import '../../../../core/widget/bottom_sheat.dart';
-import '../../../../core/widget/button.dart';
-import '../../../../core/widget/toast_pop.dart';
-import '../../../../theme/app_colors.dart';
-import '../../../../theme/app_icon.dart';
-import '../viewmodels/new_diary_bloc.dart';
-import '../viewmodels/new_diary_event.dart';
-import '../viewmodels/new_diary_state.dart';
-import '../widgets/star_rating.dart';
-import '../widgets/type_button.dart';
+import '../../../../../core/widget/app_bar.dart';
+import '../../../../../core/widget/bottom_sheat.dart';
+import '../../../../../core/widget/button.dart';
+import '../../../../../core/widget/toast_pop.dart';
+import '../../../../../theme/app_colors.dart';
+import '../../../../../theme/app_icon.dart';
+import '../../viewmodels/new_diary/new_diary_bloc.dart';
+import '../../viewmodels/new_diary/new_diary_event.dart';
+import '../../viewmodels/new_diary/new_diary_state.dart';
+import '../../widgets/star_rating.dart';
+import '../../widgets/type_button.dart';
 
 // [이재은] 새로운 다이어리 작성 화면
 
@@ -83,96 +83,92 @@ class _NewDiaryScreenState extends State<NewDiaryScreen> {
       builder: (context, state) {
         return GestureDetector(
           onTap: () => FocusScope.of(context).unfocus(),
-          child: SafeArea(
-            child: Scaffold(
-              // 모드에 따른 배경 색 변경
-              backgroundColor: isDark ? AppColors.navy : AppColors.darkerGray,
-              appBar: CustomButtonAppBar(
-                title: '다이어리 작성',
-                leading: Button(
+          child: Scaffold(
+            // 모드에 따른 배경 색 변경
+            backgroundColor: isDark ? AppColors.navy : AppColors.darkerGray,
+            appBar: CustomButtonAppBar(
+              title: '다이어리 작성',
+              leading: Button(
+                width: 40,
+                height: 40,
+                icon: Icon(AppIcon.back),
+                contentColor: isDark ? colorScheme.onSurface : AppColors.light,
+                borderRadius: 20,
+                onTap: () => context.pop(),
+              ),
+              actions: [
+                Button(
                   width: 40,
                   height: 40,
-                  icon: Icon(AppIcon.back),
+                  icon:
+                      state.isUploading ||
+                          state.pageState == NewDiaryPageState.loading
+                      ? SizedBox(
+                          width: 20,
+                          height: 20,
+                          child: CircularProgressIndicator(
+                            strokeWidth: 2,
+                            color: isDark
+                                ? colorScheme.onSurface
+                                : AppColors.light,
+                          ),
+                        )
+                      : AppIcon.save,
                   contentColor: isDark
                       ? colorScheme.onSurface
                       : AppColors.light,
                   borderRadius: 20,
-                  onTap: () => context.pop(),
+                  onTap: state.canSave && !state.isUploading
+                      ? () {
+                          context.read<NewDiaryBloc>().add(
+                            const NewDiaryEvent.createDiary(),
+                          );
+                        }
+                      : null,
                 ),
-                actions: [
-                  Button(
-                    width: 40,
-                    height: 40,
-                    icon:
-                        state.isUploading ||
-                            state.pageState == NewDiaryPageState.loading
-                        ? SizedBox(
-                            width: 20,
-                            height: 20,
-                            child: CircularProgressIndicator(
-                              strokeWidth: 2,
-                              color: isDark
-                                  ? colorScheme.onSurface
-                                  : AppColors.light,
-                            ),
-                          )
-                        : AppIcon.save,
-                    contentColor: isDark
-                        ? colorScheme.onSurface
-                        : AppColors.light,
-                    borderRadius: 20,
-                    onTap: state.canSave && !state.isUploading
-                        ? () {
-                            context.read<NewDiaryBloc>().add(
-                              const NewDiaryEvent.createDiary(),
-                            );
-                          }
-                        : null,
+              ],
+            ),
+            body: SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: isDark
+                        ? colorScheme.surfaceContainerHighest
+                        : AppColors.lightGray,
+                    borderRadius: BorderRadius.all(Radius.circular(24.0)),
                   ),
-                ],
-              ),
-              body: SingleChildScrollView(
-                child: Padding(
-                  padding: const EdgeInsets.all(20.0),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: isDark
-                          ? colorScheme.surfaceContainerHighest
-                          : AppColors.lightGray,
-                      borderRadius: BorderRadius.all(Radius.circular(24.0)),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          // 타입 버튼
-                          _buildTypeTabs(context, state),
-                          const SizedBox(height: 16),
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        // 타입 버튼
+                        _buildTypeTabs(context, state),
+                        const SizedBox(height: 16),
 
-                          // 제목
-                          _buildTitleSection(context, state),
-                          const SizedBox(height: 16),
+                        // 제목
+                        _buildTitleSection(context, state),
+                        const SizedBox(height: 16),
 
-                          //내용
-                          _buildContentSection(context, state),
-                          const SizedBox(height: 16),
+                        //내용
+                        _buildContentSection(context, state),
+                        const SizedBox(height: 16),
 
-                          // 타입별 추가 입력필드
-                          _buildTypeSpecificField(context, state),
-                          SizedBox(height: 24),
+                        // 타입별 추가 입력필드
+                        _buildTypeSpecificField(context, state),
+                        SizedBox(height: 24),
 
-                          //공개 비공개 여부
-                          PublicSelectBox(
-                            isPublic: state.isPublic,
-                            onChanged: (value) {
-                              context.read<NewDiaryBloc>().add(
-                                NewDiaryEvent.changePublic(isPublic: value),
-                              );
-                            },
-                          ),
-                        ],
-                      ),
+                        //공개 비공개 여부
+                        PublicSelectBox(
+                          isPublic: state.isPublic,
+                          onChanged: (value) {
+                            context.read<NewDiaryBloc>().add(
+                              NewDiaryEvent.changePublic(isPublic: value),
+                            );
+                          },
+                        ),
+                      ],
                     ),
                   ),
                 ),

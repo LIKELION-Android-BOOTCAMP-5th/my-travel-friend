@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-import '../../domain/entities/diary_entity.dart';
+import '../../../domain/entities/diary_entity.dart';
 
 part 'edit_diary_event.freezed.dart';
 

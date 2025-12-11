@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../core/DI/injection.dart';
-import '../../domain/entities/diary_entity.dart';
-import '../viewmodels/edit_diary_bloc.dart';
+import '../../../../../core/DI/injection.dart';
+import '../../../domain/entities/diary_entity.dart';
+import '../../viewmodels/edit_diary/edit_diary_bloc.dart';
 import 'edit_diary_screen.dart';
 
 // [이재은] 다이어리 수정 화면을 감싸는 위젯

@@ -4,16 +4,16 @@ import 'package:go_router/go_router.dart';
 import 'package:my_travel_friend/feature/diary/presentation/widgets/public_tab.dart';
 import 'package:my_travel_friend/theme/app_colors.dart';
 
-import '../../../../core/widget/floating_button.dart';
-import '../../../../theme/app_font.dart';
-import '../../../../theme/app_icon.dart';
-import '../../domain/entities/diary_entity.dart';
-import '../viewmodels/diary_bloc.dart';
-import '../viewmodels/diary_event.dart';
-import '../viewmodels/diary_state.dart';
-import '../widgets/diary_box.dart';
-import '../widgets/diary_detail_pop_up.dart';
-import '../widgets/diary_filter_chip.dart';
+import '../../../../../core/widget/floating_button.dart';
+import '../../../../../theme/app_font.dart';
+import '../../../../../theme/app_icon.dart';
+import '../../../domain/entities/diary_entity.dart';
+import '../../viewmodels/diary/diary_bloc.dart';
+import '../../viewmodels/diary/diary_event.dart';
+import '../../viewmodels/diary/diary_state.dart';
+import '../../widgets/diary_box.dart';
+import '../../widgets/diary_detail_pop_up.dart';
+import '../../widgets/diary_filter_chip.dart';
 
 // [이재은] 다이어리 탭 화면
 // - 다이어리 리스트 확인 가능 (공유 / 개인, 혹은 타입별 - 메모 / 리뷰 / 사진 / 소비)
@@ -131,7 +131,7 @@ class _DiaryListScreenState extends State<DiaryListScreen> {
   //-> bloc state로 쓰기
   Future<void> _navigateToCreate() async {
     final res = await context.push<bool>(
-      '/diary/new',
+      '/diary/new/${widget.tripId}',
       extra: {'tripId': widget.tripId, 'userId': widget.userId},
     );
 
@@ -145,7 +145,7 @@ class _DiaryListScreenState extends State<DiaryListScreen> {
   // 다이어리 수정 화면으로 이동
   Future<void> _navigateToEdit(DiaryEntity diary) async {
     final res = await context.push<bool>(
-      '/diary/edit',
+      '/diary/edit/${widget.tripId}',
       extra: {'diary': diary},
     );
 

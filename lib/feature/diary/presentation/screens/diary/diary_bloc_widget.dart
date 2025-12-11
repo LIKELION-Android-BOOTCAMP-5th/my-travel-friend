@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart' as authState;
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../core/DI/injection.dart';
-import '../../../../core/widget/toast_pop.dart';
-import '../../../auth/presentation/viewmodel/auth_profile/auth_profile_bloc.dart';
-import '../../../auth/presentation/viewmodel/auth_profile/auth_profile_state.dart';
-import '../viewmodels/diary_bloc.dart';
-import '../viewmodels/diary_event.dart';
-import '../viewmodels/diary_state.dart';
-import '../widgets/diary_detail_pop_up.dart';
+import '../../../../../core/DI/injection.dart';
+import '../../../../../core/widget/toast_pop.dart';
+import '../../../../auth/presentation/viewmodel/auth_profile/auth_profile_bloc.dart';
+import '../../../../auth/presentation/viewmodel/auth_profile/auth_profile_state.dart';
+import '../../viewmodels/diary/diary_bloc.dart';
+import '../../viewmodels/diary/diary_event.dart';
+import '../../viewmodels/diary/diary_state.dart';
+import '../../widgets/diary_detail_pop_up.dart';
 import 'diary_list_screen.dart';
 
 // [이재은] 다이어리 리스트를 감싸는 위젯

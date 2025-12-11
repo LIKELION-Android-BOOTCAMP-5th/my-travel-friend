@@ -1,6 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-import '../../../trip/domain/entities/trip_entity.dart';
+import '../../../domain/entities/trip_entity.dart';
 
 part 'trip_detail_state.freezed.dart';
 
@@ -8,7 +8,7 @@ part 'trip_detail_state.freezed.dart';
 enum TripDetailPageState { initial, loading, loaded, error }
 
 @freezed
-class TripDetailState with _$TripDetailState {
+abstract class TripDetailState with _$TripDetailState {
   const TripDetailState._();
 
   const factory TripDetailState({

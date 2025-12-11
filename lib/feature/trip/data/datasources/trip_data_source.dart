@@ -35,4 +35,7 @@ abstract class TripDataSource {
     String keyword,
     int page,
   );
+
+  // 아이디로 여행정보 가져오기(라우팅)
+  Future<TripDto> getTripById(int tripId);
 }

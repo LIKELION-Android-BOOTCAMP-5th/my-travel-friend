@@ -12,18 +12,18 @@ import 'package:my_travel_friend/theme/app_font.dart';
 import 'package:path/path.dart' as path;
 import 'package:path_provider/path_provider.dart';
 
-import '../../../../core/widget/app_bar.dart';
-import '../../../../core/widget/bottom_sheat.dart';
-import '../../../../core/widget/button.dart';
-import '../../../../core/widget/toast_pop.dart';
-import '../../../../theme/app_colors.dart';
-import '../../../../theme/app_icon.dart';
-import '../../domain/entities/diary_entity.dart';
-import '../viewmodels/edit_diary_bloc.dart';
-import '../viewmodels/edit_diary_event.dart';
-import '../viewmodels/edit_diary_state.dart';
-import '../widgets/star_rating.dart';
-import '../widgets/type_tag.dart';
+import '../../../../../core/widget/app_bar.dart';
+import '../../../../../core/widget/bottom_sheat.dart';
+import '../../../../../core/widget/button.dart';
+import '../../../../../core/widget/toast_pop.dart';
+import '../../../../../theme/app_colors.dart';
+import '../../../../../theme/app_icon.dart';
+import '../../../domain/entities/diary_entity.dart';
+import '../../viewmodels/edit_diary/edit_diary_bloc.dart';
+import '../../viewmodels/edit_diary/edit_diary_event.dart';
+import '../../viewmodels/edit_diary/edit_diary_state.dart';
+import '../../widgets/star_rating.dart';
+import '../../widgets/type_tag.dart';
 
 // [이재은] 다이어리 수정 화면
 
@@ -86,92 +86,86 @@ class _EditDiaryScreenState extends State<EditDiaryScreen> {
       builder: (context, state) {
         return GestureDetector(
           onTap: () => FocusScope.of(context).unfocus(),
-          child: SafeArea(
-            child: Scaffold(
-              // 모드에 따른 배경 색 변경
-              backgroundColor: isDark ? AppColors.navy : AppColors.darkerGray,
-              appBar: CustomButtonAppBar(
-                title: '다이어리 수정',
-                leading: Button(
+          child: Scaffold(
+            // 모드에 따른 배경 색 변경
+            backgroundColor: isDark ? AppColors.navy : AppColors.darkerGray,
+            appBar: CustomButtonAppBar(
+              title: '다이어리 수정',
+              leading: Button(
+                width: 40,
+                height: 40,
+                icon: Icon(AppIcon.back),
+                contentColor: isDark ? colorScheme.onSurface : AppColors.light,
+                borderRadius: 20,
+                onTap: () => context.pop(),
+              ),
+              actions: [
+                Button(
                   width: 40,
                   height: 40,
-                  icon: Icon(AppIcon.back),
+                  icon:
+                      state.isUploading ||
+                          state.pageState == EditDiaryPageState.loading
+                      ? SizedBox(
+                          width: 20,
+                          height: 20,
+                          child: CircularProgressIndicator(
+                            strokeWidth: 2,
+                            color: isDark
+                                ? colorScheme.onSurface
+                                : AppColors.light,
+                          ),
+                        )
+                      : AppIcon.save,
                   contentColor: isDark
                       ? colorScheme.onSurface
                       : AppColors.light,
                   borderRadius: 20,
-                  onTap: () => context.pop(),
+                  onTap: state.canSave && !state.isUploading
+                      ? () => context.read<EditDiaryBloc>().add(
+                          const EditDiaryEvent.updateDiary(),
+                        )
+                      : null,
                 ),
-                actions: [
-                  Button(
-                    width: 40,
-                    height: 40,
-                    icon:
-                        state.isUploading ||
-                            state.pageState == EditDiaryPageState.loading
-                        ? SizedBox(
-                            width: 20,
-                            height: 20,
-                            child: CircularProgressIndicator(
-                              strokeWidth: 2,
-                              color: isDark
-                                  ? colorScheme.onSurface
-                                  : AppColors.light,
-                            ),
-                          )
-                        : AppIcon.save,
-                    contentColor: isDark
-                        ? colorScheme.onSurface
-                        : AppColors.light,
-                    borderRadius: 20,
-                    onTap: state.canSave && !state.isUploading
-                        ? () => context.read<EditDiaryBloc>().add(
-                            const EditDiaryEvent.updateDiary(),
-                          )
-                        : null,
+              ],
+            ),
+            body: SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: isDark
+                        ? colorScheme.surfaceContainerHighest
+                        : AppColors.lightGray,
+                    borderRadius: const BorderRadius.all(Radius.circular(24.0)),
                   ),
-                ],
-              ),
-              body: SingleChildScrollView(
-                child: Padding(
-                  padding: const EdgeInsets.all(20.0),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: isDark
-                          ? colorScheme.surfaceContainerHighest
-                          : AppColors.lightGray,
-                      borderRadius: const BorderRadius.all(
-                        Radius.circular(24.0),
-                      ),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          // 제목
-                          _buildTitleSection(context, state),
-                          const SizedBox(height: 16),
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        // 제목
+                        _buildTitleSection(context, state),
+                        const SizedBox(height: 16),
 
-                          // 내용
-                          _buildContentSection(context, state),
-                          const SizedBox(height: 16),
+                        // 내용
+                        _buildContentSection(context, state),
+                        const SizedBox(height: 16),
 
-                          // 타입별 추가 입력필드
-                          _buildTypeSpecificField(context, state),
-                          const SizedBox(height: 24),
+                        // 타입별 추가 입력필드
+                        _buildTypeSpecificField(context, state),
+                        const SizedBox(height: 24),
 
-                          // 공개 비공개 여부
-                          PublicSelectBox(
-                            isPublic: state.isPublic,
-                            onChanged: (value) {
-                              context.read<EditDiaryBloc>().add(
-                                EditDiaryEvent.changePublic(isPublic: value),
-                              );
-                            },
-                          ),
-                        ],
-                      ),
+                        // 공개 비공개 여부
+                        PublicSelectBox(
+                          isPublic: state.isPublic,
+                          onChanged: (value) {
+                            context.read<EditDiaryBloc>().add(
+                              EditDiaryEvent.changePublic(isPublic: value),
+                            );
+                          },
+                        ),
+                      ],
                     ),
                   ),
                 ),

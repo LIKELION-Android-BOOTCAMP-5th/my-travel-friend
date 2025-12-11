@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../core/DI/injection.dart';
-import '../../../auth/presentation/viewmodel/auth_profile/auth_profile_bloc.dart';
-import '../../../auth/presentation/viewmodel/auth_profile/auth_profile_state.dart';
-import '../viewmodels/new_diary_bloc.dart';
+import '../../../../../core/DI/injection.dart';
+import '../../../../auth/presentation/viewmodel/auth_profile/auth_profile_bloc.dart';
+import '../../../../auth/presentation/viewmodel/auth_profile/auth_profile_state.dart';
+import '../../viewmodels/new_diary/new_diary_bloc.dart';
 import 'new_diary_screen.dart';
 
 // [이재은] 다이어리 생성 화면을 감싸는 위젯

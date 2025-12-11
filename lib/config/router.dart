@@ -16,14 +16,17 @@ import 'package:my_travel_friend/temp_screen.dart';
 import '../feature/alarm/presentation/screens/alarm_bloc_widget.dart';
 import '../feature/checklist/presentation/screens/lists_bloc_widget.dart';
 import '../feature/diary/domain/entities/diary_entity.dart';
-import '../feature/diary/presentation/screens/diary_bloc_widget.dart';
-import '../feature/diary/presentation/screens/edit_diary_bloc_widget.dart';
-import '../feature/diary/presentation/screens/new_diary_bloc_widget.dart';
-import '../feature/diary/presentation/viewmodels/diary_bloc.dart';
-import '../feature/diary/presentation/viewmodels/new_diary_bloc.dart';
+import '../feature/diary/presentation/screens/diary/diary_bloc_widget.dart';
+import '../feature/diary/presentation/screens/edit_diary/edit_diary_bloc_widget.dart';
+import '../feature/diary/presentation/screens/new_diary/new_diary_bloc_widget.dart';
+import '../feature/diary/presentation/viewmodels/diary/diary_bloc.dart';
+import '../feature/diary/presentation/viewmodels/new_diary/new_diary_bloc.dart';
 import '../feature/setting/presentation/screens/alarm_setting_bloc_widget.dart';
 import '../feature/trip/domain/entities/trip_entity.dart';
 import '../feature/trip/presentation/screens/edit_trip_bloc_widget.dart';
+import '../feature/trip/presentation/screens/trip_shell_scaffold.dart';
+import '../feature/trip/presentation/viewmodels/trip_detail/trip_detail_bloc.dart';
+import '../feature/trip/presentation/viewmodels/trip_detail/trip_detail_event.dart';
 
 final getIt = GetIt.instance;
 
@@ -154,7 +157,7 @@ class AppRouter {
         routes: [
           // [0] 여행 홈
           GoRoute(
-            path: '/trip/:tripId/home',
+            path: '/trip/:tripId/trip_home',
             builder: (context, state) {
               final tripId = int.parse(state.pathParameters['tripId']!);
               return Center(child: Text('Trip $tripId Home'));
@@ -188,28 +191,28 @@ class AppRouter {
               );
             },
           ),
-          // [3-1] 다이어리 생성
-          GoRoute(
-            path: '/trip/:tripId/diary/new',
-            builder: (context, state) {
-              final tripId = int.parse(state.pathParameters['tripId']!);
-              return BlocProvider(
-                create: (context) => GetIt.instance<NewDiaryBloc>(),
-                child: NewDiaryBlocWidget(tripId: tripId),
-              );
-            },
-          ),
-          // [3-2] 다이어리 수정
-          GoRoute(
-            path: '/trip/:tripId/diary/edit',
-            builder: (context, state) {
-              final extra = state.extra as Map<String, dynamic>;
-              final diary = extra['diary'] as DiaryEntity;
-              return EditDiaryBlocWidget(diary: diary);
-            },
-          ),
           // [4] 여행 톡톡
         ],
+      ),
+      // [3-1] 다이어리 생성 (쉘라우터 밖)
+      GoRoute(
+        path: '/diary/new/:tripId',
+        builder: (context, state) {
+          final tripId = int.parse(state.pathParameters['tripId']!);
+          return BlocProvider(
+            create: (context) => GetIt.instance<NewDiaryBloc>(),
+            child: NewDiaryBlocWidget(tripId: tripId),
+          );
+        },
+      ),
+      // [3-2] 다이어리 수정 (쉘라우터 밖)
+      GoRoute(
+        path: '/diary/edit/:tripId',
+        builder: (context, state) {
+          final extra = state.extra as Map<String, dynamic>;
+          final diary = extra['diary'] as DiaryEntity;
+          return EditDiaryBlocWidget(diary: diary);
+        },
       ),
     ],
   );
