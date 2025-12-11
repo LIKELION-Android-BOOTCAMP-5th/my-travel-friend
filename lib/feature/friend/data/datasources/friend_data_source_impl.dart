@@ -101,59 +101,51 @@ class FriendDataSourceImpl implements FriendDataSource {
 
   //친구 검색
   @override
-  Future<Result<List<FriendDTO>>> searchNickname(
-    int myId,
-    String keyword,
-  ) async {
+  Future<Result<List<UserDTO>>> searchNickname(int myId, String keyword) async {
     try {
-      // 닉네임으로 users 테이블에서 후보 유저들 찾기
-      final userRes = await _supabaseClient
-          .from(_user)
-          .select()
-          .like('nickname', '%$keyword%') // 부분 검색
-          .neq('id', myId); // 자기 자신은 제외
-
-      final candidateUsers = (userRes as List)
-          .map((json) => UserDTO.fromJson(json as Map<String, dynamic>))
-          .toList();
-
-      if (candidateUsers.isEmpty) {
-        // 닉네임에 해당하는 유저가 아무도 없으면 바로 빈 리스트
-        return const Result.success([]);
-      }
-
-      // 후보 유저들의 id만 뽑기
-      final targetIds = candidateUsers
-          .map((u) => u.id)
-          .whereType<int>() // null 제거
-          .toList();
-
-      if (targetIds.isEmpty) {
-        return const Result.success([]);
-      }
-
-      // Supabase in() 쿼리용 문자열 (예: "2,3,5")
-      final idListStr = targetIds.join(',');
-
-      /// friend 테이블에서 내 친구들 중 닉네임 후보들에 해당하는 관계만 가져오기
+      // friend 테이블에서 내 친구 관계 가져오기
       final friendRes = await _supabaseClient
           .from(_table)
           .select()
-          .or(
-            'and(user1_id.eq.$myId,user2_id.in.($idListStr)),'
-            'and(user2_id.eq.$myId,user1_id.in.($idListStr))',
-          );
-
-      if (friendRes.isEmpty) {
-        // 닉네임에 맞는 애들 중에 실제로 내 친구인 사람은 없는 경우
-        return const Result.success([]);
-      }
+          .or('user1_id.eq.$myId,user2_id.eq.$myId');
 
       final friendList = (friendRes as List)
           .map((json) => FriendDTO.fromJson(json as Map<String, dynamic>))
           .toList();
 
-      return Result.success(friendList);
+      if (friendList.isEmpty) {
+        // 친구가 한 명도 없으면 바로 빈 리스트
+        return const Result.success([]);
+      }
+
+      // 친구 관계에서 상대방 userId만 뽑기
+      final friendUserIds = <int>{}; // 중복 제거를 위해 Set 사용
+
+      for (final f in friendList) {
+        final user1 = f.userId1;
+        final user2 = f.userId2;
+
+        if (user1 == myId && user2 != null) {
+          friendUserIds.add(user2);
+        } else if (user2 == myId && user1 != null) {
+          friendUserIds.add(user1);
+        }
+      }
+
+      // user 테이블에서 닉네임 검색으로 필터
+      final userRes = await _supabaseClient
+          .from(_user)
+          .select()
+          // id가 친구 목록에 포함된 유저들만
+          .filter('id', 'in', friendUserIds.toList())
+          // 닉네임 부분 검색
+          .like('nickname', '%$keyword%');
+
+      final userList = (userRes as List)
+          .map((json) => UserDTO.fromJson(json as Map<String, dynamic>))
+          .toList();
+
+      return Result.success(userList);
     } catch (e) {
       return Result.failure(Failure.serverFailure(message: e.toString()));
     }

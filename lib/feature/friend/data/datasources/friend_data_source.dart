@@ -1,4 +1,5 @@
 import '../../../../core/result/result.dart';
+import '../../../auth/data/models/user_model.dart';
 import '../dtos/friend_dto.dart';
 
 // [엄수빈] 친구 데이터 소스 (추상)
@@ -14,4 +15,7 @@ abstract class FriendDataSource {
 
   // 친구 삭제
   Future<Result<void>> deleteFriend(int userId1, int userId2);
+
+  // 친구 검색
+  Future<Result<List<UserDTO>>> searchNickname(int myId, String keyword);
 }

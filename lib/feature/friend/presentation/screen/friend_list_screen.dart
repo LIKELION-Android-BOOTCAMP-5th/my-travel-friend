@@ -146,11 +146,11 @@ class _FriendListBody extends StatelessWidget {
 
                       final int friendUserId = rawFriendUserId;
 
-                      // 🔹 아직 users 조인 안 했으니까 임시 UserEntity 생성
+                      // TODO: 친구 검색이 맞다면,, 친구목록도 userEntity로 가져올 예정
                       final user = UserEntity(
                         id: friendUserId,
-                        nickname: '친구 $friendUserId', // TODO: 나중에 실제 닉네임으로 교체
-                        profileImg: null, // TODO: 나중에 실제 이미지 URL로 교체
+                        nickname: '친구 $friendUserId',
+                        profileImg: null,
                       );
 
                       return FriendWidget(
@@ -164,7 +164,7 @@ class _FriendListBody extends StatelessWidget {
                         onMoreDeleteFriend: () {
                           showDialog(
                             context: context,
-                            barrierDismissible: false, // 바깥 탭으로 닫히지 않게
+                            barrierDismissible: false,
                             builder: (_) {
                               return PopUpBox(
                                 title: '친구 삭제 확인',

@@ -46,6 +46,10 @@ class TempScreen extends StatelessWidget {
             onPressed: () => context.push('/profile'),
             icon: Icon(AppIcon.crews, color: AppColors.lightGreen, size: 30),
           ),
+          IconButton(
+            onPressed: () => context.push('/friend'),
+            icon: Icon(AppIcon.invite, color: AppColors.lightGreen, size: 30),
+          ),
         ],
       ),
     );

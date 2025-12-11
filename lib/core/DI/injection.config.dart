@@ -116,6 +116,43 @@ import '../../feature/diary/presentation/viewmodels/edit_diary/edit_diary_bloc.d
     as _i935;
 import '../../feature/diary/presentation/viewmodels/new_diary/new_diary_bloc.dart'
     as _i885;
+import '../../feature/friend/data/datasources/friend_data_source.dart' as _i297;
+import '../../feature/friend/data/datasources/friend_data_source_impl.dart'
+    as _i845;
+import '../../feature/friend/data/datasources/friend_request_data_source.dart'
+    as _i340;
+import '../../feature/friend/data/datasources/friend_request_data_source_impl.dart'
+    as _i920;
+import '../../feature/friend/data/repositories/friend_repository_impl.dart'
+    as _i1001;
+import '../../feature/friend/data/repositories/friend_request_repository_impl.dart'
+    as _i742;
+import '../../feature/friend/domain/repositories/friend_repository.dart'
+    as _i359;
+import '../../feature/friend/domain/repositories/friend_request_repository.dart'
+    as _i255;
+import '../../feature/friend/domain/usecases/accept_request_usecase.dart'
+    as _i669;
+import '../../feature/friend/domain/usecases/create_friend_relation_usecase.dart'
+    as _i639;
+import '../../feature/friend/domain/usecases/create_friend_request_usecase.dart'
+    as _i611;
+import '../../feature/friend/domain/usecases/delete_friend_usecase.dart'
+    as _i942;
+import '../../feature/friend/domain/usecases/delete_request_usecase.dart'
+    as _i491;
+import '../../feature/friend/domain/usecases/get_friend_relation_usecase.dart'
+    as _i813;
+import '../../feature/friend/domain/usecases/get_friend_request_usecase.dart'
+    as _i739;
+import '../../feature/friend/domain/usecases/get_friends_usecase.dart' as _i806;
+import '../../feature/friend/domain/usecases/search_nickname_usecase.dart'
+    as _i617;
+import '../../feature/friend/presentation/viewmodel/friend_bloc.dart' as _i186;
+import '../../feature/friend/presentation/viewmodel/friend_request_bloc.dart'
+    as _i69;
+import '../../feature/friend/presentation/viewmodel/friend_search_bloc.dart'
+    as _i36;
 import '../../feature/setting/data/datasources/alarm_setting_datasource.dart'
     as _i766;
 import '../../feature/setting/data/datasources/alarm_setting_datasource_impl.dart'
@@ -240,6 +277,9 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i1040.SupabaseAuthDataSource>(),
       ),
     );
+    gh.lazySingleton<_i340.FriendRequestDataSource>(
+      () => _i920.FriendRequestDataSourceImpl(gh<_i454.SupabaseClient>()),
+    );
     gh.lazySingleton<_i540.TodoListDataSource>(
       () => _i79.TodoListDataSourceImpl(gh<_i454.SupabaseClient>()),
     );
@@ -275,6 +315,9 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.lazySingleton<_i437.SearchTripUsecase>(
       () => _i437.SearchTripUsecase(gh<_i161.TripRepository>()),
+    );
+    gh.lazySingleton<_i297.FriendDataSource>(
+      () => _i845.FriendDataSourceImpl(gh<_i454.SupabaseClient>()),
     );
     gh.lazySingleton<_i172.ProfileDataSource>(
       () => _i632.ProfileDataSourceImpl(gh<_i454.SupabaseClient>()),
@@ -322,6 +365,11 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i161.TripRepository>(),
       ),
     );
+    gh.lazySingleton<_i255.FriendRequestRepository>(
+      () => _i742.FriendRequestRepositoryImpl(
+        gh<_i340.FriendRequestDataSource>(),
+      ),
+    );
     gh.factory<_i1000.TripDetailBloc>(
       () => _i1000.TripDetailBloc(
         gh<_i277.GetTripByIdUseCase>(),
@@ -337,11 +385,39 @@ extension GetItInjectableX on _i174.GetIt {
     gh.singleton<_i456.WatchAuthStateUseCase>(
       () => _i456.WatchAuthStateUseCase(gh<_i488.AuthRepository>()),
     );
+    gh.lazySingleton<_i359.FriendRepository>(
+      () => _i1001.FriendRepositoryImpl(gh<_i297.FriendDataSource>()),
+    );
     gh.factory<_i873.CreateTripBloc>(
       () => _i873.CreateTripBloc(
         gh<_i779.CreateTripUsecase>(),
         gh<_i161.TripRepository>(),
       ),
+    );
+    gh.lazySingleton<_i669.AcceptRequestUsecase>(
+      () => _i669.AcceptRequestUsecase(gh<_i255.FriendRequestRepository>()),
+    );
+    gh.lazySingleton<_i611.CreateFriendRequestUsecase>(
+      () =>
+          _i611.CreateFriendRequestUsecase(gh<_i255.FriendRequestRepository>()),
+    );
+    gh.lazySingleton<_i491.DeleteRequestUsecase>(
+      () => _i491.DeleteRequestUsecase(gh<_i255.FriendRequestRepository>()),
+    );
+    gh.lazySingleton<_i739.GetFriendRequestUsecase>(
+      () => _i739.GetFriendRequestUsecase(gh<_i255.FriendRequestRepository>()),
+    );
+    gh.lazySingleton<_i639.CreateFriendRelationUsecase>(
+      () => _i639.CreateFriendRelationUsecase(gh<_i359.FriendRepository>()),
+    );
+    gh.lazySingleton<_i942.DeleteFriendUsecase>(
+      () => _i942.DeleteFriendUsecase(gh<_i359.FriendRepository>()),
+    );
+    gh.lazySingleton<_i813.GetFriendRelationUsecase>(
+      () => _i813.GetFriendRelationUsecase(gh<_i359.FriendRepository>()),
+    );
+    gh.lazySingleton<_i806.GetFriendsUsecase>(
+      () => _i806.GetFriendsUsecase(gh<_i359.FriendRepository>()),
     );
     gh.lazySingleton<_i622.CreateChecklistUseCase>(
       () => _i622.CreateChecklistUseCase(gh<_i181.ChecklistRepository>()),
@@ -395,6 +471,14 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i57.ToggleTodoListUseCase>(
       () => _i57.ToggleTodoListUseCase(gh<_i579.TodoListRepository>()),
     );
+    gh.factory<_i69.FriendRequestBloc>(
+      () => _i69.FriendRequestBloc(
+        gh<_i611.CreateFriendRequestUsecase>(),
+        gh<_i739.GetFriendRequestUsecase>(),
+        gh<_i491.DeleteRequestUsecase>(),
+        gh<_i669.AcceptRequestUsecase>(),
+      ),
+    );
     gh.lazySingleton<_i212.AlarmSettingRepository>(
       () =>
           _i124.AlarmSettingRepositoryImpl(gh<_i766.AlarmSettingDataSource>()),
@@ -418,8 +502,17 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i57.ToggleTodoListUseCase>(),
       ),
     );
+    gh.lazySingleton<_i617.SearchNicknameUsecase>(
+      () => _i617.SearchNicknameUsecase(gh<_i359.FriendRepository>()),
+    );
     gh.lazySingleton<_i945.CheckNicknameDuplicateUseCase>(
       () => _i945.CheckNicknameDuplicateUseCase(gh<_i565.ProfileRepository>()),
+    );
+    gh.factory<_i186.FriendBloc>(
+      () => _i186.FriendBloc(
+        gh<_i806.GetFriendsUsecase>(),
+        gh<_i942.DeleteFriendUsecase>(),
+      ),
     );
     gh.factory<_i27.DiaryBloc>(
       () => _i27.DiaryBloc(
@@ -472,6 +565,9 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.lazySingleton<_i87.UpdateAlarmSettingUseCase>(
       () => _i87.UpdateAlarmSettingUseCase(gh<_i212.AlarmSettingRepository>()),
+    );
+    gh.factory<_i36.FriendSearchBloc>(
+      () => _i36.FriendSearchBloc(gh<_i617.SearchNicknameUsecase>()),
     );
     gh.factory<_i557.ProfileBloc>(
       () => _i557.ProfileBloc(

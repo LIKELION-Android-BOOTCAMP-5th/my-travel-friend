@@ -1,9 +1,4 @@
-import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:my_travel_friend/feature/auth/domain/entities/user_entity.dart';
-
-import '../../domain/entities/friend_entity.dart';
-
-part 'friend_state.freezed.dart';
+import 'package:freezed_annotation/freezed_annotationreezed.dart';
 
 //[엄수빈] 친구 상태
 enum FriendPageState { init, loading, loaded, success, error }

@@ -1,3 +1,5 @@
+import 'package:my_travel_friend/feature/auth/domain/entities/user_entity.dart';
+
 import '../../../../core/result/result.dart';
 import '../entities/friend_entity.dart';
 
@@ -14,4 +16,7 @@ abstract class FriendRepository {
 
   // 친구 삭제
   Future<Result<void>> deleteFriend(int userId1, int userId2);
+
+  // 친구 검색
+  Future<Result<List<UserEntity>>> searchNickname(int myId, String keyword);
 }
