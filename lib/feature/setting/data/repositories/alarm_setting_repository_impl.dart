@@ -3,7 +3,7 @@ import 'package:my_travel_friend/feature/setting/domain/repositories/alarm_setti
 
 import '../../../../core/result/result.dart';
 import '../../domain/entities/alarm_setting_entity.dart';
-import '../datasources/alarm_setting_datasource.dart';
+import '../datasources/alarm/alarm_setting_datasource.dart';
 import '../dtos/alarm_setting_dto.dart';
 
 // [이재은] 알림설정 repository

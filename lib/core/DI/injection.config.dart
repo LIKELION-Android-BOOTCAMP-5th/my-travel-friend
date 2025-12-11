@@ -138,14 +138,14 @@ import '../../feature/schedule/domain/usecases/get_trip_member_usecase.dart'
     as _i324;
 import '../../feature/schedule/presentation/viewmodels/schedule_bloc.dart'
     as _i166;
-import '../../feature/setting/data/datasources/alarm_setting_datasource.dart'
-    as _i766;
-import '../../feature/setting/data/datasources/alarm_setting_datasource_impl.dart'
-    as _i746;
-import '../../feature/setting/data/datasources/profile_data_source.dart'
-    as _i172;
-import '../../feature/setting/data/datasources/profile_data_source_impl.dart'
-    as _i632;
+import '../../feature/setting/data/datasources/alarm/alarm_setting_datasource.dart'
+    as _i1030;
+import '../../feature/setting/data/datasources/alarm/alarm_setting_datasource_impl.dart'
+    as _i96;
+import '../../feature/setting/data/datasources/profile/profile_data_source.dart'
+    as _i1071;
+import '../../feature/setting/data/datasources/profile/profile_data_source_impl.dart'
+    as _i270;
 import '../../feature/setting/data/repositories/alarm_setting_repository_impl.dart'
     as _i124;
 import '../../feature/setting/data/repositories/profile_repository_impl.dart'
@@ -158,6 +158,10 @@ import '../../feature/setting/domain/usecases/alarm/get_my_alarm_setting_usecase
     as _i420;
 import '../../feature/setting/domain/usecases/alarm/update_alarm_setting_usecase.dart'
     as _i87;
+import '../../feature/setting/domain/usecases/permission/check_permission_usecase.dart'
+    as _i584;
+import '../../feature/setting/domain/usecases/permission/request_permission_usecase.dart'
+    as _i1063;
 import '../../feature/setting/domain/usecases/profile/check_nickname_duplicate_usecase.dart'
     as _i945;
 import '../../feature/setting/domain/usecases/profile/delete_img_usecase.dart'
@@ -168,6 +172,8 @@ import '../../feature/setting/domain/usecases/profile/upload_img_usecase.dart'
     as _i304;
 import '../../feature/setting/presentation/viewmodels/alarm/alarm_setting_bloc.dart'
     as _i695;
+import '../../feature/setting/presentation/viewmodels/permission/permission_bloc.dart'
+    as _i862;
 import '../../feature/setting/presentation/viewmodels/profile/profile_bloc.dart'
     as _i557;
 import '../../feature/trip/data/datasources/trip_data_source.dart' as _i1063;
@@ -196,6 +202,7 @@ import '../../feature/trip/presentation/viewmodels/trip/trip_bloc.dart'
 import '../../feature/trip/presentation/viewmodels/trip_detail/trip_detail_bloc.dart'
     as _i1000;
 import '../service/internal/deep_link_service.dart' as _i507;
+import '../service/internal/permission_service.dart' as _i213;
 import '../service/internal/push_notification_service.dart' as _i737;
 import '../service/internal/supabase_storage_service.dart' as _i1051;
 import 'register_module.dart' as _i291;
@@ -227,6 +234,7 @@ extension GetItInjectableX on _i174.GetIt {
       preResolve: true,
     );
     gh.lazySingleton<_i507.DeepLinkService>(() => _i507.DeepLinkService());
+    gh.lazySingleton<_i213.PermissionService>(() => _i213.PermissionService());
     gh.lazySingleton<_i278.AppleAuthDataSource>(
       () => _i45.AppleAuthDataSourceImpl(gh<_i454.SupabaseClient>()),
     );
@@ -254,6 +262,12 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i454.SupabaseClient>(),
         gh<_i1051.SupabaseStorageService>(),
       ),
+    );
+    gh.lazySingleton<_i584.CheckPermissionsUseCase>(
+      () => _i584.CheckPermissionsUseCase(gh<_i213.PermissionService>()),
+    );
+    gh.lazySingleton<_i1063.RequestPermissionUseCase>(
+      () => _i1063.RequestPermissionUseCase(gh<_i213.PermissionService>()),
     );
     gh.lazySingleton<_i334.ScheduleDataSource>(
       () => _i77.ScheduleDataSourceImpl(supabase: gh<_i454.SupabaseClient>()),
@@ -301,16 +315,23 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i437.SearchTripUsecase>(
       () => _i437.SearchTripUsecase(gh<_i161.TripRepository>()),
     );
+    gh.lazySingleton<_i1071.ProfileDataSource>(
+      () => _i270.ProfileDataSourceImpl(gh<_i454.SupabaseClient>()),
+    );
     gh.lazySingleton<_i456.ScheduleRepository>(
       () => _i625.ScheduleRepositoryImpl(gh<_i334.ScheduleDataSource>()),
-    gh.lazySingleton<_i172.ProfileDataSource>(
-      () => _i632.ProfileDataSourceImpl(gh<_i454.SupabaseClient>()),
     );
     gh.lazySingleton<_i58.AlarmDataSource>(
       () => _i1049.AlarmDataSourceImpl(gh<_i454.SupabaseClient>()),
     );
     gh.lazySingleton<_i579.TodoListRepository>(
       () => _i438.TodoListRepositoryImpl(gh<_i540.TodoListDataSource>()),
+    );
+    gh.lazySingleton<_i565.ProfileRepository>(
+      () => _i73.ProfileRepositoryImpl(gh<_i1071.ProfileDataSource>()),
+    );
+    gh.lazySingleton<_i1030.AlarmSettingDataSource>(
+      () => _i96.AlarmSettingDataSourceImpl(gh<_i454.SupabaseClient>()),
     );
     gh.factory<_i616.TripBloc>(
       () => _i616.TripBloc(
@@ -322,8 +343,12 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i202.DeleteImgUsecase>(),
       ),
     );
-    gh.lazySingleton<_i766.AlarmSettingDataSource>(
-      () => _i746.AlarmSettingDataSourceImpl(gh<_i454.SupabaseClient>()),
+    gh.factory<_i862.PermissionBloc>(
+      () => _i862.PermissionBloc(
+        gh<_i213.PermissionService>(),
+        gh<_i584.CheckPermissionsUseCase>(),
+        gh<_i1063.RequestPermissionUseCase>(),
+      ),
     );
     gh.lazySingleton<_i277.GetTripByIdUseCase>(
       () => _i277.GetTripByIdUseCase(gh<_i161.TripRepository>()),
@@ -376,15 +401,8 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i324.GetTripMembersUseCase>(
       () => _i324.GetTripMembersUseCase(gh<_i456.ScheduleRepository>()),
     );
-    gh.factory<_i616.TripBloc>(
-      () => _i616.TripBloc(
-        gh<_i521.GetMyTripUsecase>(),
-        gh<_i267.GetCrewMemberCountUsecase>(),
-        gh<_i832.DeleteTripUsecase>(),
-        gh<_i317.GiveUpTripUsecase>(),
-        gh<_i437.SearchTripUsecase>(),
-        gh<_i202.DeleteImgUsecase>(),
-      ),
+    gh.lazySingleton<_i945.CheckNicknameDuplicateUseCase>(
+      () => _i945.CheckNicknameDuplicateUseCase(gh<_i565.ProfileRepository>()),
     );
     gh.lazySingleton<_i739.CancelOauthUseCase>(
       () => _i739.CancelOauthUseCase(gh<_i488.AuthRepository>()),
@@ -397,6 +415,15 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i779.CreateTripUsecase>(),
         gh<_i161.TripRepository>(),
       ),
+    );
+    gh.lazySingleton<_i715.DeleteImgUseCase>(
+      () => _i715.DeleteImgUseCase(gh<_i565.ProfileRepository>()),
+    );
+    gh.lazySingleton<_i473.UpdateProfileUseCase>(
+      () => _i473.UpdateProfileUseCase(gh<_i565.ProfileRepository>()),
+    );
+    gh.lazySingleton<_i304.UploadImgUseCase>(
+      () => _i304.UploadImgUseCase(gh<_i565.ProfileRepository>()),
     );
     gh.lazySingleton<_i622.CreateChecklistUseCase>(
       () => _i622.CreateChecklistUseCase(gh<_i181.ChecklistRepository>()),
@@ -412,9 +439,6 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.lazySingleton<_i831.AlarmRepository>(
       () => _i915.AlarmRepositoryImpl(gh<_i58.AlarmDataSource>()),
-    );
-    gh.lazySingleton<_i565.ProfileRepository>(
-      () => _i73.ProfileRepositoryImpl(gh<_i172.ProfileDataSource>()),
     );
     gh.lazySingleton<_i27.CreateDiaryUseCase>(
       () => _i27.CreateDiaryUseCase(gh<_i871.DiaryRepository>()),
@@ -433,6 +457,10 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.lazySingleton<_i1039.UpdateDiaryUseCase>(
       () => _i1039.UpdateDiaryUseCase(gh<_i871.DiaryRepository>()),
+    );
+    gh.lazySingleton<_i212.AlarmSettingRepository>(
+      () =>
+          _i124.AlarmSettingRepositoryImpl(gh<_i1030.AlarmSettingDataSource>()),
     );
     gh.lazySingleton<_i474.AuthBloc>(
       () => _i474.AuthBloc(
@@ -457,15 +485,19 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i57.ToggleTodoListUseCase>(
       () => _i57.ToggleTodoListUseCase(gh<_i579.TodoListRepository>()),
     );
-    gh.lazySingleton<_i212.AlarmSettingRepository>(
-      () =>
-          _i124.AlarmSettingRepositoryImpl(gh<_i766.AlarmSettingDataSource>()),
-    );
     gh.singleton<_i387.AuthProfileBloc>(
       () => _i387.AuthProfileBloc(
         gh<_i456.WatchAuthStateUseCase>(),
         gh<_i529.GetCurrentUserUseCase>(),
         gh<_i858.SignOutUseCase>(),
+      ),
+    );
+    gh.factory<_i557.ProfileBloc>(
+      () => _i557.ProfileBloc(
+        gh<_i945.CheckNicknameDuplicateUseCase>(),
+        gh<_i473.UpdateProfileUseCase>(),
+        gh<_i304.UploadImgUseCase>(),
+        gh<_i715.DeleteImgUseCase>(),
       ),
     );
     gh.factory<_i130.ListsBloc>(
@@ -480,9 +512,6 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i57.ToggleTodoListUseCase>(),
       ),
     );
-    gh.lazySingleton<_i945.CheckNicknameDuplicateUseCase>(
-      () => _i945.CheckNicknameDuplicateUseCase(gh<_i565.ProfileRepository>()),
-    );
     gh.factory<_i27.DiaryBloc>(
       () => _i27.DiaryBloc(
         gh<_i849.GetOurDiariesUseCase>(),
@@ -495,15 +524,6 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i27.CreateDiaryUseCase>(),
         gh<_i871.DiaryRepository>(),
       ),
-    );
-    gh.lazySingleton<_i715.DeleteImgUseCase>(
-      () => _i715.DeleteImgUseCase(gh<_i565.ProfileRepository>()),
-    );
-    gh.lazySingleton<_i473.UpdateProfileUseCase>(
-      () => _i473.UpdateProfileUseCase(gh<_i565.ProfileRepository>()),
-    );
-    gh.lazySingleton<_i304.UploadImgUseCase>(
-      () => _i304.UploadImgUseCase(gh<_i565.ProfileRepository>()),
     );
     gh.factory<_i935.EditDiaryBloc>(
       () => _i935.EditDiaryBloc(
@@ -534,14 +554,6 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.lazySingleton<_i87.UpdateAlarmSettingUseCase>(
       () => _i87.UpdateAlarmSettingUseCase(gh<_i212.AlarmSettingRepository>()),
-    );
-    gh.factory<_i557.ProfileBloc>(
-      () => _i557.ProfileBloc(
-        gh<_i945.CheckNicknameDuplicateUseCase>(),
-        gh<_i473.UpdateProfileUseCase>(),
-        gh<_i304.UploadImgUseCase>(),
-        gh<_i715.DeleteImgUseCase>(),
-      ),
     );
     gh.factory<_i693.AlarmBloc>(
       () => _i693.AlarmBloc(
