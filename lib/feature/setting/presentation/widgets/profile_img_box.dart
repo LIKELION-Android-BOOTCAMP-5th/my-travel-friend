@@ -3,13 +3,13 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:my_travel_friend/feature/setting/presentation/viewmodels/profile_bloc.dart';
-import 'package:my_travel_friend/feature/setting/presentation/viewmodels/profile_state.dart';
+import 'package:my_travel_friend/feature/setting/presentation/viewmodels/profile/profile_bloc.dart';
 
 import '../../../../core/widget/bottom_sheat.dart';
 import '../../../../core/widget/profile_img.dart';
 import '../../../../theme/app_icon.dart';
-import '../viewmodels/profile_event.dart';
+import '../viewmodels/profile/profile_event.dart';
+import '../viewmodels/profile/profile_state.dart';
 
 // [이재은] 프로필 이미지 설정 박스
 class ProfileImgBox extends StatefulWidget {

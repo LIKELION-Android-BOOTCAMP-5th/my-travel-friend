@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:my_travel_friend/feature/setting/presentation/viewmodels/profile_bloc.dart';
+import 'package:my_travel_friend/feature/setting/presentation/viewmodels/profile/profile_bloc.dart';
 import 'package:my_travel_friend/theme/app_colors.dart';
 import 'package:my_travel_friend/theme/app_font.dart';
 

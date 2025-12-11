@@ -1,8 +1,8 @@
 import 'package:injectable/injectable.dart';
 import 'package:my_travel_friend/feature/setting/domain/repositories/profile_repository.dart';
 
-import '../../../../core/result/result.dart';
-import '../../../auth/domain/entities/user_entity.dart';
+import '../../../../../core/result/result.dart';
+import '../../../../auth/domain/entities/user_entity.dart';
 
 @LazySingleton()
 class UpdateProfileUseCase {

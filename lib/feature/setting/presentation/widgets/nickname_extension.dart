@@ -1,6 +1,6 @@
-import '../viewmodels/profile_state.dart';
-
 // [이재은] Nickname 에러 extension
+import '../viewmodels/profile/profile_state.dart';
+
 extension NicknameStatusExtension on NicknameStatus {
   // 에러 메시지
   String? get errorMessage {

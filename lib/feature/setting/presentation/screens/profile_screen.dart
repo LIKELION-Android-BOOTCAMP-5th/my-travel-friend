@@ -2,15 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:my_travel_friend/core/widget/app_bar.dart';
-import 'package:my_travel_friend/feature/setting/presentation/viewmodels/profile_bloc.dart';
+import 'package:my_travel_friend/feature/setting/presentation/viewmodels/profile/profile_bloc.dart';
 import 'package:my_travel_friend/feature/setting/presentation/widgets/delete_profile_button.dart';
 import 'package:my_travel_friend/feature/setting/presentation/widgets/profile_img_box.dart';
 
 import '../../../../core/widget/button.dart';
 import '../../../../theme/app_colors.dart';
 import '../../../../theme/app_icon.dart';
-import '../viewmodels/profile_event.dart';
-import '../viewmodels/profile_state.dart';
+import '../viewmodels/profile/profile_event.dart';
+import '../viewmodels/profile/profile_state.dart';
 import '../widgets/email_box.dart';
 import '../widgets/nickname_box.dart';
 

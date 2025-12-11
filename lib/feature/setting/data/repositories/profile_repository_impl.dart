@@ -15,16 +15,6 @@ class ProfileRepositoryImpl implements ProfileRepository {
 
   ProfileRepositoryImpl(this._dataSource);
 
-  // 내 프로필 정보 가져오기
-  @override
-  Future<Result<UserEntity>> getMyProfile(int id) async {
-    final res = await _dataSource.getMyProfile(id: id);
-    return res.when(
-      success: (data) => Result.success(data.toEntity()),
-      failure: (failure) => Result.failure(failure),
-    );
-  }
-
   // 프로필 업데이트
   @override
   Future<Result<UserEntity>> updateProfile(UserEntity profile) async {

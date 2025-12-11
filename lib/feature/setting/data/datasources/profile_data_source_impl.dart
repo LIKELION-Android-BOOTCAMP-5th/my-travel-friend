@@ -19,23 +19,6 @@ class ProfileDataSourceImpl implements ProfileDataSource {
   // Storage 버킷 이름
   static const String _bucketName = 'profile_imgs';
 
-  // 내 프로필 조회
-  @override
-  Future<Result<UserDTO>> getMyProfile({required int id}) async {
-    try {
-      final res = await _supabaseClient
-          .from('user')
-          .select()
-          .eq('id', id)
-          .single();
-
-      final result = UserDTO.fromJson(res);
-      return Result.success(result);
-    } catch (e) {
-      return Result.failure(Failure.serverFailure(message: e.toString()));
-    }
-  }
-
   // 프로필 업데이트
   @override
   Future<Result<UserDTO>> updateProfile(UserDTO profile) async {
