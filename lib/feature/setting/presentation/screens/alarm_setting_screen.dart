@@ -20,33 +20,31 @@ class AlarmSettingScreen extends StatelessWidget {
     final colorScheme = Theme.of(context).colorScheme;
     final isDark = colorScheme.brightness == Brightness.dark;
 
-    return SafeArea(
-      child: Scaffold(
-        backgroundColor: isDark ? AppColors.navy : AppColors.darkGray,
-        appBar: CustomButtonAppBar(
-          title: '푸시 알림 설정',
-          leading: Button(
-            width: 40,
-            height: 40,
-            icon: Icon(AppIcon.back),
-            contentColor: isDark ? colorScheme.onSurface : AppColors.light,
-            borderRadius: 20,
-            onTap: () => context.pop(),
-          ),
+    return Scaffold(
+      backgroundColor: isDark ? AppColors.navy : AppColors.darkGray,
+      appBar: CustomButtonAppBar(
+        title: '푸시 알림 설정',
+        leading: Button(
+          width: 40,
+          height: 40,
+          icon: Icon(AppIcon.back),
+          contentColor: isDark ? colorScheme.onSurface : AppColors.light,
+          borderRadius: 20,
+          onTap: () => context.pop(),
         ),
-        body: BlocBuilder<AlarmSettingBloc, AlarmSettingState>(
-          builder: (context, state) {
-            if (state.pageState == AlarmSettingPageState.loading) {
-              return const Center(child: CircularProgressIndicator());
-            }
+      ),
+      body: BlocBuilder<AlarmSettingBloc, AlarmSettingState>(
+        builder: (context, state) {
+          if (state.pageState == AlarmSettingPageState.loading) {
+            return const Center(child: CircularProgressIndicator());
+          }
 
-            if (state.pageState == AlarmSettingPageState.error) {
-              return Center(child: Text(state.message ?? '오류가 발생했습니다'));
-            }
+          if (state.pageState == AlarmSettingPageState.error) {
+            return Center(child: Text(state.message ?? '오류가 발생했습니다'));
+          }
 
-            return _buildSettingList(context, state);
-          },
-        ),
+          return _buildSettingList(context, state);
+        },
       ),
     );
   }

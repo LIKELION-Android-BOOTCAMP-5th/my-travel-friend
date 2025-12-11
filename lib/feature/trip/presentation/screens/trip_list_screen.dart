@@ -106,6 +106,9 @@ class _TripListScreenState extends State<TripListScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    final isDark = colorScheme.brightness == Brightness.dark;
+
     final authState = context.watch<AuthProfileBloc>().state;
 
     if (authState is! AuthProfileAuthenticated) {
@@ -168,7 +171,7 @@ class _TripListScreenState extends State<TripListScreen> {
               : state.trips ?? [];
 
           return Scaffold(
-            backgroundColor: AppColors.lightGray,
+            backgroundColor: isDark ? AppColors.navy : AppColors.darkGray,
 
             /// 상단 앱바 추가
             appBar: HomeAppBar(
@@ -182,7 +185,9 @@ class _TripListScreenState extends State<TripListScreen> {
 
               searchIcon: isSearching ? AppIcon.close : AppIcon.search,
 
-              onAlarmTap: () {},
+              onAlarmTap: () {
+                context.push('/alarm');
+              },
               onSettingTap: () {},
             ),
 
@@ -196,6 +201,7 @@ class _TripListScreenState extends State<TripListScreen> {
                         vertical: 8,
                       ),
                       child: TextBox(
+                        unfocusedBorderColor: colorScheme.primary,
                         controller: _searchController,
                         hintText: "여행 검색...",
                         prefixIcon: Icon(AppIcon.search),

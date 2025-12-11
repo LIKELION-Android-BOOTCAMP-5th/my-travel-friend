@@ -99,28 +99,26 @@ class _DiaryListScreenState extends State<DiaryListScreen> {
             break;
         }
       },
-      child: SafeArea(
-        child: Scaffold(
-          backgroundColor: isDark ? AppColors.navy : AppColors.darkGray,
-          body: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              children: [
-                _buildPublicTabs(context),
-                const SizedBox(height: 16),
-                _buildFilterChips(context),
-                const SizedBox(height: 32),
-                Expanded(child: _buildDiaryList(context)),
-              ],
-            ),
+      child: Scaffold(
+        backgroundColor: isDark ? AppColors.navy : AppColors.darkGray,
+        body: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            children: [
+              _buildPublicTabs(context),
+              const SizedBox(height: 16),
+              _buildFilterChips(context),
+              const SizedBox(height: 32),
+              Expanded(child: _buildDiaryList(context)),
+            ],
           ),
-          floatingActionButton: FloatingButton(
-            icon: Icon(AppIcon.plus, color: AppColors.light),
-            backgroundColor: AppColors.secondary,
-            onPressed: () {
-              context.read<DiaryBloc>().add(const DiaryEvent.requestCreate());
-            },
-          ),
+        ),
+        floatingActionButton: FloatingButton(
+          icon: Icon(AppIcon.plus, color: AppColors.light),
+          backgroundColor: AppColors.secondary,
+          onPressed: () {
+            context.read<DiaryBloc>().add(const DiaryEvent.requestCreate());
+          },
         ),
       ),
     );

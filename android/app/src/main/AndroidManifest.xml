@@ -23,7 +23,7 @@
     <application
         android:label="my_travel_friend"
         android:name="${applicationName}"
-        android:icon="@mipmap/ic_launcher">
+        android:icon="@mipmap/icon_logos">
         <activity
             android:name=".MainActivity"
             android:exported="true"

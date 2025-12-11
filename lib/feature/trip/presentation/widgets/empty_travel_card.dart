@@ -16,6 +16,9 @@ class EmptyTravelCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    final isDark = colorScheme.brightness == Brightness.dark;
+
     return Padding(
       padding: const EdgeInsets.only(top: 40), // ⭐ 상단에서 조금 내려옴
       child: Align(
@@ -24,7 +27,7 @@ class EmptyTravelCard extends StatelessWidget {
           width: 300,
           height: 300,
           decoration: BoxDecoration(
-            color: Colors.white,
+            color: colorScheme.surfaceContainerHighest,
             borderRadius: BorderRadius.circular(20),
             boxShadow: [
               BoxShadow(
@@ -40,21 +43,20 @@ class EmptyTravelCard extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.all(12),
                 decoration: BoxDecoration(
-                  color: AppColors.primaryLight.withOpacity(0.15),
+                  color: colorScheme.primary.withOpacity(0.15),
                   shape: BoxShape.circle,
                 ),
                 child: IconTheme(
-                  data: const IconThemeData(
-                    color: AppColors.primaryLight,
-                    size: 32,
-                  ),
+                  data: IconThemeData(color: colorScheme.primary, size: 32),
                   child: Icon(AppIcon.mapPin),
                 ),
               ),
               const SizedBox(height: 14),
               Text(
                 title,
-                style: AppFont.big.copyWith(color: AppColors.dark),
+                style: AppFont.big.copyWith(
+                  color: isDark ? AppColors.light : AppColors.dark,
+                ),
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: 6),
@@ -63,7 +65,9 @@ class EmptyTravelCard extends StatelessWidget {
                 child: Text(
                   description,
                   style: AppFont.regular.copyWith(
-                    color: AppColors.dark.withOpacity(0.7),
+                    color: isDark
+                        ? AppColors.light.withOpacity(0.7)
+                        : AppColors.dark.withOpacity(0.7),
                   ),
                   textAlign: TextAlign.center,
                 ),
