@@ -21,17 +21,24 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    final isDark = colorScheme.brightness == Brightness.dark;
+
     return SafeArea(
       child: Container(
         height: preferredSize.height,
-        color: AppColors.primaryLight,
+        color: isDark
+            ? colorScheme.surfaceContainerHighest
+            : colorScheme.primary,
         padding: const EdgeInsets.symmetric(horizontal: 12),
         child: Row(
           children: [
             GestureDetector(
               onTap: onLogoTap,
               child: Image.asset(
-                "assets/images/logo_long_white.png",
+                isDark
+                    ? "assets/images/logo_long_white.png"
+                    : "assets/images/logo_long_dark.png",
                 width: 150,
               ),
             ),
