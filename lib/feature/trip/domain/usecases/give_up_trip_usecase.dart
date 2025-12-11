@@ -3,11 +3,11 @@ import 'package:my_travel_friend/core/result/result.dart';
 import 'package:my_travel_friend/feature/trip/domain/repositories/trip_repository.dart';
 
 @LazySingleton()
-class GiveUpTripUsecase {
+class GiveUpTripUseCase {
   final TripRepository _tripRepository;
-  GiveUpTripUsecase(this._tripRepository);
+  GiveUpTripUseCase(this._tripRepository);
 
-  Future<Result<void>> call(int userId, int id) {
-    return _tripRepository.giveUpTrip(userId, id);
+  Future<Result<void>> call(int tripId, int userId) {
+    return _tripRepository.giveUpTrip(tripId, userId);
   }
 }

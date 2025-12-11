@@ -82,8 +82,8 @@ class TripRepositoryImpl implements TripRepository {
   }
 
   @override
-  Future<Result<void>> giveUpTrip(int userId, int id) async {
-    return await _dataSource.giveUpTrip(userId, id);
+  Future<Result<void>> giveUpTrip(int tripId, int userId) async {
+    return await _dataSource.giveUpTrip(tripId, userId);
   }
 
   @override

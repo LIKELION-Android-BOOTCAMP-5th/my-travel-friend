@@ -123,7 +123,7 @@ class TripDataSourceImpl implements TripDataSource {
   }
 
   @override
-  Future<Result<void>> giveUpTrip(int userId, int tripId) async {
+  Future<Result<void>> giveUpTrip(int tripId, int userId) async {
     try {
       await _supabaseClient
           .from('trip_crew')

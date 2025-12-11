@@ -122,111 +122,123 @@ class _EditTripScreenState extends State<EditTripScreen> {
       color: isDark ? AppColors.navy : AppColors.darkGray,
       child: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text("여행 제목", style: AppFont.regular),
-            TextBox(
-              controller: _titleController,
-              onChanged: (text) => context.read<EditTripBloc>().add(
-                EditTripEvent.changeTitle(title: text),
-              ),
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Container(
+            decoration: BoxDecoration(
+              color: colorScheme.surfaceContainerHighest,
+              borderRadius: BorderRadius.all(Radius.circular(8.0)),
             ),
-            const SizedBox(height: 16),
-
-            const Text("여행 장소", style: AppFont.regular),
-            TextBox(
-              controller: _placeController,
-              prefixIcon: const Icon(Icons.place, color: Colors.grey),
-              onChanged: (text) => context.read<EditTripBloc>().add(
-                EditTripEvent.changePlace(place: text),
-              ),
-            ),
-
-            const SizedBox(height: 16),
-
-            const Text("여행 날짜", style: AppFont.regular),
-            Row(
-              children: [
-                Expanded(
-                  child: DatePickerBox(
-                    label: "시작일",
-                    value: formatDate(state.startAt),
-                    onTap: () async {
-                      final picked = await showDatePicker(
-                        context: context,
-                        initialDate: DateTime.parse(state.startAt),
-                        firstDate: DateTime(2000),
-                        lastDate: DateTime(2100),
-                      );
-                      if (picked != null) {
-                        final formatted =
-                            "${picked.year}-${_two(picked.month)}-${_two(picked.day)}";
-                        context.read<EditTripBloc>().add(
-                          EditTripEvent.changeStartAt(startAt: formatted),
-                        );
-                      }
-                    },
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text("여행 제목", style: AppFont.regular),
+                  TextBox(
+                    controller: _titleController,
+                    onChanged: (text) => context.read<EditTripBloc>().add(
+                      EditTripEvent.changeTitle(title: text),
+                    ),
                   ),
-                ),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: DatePickerBox(
-                    label: "종료일",
-                    value: formatDate(state.endAt),
-                    onTap: () async {
-                      final picked = await showDatePicker(
-                        context: context,
-                        initialDate: DateTime.parse(state.endAt),
-                        firstDate: DateTime.parse(state.startAt),
-                        lastDate: DateTime(2100),
-                      );
-                      if (picked != null) {
-                        final formatted =
-                            "${picked.year}-${_two(picked.month)}-${_two(picked.day)}";
-                        context.read<EditTripBloc>().add(
-                          EditTripEvent.changeEndAt(endAt: formatted),
-                        );
-                      }
-                    },
+                  const SizedBox(height: 16),
+
+                  const Text("여행 장소", style: AppFont.regular),
+                  TextBox(
+                    controller: _placeController,
+                    prefixIcon: const Icon(Icons.place, color: Colors.grey),
+                    onChanged: (text) => context.read<EditTripBloc>().add(
+                      EditTripEvent.changePlace(place: text),
+                    ),
                   ),
-                ),
-              ],
-            ),
 
-            const SizedBox(height: 20),
+                  const SizedBox(height: 16),
 
-            const Text("커버 타입", style: AppFont.regular),
-            Row(
-              children: [
-                _typeTab(context, "COLOR", state.coverStyle == "COLOR"),
-                const SizedBox(width: 12),
-                _typeTab(context, "IMAGE", state.coverStyle == "IMAGE"),
-              ],
-            ),
-            const SizedBox(height: 14),
+                  const Text("여행 날짜", style: AppFont.regular),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: DatePickerBox(
+                          label: "시작일",
+                          value: formatDate(state.startAt),
+                          onTap: () async {
+                            final picked = await showDatePicker(
+                              context: context,
+                              initialDate: DateTime.parse(state.startAt),
+                              firstDate: DateTime(2000),
+                              lastDate: DateTime(2100),
+                            );
+                            if (picked != null) {
+                              final formatted =
+                                  "${picked.year}-${_two(picked.month)}-${_two(picked.day)}";
+                              context.read<EditTripBloc>().add(
+                                EditTripEvent.changeStartAt(startAt: formatted),
+                              );
+                            }
+                          },
+                        ),
+                      ),
+                      const SizedBox(width: 12),
+                      Expanded(
+                        child: DatePickerBox(
+                          label: "종료일",
+                          value: formatDate(state.endAt),
+                          onTap: () async {
+                            final picked = await showDatePicker(
+                              context: context,
+                              initialDate: DateTime.parse(state.endAt),
+                              firstDate: DateTime.parse(state.startAt),
+                              lastDate: DateTime(2100),
+                            );
+                            if (picked != null) {
+                              final formatted =
+                                  "${picked.year}-${_two(picked.month)}-${_two(picked.day)}";
+                              context.read<EditTripBloc>().add(
+                                EditTripEvent.changeEndAt(endAt: formatted),
+                              );
+                            }
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
 
-            if (state.coverStyle == "COLOR") ...[
-              const Text(
-                "커버 색상",
-                style: TextStyle(fontWeight: FontWeight.bold),
+                  const SizedBox(height: 20),
+
+                  const Text("커버 타입", style: AppFont.regular),
+                  Row(
+                    children: [
+                      _typeTab(context, "COLOR", state.coverStyle == "COLOR"),
+                      const SizedBox(width: 12),
+                      _typeTab(context, "IMAGE", state.coverStyle == "IMAGE"),
+                    ],
+                  ),
+                  const SizedBox(height: 14),
+
+                  if (state.coverStyle == "COLOR") ...[
+                    const Text(
+                      "커버 색상",
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    const SizedBox(height: 10),
+                    _colorPickSection(context, state),
+                  ],
+
+                  if (state.coverStyle == "IMAGE") ...[
+                    const Text(
+                      "커버 이미지",
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    const SizedBox(height: 10),
+                    _imagePickSection(context, state),
+                  ],
+
+                  const SizedBox(height: 20),
+                  _InfoBox(),
+                ],
               ),
-              const SizedBox(height: 10),
-              _colorPickSection(context, state),
-            ],
-
-            if (state.coverStyle == "IMAGE") ...[
-              const Text(
-                "커버 이미지",
-                style: TextStyle(fontWeight: FontWeight.bold),
-              ),
-              const SizedBox(height: 10),
-              _imagePickSection(context, state),
-            ],
-
-            const SizedBox(height: 20),
-            _InfoBox(),
-          ],
+            ),
+          ),
         ),
       ),
     );
@@ -470,7 +482,7 @@ class _InfoBox extends StatelessWidget {
       width: double.infinity,
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: const Color(0xffE8F0FE),
+        color: colorScheme.primary.withOpacity(0.3),
         borderRadius: BorderRadius.circular(12),
       ),
       child: Row(

@@ -55,13 +55,14 @@ extension TripDetailEventPatterns on TripDetailEvent {
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( LoadTripDetail value)?  loadTripDetail,TResult Function( UpdateTripDetail value)?  updateTripDetail,TResult Function( RefreshTripDetail value)?  refreshTripDetail,required TResult orElse(),}){
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( LoadTripDetail value)?  loadTripDetail,TResult Function( UpdateTripDetail value)?  updateTripDetail,TResult Function( RefreshTripDetail value)?  refreshTripDetail,TResult Function( LeaveTrip value)?  leaveTrip,required TResult orElse(),}){
 final _that = this;
 switch (_that) {
 case LoadTripDetail() when loadTripDetail != null:
 return loadTripDetail(_that);case UpdateTripDetail() when updateTripDetail != null:
 return updateTripDetail(_that);case RefreshTripDetail() when refreshTripDetail != null:
-return refreshTripDetail(_that);case _:
+return refreshTripDetail(_that);case LeaveTrip() when leaveTrip != null:
+return leaveTrip(_that);case _:
   return orElse();
 
 }
@@ -79,13 +80,14 @@ return refreshTripDetail(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( LoadTripDetail value)  loadTripDetail,required TResult Function( UpdateTripDetail value)  updateTripDetail,required TResult Function( RefreshTripDetail value)  refreshTripDetail,}){
+@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( LoadTripDetail value)  loadTripDetail,required TResult Function( UpdateTripDetail value)  updateTripDetail,required TResult Function( RefreshTripDetail value)  refreshTripDetail,required TResult Function( LeaveTrip value)  leaveTrip,}){
 final _that = this;
 switch (_that) {
 case LoadTripDetail():
 return loadTripDetail(_that);case UpdateTripDetail():
 return updateTripDetail(_that);case RefreshTripDetail():
-return refreshTripDetail(_that);case _:
+return refreshTripDetail(_that);case LeaveTrip():
+return leaveTrip(_that);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -102,13 +104,14 @@ return refreshTripDetail(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( LoadTripDetail value)?  loadTripDetail,TResult? Function( UpdateTripDetail value)?  updateTripDetail,TResult? Function( RefreshTripDetail value)?  refreshTripDetail,}){
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( LoadTripDetail value)?  loadTripDetail,TResult? Function( UpdateTripDetail value)?  updateTripDetail,TResult? Function( RefreshTripDetail value)?  refreshTripDetail,TResult? Function( LeaveTrip value)?  leaveTrip,}){
 final _that = this;
 switch (_that) {
 case LoadTripDetail() when loadTripDetail != null:
 return loadTripDetail(_that);case UpdateTripDetail() when updateTripDetail != null:
 return updateTripDetail(_that);case RefreshTripDetail() when refreshTripDetail != null:
-return refreshTripDetail(_that);case _:
+return refreshTripDetail(_that);case LeaveTrip() when leaveTrip != null:
+return leaveTrip(_that);case _:
   return null;
 
 }
@@ -125,12 +128,13 @@ return refreshTripDetail(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function( int tripId)?  loadTripDetail,TResult Function( TripEntity trip)?  updateTripDetail,TResult Function()?  refreshTripDetail,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function( int tripId)?  loadTripDetail,TResult Function( TripEntity trip)?  updateTripDetail,TResult Function()?  refreshTripDetail,TResult Function( int tripId,  int userId)?  leaveTrip,required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case LoadTripDetail() when loadTripDetail != null:
 return loadTripDetail(_that.tripId);case UpdateTripDetail() when updateTripDetail != null:
 return updateTripDetail(_that.trip);case RefreshTripDetail() when refreshTripDetail != null:
-return refreshTripDetail();case _:
+return refreshTripDetail();case LeaveTrip() when leaveTrip != null:
+return leaveTrip(_that.tripId,_that.userId);case _:
   return orElse();
 
 }
@@ -148,12 +152,13 @@ return refreshTripDetail();case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function( int tripId)  loadTripDetail,required TResult Function( TripEntity trip)  updateTripDetail,required TResult Function()  refreshTripDetail,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function( int tripId)  loadTripDetail,required TResult Function( TripEntity trip)  updateTripDetail,required TResult Function()  refreshTripDetail,required TResult Function( int tripId,  int userId)  leaveTrip,}) {final _that = this;
 switch (_that) {
 case LoadTripDetail():
 return loadTripDetail(_that.tripId);case UpdateTripDetail():
 return updateTripDetail(_that.trip);case RefreshTripDetail():
-return refreshTripDetail();case _:
+return refreshTripDetail();case LeaveTrip():
+return leaveTrip(_that.tripId,_that.userId);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -170,12 +175,13 @@ return refreshTripDetail();case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function( int tripId)?  loadTripDetail,TResult? Function( TripEntity trip)?  updateTripDetail,TResult? Function()?  refreshTripDetail,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function( int tripId)?  loadTripDetail,TResult? Function( TripEntity trip)?  updateTripDetail,TResult? Function()?  refreshTripDetail,TResult? Function( int tripId,  int userId)?  leaveTrip,}) {final _that = this;
 switch (_that) {
 case LoadTripDetail() when loadTripDetail != null:
 return loadTripDetail(_that.tripId);case UpdateTripDetail() when updateTripDetail != null:
 return updateTripDetail(_that.trip);case RefreshTripDetail() when refreshTripDetail != null:
-return refreshTripDetail();case _:
+return refreshTripDetail();case LeaveTrip() when leaveTrip != null:
+return leaveTrip(_that.tripId,_that.userId);case _:
   return null;
 
 }
@@ -355,5 +361,73 @@ String toString() {
 
 
 
+
+/// @nodoc
+
+
+class LeaveTrip implements TripDetailEvent {
+  const LeaveTrip({required this.tripId, required this.userId});
+  
+
+ final  int tripId;
+ final  int userId;
+
+/// Create a copy of TripDetailEvent
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$LeaveTripCopyWith<LeaveTrip> get copyWith => _$LeaveTripCopyWithImpl<LeaveTrip>(this, _$identity);
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is LeaveTrip&&(identical(other.tripId, tripId) || other.tripId == tripId)&&(identical(other.userId, userId) || other.userId == userId));
+}
+
+
+@override
+int get hashCode => Object.hash(runtimeType,tripId,userId);
+
+@override
+String toString() {
+  return 'TripDetailEvent.leaveTrip(tripId: $tripId, userId: $userId)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class $LeaveTripCopyWith<$Res> implements $TripDetailEventCopyWith<$Res> {
+  factory $LeaveTripCopyWith(LeaveTrip value, $Res Function(LeaveTrip) _then) = _$LeaveTripCopyWithImpl;
+@useResult
+$Res call({
+ int tripId, int userId
+});
+
+
+
+
+}
+/// @nodoc
+class _$LeaveTripCopyWithImpl<$Res>
+    implements $LeaveTripCopyWith<$Res> {
+  _$LeaveTripCopyWithImpl(this._self, this._then);
+
+  final LeaveTrip _self;
+  final $Res Function(LeaveTrip) _then;
+
+/// Create a copy of TripDetailEvent
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') $Res call({Object? tripId = null,Object? userId = null,}) {
+  return _then(LeaveTrip(
+tripId: null == tripId ? _self.tripId : tripId // ignore: cast_nullable_to_non_nullable
+as int,userId: null == userId ? _self.userId : userId // ignore: cast_nullable_to_non_nullable
+as int,
+  ));
+}
+
+
+}
 
 // dart format on
