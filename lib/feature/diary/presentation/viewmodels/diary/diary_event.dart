@@ -1,6 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-import '../../domain/entities/diary_entity.dart';
+import '../../../domain/entities/diary_entity.dart';
 
 part 'diary_event.freezed.dart';
 

@@ -110,11 +110,12 @@ import '../../feature/diary/domain/usecases/get_our_diaries_usecase.dart'
     as _i849;
 import '../../feature/diary/domain/usecases/update_diary_usecase.dart'
     as _i1039;
-import '../../feature/diary/presentation/viewmodels/diary_bloc.dart' as _i611;
-import '../../feature/diary/presentation/viewmodels/edit_diary_bloc.dart'
-    as _i703;
-import '../../feature/diary/presentation/viewmodels/new_diary_bloc.dart'
-    as _i1041;
+import '../../feature/diary/presentation/viewmodels/diary/diary_bloc.dart'
+    as _i27;
+import '../../feature/diary/presentation/viewmodels/edit_diary/edit_diary_bloc.dart'
+    as _i935;
+import '../../feature/diary/presentation/viewmodels/new_diary/new_diary_bloc.dart'
+    as _i885;
 import '../../feature/setting/data/datasources/alarm_setting_datasource.dart'
     as _i766;
 import '../../feature/setting/data/datasources/alarm_setting_datasource_impl.dart'
@@ -142,6 +143,8 @@ import '../../feature/trip/domain/usecases/edit_trip_usecase.dart' as _i637;
 import '../../feature/trip/domain/usecases/get_crew_member_count_usecase.dart'
     as _i267;
 import '../../feature/trip/domain/usecases/get_my_trip_usecase.dart' as _i521;
+import '../../feature/trip/domain/usecases/get_trip_by_id_usecase.dart'
+    as _i277;
 import '../../feature/trip/domain/usecases/give_up_trip_usecase.dart' as _i317;
 import '../../feature/trip/domain/usecases/search_trip_usecase.dart' as _i437;
 import '../../feature/trip/presentation/viewmodels/create_trip/create_trip_bloc.dart'
@@ -150,6 +153,8 @@ import '../../feature/trip/presentation/viewmodels/edit_trip/edit_trip_bloc.dart
     as _i703;
 import '../../feature/trip/presentation/viewmodels/trip/trip_bloc.dart'
     as _i616;
+import '../../feature/trip/presentation/viewmodels/trip_detail/trip_detail_bloc.dart'
+    as _i1000;
 import '../service/internal/deep_link_service.dart' as _i507;
 import '../service/internal/push_notification_service.dart' as _i737;
 import '../service/internal/supabase_storage_service.dart' as _i1051;
@@ -262,6 +267,9 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i766.AlarmSettingDataSource>(
       () => _i746.AlarmSettingDataSourceImpl(gh<_i454.SupabaseClient>()),
     );
+    gh.lazySingleton<_i277.GetTripByIdUseCase>(
+      () => _i277.GetTripByIdUseCase(gh<_i161.TripRepository>()),
+    );
     gh.lazySingleton<_i30.GetMyTodoListUseCase>(
       () => _i30.GetMyTodoListUseCase(gh<_i579.TodoListRepository>()),
     );
@@ -301,6 +309,9 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.singleton<_i456.WatchAuthStateUseCase>(
       () => _i456.WatchAuthStateUseCase(gh<_i488.AuthRepository>()),
+    );
+    gh.factory<_i1000.TripDetailBloc>(
+      () => _i1000.TripDetailBloc(gh<_i277.GetTripByIdUseCase>()),
     );
     gh.factory<_i873.CreateTripBloc>(
       () => _i873.CreateTripBloc(
@@ -380,21 +391,21 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i57.ToggleTodoListUseCase>(),
       ),
     );
-    gh.factory<_i611.DiaryBloc>(
-      () => _i611.DiaryBloc(
+    gh.factory<_i27.DiaryBloc>(
+      () => _i27.DiaryBloc(
         gh<_i849.GetOurDiariesUseCase>(),
         gh<_i730.GetMyDiariesUseCase>(),
         gh<_i699.DeleteDiaryUseCase>(),
       ),
     );
-    gh.factory<_i1041.NewDiaryBloc>(
-      () => _i1041.NewDiaryBloc(
+    gh.factory<_i885.NewDiaryBloc>(
+      () => _i885.NewDiaryBloc(
         gh<_i27.CreateDiaryUseCase>(),
         gh<_i871.DiaryRepository>(),
       ),
     );
-    gh.factory<_i703.EditDiaryBloc>(
-      () => _i703.EditDiaryBloc(
+    gh.factory<_i935.EditDiaryBloc>(
+      () => _i935.EditDiaryBloc(
         gh<_i1039.UpdateDiaryUseCase>(),
         gh<_i871.DiaryRepository>(),
       ),

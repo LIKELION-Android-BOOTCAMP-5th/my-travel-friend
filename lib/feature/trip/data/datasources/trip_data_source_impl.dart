@@ -217,4 +217,16 @@ class TripDataSourceImpl implements TripDataSource {
       return Result.failure(Failure.serverFailure(message: e.toString()));
     }
   }
+
+  // 아이디로 여행 정보 가져오기
+  @override
+  Future<TripDto> getTripById(int tripId) async {
+    final response = await _supabaseClient
+        .from('trip')
+        .select()
+        .eq('id', tripId)
+        .single();
+
+    return TripDto.fromJson(response);
+  }
 }

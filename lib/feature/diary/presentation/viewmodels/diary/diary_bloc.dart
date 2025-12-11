@@ -6,7 +6,7 @@ import 'package:my_travel_friend/feature/diary/domain/usecases/delete_diary_usec
 import 'package:my_travel_friend/feature/diary/domain/usecases/get_my_diaries_usecase.dart';
 import 'package:my_travel_friend/feature/diary/domain/usecases/get_our_diaries_usecase.dart';
 
-import '../../../../core/result/result.dart';
+import '../../../../../core/result/result.dart';
 import 'diary_event.dart';
 import 'diary_state.dart';
 

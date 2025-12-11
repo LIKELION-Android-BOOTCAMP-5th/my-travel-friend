@@ -2,9 +2,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 import 'package:my_travel_friend/feature/diary/domain/usecases/update_diary_usecase.dart';
 
-import '../../../../core/result/failures.dart';
-import '../../../../core/result/result.dart';
-import '../../domain/repositories/diary_repository.dart';
+import '../../../../../core/result/failures.dart';
+import '../../../../../core/result/result.dart';
+import '../../../domain/repositories/diary_repository.dart';
 import 'edit_diary_event.dart';
 import 'edit_diary_state.dart';
 
