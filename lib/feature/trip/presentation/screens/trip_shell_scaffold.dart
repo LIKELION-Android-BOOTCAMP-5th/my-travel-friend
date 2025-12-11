@@ -4,9 +4,16 @@ import 'package:go_router/go_router.dart';
 
 import '../../../../core/widget/app_bar.dart';
 import '../../../../core/widget/bottom_navigation.dart';
+import '../../../../core/widget/bottom_sheat.dart';
 import '../../../../core/widget/button.dart';
+import '../../../../core/widget/pop_up_box.dart';
 import '../../../../theme/app_colors.dart';
 import '../../../../theme/app_icon.dart';
+import '../../../auth/presentation/viewmodel/auth_profile/auth_profile_bloc.dart';
+import '../../../auth/presentation/viewmodel/auth_profile/auth_profile_state.dart';
+import '../../domain/entities/trip_entity.dart';
+import '../viewmodels/trip/trip_bloc.dart';
+import '../viewmodels/trip/trip_event.dart';
 import '../viewmodels/trip_detail/trip_detail_bloc.dart';
 import '../viewmodels/trip_detail/trip_detail_state.dart';
 import 'edit_trip_screen.dart';
@@ -74,13 +81,13 @@ class TripShellScaffold extends StatelessWidget {
               icon: Icon(AppIcon.back),
               contentColor: isDark ? colorScheme.onSurface : AppColors.light,
               borderRadius: 20,
-              onTap: () => context.pop(),
+              onTap: () => context.go('/home'),
             ),
             actions: [
               Button(
                 icon: Icon(AppIcon.threeDots),
                 contentColor: isDark ? colorScheme.onSurface : AppColors.light,
-                onTap: () {},
+                onTap: () => _showBottomSheet(context, trip),
                 width: 40,
                 height: 40,
                 borderRadius: 20,
@@ -123,5 +130,56 @@ class TripShellScaffold extends StatelessWidget {
     if (index < routes.length) {
       context.go(routes[index]);
     }
+  }
+
+  // 바텀시트 오픈
+  void _showBottomSheet(BuildContext context, TripEntity trip) {
+    final authState = context.read<AuthProfileBloc>().state;
+
+    if (authState is! AuthProfileAuthenticated) return;
+
+    final userId = authState.userInfo.id!;
+
+    CommonBottomSheet.show(
+      context,
+      sheetTitle: "여행 관리",
+      actions: [
+        BottomSheetAction(
+          icon: Icon(AppIcon.edit),
+          iconBgColor: AppColors.primaryLight,
+          title: "여행계획 수정하기",
+          onTap: () {
+            context.push('/trip/edit', extra: {'trip': trip});
+          },
+        ),
+        BottomSheetAction(
+          icon: Icon(AppIcon.delete),
+          iconBgColor: AppColors.secondary,
+          title: "여행 포기하기",
+          onTap: () {
+            _showLeavePopUp(context, trip, userId);
+          },
+        ),
+      ],
+    );
+  }
+
+  /// 여행 포기 PopUp
+  void _showLeavePopUp(BuildContext context, TripEntity trip, int userId) {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (_) => PopUpBox(
+        title: "여행을 포기하시겠어요?",
+        message: "참여 중인 여행에서 제외됩니다.",
+        rightText: "포기하기",
+        onRight: () {
+          context.read<TripBloc>().add(
+            TripEvent.leaveTrip(tripId: trip.id!, userId: userId),
+          );
+          context.go('/home');
+        },
+      ),
+    );
   }
 }

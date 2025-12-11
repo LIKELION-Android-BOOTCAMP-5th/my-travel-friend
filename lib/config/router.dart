@@ -89,9 +89,9 @@ class AppRouter {
 
       GoRoute(
         path: '/login',
-        builder: (context, state) => BlocProvider(
+        builder: (context, state) => BlocProvider.value(
           //bloc 제공자
-          create: (context) => getIt<AuthBloc>(),
+          value: getIt<AuthBloc>(),
           child: const AuthBlocWidget(),
         ),
       ),
