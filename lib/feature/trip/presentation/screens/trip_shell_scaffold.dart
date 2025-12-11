@@ -43,7 +43,7 @@ class TripShellScaffold extends StatelessWidget {
                   Text('오류: ${state.errorMessage}'),
                   const SizedBox(height: 16),
                   ElevatedButton(
-                    onPressed: () => context.go('/mainHome'),
+                    onPressed: () => context.go('/home'),
                     child: const Text('홈으로 돌아가기'),
                   ),
                 ],
