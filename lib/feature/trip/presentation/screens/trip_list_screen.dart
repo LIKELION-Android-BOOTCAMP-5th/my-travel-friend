@@ -76,7 +76,7 @@ class _TripListScreenState extends State<TripListScreen> {
         ),
         BottomSheetAction(
           icon: Icon(AppIcon.delete),
-          iconBgColor: Colors.redAccent,
+          iconBgColor: AppColors.secondary,
           title: "여행 포기하기",
           onTap: () {
             _showLeavePopUp(trip, userId);
@@ -246,9 +246,7 @@ class _TripListScreenState extends State<TripListScreen> {
                                         ? trip.coverImg
                                         : null,
                                     onTap: () {
-                                      bloc.add(
-                                        TripEvent.selectTrip(trip: trip),
-                                      );
+                                      context.go('/trip/${trip.id}/diary');
                                     },
                                     onMenu: () => _showMenu(trip),
                                   ),

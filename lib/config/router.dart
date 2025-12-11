@@ -16,15 +16,17 @@ import 'package:my_travel_friend/temp_screen.dart';
 import '../feature/alarm/presentation/screens/alarm_bloc_widget.dart';
 import '../feature/checklist/presentation/screens/lists_bloc_widget.dart';
 import '../feature/diary/domain/entities/diary_entity.dart';
-import '../feature/diary/presentation/screens/diary_bloc_widget.dart';
-import '../feature/diary/presentation/screens/edit_diary_bloc_widget.dart';
-import '../feature/diary/presentation/screens/new_diary_bloc_widget.dart';
-import '../feature/diary/presentation/viewmodels/diary_bloc.dart';
-import '../feature/diary/presentation/viewmodels/new_diary_bloc.dart';
+import '../feature/diary/presentation/screens/diary/diary_bloc_widget.dart';
+import '../feature/diary/presentation/screens/edit_diary/edit_diary_bloc_widget.dart';
+import '../feature/diary/presentation/screens/new_diary/new_diary_bloc_widget.dart';
+import '../feature/diary/presentation/viewmodels/diary/diary_bloc.dart';
+import '../feature/diary/presentation/viewmodels/new_diary/new_diary_bloc.dart';
 import '../feature/setting/presentation/screens/alarm_setting_bloc_widget.dart';
-import '../feature/setting/presentation/screens/profile_bloc_widget.dart';
 import '../feature/trip/domain/entities/trip_entity.dart';
 import '../feature/trip/presentation/screens/edit_trip_bloc_widget.dart';
+import '../feature/trip/presentation/screens/trip_shell_scaffold.dart';
+import '../feature/trip/presentation/viewmodels/trip_detail/trip_detail_bloc.dart';
+import '../feature/trip/presentation/viewmodels/trip_detail/trip_detail_event.dart';
 
 final getIt = GetIt.instance;
 
@@ -51,15 +53,11 @@ class AppRouter {
       const lockedPaths = [
         '/friend',
         '/setting',
-        '/alarm_list_page',
-        '/setting_alarm_page',
-        '/diary',
-        '/diary/new',
-        '/diary/edit',
-        '/mainHome',
         '/alarm',
-        '/checklist',
-        '/profile',
+        '/setting',
+        '/diary',
+        '/trip',
+        '/home',
       ];
 
       final isGoingToLockedPath = lockedPaths.any(
@@ -75,13 +73,14 @@ class AppRouter {
       final isGoingToAuthPath =
           currentPath == '/onboarding' || currentPath == '/login';
       if (isLoggedIn && isGoingToAuthPath) {
-        return '/mainHome';
+        return '/home';
       }
 
       return null;
     },
 
     routes: [
+      // 기본 라우트
       GoRoute(
         path: '/splash',
         builder: (context, state) => const SplashScreen(),
@@ -97,14 +96,17 @@ class AppRouter {
         ),
       ),
 
+      // 앱 홈
       GoRoute(
-        path: '/mainHome',
+        path: '/home',
         builder: (context, state) => BlocProvider(
           //bloc 제공자
           create: (context) => GetIt.instance<TripBloc>(),
           child: const TripBlocWidget(),
         ),
       ),
+
+      // Trip 생성 /수정
       GoRoute(
         path: '/trip/create',
         builder: (context, state) {
@@ -128,30 +130,7 @@ class AppRouter {
           return EditTripBlocWidget(trip: trip);
         },
       ),
-      GoRoute(
-        path: '/diary',
-        builder: (context, state) => BlocProvider(
-          //bloc 제공자
-          create: (context) => GetIt.instance<DiaryBloc>(),
-          child: const DiaryBlocWidget(tripId: 1),
-        ),
-      ),
-
-      GoRoute(
-        path: '/diary/new',
-        builder: (context, state) => BlocProvider(
-          create: (context) => GetIt.instance<NewDiaryBloc>(),
-          child: const NewDiaryBlocWidget(tripId: 1),
-        ),
-      ),
-      GoRoute(
-        path: '/diary/edit',
-        builder: (context, state) {
-          final extra = state.extra as Map<String, dynamic>;
-          final diary = extra['diary'] as DiaryEntity;
-          return EditDiaryBlocWidget(diary: diary);
-        },
-      ),
+      // 설정 관련
       GoRoute(
         path: '/alarm',
         builder: (context, state) => const AlarmBlocWidget(),
@@ -160,13 +139,80 @@ class AppRouter {
         path: '/alarmSetting',
         builder: (context, state) => const AlarmSettingBlocWidget(),
       ),
-      GoRoute(
-        path: '/checklist',
-        builder: (context, state) => const ListsBlocWidget(tripId: 1),
+      // Trip ShellRoute
+      ShellRoute(
+        builder: (context, state, child) {
+          final tripIdStr = state.pathParameters['tripId'] ?? '0';
+          final tripId = int.tryParse(tripIdStr) ?? 0;
+
+          final tripDetailBloc = getIt<TripDetailBloc>();
+
+          tripDetailBloc.add(TripDetailEvent.loadTripDetail(tripId: tripId));
+
+          return BlocProvider(
+            create: (context) => tripDetailBloc,
+            child: TripShellScaffold(child: child),
+          );
+        },
+        routes: [
+          // [0] 여행 홈
+          GoRoute(
+            path: '/trip/:tripId/trip_home',
+            builder: (context, state) {
+              final tripId = int.parse(state.pathParameters['tripId']!);
+              return Center(child: Text('Trip $tripId Home'));
+            },
+          ),
+          // [1] 여행 스케줄
+          GoRoute(
+            path: '/trip/:tripId/schedule',
+            builder: (context, state) {
+              final tripId = int.parse(state.pathParameters['tripId']!);
+              return Center(child: Text('Trip $tripId Schedule'));
+            },
+          ),
+          // [2] 여행 체크리스트
+          GoRoute(
+            path: '/trip/:tripId/checklist',
+            builder: (context, state) {
+              final tripId = int.parse(state.pathParameters['tripId']!);
+              return ListsBlocWidget(tripId: tripId);
+            },
+          ),
+          // [3] 여행 다이어리
+          GoRoute(
+            path: '/trip/:tripId/diary',
+            builder: (context, state) {
+              final tripId = int.parse(state.pathParameters['tripId']!);
+              return BlocProvider(
+                //bloc 제공자
+                create: (context) => GetIt.instance<DiaryBloc>(),
+                child: DiaryBlocWidget(tripId: tripId),
+              );
+            },
+          ),
+          // [4] 여행 톡톡
+        ],
       ),
+      // [3-1] 다이어리 생성 (쉘라우터 밖)
       GoRoute(
-        path: '/profile',
-        builder: (context, state) => const ProfileBlocWidget(),
+        path: '/diary/new/:tripId',
+        builder: (context, state) {
+          final tripId = int.parse(state.pathParameters['tripId']!);
+          return BlocProvider(
+            create: (context) => GetIt.instance<NewDiaryBloc>(),
+            child: NewDiaryBlocWidget(tripId: tripId),
+          );
+        },
+      ),
+      // [3-2] 다이어리 수정 (쉘라우터 밖)
+      GoRoute(
+        path: '/diary/edit/:tripId',
+        builder: (context, state) {
+          final extra = state.extra as Map<String, dynamic>;
+          final diary = extra['diary'] as DiaryEntity;
+          return EditDiaryBlocWidget(diary: diary);
+        },
       ),
     ],
   );

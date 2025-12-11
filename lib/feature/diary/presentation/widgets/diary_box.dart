@@ -9,8 +9,8 @@ import '../../../../core/widget/pop_up_box.dart';
 import '../../../../theme/app_font.dart';
 import '../../../../theme/app_icon.dart';
 import '../../domain/entities/diary_entity.dart';
-import '../viewmodels/diary_bloc.dart';
-import '../viewmodels/diary_event.dart';
+import '../viewmodels/diary/diary_bloc.dart';
+import '../viewmodels/diary/diary_event.dart';
 import 'image_with_actions.dart';
 
 // [이재은] 다이어리 리스트용 박스 위젯

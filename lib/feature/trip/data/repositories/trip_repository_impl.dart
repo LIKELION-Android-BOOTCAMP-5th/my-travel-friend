@@ -7,6 +7,8 @@ import 'package:my_travel_friend/feature/trip/data/dtos/trip_dto.dart';
 import 'package:my_travel_friend/feature/trip/domain/entities/trip_entity.dart';
 import 'package:my_travel_friend/feature/trip/domain/repositories/trip_repository.dart';
 
+import '../../../../core/result/failures.dart';
+
 //신강현
 //여행 레포지터리 임플리먼트
 
@@ -111,5 +113,16 @@ class TripRepositoryImpl implements TripRepository {
   @override
   Future<Result<void>> deleteImg(String imgUrl) async {
     return await _dataSource.deleteImg(imgUrl, bucketName: 'trip_cover_image');
+  }
+
+  // 아이디로 여행정보 가져오기
+  @override
+  Future<Result<TripEntity>> getTripById(int tripId) async {
+    try {
+      final response = await _dataSource.getTripById(tripId);
+      return Result.success(response.toEntity());
+    } catch (e) {
+      return Result.failure(ServerFailure(message: e.toString()));
+    }
   }
 }

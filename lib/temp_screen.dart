@@ -35,21 +35,14 @@ class TempScreen extends StatelessWidget {
             ],
           ),
           IconButton(
-            onPressed: () => context.push('/diary'),
-            icon: Icon(AppIcon.diary, color: AppColors.lightGreen, size: 30),
-          ),
-          IconButton(
-            onPressed: () => context.push('/mainHome'),
+            onPressed: () => context.push('/home'),
             icon: Icon(AppIcon.home, color: AppColors.lightGreen, size: 30),
-          ),
-          IconButton(
-            onPressed: () => context.push('/alarm'),
-            icon: Icon(AppIcon.alarm, color: AppColors.lightGreen, size: 30),
           ),
           IconButton(
             onPressed: () => context.push('/alarmSetting'),
             icon: Icon(AppIcon.setting, color: AppColors.lightGreen, size: 30),
           ),
+<<<<<<< HEAD
           IconButton(
             onPressed: () => context.push('/checklist'),
             icon: Icon(
@@ -62,6 +55,8 @@ class TempScreen extends StatelessWidget {
             onPressed: () => context.push('/profile'),
             icon: Icon(AppIcon.crews, color: AppColors.lightGreen, size: 30),
           ),
+=======
+>>>>>>> dcaaef2b2d10b94a52ae271d8d25f4545100d05b
         ],
       ),
     );

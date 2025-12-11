@@ -46,22 +46,29 @@ class CustomButtonAppBar extends StatelessWidget
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    title,
-                    style: AppFont.hugeBold.copyWith(
-                      color: isDark ? colorScheme.onSurface : AppColors.light,
-                    ),
-                    overflow: TextOverflow.ellipsis,
-                  ),
-
                   if (subtitle != null) ...[
-                    const SizedBox(height: 2),
                     Text(
-                      subtitle!,
+                      title,
                       style: AppFont.big.copyWith(
                         color: isDark ? colorScheme.onSurface : AppColors.light,
                       ),
                       overflow: TextOverflow.ellipsis,
+                    ),
+                    const SizedBox(height: 2),
+                    Text(
+                      subtitle!,
+                      style: AppFont.small.copyWith(
+                        color: isDark ? colorScheme.onSurface : AppColors.light,
+                      ),
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ],
+                  if (subtitle == null) ...[
+                    Text(
+                      title,
+                      style: AppFont.hugeBold.copyWith(
+                        color: isDark ? colorScheme.onSurface : AppColors.light,
+                      ),
                     ),
                   ],
                 ],
