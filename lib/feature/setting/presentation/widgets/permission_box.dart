@@ -101,7 +101,7 @@ class PermissionBox extends StatelessWidget {
                 Expanded(
                   child: switch (permission.type) {
                     AppPermissionType.notification => Text(
-                      "여행 일정, 친구 초대, 메세지 등의 알림을 받을 수 있어요",
+                      "여행 일정, 친구 초대 등의 알림을 받을 수 있어요",
                       style: AppFont.small.copyWith(
                         color: isDark ? AppColors.light : AppColors.dark,
                       ),
@@ -117,7 +117,7 @@ class PermissionBox extends StatelessWidget {
                       textAlign: TextAlign.center,
                     ),
                     AppPermissionType.photo => Text(
-                      "갤러리에서 사진을 선택해서, 다이어리에 추가할 수 있어요",
+                      "갤러리 안의 사진을 다이어리에 추가할 수 있어요",
                       style: AppFont.small.copyWith(
                         color: isDark ? AppColors.light : AppColors.dark,
                       ),
