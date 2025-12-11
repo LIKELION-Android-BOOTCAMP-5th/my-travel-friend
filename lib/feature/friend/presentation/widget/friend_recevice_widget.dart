@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:my_travel_friend/theme/app_colors.dart';
+
+import '../../../../core/widget/profile_img.dart';
+import '../../../../theme/app_icon.dart';
 
 /// 받은 친구 요청 1개를 보여주는 카드 위젯
 class ReceivedFriendRequestCard extends StatelessWidget {
-  final String nickname; // 예: '김태희'
-  final String subtitle; // 예: '공통 친구 2명 · 3일 전'
-  final String? profileImageUrl; // 프로필 이미지 (없으면 기본 원형)
-  final VoidCallback onAccept; // 수락 버튼 콜백
-  final VoidCallback onReject; // 거절 버튼 콜백
+  final String nickname;
+  final String subtitle;
+  final String? profileImageUrl;
+  final VoidCallback onAccept;
+  final VoidCallback onReject;
 
   const ReceivedFriendRequestCard({
     super.key,
@@ -42,7 +46,7 @@ class ReceivedFriendRequestCard extends StatelessWidget {
           Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              _buildProfileImage(),
+              ProfileImg(),
               const SizedBox(width: 12),
               Expanded(
                 child: Column(
@@ -68,31 +72,33 @@ class ReceivedFriendRequestCard extends StatelessWidget {
                   height: 40,
                   child: ElevatedButton.icon(
                     onPressed: onAccept,
-                    icon: const Icon(Icons.check, size: 18),
+                    icon: Icon(AppIcon.okay, size: 18),
                     label: const Text('수락'),
                     style: ElevatedButton.styleFrom(
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(24),
                       ),
+                      foregroundColor: AppColors.lessLight,
+                      backgroundColor: cs.primary,
                     ),
                   ),
                 ),
               ),
               const SizedBox(width: 12),
-              // 거절 버튼 (회색, X 아이콘)
+              // 거절 버튼
               Expanded(
                 child: SizedBox(
                   height: 40,
                   child: OutlinedButton.icon(
                     onPressed: onReject,
-                    icon: const Icon(Icons.close, size: 18),
+                    icon: const Icon(AppIcon.close, size: 18),
                     label: const Text('거절'),
                     style: OutlinedButton.styleFrom(
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(24),
                       ),
                       side: BorderSide(color: Colors.grey[400]!),
-                      foregroundColor: Colors.grey[800],
+                      foregroundColor: cs.onSurface,
                       backgroundColor: Colors.grey[200],
                     ),
                   ),
@@ -101,26 +107,6 @@ class ReceivedFriendRequestCard extends StatelessWidget {
             ],
           ),
         ],
-      ),
-    );
-  }
-
-  /// 프로필 이미지 (URL 있으면 NetworkImage, 없으면 이니셜 원)
-  Widget _buildProfileImage() {
-    if (profileImageUrl != null && profileImageUrl!.isNotEmpty) {
-      return CircleAvatar(
-        radius: 24,
-        backgroundImage: NetworkImage(profileImageUrl!),
-      );
-    }
-
-    // 기본: 이니셜 원
-    return CircleAvatar(
-      radius: 24,
-      backgroundColor: Colors.grey[300],
-      child: Text(
-        nickname.isNotEmpty ? nickname.characters.first : '?',
-        style: const TextStyle(fontWeight: FontWeight.bold),
       ),
     );
   }
