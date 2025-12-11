@@ -32,4 +32,16 @@ abstract class UserDTO with _$UserDTO {
       deletedAt: deletedAt,
     );
   }
+
+  factory UserDTO.fromEntity(UserEntity entity) {
+    return UserDTO(
+      id: entity.id,
+      uuid: entity.uuid,
+      nickname: entity.nickname,
+      email: entity.email,
+      token: entity.token,
+      profileImg: entity.profileImg,
+      deletedAt: entity.deletedAt,
+    );
+  }
 }

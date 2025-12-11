@@ -120,16 +120,34 @@ import '../../feature/setting/data/datasources/alarm_setting_datasource.dart'
     as _i766;
 import '../../feature/setting/data/datasources/alarm_setting_datasource_impl.dart'
     as _i746;
+import '../../feature/setting/data/datasources/profile_data_source.dart'
+    as _i172;
+import '../../feature/setting/data/datasources/profile_data_source_impl.dart'
+    as _i632;
 import '../../feature/setting/data/repositories/alarm_setting_repository_impl.dart'
     as _i124;
+import '../../feature/setting/data/repositories/profile_repository_impl.dart'
+    as _i73;
 import '../../feature/setting/domain/repositories/alarm_setting_repository.dart'
     as _i212;
-import '../../feature/setting/domain/usecases/get_my_alarm_setting_usecase.dart'
-    as _i980;
-import '../../feature/setting/domain/usecases/update_alarm_setting_usecase.dart'
-    as _i50;
-import '../../feature/setting/presentation/viewmodels/alarm_setting_bloc.dart'
-    as _i871;
+import '../../feature/setting/domain/repositories/profile_repository.dart'
+    as _i565;
+import '../../feature/setting/domain/usecases/alarm/get_my_alarm_setting_usecase.dart'
+    as _i420;
+import '../../feature/setting/domain/usecases/alarm/update_alarm_setting_usecase.dart'
+    as _i87;
+import '../../feature/setting/domain/usecases/profile/check_nickname_duplicate_usecase.dart'
+    as _i945;
+import '../../feature/setting/domain/usecases/profile/delete_img_usecase.dart'
+    as _i715;
+import '../../feature/setting/domain/usecases/profile/update_profile_usecase.dart'
+    as _i473;
+import '../../feature/setting/domain/usecases/profile/upload_img_usecase.dart'
+    as _i304;
+import '../../feature/setting/presentation/viewmodels/alarm/alarm_setting_bloc.dart'
+    as _i695;
+import '../../feature/setting/presentation/viewmodels/profile/profile_bloc.dart'
+    as _i557;
 import '../../feature/trip/data/datasources/trip_data_source.dart' as _i1063;
 import '../../feature/trip/data/datasources/trip_data_source_impl.dart'
     as _i386;
@@ -258,6 +276,9 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i437.SearchTripUsecase>(
       () => _i437.SearchTripUsecase(gh<_i161.TripRepository>()),
     );
+    gh.lazySingleton<_i172.ProfileDataSource>(
+      () => _i632.ProfileDataSourceImpl(gh<_i454.SupabaseClient>()),
+    );
     gh.lazySingleton<_i58.AlarmDataSource>(
       () => _i1049.AlarmDataSourceImpl(gh<_i454.SupabaseClient>()),
     );
@@ -334,6 +355,9 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i831.AlarmRepository>(
       () => _i915.AlarmRepositoryImpl(gh<_i58.AlarmDataSource>()),
     );
+    gh.lazySingleton<_i565.ProfileRepository>(
+      () => _i73.ProfileRepositoryImpl(gh<_i172.ProfileDataSource>()),
+    );
     gh.lazySingleton<_i27.CreateDiaryUseCase>(
       () => _i27.CreateDiaryUseCase(gh<_i871.DiaryRepository>()),
     );
@@ -391,6 +415,9 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i57.ToggleTodoListUseCase>(),
       ),
     );
+    gh.lazySingleton<_i945.CheckNicknameDuplicateUseCase>(
+      () => _i945.CheckNicknameDuplicateUseCase(gh<_i565.ProfileRepository>()),
+    );
     gh.factory<_i27.DiaryBloc>(
       () => _i27.DiaryBloc(
         gh<_i849.GetOurDiariesUseCase>(),
@@ -403,6 +430,15 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i27.CreateDiaryUseCase>(),
         gh<_i871.DiaryRepository>(),
       ),
+    );
+    gh.lazySingleton<_i715.DeleteImgUseCase>(
+      () => _i715.DeleteImgUseCase(gh<_i565.ProfileRepository>()),
+    );
+    gh.lazySingleton<_i473.UpdateProfileUseCase>(
+      () => _i473.UpdateProfileUseCase(gh<_i565.ProfileRepository>()),
+    );
+    gh.lazySingleton<_i304.UploadImgUseCase>(
+      () => _i304.UploadImgUseCase(gh<_i565.ProfileRepository>()),
     );
     gh.factory<_i935.EditDiaryBloc>(
       () => _i935.EditDiaryBloc(
@@ -428,16 +464,18 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i25.WatchAlarmsUseCase>(
       () => _i25.WatchAlarmsUseCase(gh<_i831.AlarmRepository>()),
     );
-    gh.lazySingleton<_i980.GetMyAlarmSettingUseCase>(
-      () => _i980.GetMyAlarmSettingUseCase(gh<_i212.AlarmSettingRepository>()),
+    gh.lazySingleton<_i420.GetMyAlarmSettingUseCase>(
+      () => _i420.GetMyAlarmSettingUseCase(gh<_i212.AlarmSettingRepository>()),
     );
-    gh.lazySingleton<_i50.UpdateAlarmSettingUseCase>(
-      () => _i50.UpdateAlarmSettingUseCase(gh<_i212.AlarmSettingRepository>()),
+    gh.lazySingleton<_i87.UpdateAlarmSettingUseCase>(
+      () => _i87.UpdateAlarmSettingUseCase(gh<_i212.AlarmSettingRepository>()),
     );
-    gh.factory<_i871.AlarmSettingBloc>(
-      () => _i871.AlarmSettingBloc(
-        gh<_i980.GetMyAlarmSettingUseCase>(),
-        gh<_i50.UpdateAlarmSettingUseCase>(),
+    gh.factory<_i557.ProfileBloc>(
+      () => _i557.ProfileBloc(
+        gh<_i945.CheckNicknameDuplicateUseCase>(),
+        gh<_i473.UpdateProfileUseCase>(),
+        gh<_i304.UploadImgUseCase>(),
+        gh<_i715.DeleteImgUseCase>(),
       ),
     );
     gh.factory<_i693.AlarmBloc>(
@@ -448,6 +486,12 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i889.CheckAlarmsUseCase>(),
         gh<_i25.WatchAlarmsUseCase>(),
         gh<_i1067.UnsubscribeAlarmsUseCase>(),
+      ),
+    );
+    gh.factory<_i695.AlarmSettingBloc>(
+      () => _i695.AlarmSettingBloc(
+        gh<_i420.GetMyAlarmSettingUseCase>(),
+        gh<_i87.UpdateAlarmSettingUseCase>(),
       ),
     );
     return this;

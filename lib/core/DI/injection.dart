@@ -12,4 +12,8 @@ final GetIt sl = GetIt.instance; // sl: Service Locator의 약자 (관례)
   preferRelativeImports: true, // 상대 경로 import 선호
   asExtension: true, // GetIt을 확장 함수로 사용
 )
-Future<void> configureDependencies() async => sl.init();
+Future<void> configureDependencies() async {
+  // Hot Restart 시 중복 등록 에러 방지
+  sl.allowReassignment = true;
+  await sl.init();
+}
