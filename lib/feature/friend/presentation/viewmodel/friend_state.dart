@@ -1,4 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:my_travel_friend/feature/auth/domain/entities/user_entity.dart';
 
 import '../../domain/entities/friend_entity.dart';
 

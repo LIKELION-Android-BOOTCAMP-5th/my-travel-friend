@@ -42,7 +42,9 @@ class FriendBloc extends Bloc<FriendEvent, FriendState> {
 
     res.when(
       success: (friends) {
-        emit(state.copyWith(pageState: FriendPageState.loaded));
+        emit(
+          state.copyWith(friends: friends, pageState: FriendPageState.loaded),
+        );
       },
       failure: (failure) {
         emit(
@@ -92,7 +94,7 @@ class FriendBloc extends Bloc<FriendEvent, FriendState> {
     );
   }
 
-  // 같이 여행가기 GoTravel
+  // 같이 여행가기
   Future<void> _onGoTravel(GoTravel event, Emitter<FriendState> emit) async {
     emit(
       state.copyWith(
