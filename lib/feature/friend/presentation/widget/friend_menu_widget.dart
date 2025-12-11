@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:my_travel_friend/theme/app_icon.dart';
 
 class FriendMoreMenuButton extends StatelessWidget {
   final VoidCallback? onGoTravel; // 친구랑 여행가기
@@ -11,7 +12,7 @@ class FriendMoreMenuButton extends StatelessWidget {
     final cs = Theme.of(context).colorScheme;
 
     return PopupMenuButton(
-      icon: Icon(Icons.more_vert, color: cs.onPrimary),
+      icon: Icon(AppIcon.threeDots, color: cs.onSurfaceVariant),
       elevation: 6,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
       offset: const Offset(-20, 10), // 팝업 위치 약간 조정
@@ -21,7 +22,7 @@ class FriendMoreMenuButton extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
           child: Row(
             children: [
-              Icon(Icons.flight_takeoff, size: 12, color: cs.primary),
+              Icon(AppIcon.airplaneFly, size: 12, color: cs.primary),
               const SizedBox(width: 8),
               Text(
                 "친구랑 여행가기",
@@ -38,7 +39,7 @@ class FriendMoreMenuButton extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
           child: Row(
             children: [
-              Icon(Icons.person_remove_outlined, size: 12, color: cs.secondary),
+              Icon(AppIcon.removeUser, size: 12, color: cs.secondary),
               const SizedBox(width: 8),
               Text(
                 "친구 삭제",

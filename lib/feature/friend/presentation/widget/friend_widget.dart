@@ -1,20 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:my_travel_friend/feature/friend/presentation/widget/friend_menu_widget.dart';
 
 import '../../../../core/widget/profile_img.dart';
-import 'friend_menu_widget.dart';
+import '../../../auth/domain/entities/user_entity.dart';
 
 class FriendWidget extends StatelessWidget {
-  final String name;
-  final String? profileImg;
-  final VoidCallback? onTap;
+  final UserEntity user; // 유저 엔티티 받기
   final VoidCallback? onMoreGoTravel;
   final VoidCallback? onMoreDeleteFriend;
 
   const FriendWidget({
     super.key,
-    required this.name,
-    this.profileImg,
-    this.onTap,
+    required this.user,
     this.onMoreGoTravel,
     this.onMoreDeleteFriend,
   });
@@ -25,15 +22,15 @@ class FriendWidget extends StatelessWidget {
       padding: const EdgeInsets.all(20),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           // 프로필 이미지
-          ProfileImg(radius: 56, imageUrl: profileImg),
+          ProfileImg(radius: 20, imageUrl: user.profileImg),
           const SizedBox(width: 16),
-          // 닉네임 (가변, 1줄, ... 처리)
+
+          // 닉네임
           Expanded(
             child: Text(
-              name,
+              user.nickname ?? '',
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
               softWrap: false,
@@ -43,8 +40,8 @@ class FriendWidget extends StatelessWidget {
             ),
           ),
           const SizedBox(width: 16),
-          // 아이콘
-          //IconButton(icon: Icon(AppIcon.threeDots), onPressed: () {}),
+
+          // 친구 메뉴
           FriendMoreMenuButton(
             onGoTravel: onMoreGoTravel,
             onDeleteFriend: onMoreDeleteFriend,
