@@ -1,6 +1,3 @@
-// 🚀 완전히 수정된 전체 코드
-// EditTripScreen.dart (이 파일 자체를 교체하세요)
-
 import 'dart:io';
 
 import 'package:flutter/material.dart';
