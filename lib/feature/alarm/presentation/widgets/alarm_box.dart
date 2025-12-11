@@ -61,26 +61,28 @@ class AlarmBox extends StatelessWidget {
                       ],
                     ),
                     SizedBox(width: 12),
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          alarm.content,
-                          style: AppFont.regular.copyWith(
-                            color: colorScheme.onSurface,
+                    Expanded(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            alarm.content,
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                            style: AppFont.regular.copyWith(
+                              color: colorScheme.onSurface,
+                            ),
                           ),
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                        SizedBox(height: 8),
-                        Text(
-                          TimeAgo.getTimeAgo(alarm.createdAt!),
-                          style: AppFont.small.copyWith(
-                            color: colorScheme.onSurfaceVariant,
+                          SizedBox(height: 8),
+                          Text(
+                            TimeAgo.getTimeAgo(alarm.createdAt!),
+                            style: AppFont.small.copyWith(
+                              color: colorScheme.onSurfaceVariant,
+                            ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ],
                 ),
