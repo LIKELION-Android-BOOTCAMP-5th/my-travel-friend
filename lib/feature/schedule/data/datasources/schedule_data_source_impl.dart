@@ -1,0 +1,161 @@
+import 'package:injectable/injectable.dart';
+import 'package:my_travel_friend/core/result/result.dart';
+import 'package:my_travel_friend/feature/auth/data/models/user_model.dart';
+import 'package:my_travel_friend/feature/schedule/data/datasources/schedule_data_source.dart';
+import 'package:my_travel_friend/feature/schedule/data/dtos/schedule_dto.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
+
+import '../../../../core/result/failures.dart';
+
+@LazySingleton(as: ScheduleDataSource)
+class ScheduleDataSourceImpl implements ScheduleDataSource {
+  final SupabaseClient supabase;
+
+  ScheduleDataSourceImpl({required this.supabase});
+
+  @override
+  Future<Result<List<ScheduleDTO>>> getAllSchedule({
+    required int tripId,
+    required int page,
+  }) async {
+    try {
+      final res = await supabase
+          .from('schedule')
+          .select('*')
+          .eq('trip_id', tripId)
+          .order('date', ascending: true)
+          .range(page * 10, page * 10 + 9); // 10개씩 페이징
+
+      final data = (res as List)
+          .map((json) => ScheduleDTO.fromJson(json))
+          .toList();
+
+      return Result.success(data);
+    } catch (e) {
+      return Result.failure(Failure.serverFailure(message: e.toString()));
+    }
+  }
+
+  @override
+  Future<Result<ScheduleDTO>> createSchedule({
+    required ScheduleDTO schedule,
+    required List<int> memberIds,
+  }) async {
+    try {
+      // 1) 스케줄 insert
+      final res = await supabase
+          .from('schedule')
+          .insert(schedule.toJson())
+          .select()
+          .single();
+
+      final newSchedule = ScheduleDTO.fromJson(res);
+      final scheduleId = newSchedule.id!;
+
+      // 2) schedul_crew insert
+      if (memberIds.isNotEmpty) {
+        final members = memberIds
+            .map((id) => {"schedule_id": scheduleId, "member_id": id})
+            .toList();
+
+        await supabase.from('schedul_crew').insert(members);
+      }
+
+      return Result.success(newSchedule);
+    } catch (e) {
+      return Result.failure(Failure.serverFailure(message: e.toString()));
+    }
+  }
+
+  @override
+  Future<Result<ScheduleDTO>> updateSchedule({
+    required ScheduleDTO schedule,
+    required List<int> memberIds,
+  }) async {
+    try {
+      // 1) 스케줄 수정
+      final res = await supabase
+          .from('schedule')
+          .update(schedule.toJson())
+          .eq('id', schedule.id!)
+          .select()
+          .single();
+
+      final updated = ScheduleDTO.fromJson(res);
+
+      // 2) 기존 멤버 제거 + 새로운 멤버 저장
+      await supabase
+          .from('schedul_crew')
+          .delete()
+          .eq('schedule_id', schedule.id!);
+
+      if (memberIds.isNotEmpty) {
+        final members = memberIds
+            .map((id) => {"schedule_id": schedule.id, "member_id": id})
+            .toList();
+
+        await supabase.from('schedul_crew').insert(members);
+      }
+
+      return Result.success(updated);
+    } catch (e) {
+      return Result.failure(Failure.serverFailure(message: e.toString()));
+    }
+  }
+
+  @override
+  Future<Result<void>> deleteSchedule({required int scheduleId}) async {
+    try {
+      // 스케줄 멤버 함께 제거
+      await supabase
+          .from('schedul_crew')
+          .delete()
+          .eq('schedule_id', scheduleId);
+
+      // 스케줄 제거
+      await supabase.from('schedule').delete().eq('id', scheduleId);
+
+      return Result.success(null);
+    } catch (e) {
+      return Result.failure(Failure.serverFailure(message: e.toString()));
+    }
+  }
+
+  @override
+  Future<Result<List<UserDTO>>> getScheduleMembers({
+    required int scheduleId,
+  }) async {
+    try {
+      final res = await supabase
+          .from('schedul_crew')
+          .select('member_id, user:member_id (id, nickname, profile_img)')
+          .eq('schedule_id', scheduleId);
+
+      final data = (res as List)
+          .map((row) => UserDTO.fromJson(row['user']))
+          .toList();
+
+      return Result.success(data);
+    } catch (e) {
+      return Result.failure(Failure.serverFailure(message: e.toString()));
+    }
+  }
+
+  @override
+  Future<Result<List<UserDTO>>> getTripMembers({required int tripId}) async {
+    try {
+      final res = await supabase
+          .from('trip_crew')
+          .select('member_id, user:member_id (id, nickname, profile_img)')
+          .eq('trip_id', tripId);
+
+      final data = (res as List)
+          .map((row) => UserDTO.fromJson(row['user']))
+          .toList();
+
+      return Result.success(data);
+    } catch (e) {
+      return Result.failure(Failure.serverFailure(message: e.toString()));
+    }
+  }
+}

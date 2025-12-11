@@ -116,6 +116,28 @@ import '../../feature/diary/presentation/viewmodels/edit_diary/edit_diary_bloc.d
     as _i935;
 import '../../feature/diary/presentation/viewmodels/new_diary/new_diary_bloc.dart'
     as _i885;
+import '../../feature/schedule/data/datasources/schedule_data_source.dart'
+    as _i334;
+import '../../feature/schedule/data/datasources/schedule_data_source_impl.dart'
+    as _i77;
+import '../../feature/schedule/data/repositories/schedule_repository_impl.dart'
+    as _i625;
+import '../../feature/schedule/domain/repositories/schedule_repository.dart'
+    as _i456;
+import '../../feature/schedule/domain/usecases/create_schedule_usecase.dart'
+    as _i361;
+import '../../feature/schedule/domain/usecases/delete_schedule_usecase.dart'
+    as _i714;
+import '../../feature/schedule/domain/usecases/edit_schedule_usecase.dart'
+    as _i29;
+import '../../feature/schedule/domain/usecases/get_all_schedule_usecase.dart'
+    as _i600;
+import '../../feature/schedule/domain/usecases/get_schedule_member_usecase.dart'
+    as _i415;
+import '../../feature/schedule/domain/usecases/get_trip_member_usecase.dart'
+    as _i324;
+import '../../feature/schedule/presentation/viewmodels/schedule_bloc.dart'
+    as _i166;
 import '../../feature/setting/data/datasources/alarm_setting_datasource.dart'
     as _i766;
 import '../../feature/setting/data/datasources/alarm_setting_datasource_impl.dart'
@@ -233,6 +255,9 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i1051.SupabaseStorageService>(),
       ),
     );
+    gh.lazySingleton<_i334.ScheduleDataSource>(
+      () => _i77.ScheduleDataSourceImpl(supabase: gh<_i454.SupabaseClient>()),
+    );
     gh.singleton<_i488.AuthRepository>(
       () => _i263.AuthRepositoryImpl(
         gh<_i153.GoogleAuthDataSource>(),
@@ -276,6 +301,8 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i437.SearchTripUsecase>(
       () => _i437.SearchTripUsecase(gh<_i161.TripRepository>()),
     );
+    gh.lazySingleton<_i456.ScheduleRepository>(
+      () => _i625.ScheduleRepositoryImpl(gh<_i334.ScheduleDataSource>()),
     gh.lazySingleton<_i172.ProfileDataSource>(
       () => _i632.ProfileDataSourceImpl(gh<_i454.SupabaseClient>()),
     );
@@ -331,6 +358,34 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i181.ChecklistRepository>(
       () => _i418.ChecklistRepositoryImpl(gh<_i877.ChecklistDataSource>()),
     );
+    gh.lazySingleton<_i361.CreateScheduleUseCase>(
+      () => _i361.CreateScheduleUseCase(gh<_i456.ScheduleRepository>()),
+    );
+    gh.lazySingleton<_i714.DeleteScheduleUseCase>(
+      () => _i714.DeleteScheduleUseCase(gh<_i456.ScheduleRepository>()),
+    );
+    gh.lazySingleton<_i29.UpdateScheduleUseCase>(
+      () => _i29.UpdateScheduleUseCase(gh<_i456.ScheduleRepository>()),
+    );
+    gh.lazySingleton<_i600.GetAllScheduleUseCase>(
+      () => _i600.GetAllScheduleUseCase(gh<_i456.ScheduleRepository>()),
+    );
+    gh.lazySingleton<_i415.GetScheduleMembersUseCase>(
+      () => _i415.GetScheduleMembersUseCase(gh<_i456.ScheduleRepository>()),
+    );
+    gh.lazySingleton<_i324.GetTripMembersUseCase>(
+      () => _i324.GetTripMembersUseCase(gh<_i456.ScheduleRepository>()),
+    );
+    gh.factory<_i616.TripBloc>(
+      () => _i616.TripBloc(
+        gh<_i521.GetMyTripUsecase>(),
+        gh<_i267.GetCrewMemberCountUsecase>(),
+        gh<_i832.DeleteTripUsecase>(),
+        gh<_i317.GiveUpTripUsecase>(),
+        gh<_i437.SearchTripUsecase>(),
+        gh<_i202.DeleteImgUsecase>(),
+      ),
+    );
     gh.lazySingleton<_i739.CancelOauthUseCase>(
       () => _i739.CancelOauthUseCase(gh<_i488.AuthRepository>()),
     );
@@ -384,6 +439,13 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i420.SocialSignInUseCase>(),
         gh<_i858.SignOutUseCase>(),
         gh<_i739.CancelOauthUseCase>(),
+      ),
+    );
+    gh.factory<_i166.ScheduleBloc>(
+      () => _i166.ScheduleBloc(
+        gh<_i600.GetAllScheduleUseCase>(),
+        gh<_i714.DeleteScheduleUseCase>(),
+        gh<_i415.GetScheduleMembersUseCase>(),
       ),
     );
     gh.lazySingleton<_i1051.CreateTodoListUseCase>(
