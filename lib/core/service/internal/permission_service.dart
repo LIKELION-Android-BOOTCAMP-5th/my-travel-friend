@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:injectable/injectable.dart';
 import 'package:permission_handler/permission_handler.dart'
     as permission_handler;
@@ -79,7 +81,7 @@ class PermissionService {
 
   // 특정 권한 상태 조회
   Future<PermissionInfo> checkPermission(AppPermissionType type) async {
-    final permission = _toPermission(type);
+    final permission = await _toPermission(type);
     final status = await permission.status;
     final meta = _metaMap[type]!;
 
@@ -87,14 +89,15 @@ class PermissionService {
       type: type,
       title: meta.title,
       description: meta.description,
-      isGranted: status.isGranted,
+      // granted 또는 limited(iOS 14+)면 허용된 것으로 처리
+      isGranted: status.isGranted || status.isLimited,
       isPermanentlyDenied: status.isPermanentlyDenied,
     );
   }
 
   // 권한 요청 다이얼로그 표시 -> 사용자 선택 후 결과 반환
   Future<PermissionInfo> requestPermission(AppPermissionType type) async {
-    final permission = _toPermission(type);
+    final permission = await _toPermission(type);
     final status = await permission.request();
     final meta = _metaMap[type]!;
 
@@ -113,13 +116,26 @@ class PermissionService {
   }
 
   // AppPermissionType → permission_handler Permission 변환
-  permission_handler.Permission _toPermission(AppPermissionType type) {
+  Future<permission_handler.Permission> _toPermission(
+    AppPermissionType type,
+  ) async {
     switch (type) {
       case AppPermissionType.notification:
         return permission_handler.Permission.notification;
       case AppPermissionType.camera:
         return permission_handler.Permission.camera;
       case AppPermissionType.photo:
+        if (Platform.isAndroid) {
+          // Android 13+ 가정하고 photos 사용
+          // storage로 fallback
+          final photosStatus =
+              await permission_handler.Permission.photos.status;
+          if (photosStatus ==
+              permission_handler.PermissionStatus.permanentlyDenied) {
+            return permission_handler.Permission.storage;
+          }
+          return permission_handler.Permission.photos;
+        }
         return permission_handler.Permission.photos;
     }
   }

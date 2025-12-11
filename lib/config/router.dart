@@ -6,6 +6,7 @@ import 'package:my_travel_friend/feature/auth/presentation/screens/auth_bloc_wid
 import 'package:my_travel_friend/feature/auth/presentation/viewmodel/auth/auth_bloc.dart';
 import 'package:my_travel_friend/feature/auth/presentation/viewmodel/auth_profile/auth_profile_bloc.dart';
 import 'package:my_travel_friend/feature/auth/presentation/viewmodel/auth_profile/auth_profile_state.dart';
+import 'package:my_travel_friend/feature/setting/presentation/screens/permission/permission_bloc_widget.dart';
 import 'package:my_travel_friend/feature/trip/presentation/screens/create_trip_bloc_widget.dart';
 import 'package:my_travel_friend/feature/trip/presentation/screens/trip_bloc_widget.dart';
 import 'package:my_travel_friend/feature/trip/presentation/viewmodels/create_trip/create_trip_bloc.dart';
@@ -141,8 +142,12 @@ class AppRouter {
         builder: (context, state) => const AlarmSettingBlocWidget(),
       ),
       GoRoute(
-        path: '/profile',
+        path: '/setting/profile',
         builder: (context, state) => const ProfileBlocWidget(),
+      ),
+      GoRoute(
+        path: '/setting/permission',
+        builder: (context, state) => const PermissionBlocWidget(),
       ),
       // Trip ShellRoute
       ShellRoute(

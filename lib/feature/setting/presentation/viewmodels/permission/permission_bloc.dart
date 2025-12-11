@@ -92,6 +92,10 @@ class PermissionBloc extends Bloc<PermissionEvent, PermissionState> {
         }).toList();
 
         emit(state.copyWith(permissions: newList));
+
+        if (!updated.isGranted) {
+          _permissionService.openSettings();
+        }
       },
       failure: (failure) {
         final message = failure.when(

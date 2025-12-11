@@ -26,4 +26,8 @@ abstract class PermissionState with _$PermissionState {
     return permissions.where((p) => p.type == type).firstOrNull?.isGranted ??
         false;
   }
+
+  PermissionInfo? getPermission(AppPermissionType type) {
+    return permissions.where((p) => p.type == type).firstOrNull;
+  }
 }

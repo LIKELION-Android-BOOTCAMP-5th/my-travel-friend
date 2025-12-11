@@ -3,7 +3,7 @@ import 'package:my_travel_friend/core/result/failures.dart';
 import 'package:my_travel_friend/core/result/result.dart';
 import 'package:my_travel_friend/core/service/internal/permission_service.dart';
 
-// [이재은] 권한 요청 유스케이스
+// [이재은] 권한 요청 usecase
 @LazySingleton()
 class RequestPermissionUseCase {
   final PermissionService _service;

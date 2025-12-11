@@ -1,10 +1,10 @@
-// [이재은] 권한 상태 조회 유스케이스
 import 'package:injectable/injectable.dart';
 import 'package:my_travel_friend/core/result/failures.dart';
 import 'package:my_travel_friend/core/result/result.dart';
 
 import '../../../../../core/service/internal/permission_service.dart';
 
+// [이재은] 권한 상태 조회 usecase
 @LazySingleton()
 class CheckPermissionsUseCase {
   final PermissionService _service;
