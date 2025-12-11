@@ -1,6 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-import '../../domain/entities/alarm_setting_entity.dart';
+import '../../../domain/entities/alarm_setting_entity.dart';
 
 part 'alarm_setting_state.freezed.dart';
 

@@ -1,8 +1,8 @@
 import 'package:injectable/injectable.dart';
 import 'package:my_travel_friend/feature/setting/domain/entities/alarm_setting_entity.dart';
 
-import '../../../../core/result/result.dart';
-import '../repositories/alarm_setting_repository.dart';
+import '../../../../../core/result/result.dart';
+import '../../repositories/alarm_setting_repository.dart';
 
 // [이재은] 알림 설정 정보 가져오기
 @LazySingleton()
