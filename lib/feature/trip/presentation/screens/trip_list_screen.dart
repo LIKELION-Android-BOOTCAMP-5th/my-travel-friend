@@ -188,7 +188,9 @@ class _TripListScreenState extends State<TripListScreen> {
               onAlarmTap: () {
                 context.push('/alarm');
               },
-              onSettingTap: () {},
+              onSettingTap: () {
+                context.push('/setting');
+              },
             ),
 
             body: SafeArea(

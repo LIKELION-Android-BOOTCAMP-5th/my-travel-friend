@@ -10,5 +10,5 @@ abstract class ThemeEvent with _$ThemeEvent {
   const factory ThemeEvent.loadTheme() = LoadTheme;
 
   // 테마 변경
-  const factory ThemeEvent.updateTheme(AppThemeMode theme) = UpdateTheme;
+  const factory ThemeEvent.updateTheme(ThemeState theme) = UpdateTheme;
 }

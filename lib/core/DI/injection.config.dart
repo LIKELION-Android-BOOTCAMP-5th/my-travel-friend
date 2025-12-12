@@ -179,6 +179,8 @@ import '../../feature/setting/domain/usecases/theme/update_theme_usecase.dart'
     as _i668;
 import '../../feature/setting/presentation/viewmodels/alarm/alarm_setting_bloc.dart'
     as _i695;
+import '../../feature/setting/presentation/viewmodels/menu/menu_bloc.dart'
+    as _i70;
 import '../../feature/setting/presentation/viewmodels/permission/permission_bloc.dart'
     as _i862;
 import '../../feature/setting/presentation/viewmodels/profile/profile_bloc.dart'
@@ -231,6 +233,7 @@ extension GetItInjectableX on _i174.GetIt {
       () => themeModule.prefs,
       preResolve: true,
     );
+    gh.factory<_i70.MenuBloc>(() => _i70.MenuBloc());
     gh.lazySingleton<_i892.FirebaseMessaging>(
       () => registerModule.firebaseMessaging,
     );

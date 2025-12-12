@@ -12,7 +12,7 @@ class UpdateThemeUseCase {
 
   UpdateThemeUseCase(this._themeService);
 
-  Future<Result<void>> call(AppThemeMode theme) async {
+  Future<Result<void>> call(ThemeState theme) async {
     try {
       await _themeService.updateTheme(theme);
       return Result.success(null);

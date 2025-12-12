@@ -9,23 +9,23 @@ class ThemeService {
   static const String _themeKey = 'app_theme';
 
   // 현재 테마 가져오기
-  Future<AppThemeMode> getTheme() async {
+  Future<ThemeState> getTheme() async {
     final prefs = await SharedPreferences.getInstance();
     final themeString = prefs.getString(_themeKey);
 
     switch (themeString) {
       case 'light':
-        return const AppThemeMode.light();
+        return const ThemeState.light();
       case 'dark':
-        return const AppThemeMode.dark();
+        return const ThemeState.dark();
       case 'system':
       default:
-        return const AppThemeMode.system();
+        return const ThemeState.system();
     }
   }
 
   // 테마 저장하기
-  Future<void> updateTheme(AppThemeMode theme) async {
+  Future<void> updateTheme(ThemeState theme) async {
     final prefs = await SharedPreferences.getInstance();
 
     final themeString = switch (theme) {
@@ -33,7 +33,7 @@ class ThemeService {
       ThemeDark() => 'dark',
       ThemeSystem() => 'system',
       // TODO: Handle this case.
-      AppThemeMode() => throw UnimplementedError(),
+      ThemeState() => throw UnimplementedError(),
     };
 
     await prefs.setString(_themeKey, themeString);

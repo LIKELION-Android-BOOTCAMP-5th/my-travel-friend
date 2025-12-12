@@ -4,7 +4,6 @@ import 'package:injectable/injectable.dart';
 import 'package:my_travel_friend/feature/setting/presentation/viewmodels/theme/theme_event.dart';
 import 'package:my_travel_friend/feature/setting/presentation/viewmodels/theme/theme_state.dart';
 
-import '../../../../../core/result/failures.dart';
 import '../../../../../core/result/result.dart';
 import '../../../domain/usecases/theme/get_theme_usecase.dart';
 import '../../../domain/usecases/theme/update_theme_usecase.dart';
@@ -16,44 +15,22 @@ class ThemeBloc extends Bloc<ThemeEvent, ThemeState> {
   final UpdateThemeUseCase _updateThemeUseCase;
 
   ThemeBloc(this._getThemeUseCase, this._updateThemeUseCase)
-    : super(const ThemeState()) {
+    : super(const ThemeState.system()) {
     on<LoadTheme>(_onLoadTheme);
     on<UpdateTheme>(_onUpdateTheme);
   }
 
-  // 현재 ThemeMode 반환 (MaterialApp에서 사용)
+  // 현재 ThemeMode 반환
   ThemeMode get themeMode {
-    final theme = state.selectedTheme;
-    if (theme is ThemeLight) return ThemeMode.light;
-    if (theme is ThemeDark) return ThemeMode.dark;
+    if (state is ThemeLight) return ThemeMode.light;
+    if (state is ThemeDark) return ThemeMode.dark;
     return ThemeMode.system;
   }
 
   // 테마 불러오기
   Future<void> _onLoadTheme(LoadTheme event, Emitter<ThemeState> emit) async {
-    emit(state.copyWith(pageState: ThemePageState.loading));
-
     final res = await _getThemeUseCase();
-
-    res.when(
-      success: (theme) {
-        emit(
-          state.copyWith(
-            pageState: ThemePageState.loaded,
-            selectedTheme: theme,
-          ),
-        );
-      },
-      failure: (failure) {
-        final message = failure.when(
-          serverFailure: (msg) => msg,
-          networkFailure: (msg) => msg,
-          authFailure: (msg) => msg,
-          undefined: (msg) => msg,
-        );
-        emit(state.copyWith(pageState: ThemePageState.error, message: message));
-      },
-    );
+    res.when(success: (theme) => emit(theme), failure: (_) {});
   }
 
   // 테마 변경
@@ -62,20 +39,6 @@ class ThemeBloc extends Bloc<ThemeEvent, ThemeState> {
     Emitter<ThemeState> emit,
   ) async {
     final res = await _updateThemeUseCase(event.theme);
-
-    res.when(
-      success: (_) {
-        emit(state.copyWith(selectedTheme: event.theme));
-      },
-      failure: (failure) {
-        final message = failure.when(
-          serverFailure: (msg) => msg,
-          networkFailure: (msg) => msg,
-          authFailure: (msg) => msg,
-          undefined: (msg) => msg,
-        );
-        emit(state.copyWith(message: message));
-      },
-    );
+    res.when(success: (_) => emit(event.theme), failure: (_) {});
   }
 }

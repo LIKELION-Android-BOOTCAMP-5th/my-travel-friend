@@ -12,7 +12,7 @@ class GetThemeUseCase {
 
   GetThemeUseCase(this._themeService);
 
-  Future<Result<AppThemeMode>> call() async {
+  Future<Result<ThemeState>> call() async {
     try {
       final theme = await _themeService.getTheme();
       return Result.success(theme);
