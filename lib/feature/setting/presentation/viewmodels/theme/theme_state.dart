@@ -31,4 +31,11 @@ abstract class ThemeState with _$ThemeState {
     @Default([]) List<ThemeInfo> themeOptions,
     String? message,
   }) = _ThemeState;
+
+  const ThemeState._();
+
+  // 테마 정보 가져오기
+  ThemeInfo? getThemeInfo(AppThemeType type) {
+    return themeOptions.where((t) => t.type == type).firstOrNull;
+  }
 }

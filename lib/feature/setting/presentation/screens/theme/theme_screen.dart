@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:my_travel_friend/feature/setting/presentation/viewmodels/theme/theme_bloc.dart';
 
-import '../../../../../core/service/internal/theme_service.dart';
 import '../../../../../core/widget/app_bar.dart';
 import '../../../../../core/widget/button.dart';
 import '../../../../../theme/app_colors.dart';
@@ -71,30 +70,30 @@ class ThemeScreen extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   // 라이트 모드
-                  if (_getThemeInfo(themeOptions, AppThemeType.light) != null)
+                  if (state.getThemeInfo(AppThemeType.light) != null)
                     _buildItem(
                       context: context,
-                      theme: _getThemeInfo(themeOptions, AppThemeType.light)!,
+                      theme: state.getThemeInfo(AppThemeType.light)!,
                       isSelected: state.selectedTheme == AppThemeType.light,
                       onTap: () => context.read<ThemeBloc>().add(
                         const UpdateTheme(AppThemeType.light),
                       ),
                     ),
                   // 다크 모드
-                  if (_getThemeInfo(themeOptions, AppThemeType.dark) != null)
+                  if (state.getThemeInfo(AppThemeType.dark) != null)
                     _buildItem(
                       context: context,
-                      theme: _getThemeInfo(themeOptions, AppThemeType.dark)!,
+                      theme: state.getThemeInfo(AppThemeType.dark)!,
                       isSelected: state.selectedTheme == AppThemeType.dark,
                       onTap: () => context.read<ThemeBloc>().add(
                         const UpdateTheme(AppThemeType.dark),
                       ),
                     ),
                   // 시스템 설정
-                  if (_getThemeInfo(themeOptions, AppThemeType.system) != null)
+                  if (state.getThemeInfo(AppThemeType.system) != null)
                     _buildItem(
                       context: context,
-                      theme: _getThemeInfo(themeOptions, AppThemeType.system)!,
+                      theme: state.getThemeInfo(AppThemeType.system)!,
                       isSelected: state.selectedTheme == AppThemeType.system,
                       onTap: () => context.read<ThemeBloc>().add(
                         const UpdateTheme(AppThemeType.system),
@@ -109,11 +108,6 @@ class ThemeScreen extends StatelessWidget {
         Expanded(child: Column(children: [SizedBox(width: 3)])),
       ],
     );
-  }
-
-  // 테마 정보 가져오기
-  ThemeInfo? _getThemeInfo(List<ThemeInfo> options, AppThemeType type) {
-    return options.where((t) => t.type == type).firstOrNull;
   }
 
   // 개별 아이템 + Divider(마지막이 아닐때만)

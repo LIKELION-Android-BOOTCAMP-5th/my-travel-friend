@@ -208,8 +208,8 @@ return $default(_that.pageState,_that.selectedTheme,_that.themeOptions,_that.mes
 /// @nodoc
 
 
-class _ThemeState implements ThemeState {
-  const _ThemeState({this.pageState = ThemePageState.initial, this.selectedTheme = AppThemeType.system, final  List<ThemeInfo> themeOptions = const [], this.message}): _themeOptions = themeOptions;
+class _ThemeState extends ThemeState {
+  const _ThemeState({this.pageState = ThemePageState.initial, this.selectedTheme = AppThemeType.system, final  List<ThemeInfo> themeOptions = const [], this.message}): _themeOptions = themeOptions,super._();
   
 
 @override@JsonKey() final  ThemePageState pageState;
