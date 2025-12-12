@@ -14,7 +14,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$ScheduleEntity {
 
- int? get id; String? get createdAt; int get tripId; String get title; String? get place; UserEntity? get user; String? get address; double? get lat; double? get lng; String get date; String? get description; int get categoryId;
+ int? get id; String? get createdAt; int get tripId; String get title; String? get place; UserEntity? get user; String? get address; double? get lat; double? get lng; String get date; String? get description; int get categoryId; TripEntity? get trip; CategoryEntity? get category;
 /// Create a copy of ScheduleEntity
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -25,16 +25,16 @@ $ScheduleEntityCopyWith<ScheduleEntity> get copyWith => _$ScheduleEntityCopyWith
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is ScheduleEntity&&(identical(other.id, id) || other.id == id)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.tripId, tripId) || other.tripId == tripId)&&(identical(other.title, title) || other.title == title)&&(identical(other.place, place) || other.place == place)&&(identical(other.user, user) || other.user == user)&&(identical(other.address, address) || other.address == address)&&(identical(other.lat, lat) || other.lat == lat)&&(identical(other.lng, lng) || other.lng == lng)&&(identical(other.date, date) || other.date == date)&&(identical(other.description, description) || other.description == description)&&(identical(other.categoryId, categoryId) || other.categoryId == categoryId));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ScheduleEntity&&(identical(other.id, id) || other.id == id)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.tripId, tripId) || other.tripId == tripId)&&(identical(other.title, title) || other.title == title)&&(identical(other.place, place) || other.place == place)&&(identical(other.user, user) || other.user == user)&&(identical(other.address, address) || other.address == address)&&(identical(other.lat, lat) || other.lat == lat)&&(identical(other.lng, lng) || other.lng == lng)&&(identical(other.date, date) || other.date == date)&&(identical(other.description, description) || other.description == description)&&(identical(other.categoryId, categoryId) || other.categoryId == categoryId)&&(identical(other.trip, trip) || other.trip == trip)&&(identical(other.category, category) || other.category == category));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,id,createdAt,tripId,title,place,user,address,lat,lng,date,description,categoryId);
+int get hashCode => Object.hash(runtimeType,id,createdAt,tripId,title,place,user,address,lat,lng,date,description,categoryId,trip,category);
 
 @override
 String toString() {
-  return 'ScheduleEntity(id: $id, createdAt: $createdAt, tripId: $tripId, title: $title, place: $place, user: $user, address: $address, lat: $lat, lng: $lng, date: $date, description: $description, categoryId: $categoryId)';
+  return 'ScheduleEntity(id: $id, createdAt: $createdAt, tripId: $tripId, title: $title, place: $place, user: $user, address: $address, lat: $lat, lng: $lng, date: $date, description: $description, categoryId: $categoryId, trip: $trip, category: $category)';
 }
 
 
@@ -45,11 +45,11 @@ abstract mixin class $ScheduleEntityCopyWith<$Res>  {
   factory $ScheduleEntityCopyWith(ScheduleEntity value, $Res Function(ScheduleEntity) _then) = _$ScheduleEntityCopyWithImpl;
 @useResult
 $Res call({
- int? id, String? createdAt, int tripId, String title, String? place, UserEntity? user, String? address, double? lat, double? lng, String date, String? description, int categoryId
+ int? id, String? createdAt, int tripId, String title, String? place, UserEntity? user, String? address, double? lat, double? lng, String date, String? description, int categoryId, TripEntity? trip, CategoryEntity? category
 });
 
 
-$UserEntityCopyWith<$Res>? get user;
+$UserEntityCopyWith<$Res>? get user;$TripEntityCopyWith<$Res>? get trip;$CategoryEntityCopyWith<$Res>? get category;
 
 }
 /// @nodoc
@@ -62,7 +62,7 @@ class _$ScheduleEntityCopyWithImpl<$Res>
 
 /// Create a copy of ScheduleEntity
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = freezed,Object? createdAt = freezed,Object? tripId = null,Object? title = null,Object? place = freezed,Object? user = freezed,Object? address = freezed,Object? lat = freezed,Object? lng = freezed,Object? date = null,Object? description = freezed,Object? categoryId = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = freezed,Object? createdAt = freezed,Object? tripId = null,Object? title = null,Object? place = freezed,Object? user = freezed,Object? address = freezed,Object? lat = freezed,Object? lng = freezed,Object? date = null,Object? description = freezed,Object? categoryId = null,Object? trip = freezed,Object? category = freezed,}) {
   return _then(_self.copyWith(
 id: freezed == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as int?,createdAt: freezed == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
@@ -76,7 +76,9 @@ as double?,lng: freezed == lng ? _self.lng : lng // ignore: cast_nullable_to_non
 as double?,date: null == date ? _self.date : date // ignore: cast_nullable_to_non_nullable
 as String,description: freezed == description ? _self.description : description // ignore: cast_nullable_to_non_nullable
 as String?,categoryId: null == categoryId ? _self.categoryId : categoryId // ignore: cast_nullable_to_non_nullable
-as int,
+as int,trip: freezed == trip ? _self.trip : trip // ignore: cast_nullable_to_non_nullable
+as TripEntity?,category: freezed == category ? _self.category : category // ignore: cast_nullable_to_non_nullable
+as CategoryEntity?,
   ));
 }
 /// Create a copy of ScheduleEntity
@@ -90,6 +92,30 @@ $UserEntityCopyWith<$Res>? get user {
 
   return $UserEntityCopyWith<$Res>(_self.user!, (value) {
     return _then(_self.copyWith(user: value));
+  });
+}/// Create a copy of ScheduleEntity
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$TripEntityCopyWith<$Res>? get trip {
+    if (_self.trip == null) {
+    return null;
+  }
+
+  return $TripEntityCopyWith<$Res>(_self.trip!, (value) {
+    return _then(_self.copyWith(trip: value));
+  });
+}/// Create a copy of ScheduleEntity
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$CategoryEntityCopyWith<$Res>? get category {
+    if (_self.category == null) {
+    return null;
+  }
+
+  return $CategoryEntityCopyWith<$Res>(_self.category!, (value) {
+    return _then(_self.copyWith(category: value));
   });
 }
 }
@@ -173,10 +199,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int? id,  String? createdAt,  int tripId,  String title,  String? place,  UserEntity? user,  String? address,  double? lat,  double? lng,  String date,  String? description,  int categoryId)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int? id,  String? createdAt,  int tripId,  String title,  String? place,  UserEntity? user,  String? address,  double? lat,  double? lng,  String date,  String? description,  int categoryId,  TripEntity? trip,  CategoryEntity? category)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _ScheduleEntity() when $default != null:
-return $default(_that.id,_that.createdAt,_that.tripId,_that.title,_that.place,_that.user,_that.address,_that.lat,_that.lng,_that.date,_that.description,_that.categoryId);case _:
+return $default(_that.id,_that.createdAt,_that.tripId,_that.title,_that.place,_that.user,_that.address,_that.lat,_that.lng,_that.date,_that.description,_that.categoryId,_that.trip,_that.category);case _:
   return orElse();
 
 }
@@ -194,10 +220,10 @@ return $default(_that.id,_that.createdAt,_that.tripId,_that.title,_that.place,_t
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int? id,  String? createdAt,  int tripId,  String title,  String? place,  UserEntity? user,  String? address,  double? lat,  double? lng,  String date,  String? description,  int categoryId)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int? id,  String? createdAt,  int tripId,  String title,  String? place,  UserEntity? user,  String? address,  double? lat,  double? lng,  String date,  String? description,  int categoryId,  TripEntity? trip,  CategoryEntity? category)  $default,) {final _that = this;
 switch (_that) {
 case _ScheduleEntity():
-return $default(_that.id,_that.createdAt,_that.tripId,_that.title,_that.place,_that.user,_that.address,_that.lat,_that.lng,_that.date,_that.description,_that.categoryId);case _:
+return $default(_that.id,_that.createdAt,_that.tripId,_that.title,_that.place,_that.user,_that.address,_that.lat,_that.lng,_that.date,_that.description,_that.categoryId,_that.trip,_that.category);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -214,10 +240,10 @@ return $default(_that.id,_that.createdAt,_that.tripId,_that.title,_that.place,_t
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int? id,  String? createdAt,  int tripId,  String title,  String? place,  UserEntity? user,  String? address,  double? lat,  double? lng,  String date,  String? description,  int categoryId)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int? id,  String? createdAt,  int tripId,  String title,  String? place,  UserEntity? user,  String? address,  double? lat,  double? lng,  String date,  String? description,  int categoryId,  TripEntity? trip,  CategoryEntity? category)?  $default,) {final _that = this;
 switch (_that) {
 case _ScheduleEntity() when $default != null:
-return $default(_that.id,_that.createdAt,_that.tripId,_that.title,_that.place,_that.user,_that.address,_that.lat,_that.lng,_that.date,_that.description,_that.categoryId);case _:
+return $default(_that.id,_that.createdAt,_that.tripId,_that.title,_that.place,_that.user,_that.address,_that.lat,_that.lng,_that.date,_that.description,_that.categoryId,_that.trip,_that.category);case _:
   return null;
 
 }
@@ -229,7 +255,7 @@ return $default(_that.id,_that.createdAt,_that.tripId,_that.title,_that.place,_t
 
 
 class _ScheduleEntity implements ScheduleEntity {
-  const _ScheduleEntity({this.id, this.createdAt, required this.tripId, required this.title, this.place, this.user, this.address, this.lat, this.lng, required this.date, this.description, required this.categoryId});
+  const _ScheduleEntity({this.id, this.createdAt, required this.tripId, required this.title, this.place, this.user, this.address, this.lat, this.lng, required this.date, this.description, required this.categoryId, this.trip, this.category});
   
 
 @override final  int? id;
@@ -244,6 +270,8 @@ class _ScheduleEntity implements ScheduleEntity {
 @override final  String date;
 @override final  String? description;
 @override final  int categoryId;
+@override final  TripEntity? trip;
+@override final  CategoryEntity? category;
 
 /// Create a copy of ScheduleEntity
 /// with the given fields replaced by the non-null parameter values.
@@ -255,16 +283,16 @@ _$ScheduleEntityCopyWith<_ScheduleEntity> get copyWith => __$ScheduleEntityCopyW
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ScheduleEntity&&(identical(other.id, id) || other.id == id)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.tripId, tripId) || other.tripId == tripId)&&(identical(other.title, title) || other.title == title)&&(identical(other.place, place) || other.place == place)&&(identical(other.user, user) || other.user == user)&&(identical(other.address, address) || other.address == address)&&(identical(other.lat, lat) || other.lat == lat)&&(identical(other.lng, lng) || other.lng == lng)&&(identical(other.date, date) || other.date == date)&&(identical(other.description, description) || other.description == description)&&(identical(other.categoryId, categoryId) || other.categoryId == categoryId));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ScheduleEntity&&(identical(other.id, id) || other.id == id)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.tripId, tripId) || other.tripId == tripId)&&(identical(other.title, title) || other.title == title)&&(identical(other.place, place) || other.place == place)&&(identical(other.user, user) || other.user == user)&&(identical(other.address, address) || other.address == address)&&(identical(other.lat, lat) || other.lat == lat)&&(identical(other.lng, lng) || other.lng == lng)&&(identical(other.date, date) || other.date == date)&&(identical(other.description, description) || other.description == description)&&(identical(other.categoryId, categoryId) || other.categoryId == categoryId)&&(identical(other.trip, trip) || other.trip == trip)&&(identical(other.category, category) || other.category == category));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,id,createdAt,tripId,title,place,user,address,lat,lng,date,description,categoryId);
+int get hashCode => Object.hash(runtimeType,id,createdAt,tripId,title,place,user,address,lat,lng,date,description,categoryId,trip,category);
 
 @override
 String toString() {
-  return 'ScheduleEntity(id: $id, createdAt: $createdAt, tripId: $tripId, title: $title, place: $place, user: $user, address: $address, lat: $lat, lng: $lng, date: $date, description: $description, categoryId: $categoryId)';
+  return 'ScheduleEntity(id: $id, createdAt: $createdAt, tripId: $tripId, title: $title, place: $place, user: $user, address: $address, lat: $lat, lng: $lng, date: $date, description: $description, categoryId: $categoryId, trip: $trip, category: $category)';
 }
 
 
@@ -275,11 +303,11 @@ abstract mixin class _$ScheduleEntityCopyWith<$Res> implements $ScheduleEntityCo
   factory _$ScheduleEntityCopyWith(_ScheduleEntity value, $Res Function(_ScheduleEntity) _then) = __$ScheduleEntityCopyWithImpl;
 @override @useResult
 $Res call({
- int? id, String? createdAt, int tripId, String title, String? place, UserEntity? user, String? address, double? lat, double? lng, String date, String? description, int categoryId
+ int? id, String? createdAt, int tripId, String title, String? place, UserEntity? user, String? address, double? lat, double? lng, String date, String? description, int categoryId, TripEntity? trip, CategoryEntity? category
 });
 
 
-@override $UserEntityCopyWith<$Res>? get user;
+@override $UserEntityCopyWith<$Res>? get user;@override $TripEntityCopyWith<$Res>? get trip;@override $CategoryEntityCopyWith<$Res>? get category;
 
 }
 /// @nodoc
@@ -292,7 +320,7 @@ class __$ScheduleEntityCopyWithImpl<$Res>
 
 /// Create a copy of ScheduleEntity
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = freezed,Object? createdAt = freezed,Object? tripId = null,Object? title = null,Object? place = freezed,Object? user = freezed,Object? address = freezed,Object? lat = freezed,Object? lng = freezed,Object? date = null,Object? description = freezed,Object? categoryId = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = freezed,Object? createdAt = freezed,Object? tripId = null,Object? title = null,Object? place = freezed,Object? user = freezed,Object? address = freezed,Object? lat = freezed,Object? lng = freezed,Object? date = null,Object? description = freezed,Object? categoryId = null,Object? trip = freezed,Object? category = freezed,}) {
   return _then(_ScheduleEntity(
 id: freezed == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as int?,createdAt: freezed == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
@@ -306,7 +334,9 @@ as double?,lng: freezed == lng ? _self.lng : lng // ignore: cast_nullable_to_non
 as double?,date: null == date ? _self.date : date // ignore: cast_nullable_to_non_nullable
 as String,description: freezed == description ? _self.description : description // ignore: cast_nullable_to_non_nullable
 as String?,categoryId: null == categoryId ? _self.categoryId : categoryId // ignore: cast_nullable_to_non_nullable
-as int,
+as int,trip: freezed == trip ? _self.trip : trip // ignore: cast_nullable_to_non_nullable
+as TripEntity?,category: freezed == category ? _self.category : category // ignore: cast_nullable_to_non_nullable
+as CategoryEntity?,
   ));
 }
 
@@ -321,6 +351,30 @@ $UserEntityCopyWith<$Res>? get user {
 
   return $UserEntityCopyWith<$Res>(_self.user!, (value) {
     return _then(_self.copyWith(user: value));
+  });
+}/// Create a copy of ScheduleEntity
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$TripEntityCopyWith<$Res>? get trip {
+    if (_self.trip == null) {
+    return null;
+  }
+
+  return $TripEntityCopyWith<$Res>(_self.trip!, (value) {
+    return _then(_self.copyWith(trip: value));
+  });
+}/// Create a copy of ScheduleEntity
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$CategoryEntityCopyWith<$Res>? get category {
+    if (_self.category == null) {
+    return null;
+  }
+
+  return $CategoryEntityCopyWith<$Res>(_self.category!, (value) {
+    return _then(_self.copyWith(category: value));
   });
 }
 }

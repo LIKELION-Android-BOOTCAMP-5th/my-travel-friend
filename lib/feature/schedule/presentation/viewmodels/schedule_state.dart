@@ -1,6 +1,8 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 import '../../../auth/domain/entities/user_entity.dart';
+import '../../../trip/domain/entities/trip_entity.dart';
+import '../../domain/entities/category_entity.dart';
 import '../../domain/entities/schedule_entity.dart';
 
 part 'schedule_state.freezed.dart';
@@ -29,9 +31,6 @@ abstract class ScheduleState with _$ScheduleState {
     // 현재 선택된 카테고리
     int? selectedCategoryId,
 
-    // 현재 필터링
-    ScheduleFilterType? currentFilter,
-
     // 페이징
     @Default(1) int page,
     @Default(false) bool hasMore,
@@ -51,6 +50,11 @@ abstract class ScheduleState with _$ScheduleState {
 
     // 네비게이션 (수정 화면 이동)
     @Default(false) bool navigateToEdit,
+    //카테고리
+    @Default([]) List<CategoryEntity> categories,
+    TripEntity? trip,
+
+    @Default(ScheduleFilterType.date) ScheduleFilterType viewMode,
   }) = _ScheduleState;
 }
 

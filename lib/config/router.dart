@@ -6,6 +6,8 @@ import 'package:my_travel_friend/feature/auth/presentation/screens/auth_bloc_wid
 import 'package:my_travel_friend/feature/auth/presentation/viewmodel/auth/auth_bloc.dart';
 import 'package:my_travel_friend/feature/auth/presentation/viewmodel/auth_profile/auth_profile_bloc.dart';
 import 'package:my_travel_friend/feature/auth/presentation/viewmodel/auth_profile/auth_profile_state.dart';
+import 'package:my_travel_friend/feature/schedule/presentation/screens/schedule_bloc_widget.dart';
+import 'package:my_travel_friend/feature/schedule/presentation/viewmodels/schedule_bloc.dart';
 import 'package:my_travel_friend/feature/setting/presentation/screens/menu/menu_bloc_widget.dart';
 import 'package:my_travel_friend/feature/setting/presentation/screens/permission/permission_bloc_widget.dart';
 import 'package:my_travel_friend/feature/trip/presentation/screens/create_trip_bloc_widget.dart';
@@ -191,7 +193,10 @@ class AppRouter {
             path: '/trip/:tripId/schedule',
             builder: (context, state) {
               final tripId = int.parse(state.pathParameters['tripId']!);
-              return Center(child: Text('Trip $tripId Schedule'));
+              return BlocProvider(
+                create: (context) => GetIt.instance<ScheduleBloc>(),
+                child: ScheduleBlocWidget(tripId: tripId),
+              );
             },
           ),
           // [2] 여행 체크리스트

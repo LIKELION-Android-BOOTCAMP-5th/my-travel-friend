@@ -39,6 +39,10 @@ abstract class ScheduleEvent with _$ScheduleEvent {
 
   // 메모 토글
   const factory ScheduleEvent.toggleMemo() = ToggleMemo;
+  //일자별 선택
+  const factory ScheduleEvent.switchToDateMode() = SwitchToDateMode;
+  //카테고리별 선택
+  const factory ScheduleEvent.switchToCategoryMode() = SwitchToCategoryMode;
 
   // 다음 페이지 로드
   const factory ScheduleEvent.loadMore({required int tripId}) = LoadMore;

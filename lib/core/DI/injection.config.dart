@@ -133,6 +133,8 @@ import '../../feature/schedule/domain/usecases/edit_schedule_usecase.dart'
     as _i29;
 import '../../feature/schedule/domain/usecases/get_all_schedule_usecase.dart'
     as _i600;
+import '../../feature/schedule/domain/usecases/get_category_usecase.dart'
+    as _i379;
 import '../../feature/schedule/domain/usecases/get_schedule_member_usecase.dart'
     as _i415;
 import '../../feature/schedule/domain/usecases/get_trip_member_usecase.dart'
@@ -430,6 +432,9 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i600.GetAllScheduleUseCase>(
       () => _i600.GetAllScheduleUseCase(gh<_i456.ScheduleRepository>()),
     );
+    gh.lazySingleton<_i379.GetCategoryUsecase>(
+      () => _i379.GetCategoryUsecase(gh<_i456.ScheduleRepository>()),
+    );
     gh.lazySingleton<_i415.GetScheduleMembersUseCase>(
       () => _i415.GetScheduleMembersUseCase(gh<_i456.ScheduleRepository>()),
     );
@@ -449,6 +454,15 @@ extension GetItInjectableX on _i174.GetIt {
       () => _i873.CreateTripBloc(
         gh<_i779.CreateTripUsecase>(),
         gh<_i161.TripRepository>(),
+      ),
+    );
+    gh.factory<_i166.ScheduleBloc>(
+      () => _i166.ScheduleBloc(
+        gh<_i600.GetAllScheduleUseCase>(),
+        gh<_i714.DeleteScheduleUseCase>(),
+        gh<_i415.GetScheduleMembersUseCase>(),
+        gh<_i379.GetCategoryUsecase>(),
+        gh<_i277.GetTripByIdUseCase>(),
       ),
     );
     gh.lazySingleton<_i715.DeleteImgUseCase>(
@@ -502,13 +516,6 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i420.SocialSignInUseCase>(),
         gh<_i858.SignOutUseCase>(),
         gh<_i739.CancelOauthUseCase>(),
-      ),
-    );
-    gh.factory<_i166.ScheduleBloc>(
-      () => _i166.ScheduleBloc(
-        gh<_i600.GetAllScheduleUseCase>(),
-        gh<_i714.DeleteScheduleUseCase>(),
-        gh<_i415.GetScheduleMembersUseCase>(),
       ),
     );
     gh.lazySingleton<_i1051.CreateTodoListUseCase>(
