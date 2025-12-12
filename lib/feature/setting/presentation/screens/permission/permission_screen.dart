@@ -290,11 +290,11 @@ class _PermissionScreenState extends State<PermissionScreen>
 
   void _handleToggle(BuildContext context, PermissionInfo permission) {
     if (permission.isGranted) {
-      // 켜져있으면 확인 다이얼로그
+      // 켜져있을때의 확인 팝업
       _showDisableConfirmDialog(context, permission);
     } else {
-      // 꺼져있으면 권한 요청
-      context.read<PermissionBloc>().add(Toggled(permission.type));
+      // 꺼져있을 때 확인 팝업
+      _showAbleConfirmDialog(context, permission);
     }
   }
 
@@ -310,6 +310,30 @@ class _PermissionScreenState extends State<PermissionScreen>
         iconColor: Theme.of(context).colorScheme.primary,
         title: '${permission.title} 권한 제한',
         message: '기능을 제한하시겠어요?\n권한을 끄려면 시스템 설정에서 변경해야 해요.',
+        leftText: '취소',
+        rightText: '설정으로 이동',
+        rightButtonColor: Theme.of(context).colorScheme.primary,
+        rightTextColor: AppColors.light,
+        onLeft: () {
+          // 취소 - 아무것도 안 함 (PopUpBox 내부에서 pop 처리함)
+        },
+        onRight: () {
+          // 시스템 설정으로 이동
+          context.read<PermissionBloc>().add(const OpenSystem());
+        },
+      ),
+    );
+  }
+
+  // 권한 활성화 확인 다이얼로그
+  void _showAbleConfirmDialog(BuildContext context, PermissionInfo permission) {
+    showDialog(
+      context: context,
+      builder: (_) => PopUpBox(
+        icon: AppIcon.defense,
+        iconColor: Theme.of(context).colorScheme.primary,
+        title: '${permission.title} 권한 활성화',
+        message: '기능을 활성화하시겠어요?\n권한을 켜려면 시스템 설정에서 변경해야 해요.',
         leftText: '취소',
         rightText: '설정으로 이동',
         rightButtonColor: Theme.of(context).colorScheme.primary,

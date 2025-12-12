@@ -9,7 +9,7 @@ abstract class PermissionEvent with _$PermissionEvent {
   // 권한 상태 불러오기
   const factory PermissionEvent.loadPermission() = LoadPermission;
 
-  // 권한 토글 클릭 -> 호출
+  // 권한 토글 클릭 -> 호출 (현재 미사용 상태지만 혹시 몰라 보존)
   const factory PermissionEvent.toggled(AppPermissionType type) = Toggled;
 
   // 시스텝 설정으로 이동

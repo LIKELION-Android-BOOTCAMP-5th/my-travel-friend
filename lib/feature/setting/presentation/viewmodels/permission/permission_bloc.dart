@@ -62,7 +62,7 @@ class PermissionBloc extends Bloc<PermissionEvent, PermissionState> {
     );
   }
 
-  // 권한 토글
+  // 권한 토글 (현재 미사용 상태지만 혹시 몰라 보존)
   Future<void> _onToggle(Toggled event, Emitter<PermissionState> emit) async {
     final current = state.permissions
         .where((p) => p.type == event.type)
