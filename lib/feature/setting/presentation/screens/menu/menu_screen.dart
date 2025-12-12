@@ -39,21 +39,20 @@ class MenuScreen extends StatelessWidget {
           onTap: () => context.pop(),
         ),
       ),
-      body: BlocBuilder<AuthProfileBloc, AuthProfileState>(
-        builder: (context, authState) {
-          final user = authState.maybeWhen(
-            authenticated: (uuid, userInfo) => userInfo,
-            orElse: () => null,
-          );
+      body: BlocBuilder<MenuBloc, MenuState>(
+        builder: (context, state) {
+          if (state.pageState == MenuPageState.loading) {
+            return const Center(child: CircularProgressIndicator());
+          }
+          final user = context.read<AuthProfileBloc>().state;
 
-          return BlocBuilder<MenuBloc, MenuState>(
-            builder: (context, menuState) {
-              if (menuState.pageState == MenuPageState.loading) {
-                return const Center(child: CircularProgressIndicator());
-              }
-              return _buildMenuScreen(context, user, menuState);
-            },
-          );
+          if (user is! AuthProfileAuthenticated) {
+            return const Center(child: Text("로그인이 필요합니다"));
+          }
+
+          final userProfile = user.userInfo;
+
+          return _buildMenuScreen(context, userProfile, state);
         },
       ),
     );
