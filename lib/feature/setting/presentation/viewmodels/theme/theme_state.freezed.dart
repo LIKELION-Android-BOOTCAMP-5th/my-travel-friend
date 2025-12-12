@@ -25,12 +25,12 @@ $ThemeStateCopyWith<ThemeState> get copyWith => _$ThemeStateCopyWithImpl<ThemeSt
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is ThemeState&&(identical(other.pageState, pageState) || other.pageState == pageState)&&(identical(other.selectedTheme, selectedTheme) || other.selectedTheme == selectedTheme)&&const DeepCollectionEquality().equals(other.themeOptions, themeOptions)&&(identical(other.message, message) || other.message == message));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ThemeState&&(identical(other.pageState, pageState) || other.pageState == pageState)&&const DeepCollectionEquality().equals(other.selectedTheme, selectedTheme)&&const DeepCollectionEquality().equals(other.themeOptions, themeOptions)&&(identical(other.message, message) || other.message == message));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,pageState,selectedTheme,const DeepCollectionEquality().hash(themeOptions),message);
+int get hashCode => Object.hash(runtimeType,pageState,const DeepCollectionEquality().hash(selectedTheme),const DeepCollectionEquality().hash(themeOptions),message);
 
 @override
 String toString() {
@@ -62,10 +62,10 @@ class _$ThemeStateCopyWithImpl<$Res>
 
 /// Create a copy of ThemeState
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? pageState = null,Object? selectedTheme = null,Object? themeOptions = null,Object? message = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? pageState = null,Object? selectedTheme = freezed,Object? themeOptions = null,Object? message = freezed,}) {
   return _then(_self.copyWith(
 pageState: null == pageState ? _self.pageState : pageState // ignore: cast_nullable_to_non_nullable
-as ThemePageState,selectedTheme: null == selectedTheme ? _self.selectedTheme : selectedTheme // ignore: cast_nullable_to_non_nullable
+as ThemePageState,selectedTheme: freezed == selectedTheme ? _self.selectedTheme : selectedTheme // ignore: cast_nullable_to_non_nullable
 as AppThemeType,themeOptions: null == themeOptions ? _self.themeOptions : themeOptions // ignore: cast_nullable_to_non_nullable
 as List<ThemeInfo>,message: freezed == message ? _self.message : message // ignore: cast_nullable_to_non_nullable
 as String?,
@@ -233,12 +233,12 @@ _$ThemeStateCopyWith<_ThemeState> get copyWith => __$ThemeStateCopyWithImpl<_The
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ThemeState&&(identical(other.pageState, pageState) || other.pageState == pageState)&&(identical(other.selectedTheme, selectedTheme) || other.selectedTheme == selectedTheme)&&const DeepCollectionEquality().equals(other._themeOptions, _themeOptions)&&(identical(other.message, message) || other.message == message));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ThemeState&&(identical(other.pageState, pageState) || other.pageState == pageState)&&const DeepCollectionEquality().equals(other.selectedTheme, selectedTheme)&&const DeepCollectionEquality().equals(other._themeOptions, _themeOptions)&&(identical(other.message, message) || other.message == message));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,pageState,selectedTheme,const DeepCollectionEquality().hash(_themeOptions),message);
+int get hashCode => Object.hash(runtimeType,pageState,const DeepCollectionEquality().hash(selectedTheme),const DeepCollectionEquality().hash(_themeOptions),message);
 
 @override
 String toString() {
@@ -270,10 +270,10 @@ class __$ThemeStateCopyWithImpl<$Res>
 
 /// Create a copy of ThemeState
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? pageState = null,Object? selectedTheme = null,Object? themeOptions = null,Object? message = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? pageState = null,Object? selectedTheme = freezed,Object? themeOptions = null,Object? message = freezed,}) {
   return _then(_ThemeState(
 pageState: null == pageState ? _self.pageState : pageState // ignore: cast_nullable_to_non_nullable
-as ThemePageState,selectedTheme: null == selectedTheme ? _self.selectedTheme : selectedTheme // ignore: cast_nullable_to_non_nullable
+as ThemePageState,selectedTheme: freezed == selectedTheme ? _self.selectedTheme : selectedTheme // ignore: cast_nullable_to_non_nullable
 as AppThemeType,themeOptions: null == themeOptions ? _self._themeOptions : themeOptions // ignore: cast_nullable_to_non_nullable
 as List<ThemeInfo>,message: freezed == message ? _self.message : message // ignore: cast_nullable_to_non_nullable
 as String?,

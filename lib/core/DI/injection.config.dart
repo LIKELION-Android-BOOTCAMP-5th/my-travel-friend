@@ -160,6 +160,8 @@ import '../../feature/setting/domain/usecases/alarm/update_alarm_setting_usecase
     as _i87;
 import '../../feature/setting/domain/usecases/permission/check_permission_usecase.dart'
     as _i584;
+import '../../feature/setting/domain/usecases/permission/open_settings_usecase.dart'
+    as _i63;
 import '../../feature/setting/domain/usecases/permission/request_permission_usecase.dart'
     as _i1063;
 import '../../feature/setting/domain/usecases/profile/check_nickname_duplicate_usecase.dart'
@@ -170,6 +172,10 @@ import '../../feature/setting/domain/usecases/profile/update_profile_usecase.dar
     as _i473;
 import '../../feature/setting/domain/usecases/profile/upload_img_usecase.dart'
     as _i304;
+import '../../feature/setting/domain/usecases/theme/get_theme_usecase.dart'
+    as _i231;
+import '../../feature/setting/domain/usecases/theme/update_theme_usecase.dart'
+    as _i668;
 import '../../feature/setting/presentation/viewmodels/alarm/alarm_setting_bloc.dart'
     as _i695;
 import '../../feature/setting/presentation/viewmodels/permission/permission_bloc.dart'
@@ -263,8 +269,17 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i1051.SupabaseStorageService>(),
       ),
     );
+    gh.lazySingleton<_i231.GetThemeUseCase>(
+      () => _i231.GetThemeUseCase(gh<InvalidType>()),
+    );
+    gh.lazySingleton<_i668.UpdateThemeUseCase>(
+      () => _i668.UpdateThemeUseCase(gh<InvalidType>()),
+    );
     gh.lazySingleton<_i584.CheckPermissionsUseCase>(
       () => _i584.CheckPermissionsUseCase(gh<_i213.PermissionService>()),
+    );
+    gh.lazySingleton<_i63.OpenSettingsUseCase>(
+      () => _i63.OpenSettingsUseCase(gh<_i213.PermissionService>()),
     );
     gh.lazySingleton<_i1063.RequestPermissionUseCase>(
       () => _i1063.RequestPermissionUseCase(gh<_i213.PermissionService>()),
@@ -321,6 +336,13 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i456.ScheduleRepository>(
       () => _i625.ScheduleRepositoryImpl(gh<_i334.ScheduleDataSource>()),
     );
+    gh.factory<_i862.PermissionBloc>(
+      () => _i862.PermissionBloc(
+        gh<_i63.OpenSettingsUseCase>(),
+        gh<_i584.CheckPermissionsUseCase>(),
+        gh<_i1063.RequestPermissionUseCase>(),
+      ),
+    );
     gh.lazySingleton<_i58.AlarmDataSource>(
       () => _i1049.AlarmDataSourceImpl(gh<_i454.SupabaseClient>()),
     );
@@ -341,13 +363,6 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i317.GiveUpTripUseCase>(),
         gh<_i437.SearchTripUsecase>(),
         gh<_i202.DeleteImgUsecase>(),
-      ),
-    );
-    gh.factory<_i862.PermissionBloc>(
-      () => _i862.PermissionBloc(
-        gh<_i213.PermissionService>(),
-        gh<_i584.CheckPermissionsUseCase>(),
-        gh<_i1063.RequestPermissionUseCase>(),
       ),
     );
     gh.lazySingleton<_i277.GetTripByIdUseCase>(

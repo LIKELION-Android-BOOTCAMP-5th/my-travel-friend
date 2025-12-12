@@ -2,7 +2,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 import 'package:my_travel_friend/core/result/failures.dart';
 import 'package:my_travel_friend/core/result/result.dart';
-import 'package:my_travel_friend/core/service/internal/permission_service.dart';
+import 'package:my_travel_friend/feature/setting/domain/usecases/permission/open_settings_usecase.dart';
 import 'package:my_travel_friend/feature/setting/presentation/viewmodels/permission/permission_event.dart';
 import 'package:my_travel_friend/feature/setting/presentation/viewmodels/permission/permission_state.dart';
 
@@ -14,10 +14,10 @@ import '../../../domain/usecases/permission/request_permission_usecase.dart';
 class PermissionBloc extends Bloc<PermissionEvent, PermissionState> {
   final CheckPermissionsUseCase _checkPermissionsUseCase;
   final RequestPermissionUseCase _requestPermissionUseCase;
-  final PermissionService _permissionService;
+  final OpenSettingsUseCase _openSettingsUseCase;
 
   PermissionBloc(
-    this._permissionService,
+    this._openSettingsUseCase,
     this._checkPermissionsUseCase,
     this._requestPermissionUseCase,
   ) : super(const PermissionState()) {
@@ -72,7 +72,7 @@ class PermissionBloc extends Bloc<PermissionEvent, PermissionState> {
 
     // 이미 허용됨 or 영구 거부 → 설정으로 이동
     if (current.isGranted || current.isPermanentlyDenied) {
-      await _permissionService.openSettings();
+      await _openSettingsUseCase();
       return;
     }
 
@@ -83,7 +83,7 @@ class PermissionBloc extends Bloc<PermissionEvent, PermissionState> {
       success: (updated) {
         // 영구 거부 시 설정으로 이동
         if (updated.isPermanentlyDenied) {
-          _permissionService.openSettings();
+          _openSettingsUseCase();
         }
 
         // 목록 업데이트
@@ -94,7 +94,7 @@ class PermissionBloc extends Bloc<PermissionEvent, PermissionState> {
         emit(state.copyWith(permissions: newList));
 
         if (!updated.isGranted) {
-          _permissionService.openSettings();
+          _openSettingsUseCase();
         }
       },
       failure: (failure) {
@@ -119,7 +119,7 @@ class PermissionBloc extends Bloc<PermissionEvent, PermissionState> {
     OpenSystem event,
     Emitter<PermissionState> emit,
   ) async {
-    await _permissionService.openSettings();
+    await _openSettingsUseCase();
   }
 
   // 새로고침

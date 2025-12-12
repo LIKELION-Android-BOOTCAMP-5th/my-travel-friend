@@ -228,12 +228,12 @@ $UpdateThemeCopyWith<UpdateTheme> get copyWith => _$UpdateThemeCopyWithImpl<Upda
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is UpdateTheme&&(identical(other.type, type) || other.type == type));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is UpdateTheme&&const DeepCollectionEquality().equals(other.type, type));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,type);
+int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(type));
 
 @override
 String toString() {
@@ -265,9 +265,9 @@ class _$UpdateThemeCopyWithImpl<$Res>
 
 /// Create a copy of ThemeEvent
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') $Res call({Object? type = null,}) {
+@pragma('vm:prefer-inline') $Res call({Object? type = freezed,}) {
   return _then(UpdateTheme(
-null == type ? _self.type : type // ignore: cast_nullable_to_non_nullable
+freezed == type ? _self.type : type // ignore: cast_nullable_to_non_nullable
 as AppThemeType,
   ));
 }
