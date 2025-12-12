@@ -9,7 +9,7 @@ import '../../../../../core/widget/button.dart';
 import '../../viewmodels/theme/theme_bloc.dart';
 import '../../viewmodels/theme/theme_event.dart';
 import '../../viewmodels/theme/theme_state.dart';
-import '../../widgets/theme_box.dart';
+import '../../widgets/theme/theme_box.dart';
 
 // [이재은] 테마 설정 화면
 class ThemeScreen extends StatelessWidget {

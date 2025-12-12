@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:my_travel_friend/core/widget/toggle_switch.dart';
 
-import '../../../../core/service/internal/permission_service.dart';
-import '../../../../core/theme/app_colors.dart';
-import '../../../../core/theme/app_font.dart';
-import '../../../../core/theme/app_icon.dart';
+import '../../../../../core/service/internal/permission_service.dart';
+import '../../../../../core/theme/app_colors.dart';
+import '../../../../../core/theme/app_font.dart';
+import '../../../../../core/theme/app_icon.dart';
 
 class PermissionBox extends StatelessWidget {
   // 표시할 권한 정보

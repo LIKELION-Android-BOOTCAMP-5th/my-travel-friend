@@ -31,7 +31,7 @@ class AuthBlocWidget extends StatelessWidget {
           // 인증 성공 상태로 변경되면 홈 화면으로 이동
           authenticated: (userId) {
             // Navigator.of(context).pushReplacementNamed('/home');
-            ToastPop.show('로그인 성공! User ID: $userId');
+            ToastPop.show("로그인 성공! 여행을 떠나볼까요? ✈️");
             context.pop();
             context.push('/');
           },

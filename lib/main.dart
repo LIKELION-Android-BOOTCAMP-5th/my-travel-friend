@@ -10,6 +10,7 @@ import 'package:permission_handler/permission_handler.dart';
 import 'core/service/internal/push_notification_service.dart';
 import 'core/theme/app_theme.dart';
 import 'feature/auth/presentation/viewmodel/auth_profile/auth_profile_bloc.dart';
+import 'feature/auth/presentation/viewmodel/auth_profile/auth_profile_state.dart';
 import 'feature/setting/presentation/viewmodels/theme/theme_bloc.dart';
 import 'feature/setting/presentation/viewmodels/theme/theme_event.dart';
 import 'feature/setting/presentation/viewmodels/theme/theme_state.dart'
@@ -87,6 +88,35 @@ class MyApp extends StatelessWidget {
           theme: AppTheme.light,
           darkTheme: AppTheme.dark,
           themeMode: context.read<ThemeBloc>().themeMode,
+
+          builder: (context, child) {
+            return BlocConsumer<AuthProfileBloc, AuthProfileState>(
+              listenWhen: (prev, curr) => prev.runtimeType != curr.runtimeType,
+              listener: (context, state) {
+                if (state is AuthProfileAuthenticated) {
+                  AppRouter.instance.router.go('/home');
+                }
+                if (state is AuthProfileUnauthenticated) {
+                  AppRouter.instance.router.go('/login');
+                }
+              },
+              builder: (context, authState) {
+                // 👇 로그아웃 중이면 로딩 오버레이
+                if (authState is AuthProfileLoading) {
+                  return Stack(
+                    children: [
+                      child ?? const SizedBox.shrink(),
+                      Container(
+                        color: Colors.black.withOpacity(0.3),
+                        child: const Center(child: CircularProgressIndicator()),
+                      ),
+                    ],
+                  );
+                }
+                return child ?? const SizedBox.shrink();
+              },
+            );
+          },
         );
       },
     );

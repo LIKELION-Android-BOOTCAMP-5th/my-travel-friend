@@ -170,4 +170,7 @@ class AppIcon {
 
   // 팔레트
   static const palette = FontAwesomeIcons.palette;
+
+  // 우측 화살표(>)
+  static const right = FeatherIcons.chevronRight;
 }

@@ -14,7 +14,7 @@ import '../../../../../core/widget/pop_up_box.dart';
 import '../../viewmodels/permission/permission_bloc.dart';
 import '../../viewmodels/permission/permission_event.dart';
 import '../../viewmodels/permission/permission_state.dart';
-import '../../widgets/permission_box.dart';
+import '../../widgets/permission/permission_box.dart';
 
 // [이재은] 권한 설정 화면
 class PermissionScreen extends StatefulWidget {

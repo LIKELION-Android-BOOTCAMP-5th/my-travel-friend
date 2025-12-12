@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_travel_friend/feature/setting/presentation/viewmodels/profile/profile_bloc.dart';
 
-import '../../../../core/theme/app_colors.dart';
-import '../../../../core/theme/app_font.dart';
-import '../../../../core/theme/app_icon.dart';
-import '../../../../core/widget/pop_up_box.dart';
+import '../../../../../core/theme/app_colors.dart';
+import '../../../../../core/theme/app_font.dart';
+import '../../../../../core/theme/app_icon.dart';
+import '../../../../../core/widget/pop_up_box.dart';
 
 // [이재은] 탈퇴 버튼
 class DeleteProfileButton extends StatelessWidget {

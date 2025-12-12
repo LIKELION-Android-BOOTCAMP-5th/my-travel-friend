@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:my_travel_friend/core/widget/toggle_switch.dart';
 
-import '../../../../core/theme/app_colors.dart';
-import '../../../../core/theme/app_font.dart';
+import '../../../../../core/theme/app_colors.dart';
+import '../../../../../core/theme/app_font.dart';
 
 class AlarmSettingBox extends StatelessWidget {
   final String type;

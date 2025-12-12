@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../core/theme/app_font.dart';
-import '../../../../core/widget/text_box.dart';
-import '../viewmodels/profile/profile_bloc.dart';
-import '../viewmodels/profile/profile_state.dart';
+import '../../../../../core/theme/app_font.dart';
+import '../../../../../core/widget/text_box.dart';
+import '../../viewmodels/profile/profile_bloc.dart';
+import '../../viewmodels/profile/profile_state.dart';
 
 // [이재은] 이메일 박스 위젯 (읽기 전용)
 class EmailBox extends StatefulWidget {

@@ -10,7 +10,7 @@ import '../../../../../core/widget/button.dart';
 import '../../viewmodels/alarm/alarm_setting_bloc.dart';
 import '../../viewmodels/alarm/alarm_setting_event.dart';
 import '../../viewmodels/alarm/alarm_setting_state.dart';
-import '../../widgets/alarm_setting_box.dart';
+import '../../widgets/alarm/alarm_setting_box.dart';
 
 // [이재은] 알림 설정 화면
 class AlarmSettingScreen extends StatelessWidget {
