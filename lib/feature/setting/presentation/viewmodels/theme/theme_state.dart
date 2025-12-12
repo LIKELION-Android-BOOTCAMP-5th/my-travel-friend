@@ -18,6 +18,7 @@ class ThemeInfo {
 // 테마 타입 (팩토리 생성자)
 @freezed
 abstract class AppThemeMode with _$AppThemeMode {
+  const AppThemeMode._();
   const factory AppThemeMode.light() = ThemeLight; // 라이트모드
   const factory AppThemeMode.dark() = ThemeDark; // 다크모드
   const factory AppThemeMode.system() = ThemeSystem; // 시스템설정
@@ -33,6 +34,7 @@ const Map<Type, ThemeInfo> themeOptionsMap = {
 // 테마 상태
 @freezed
 abstract class ThemeState with _$ThemeState {
+  const ThemeState._();
   const factory ThemeState({
     @Default(ThemePageState.initial) ThemePageState pageState,
     @Default(AppThemeMode.system()) AppThemeMode selectedTheme,

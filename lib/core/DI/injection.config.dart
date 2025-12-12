@@ -225,10 +225,10 @@ extension GetItInjectableX on _i174.GetIt {
     _i526.EnvironmentFilter? environmentFilter,
   }) async {
     final gh = _i526.GetItHelper(this, environment, environmentFilter);
-    final registerModule = _$RegisterModule();
+    final themeModule = _$ThemeModule();
     final registerModule = _$RegisterModule();
     await gh.factoryAsync<_i460.SharedPreferences>(
-      () => registerModule.prefs,
+      () => themeModule.prefs,
       preResolve: true,
     );
     gh.lazySingleton<_i892.FirebaseMessaging>(
@@ -607,6 +607,6 @@ extension GetItInjectableX on _i174.GetIt {
   }
 }
 
-class _$RegisterModule extends _i170.RegisterModule {}
+class _$ThemeModule extends _i170.ThemeModule {}
 
 class _$RegisterModule extends _i291.RegisterModule {}

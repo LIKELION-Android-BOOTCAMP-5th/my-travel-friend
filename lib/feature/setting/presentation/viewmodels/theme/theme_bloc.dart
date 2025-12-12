@@ -23,13 +23,10 @@ class ThemeBloc extends Bloc<ThemeEvent, ThemeState> {
 
   // 현재 ThemeMode 반환 (MaterialApp에서 사용)
   ThemeMode get themeMode {
-    return switch (state.selectedTheme) {
-      ThemeLight() => ThemeMode.light,
-      ThemeDark() => ThemeMode.dark,
-      ThemeSystem() => ThemeMode.system,
-      // TODO: Handle this case.
-      AppThemeMode() => throw UnimplementedError(),
-    };
+    final theme = state.selectedTheme;
+    if (theme is ThemeLight) return ThemeMode.light;
+    if (theme is ThemeDark) return ThemeMode.dark;
+    return ThemeMode.system;
   }
 
   // 테마 불러오기

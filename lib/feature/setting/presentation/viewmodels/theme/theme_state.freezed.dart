@@ -186,8 +186,8 @@ return system();case _:
 /// @nodoc
 
 
-class ThemeLight implements AppThemeMode {
-  const ThemeLight();
+class ThemeLight extends AppThemeMode {
+  const ThemeLight(): super._();
   
 
 
@@ -218,8 +218,8 @@ String toString() {
 /// @nodoc
 
 
-class ThemeDark implements AppThemeMode {
-  const ThemeDark();
+class ThemeDark extends AppThemeMode {
+  const ThemeDark(): super._();
   
 
 
@@ -250,8 +250,8 @@ String toString() {
 /// @nodoc
 
 
-class ThemeSystem implements AppThemeMode {
-  const ThemeSystem();
+class ThemeSystem extends AppThemeMode {
+  const ThemeSystem(): super._();
   
 
 
@@ -484,8 +484,8 @@ return $default(_that.pageState,_that.selectedTheme,_that.message);case _:
 /// @nodoc
 
 
-class _ThemeState implements ThemeState {
-  const _ThemeState({this.pageState = ThemePageState.initial, this.selectedTheme = const AppThemeMode.system(), this.message});
+class _ThemeState extends ThemeState {
+  const _ThemeState({this.pageState = ThemePageState.initial, this.selectedTheme = const AppThemeMode.system(), this.message}): super._();
   
 
 @override@JsonKey() final  ThemePageState pageState;

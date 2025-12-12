@@ -32,6 +32,7 @@ class ThemeService {
       ThemeLight() => 'light',
       ThemeDark() => 'dark',
       ThemeSystem() => 'system',
+      // TODO: Handle this case.
       AppThemeMode() => throw UnimplementedError(),
     };
 
