@@ -221,12 +221,25 @@ class TripDataSourceImpl implements TripDataSource {
   // 아이디로 여행 정보 가져오기
   @override
   Future<TripDto> getTripById(int tripId) async {
-    final response = await _supabaseClient
-        .from('trip')
-        .select()
-        .eq('id', tripId)
-        .single();
+    try {
+      print('🟡 enker TripDataSource getTripById start');
 
-    return TripDto.fromJson(response);
+      final response = await _supabaseClient
+          .from('trip')
+          .select()
+          .eq('id', tripId)
+          .maybeSingle();
+
+      print('🟡 enker TripDataSource response = $response');
+
+      if (response == null) {
+        throw Exception('Trip not found. tripId=$tripId');
+      }
+
+      return TripDto.fromJson(response);
+    } catch (e) {
+      print('🔴 enker TripDataSource error: $e');
+      rethrow;
+    }
   }
 }

@@ -2,6 +2,7 @@ import 'package:injectable/injectable.dart';
 import 'package:my_travel_friend/core/result/result.dart';
 import 'package:my_travel_friend/feature/auth/data/models/user_model.dart';
 import 'package:my_travel_friend/feature/schedule/data/datasources/schedule_data_source.dart';
+import 'package:my_travel_friend/feature/schedule/data/dtos/category_dto.dart';
 import 'package:my_travel_friend/feature/schedule/data/dtos/schedule_dto.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -19,12 +20,19 @@ class ScheduleDataSourceImpl implements ScheduleDataSource {
     required int page,
   }) async {
     try {
+      final start = (page - 1) * 10;
+      final end = start + 9;
+
       final res = await supabase
           .from('schedule')
-          .select('*')
+          .select('''
+          *,
+          category:category_id (id, content),
+          trip:trip_id (*)
+        ''')
           .eq('trip_id', tripId)
           .order('date', ascending: true)
-          .range(page * 10, page * 10 + 9); // 10개씩 페이징
+          .range(start, end);
 
       final data = (res as List)
           .map((json) => ScheduleDTO.fromJson(json))
@@ -151,6 +159,21 @@ class ScheduleDataSourceImpl implements ScheduleDataSource {
 
       final data = (res as List)
           .map((row) => UserDTO.fromJson(row['user']))
+          .toList();
+
+      return Result.success(data);
+    } catch (e) {
+      return Result.failure(Failure.serverFailure(message: e.toString()));
+    }
+  }
+
+  @override
+  Future<Result<List<CategoryDTO>>> getCategory() async {
+    try {
+      final res = await supabase.from('category').select('id,content');
+
+      final data = (res as List)
+          .map((row) => CategoryDTO.fromJson(row))
           .toList();
 
       return Result.success(data);
