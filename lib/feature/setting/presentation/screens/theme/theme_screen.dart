@@ -35,21 +35,13 @@ class ThemeScreen extends StatelessWidget {
       ),
       body: BlocBuilder<ThemeBloc, ThemeState>(
         builder: (context, state) {
-          if (state.pageState == ThemePageState.loading) {
-            return const Center(child: CircularProgressIndicator());
-          }
-
-          if (state.pageState == ThemePageState.error) {
-            return Center(child: Text(state.message ?? '오류가 발생했습니다'));
-          }
-
           return _buildThemeList(context, state);
         },
       ),
     );
   }
 
-  Widget _buildThemeList(BuildContext context, ThemeState state) {
+  Widget _buildThemeList(BuildContext context, ThemeState currentState) {
     final colorScheme = Theme.of(context).colorScheme;
 
     return Column(
@@ -70,28 +62,28 @@ class ThemeScreen extends StatelessWidget {
                   // 라이트 모드
                   _buildItem(
                     context: context,
-                    theme: const AppThemeMode.light(),
-                    isSelected: state.selectedTheme is ThemeLight,
+                    state: const ThemeState.light(),
+                    isSelected: currentState is ThemeLight,
                     onTap: () => context.read<ThemeBloc>().add(
-                      const UpdateTheme(AppThemeMode.light()),
+                      const UpdateTheme(ThemeState.light()),
                     ),
                   ),
                   // 다크 모드
                   _buildItem(
                     context: context,
-                    theme: const AppThemeMode.dark(),
-                    isSelected: state.selectedTheme is ThemeDark,
+                    state: const ThemeState.dark(),
+                    isSelected: currentState is ThemeDark,
                     onTap: () => context.read<ThemeBloc>().add(
-                      const UpdateTheme(AppThemeMode.dark()),
+                      const UpdateTheme(ThemeState.dark()),
                     ),
                   ),
                   // 시스템 설정
                   _buildItem(
                     context: context,
-                    theme: const AppThemeMode.system(),
-                    isSelected: state.selectedTheme is ThemeSystem,
+                    state: const ThemeState.system(),
+                    isSelected: currentState is ThemeSystem,
                     onTap: () => context.read<ThemeBloc>().add(
-                      const UpdateTheme(AppThemeMode.system()),
+                      const UpdateTheme(ThemeState.system()),
                     ),
                     isLast: true,
                   ),
@@ -107,20 +99,20 @@ class ThemeScreen extends StatelessWidget {
 
   Widget _buildItem({
     required BuildContext context,
-    required AppThemeMode theme,
+    required ThemeState state,
     required bool isSelected,
     required VoidCallback onTap,
     bool isLast = false,
   }) {
     final colorScheme = Theme.of(context).colorScheme;
-    final themeInfo = getThemeInfo(theme);
+    final themeInfo = getThemeInfo(state);
 
     if (themeInfo == null) return const SizedBox.shrink();
 
     return Column(
       children: [
         ThemeBox(
-          theme: theme,
+          state: state,
           themeInfo: themeInfo,
           isSelected: isSelected,
           onTap: onTap,

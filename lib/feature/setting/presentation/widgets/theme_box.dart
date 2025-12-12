@@ -7,7 +7,7 @@ import '../viewmodels/theme/theme_state.dart';
 
 // [이재은] 테마 설정 관련 위젯
 class ThemeBox extends StatelessWidget {
-  final AppThemeMode theme;
+  final ThemeState state;
   final ThemeInfo themeInfo;
   final bool isSelected;
   final VoidCallback onTap;
@@ -15,7 +15,7 @@ class ThemeBox extends StatelessWidget {
 
   const ThemeBox({
     super.key,
-    required this.theme,
+    required this.state,
     required this.themeInfo,
     required this.isSelected,
     required this.onTap,
@@ -79,12 +79,8 @@ class ThemeBox extends StatelessWidget {
   }
 
   IconData _getIcon() {
-    return switch (theme) {
-      ThemeLight() => AppIcon.lightMode,
-      ThemeDark() => AppIcon.darkMode,
-      ThemeSystem() => AppIcon.system,
-      // TODO: Handle this case.
-      AppThemeMode() => throw UnimplementedError(),
-    };
+    if (state is ThemeLight) return AppIcon.lightMode;
+    if (state is ThemeDark) return AppIcon.darkMode;
+    return AppIcon.system;
   }
 }

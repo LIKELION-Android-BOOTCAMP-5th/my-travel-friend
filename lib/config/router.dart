@@ -1,4 +1,4 @@
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
@@ -6,6 +6,7 @@ import 'package:my_travel_friend/feature/auth/presentation/screens/auth_bloc_wid
 import 'package:my_travel_friend/feature/auth/presentation/viewmodel/auth/auth_bloc.dart';
 import 'package:my_travel_friend/feature/auth/presentation/viewmodel/auth_profile/auth_profile_bloc.dart';
 import 'package:my_travel_friend/feature/auth/presentation/viewmodel/auth_profile/auth_profile_state.dart';
+import 'package:my_travel_friend/feature/setting/presentation/screens/menu/menu_bloc_widget.dart';
 import 'package:my_travel_friend/feature/setting/presentation/screens/permission/permission_bloc_widget.dart';
 import 'package:my_travel_friend/feature/trip/presentation/screens/create_trip_bloc_widget.dart';
 import 'package:my_travel_friend/feature/trip/presentation/screens/trip_bloc_widget.dart';
@@ -139,7 +140,11 @@ class AppRouter {
         builder: (context, state) => const AlarmBlocWidget(),
       ),
       GoRoute(
-        path: '/alarmSetting',
+        path: '/setting',
+        builder: (context, state) => const MenuBlocWidget(),
+      ),
+      GoRoute(
+        path: '/setting/alarm',
         builder: (context, state) => const AlarmSettingBlocWidget(),
       ),
       GoRoute(

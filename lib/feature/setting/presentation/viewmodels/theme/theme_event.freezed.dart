@@ -122,7 +122,7 @@ return updateTheme(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  loadTheme,TResult Function( AppThemeMode theme)?  updateTheme,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  loadTheme,TResult Function( ThemeState theme)?  updateTheme,required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case LoadTheme() when loadTheme != null:
 return loadTheme();case UpdateTheme() when updateTheme != null:
@@ -144,7 +144,7 @@ return updateTheme(_that.theme);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  loadTheme,required TResult Function( AppThemeMode theme)  updateTheme,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  loadTheme,required TResult Function( ThemeState theme)  updateTheme,}) {final _that = this;
 switch (_that) {
 case LoadTheme():
 return loadTheme();case UpdateTheme():
@@ -165,7 +165,7 @@ return updateTheme(_that.theme);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  loadTheme,TResult? Function( AppThemeMode theme)?  updateTheme,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  loadTheme,TResult? Function( ThemeState theme)?  updateTheme,}) {final _that = this;
 switch (_that) {
 case LoadTheme() when loadTheme != null:
 return loadTheme();case UpdateTheme() when updateTheme != null:
@@ -216,7 +216,7 @@ class UpdateTheme implements ThemeEvent {
   const UpdateTheme(this.theme);
   
 
- final  AppThemeMode theme;
+ final  ThemeState theme;
 
 /// Create a copy of ThemeEvent
 /// with the given fields replaced by the non-null parameter values.
@@ -248,11 +248,11 @@ abstract mixin class $UpdateThemeCopyWith<$Res> implements $ThemeEventCopyWith<$
   factory $UpdateThemeCopyWith(UpdateTheme value, $Res Function(UpdateTheme) _then) = _$UpdateThemeCopyWithImpl;
 @useResult
 $Res call({
- AppThemeMode theme
+ ThemeState theme
 });
 
 
-$AppThemeModeCopyWith<$Res> get theme;
+$ThemeStateCopyWith<$Res> get theme;
 
 }
 /// @nodoc
@@ -268,7 +268,7 @@ class _$UpdateThemeCopyWithImpl<$Res>
 @pragma('vm:prefer-inline') $Res call({Object? theme = null,}) {
   return _then(UpdateTheme(
 null == theme ? _self.theme : theme // ignore: cast_nullable_to_non_nullable
-as AppThemeMode,
+as ThemeState,
   ));
 }
 
@@ -276,9 +276,9 @@ as AppThemeMode,
 /// with the given fields replaced by the non-null parameter values.
 @override
 @pragma('vm:prefer-inline')
-$AppThemeModeCopyWith<$Res> get theme {
+$ThemeStateCopyWith<$Res> get theme {
   
-  return $AppThemeModeCopyWith<$Res>(_self.theme, (value) {
+  return $ThemeStateCopyWith<$Res>(_self.theme, (value) {
     return _then(_self.copyWith(theme: value));
   });
 }
