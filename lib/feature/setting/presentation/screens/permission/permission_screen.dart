@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -133,6 +135,22 @@ class _PermissionScreenState extends State<PermissionScreen>
                                 color: colorScheme.onSurfaceVariant,
                               ),
                             ),
+                            if (Platform.isIOS)
+                              Container(
+                                child: Column(
+                                  children: [
+                                    SizedBox(height: 6),
+                                    Text(
+                                      "권한 변경 후에는 앱 재시동이 필요합니다",
+                                      softWrap: true,
+                                      overflow: TextOverflow.visible,
+                                      style: AppFont.small.copyWith(
+                                        color: colorScheme.secondary,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
                           ],
                         ),
                       ),
