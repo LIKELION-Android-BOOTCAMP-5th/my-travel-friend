@@ -6,10 +6,10 @@ import '../entities/chat_entity.dart';
 
 // [이재은] 채팅 메세지 가져오기 usecase
 @LazySingleton()
-class GetMsgsUseCase {
+class GetChatUseCase {
   final ChatRepository _chatRepository;
 
-  GetMsgsUseCase(this._chatRepository);
+  GetChatUseCase(this._chatRepository);
 
   // 채팅 가져오기
   Future<Result<List<ChatEntity>>> call({
@@ -17,6 +17,6 @@ class GetMsgsUseCase {
     required int page,
     int limit = 15,
   }) async {
-    return _chatRepository.getMsgs(tripId: tripId, page: page, limit: limit);
+    return _chatRepository.getChat(tripId: tripId, page: page, limit: limit);
   }
 }

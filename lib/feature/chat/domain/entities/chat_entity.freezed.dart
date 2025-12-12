@@ -14,7 +14,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$ChatEntity {
 
- int? get id; String? get createdAt; int get tripId; int get userId; String get message; String? get userNickname; String? get userImg;
+ int? get id; String? get createdAt; int get tripId; int get userId; String get message; UserEntity? get user;
 /// Create a copy of ChatEntity
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -25,16 +25,16 @@ $ChatEntityCopyWith<ChatEntity> get copyWith => _$ChatEntityCopyWithImpl<ChatEnt
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is ChatEntity&&(identical(other.id, id) || other.id == id)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.tripId, tripId) || other.tripId == tripId)&&(identical(other.userId, userId) || other.userId == userId)&&(identical(other.message, message) || other.message == message)&&(identical(other.userNickname, userNickname) || other.userNickname == userNickname)&&(identical(other.userImg, userImg) || other.userImg == userImg));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ChatEntity&&(identical(other.id, id) || other.id == id)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.tripId, tripId) || other.tripId == tripId)&&(identical(other.userId, userId) || other.userId == userId)&&(identical(other.message, message) || other.message == message)&&(identical(other.user, user) || other.user == user));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,id,createdAt,tripId,userId,message,userNickname,userImg);
+int get hashCode => Object.hash(runtimeType,id,createdAt,tripId,userId,message,user);
 
 @override
 String toString() {
-  return 'ChatEntity(id: $id, createdAt: $createdAt, tripId: $tripId, userId: $userId, message: $message, userNickname: $userNickname, userImg: $userImg)';
+  return 'ChatEntity(id: $id, createdAt: $createdAt, tripId: $tripId, userId: $userId, message: $message, user: $user)';
 }
 
 
@@ -45,11 +45,11 @@ abstract mixin class $ChatEntityCopyWith<$Res>  {
   factory $ChatEntityCopyWith(ChatEntity value, $Res Function(ChatEntity) _then) = _$ChatEntityCopyWithImpl;
 @useResult
 $Res call({
- int? id, String? createdAt, int tripId, int userId, String message, String? userNickname, String? userImg
+ int? id, String? createdAt, int tripId, int userId, String message, UserEntity? user
 });
 
 
-
+$UserEntityCopyWith<$Res>? get user;
 
 }
 /// @nodoc
@@ -62,19 +62,30 @@ class _$ChatEntityCopyWithImpl<$Res>
 
 /// Create a copy of ChatEntity
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = freezed,Object? createdAt = freezed,Object? tripId = null,Object? userId = null,Object? message = null,Object? userNickname = freezed,Object? userImg = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = freezed,Object? createdAt = freezed,Object? tripId = null,Object? userId = null,Object? message = null,Object? user = freezed,}) {
   return _then(_self.copyWith(
 id: freezed == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as int?,createdAt: freezed == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
 as String?,tripId: null == tripId ? _self.tripId : tripId // ignore: cast_nullable_to_non_nullable
 as int,userId: null == userId ? _self.userId : userId // ignore: cast_nullable_to_non_nullable
 as int,message: null == message ? _self.message : message // ignore: cast_nullable_to_non_nullable
-as String,userNickname: freezed == userNickname ? _self.userNickname : userNickname // ignore: cast_nullable_to_non_nullable
-as String?,userImg: freezed == userImg ? _self.userImg : userImg // ignore: cast_nullable_to_non_nullable
-as String?,
+as String,user: freezed == user ? _self.user : user // ignore: cast_nullable_to_non_nullable
+as UserEntity?,
   ));
 }
+/// Create a copy of ChatEntity
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$UserEntityCopyWith<$Res>? get user {
+    if (_self.user == null) {
+    return null;
+  }
 
+  return $UserEntityCopyWith<$Res>(_self.user!, (value) {
+    return _then(_self.copyWith(user: value));
+  });
+}
 }
 
 
@@ -156,10 +167,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int? id,  String? createdAt,  int tripId,  int userId,  String message,  String? userNickname,  String? userImg)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int? id,  String? createdAt,  int tripId,  int userId,  String message,  UserEntity? user)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _ChatEntity() when $default != null:
-return $default(_that.id,_that.createdAt,_that.tripId,_that.userId,_that.message,_that.userNickname,_that.userImg);case _:
+return $default(_that.id,_that.createdAt,_that.tripId,_that.userId,_that.message,_that.user);case _:
   return orElse();
 
 }
@@ -177,10 +188,10 @@ return $default(_that.id,_that.createdAt,_that.tripId,_that.userId,_that.message
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int? id,  String? createdAt,  int tripId,  int userId,  String message,  String? userNickname,  String? userImg)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int? id,  String? createdAt,  int tripId,  int userId,  String message,  UserEntity? user)  $default,) {final _that = this;
 switch (_that) {
 case _ChatEntity():
-return $default(_that.id,_that.createdAt,_that.tripId,_that.userId,_that.message,_that.userNickname,_that.userImg);case _:
+return $default(_that.id,_that.createdAt,_that.tripId,_that.userId,_that.message,_that.user);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -197,10 +208,10 @@ return $default(_that.id,_that.createdAt,_that.tripId,_that.userId,_that.message
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int? id,  String? createdAt,  int tripId,  int userId,  String message,  String? userNickname,  String? userImg)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int? id,  String? createdAt,  int tripId,  int userId,  String message,  UserEntity? user)?  $default,) {final _that = this;
 switch (_that) {
 case _ChatEntity() when $default != null:
-return $default(_that.id,_that.createdAt,_that.tripId,_that.userId,_that.message,_that.userNickname,_that.userImg);case _:
+return $default(_that.id,_that.createdAt,_that.tripId,_that.userId,_that.message,_that.user);case _:
   return null;
 
 }
@@ -212,7 +223,7 @@ return $default(_that.id,_that.createdAt,_that.tripId,_that.userId,_that.message
 
 
 class _ChatEntity implements ChatEntity {
-  const _ChatEntity({this.id, this.createdAt, required this.tripId, required this.userId, required this.message, this.userNickname, this.userImg});
+  const _ChatEntity({this.id, this.createdAt, required this.tripId, required this.userId, required this.message, this.user});
   
 
 @override final  int? id;
@@ -220,8 +231,7 @@ class _ChatEntity implements ChatEntity {
 @override final  int tripId;
 @override final  int userId;
 @override final  String message;
-@override final  String? userNickname;
-@override final  String? userImg;
+@override final  UserEntity? user;
 
 /// Create a copy of ChatEntity
 /// with the given fields replaced by the non-null parameter values.
@@ -233,16 +243,16 @@ _$ChatEntityCopyWith<_ChatEntity> get copyWith => __$ChatEntityCopyWithImpl<_Cha
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ChatEntity&&(identical(other.id, id) || other.id == id)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.tripId, tripId) || other.tripId == tripId)&&(identical(other.userId, userId) || other.userId == userId)&&(identical(other.message, message) || other.message == message)&&(identical(other.userNickname, userNickname) || other.userNickname == userNickname)&&(identical(other.userImg, userImg) || other.userImg == userImg));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ChatEntity&&(identical(other.id, id) || other.id == id)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.tripId, tripId) || other.tripId == tripId)&&(identical(other.userId, userId) || other.userId == userId)&&(identical(other.message, message) || other.message == message)&&(identical(other.user, user) || other.user == user));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,id,createdAt,tripId,userId,message,userNickname,userImg);
+int get hashCode => Object.hash(runtimeType,id,createdAt,tripId,userId,message,user);
 
 @override
 String toString() {
-  return 'ChatEntity(id: $id, createdAt: $createdAt, tripId: $tripId, userId: $userId, message: $message, userNickname: $userNickname, userImg: $userImg)';
+  return 'ChatEntity(id: $id, createdAt: $createdAt, tripId: $tripId, userId: $userId, message: $message, user: $user)';
 }
 
 
@@ -253,11 +263,11 @@ abstract mixin class _$ChatEntityCopyWith<$Res> implements $ChatEntityCopyWith<$
   factory _$ChatEntityCopyWith(_ChatEntity value, $Res Function(_ChatEntity) _then) = __$ChatEntityCopyWithImpl;
 @override @useResult
 $Res call({
- int? id, String? createdAt, int tripId, int userId, String message, String? userNickname, String? userImg
+ int? id, String? createdAt, int tripId, int userId, String message, UserEntity? user
 });
 
 
-
+@override $UserEntityCopyWith<$Res>? get user;
 
 }
 /// @nodoc
@@ -270,20 +280,31 @@ class __$ChatEntityCopyWithImpl<$Res>
 
 /// Create a copy of ChatEntity
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = freezed,Object? createdAt = freezed,Object? tripId = null,Object? userId = null,Object? message = null,Object? userNickname = freezed,Object? userImg = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = freezed,Object? createdAt = freezed,Object? tripId = null,Object? userId = null,Object? message = null,Object? user = freezed,}) {
   return _then(_ChatEntity(
 id: freezed == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as int?,createdAt: freezed == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
 as String?,tripId: null == tripId ? _self.tripId : tripId // ignore: cast_nullable_to_non_nullable
 as int,userId: null == userId ? _self.userId : userId // ignore: cast_nullable_to_non_nullable
 as int,message: null == message ? _self.message : message // ignore: cast_nullable_to_non_nullable
-as String,userNickname: freezed == userNickname ? _self.userNickname : userNickname // ignore: cast_nullable_to_non_nullable
-as String?,userImg: freezed == userImg ? _self.userImg : userImg // ignore: cast_nullable_to_non_nullable
-as String?,
+as String,user: freezed == user ? _self.user : user // ignore: cast_nullable_to_non_nullable
+as UserEntity?,
   ));
 }
 
+/// Create a copy of ChatEntity
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$UserEntityCopyWith<$Res>? get user {
+    if (_self.user == null) {
+    return null;
+  }
 
+  return $UserEntityCopyWith<$Res>(_self.user!, (value) {
+    return _then(_self.copyWith(user: value));
+  });
+}
 }
 
 // dart format on

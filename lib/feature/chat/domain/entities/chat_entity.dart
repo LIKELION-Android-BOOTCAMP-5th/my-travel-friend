@@ -1,5 +1,7 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
+import '../../../auth/domain/entities/user_entity.dart';
+
 part 'chat_entity.freezed.dart';
 
 // [이재은] : 채팅 entity
@@ -12,7 +14,6 @@ abstract class ChatEntity with _$ChatEntity {
     required int tripId,
     required int userId,
     required String message,
-    String? userNickname,
-    String? userImg,
+    UserEntity? user,
   }) = _ChatEntity;
 }

@@ -173,4 +173,7 @@ class AppIcon {
 
   // 우측 화살표(>)
   static const right = FeatherIcons.chevronRight;
+
+  // 비행기
+  static const send = FontAwesomeIcons.paperPlane;
 }

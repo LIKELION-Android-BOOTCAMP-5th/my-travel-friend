@@ -61,6 +61,22 @@ import '../../feature/auth/domain/usecases/watch_auth_state_usecase.dart'
 import '../../feature/auth/presentation/viewmodel/auth/auth_bloc.dart' as _i474;
 import '../../feature/auth/presentation/viewmodel/auth_profile/auth_profile_bloc.dart'
     as _i387;
+import '../../feature/chat/data/datasources/chat_data_source.dart' as _i888;
+import '../../feature/chat/data/datasources/chat_data_source_impl.dart' as _i96;
+import '../../feature/chat/data/repositories/chat_repository_impl.dart'
+    as _i269;
+import '../../feature/chat/domain/repositories/chat_repository.dart' as _i167;
+import '../../feature/chat/domain/usecases/get_chat_usecase.dart' as _i91;
+import '../../feature/chat/domain/usecases/get_read_status_usecase.dart'
+    as _i38;
+import '../../feature/chat/domain/usecases/get_unread_count_usecase.dart'
+    as _i562;
+import '../../feature/chat/domain/usecases/send_chat_usecase.dart' as _i239;
+import '../../feature/chat/domain/usecases/subscribe_chat_usecase.dart'
+    as _i284;
+import '../../feature/chat/domain/usecases/update_read_status_usecase.dart'
+    as _i383;
+import '../../feature/chat/presentation/viewmodels/chat_bloc.dart' as _i663;
 import '../../feature/checklist/data/datasources/checklist_data_source.dart'
     as _i877;
 import '../../feature/checklist/data/datasources/checklist_data_source_impl.dart'
@@ -372,6 +388,9 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i565.ProfileRepository>(
       () => _i73.ProfileRepositoryImpl(gh<_i1071.ProfileDataSource>()),
     );
+    gh.lazySingleton<_i888.ChatDataSource>(
+      () => _i96.ChatDataSourceImpl(gh<_i454.SupabaseClient>()),
+    );
     gh.lazySingleton<_i1030.AlarmSettingDataSource>(
       () => _i96.AlarmSettingDataSourceImpl(gh<_i454.SupabaseClient>()),
     );
@@ -409,6 +428,9 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i161.TripRepository>(),
       ),
     );
+    gh.lazySingleton<_i167.ChatRepository>(
+      () => _i269.ChatRepositoryImpl(gh<_i888.ChatDataSource>()),
+    );
     gh.factory<_i1000.TripDetailBloc>(
       () => _i1000.TripDetailBloc(
         gh<_i277.GetTripByIdUseCase>(),
@@ -444,6 +466,15 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.singleton<_i456.WatchAuthStateUseCase>(
       () => _i456.WatchAuthStateUseCase(gh<_i488.AuthRepository>()),
+    );
+    gh.lazySingleton<_i91.GetChatUseCase>(
+      () => _i91.GetChatUseCase(gh<_i167.ChatRepository>()),
+    );
+    gh.lazySingleton<_i239.SendChatUseCase>(
+      () => _i239.SendChatUseCase(gh<_i167.ChatRepository>()),
+    );
+    gh.lazySingleton<_i284.SubscribeChatUseCase>(
+      () => _i284.SubscribeChatUseCase(gh<_i167.ChatRepository>()),
     );
     gh.factory<_i873.CreateTripBloc>(
       () => _i873.CreateTripBloc(
@@ -527,6 +558,15 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i858.SignOutUseCase>(),
       ),
     );
+    gh.lazySingleton<_i38.GetReadStatusUseCase>(
+      () => _i38.GetReadStatusUseCase(gh<_i167.ChatRepository>()),
+    );
+    gh.lazySingleton<_i562.GetUnreadCountUseCase>(
+      () => _i562.GetUnreadCountUseCase(gh<_i167.ChatRepository>()),
+    );
+    gh.lazySingleton<_i383.UpdateReadStatusUseCase>(
+      () => _i383.UpdateReadStatusUseCase(gh<_i167.ChatRepository>()),
+    );
     gh.factory<_i557.ProfileBloc>(
       () => _i557.ProfileBloc(
         gh<_i945.CheckNicknameDuplicateUseCase>(),
@@ -589,6 +629,15 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.lazySingleton<_i87.UpdateAlarmSettingUseCase>(
       () => _i87.UpdateAlarmSettingUseCase(gh<_i212.AlarmSettingRepository>()),
+    );
+    gh.factory<_i663.ChatBloc>(
+      () => _i663.ChatBloc(
+        gh<_i91.GetChatUseCase>(),
+        gh<_i239.SendChatUseCase>(),
+        gh<_i284.SubscribeChatUseCase>(),
+        gh<_i38.GetReadStatusUseCase>(),
+        gh<_i383.UpdateReadStatusUseCase>(),
+      ),
     );
     gh.factory<_i693.AlarmBloc>(
       () => _i693.AlarmBloc(
