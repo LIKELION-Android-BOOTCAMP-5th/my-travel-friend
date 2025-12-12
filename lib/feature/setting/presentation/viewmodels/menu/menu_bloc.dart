@@ -14,6 +14,14 @@ class MenuBloc extends Bloc<MenuEvent, MenuState> {
 
   Future<void> _onLoad(LoadMenu event, Emitter<MenuState> emit) async {
     emit(state.copyWith(pageState: MenuPageState.loading));
+
+    emit(
+      state.copyWith(
+        pageState: MenuPageState.loaded,
+        // friendRequestCount: 4,
+        // travelInviteCount: 3,
+      ),
+    );
   }
 
   Future<void> _onRefresh(RefreshMenu event, Emitter<MenuState> emit) async {}

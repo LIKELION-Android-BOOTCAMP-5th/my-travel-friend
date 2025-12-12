@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../core/theme/app_font.dart';
-import '../../../../core/widget/text_box.dart';
-import '../viewmodels/profile/profile_bloc.dart';
-import '../viewmodels/profile/profile_event.dart';
-import '../viewmodels/profile/profile_state.dart';
+import '../../../../../core/theme/app_font.dart';
+import '../../../../../core/widget/text_box.dart';
+import '../../viewmodels/profile/profile_bloc.dart';
+import '../../viewmodels/profile/profile_event.dart';
+import '../../viewmodels/profile/profile_state.dart';
 import 'nickname_extension.dart';
 
 // [이재은] 닉네임 카드 위젯

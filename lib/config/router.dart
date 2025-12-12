@@ -13,7 +13,6 @@ import 'package:my_travel_friend/feature/trip/presentation/screens/trip_bloc_wid
 import 'package:my_travel_friend/feature/trip/presentation/viewmodels/create_trip/create_trip_bloc.dart';
 import 'package:my_travel_friend/feature/trip/presentation/viewmodels/trip/trip_bloc.dart';
 import 'package:my_travel_friend/splash.dart';
-import 'package:my_travel_friend/temp_screen.dart';
 
 import '../feature/alarm/presentation/screens/alarm_bloc_widget.dart';
 import '../feature/checklist/presentation/screens/lists_bloc_widget.dart';
@@ -53,6 +52,10 @@ class AppRouter {
         return null;
       }
 
+      if (authState is AuthProfileInitial) {
+        return '/splash';
+      }
+
       // 로그인 상태가 필요한 경로 목록
       const lockedPaths = [
         '/friend',
@@ -89,7 +92,7 @@ class AppRouter {
         path: '/splash',
         builder: (context, state) => const SplashScreen(),
       ),
-      GoRoute(path: '/', builder: (context, state) => const TempScreen()),
+      GoRoute(path: '/', builder: (context, state) => TripBlocWidget()),
 
       GoRoute(
         path: '/login',

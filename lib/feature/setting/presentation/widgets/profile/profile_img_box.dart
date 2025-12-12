@@ -5,11 +5,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:my_travel_friend/feature/setting/presentation/viewmodels/profile/profile_bloc.dart';
 
-import '../../../../core/theme/app_icon.dart';
-import '../../../../core/widget/bottom_sheat.dart';
-import '../../../../core/widget/profile_img.dart';
-import '../viewmodels/profile/profile_event.dart';
-import '../viewmodels/profile/profile_state.dart';
+import '../../../../../core/theme/app_icon.dart';
+import '../../../../../core/widget/bottom_sheat.dart';
+import '../../../../../core/widget/profile_img.dart';
+import '../../viewmodels/profile/profile_event.dart';
+import '../../viewmodels/profile/profile_state.dart';
 
 // [이재은] 프로필 이미지 설정 박스
 class ProfileImgBox extends StatefulWidget {
@@ -33,28 +33,29 @@ class _ProfileImgBoxState extends State<ProfileImgBox> {
       builder: (context, state) {
         final displayImage = state.displayImage;
 
-        return Container(
-          width: double.infinity,
-          padding: const EdgeInsets.symmetric(vertical: 32),
-          decoration: BoxDecoration(
-            color: colorScheme.surfaceContainerHighest,
-            borderRadius: BorderRadius.circular(16),
-          ),
-          child: Center(
-            child: Stack(
-              children: [
-                // 프로필 이미지
-                ProfileImg(
-                  imageUrl: displayImage is String ? displayImage : null,
-                  imageFile: displayImage is File ? displayImage : null,
-                  radius: 60,
-                ),
-                // 카메라 버튼
-                Positioned(
-                  right: 0,
-                  bottom: 0,
-                  child: GestureDetector(
-                    onTap: () => _showImgOptions(context, state),
+        return GestureDetector(
+          behavior: HitTestBehavior.opaque,
+          onTap: () => _showImgOptions(context, state),
+          child: Container(
+            width: double.infinity,
+            padding: const EdgeInsets.symmetric(vertical: 32),
+            decoration: BoxDecoration(
+              color: colorScheme.surfaceContainerHighest,
+              borderRadius: BorderRadius.circular(16),
+            ),
+            child: Center(
+              child: Stack(
+                children: [
+                  // 프로필 이미지
+                  ProfileImg(
+                    imageUrl: displayImage is String ? displayImage : null,
+                    imageFile: displayImage is File ? displayImage : null,
+                    radius: 60,
+                  ),
+                  // 카메라 버튼
+                  Positioned(
+                    right: 0,
+                    bottom: 0,
                     child: Container(
                       decoration: BoxDecoration(
                         color: colorScheme.primary,
@@ -72,8 +73,8 @@ class _ProfileImgBoxState extends State<ProfileImgBox> {
                       ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         );

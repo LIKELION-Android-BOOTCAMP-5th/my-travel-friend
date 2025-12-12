@@ -1,5 +1,5 @@
 // [이재은] Nickname 에러 extension
-import '../viewmodels/profile/profile_state.dart';
+import '../../viewmodels/profile/profile_state.dart';
 
 extension NicknameStatusExtension on NicknameStatus {
   // 에러 메시지
