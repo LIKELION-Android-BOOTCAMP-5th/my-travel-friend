@@ -53,7 +53,7 @@ class PushNotificationService {
   //로컬알림설정
   void _initialization() async {
     AndroidInitializationSettings android = const AndroidInitializationSettings(
-      "logo_android",
+      "push_icon_white",
     );
     DarwinInitializationSettings ios = const DarwinInitializationSettings(
       requestSoundPermission: false,
