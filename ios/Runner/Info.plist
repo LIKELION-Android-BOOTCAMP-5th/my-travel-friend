@@ -40,8 +40,14 @@
 	<string>595568080788-m3j8eivev0nqnok2n5tfngo0kuspndm6.apps.googleusercontent.com</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+    <!-- 알림 -->
+    <key>UIBackgroundModes</key>
+    <array>
+        <string>fetch</string>
+        <string>remote-notification</string>
+    </array>
 	<key>NSCameraUsageDescription</key>
-	<string>다이어리에 사진을 추가하기 위해 카메라 접근 권한이 필요합니다.</string>
+	<string>여행 사진 촬영 후 다이어리 저장을 위해 카메라 접근 권한이 필요합니다.</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
 	<string>사진을 갤러리에 저장하기 위해 권한이 필요합니다.</string>
 	<key>NSPhotoLibraryUsageDescription</key>

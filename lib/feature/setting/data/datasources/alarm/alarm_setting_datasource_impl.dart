@@ -1,9 +1,9 @@
 import 'package:injectable/injectable.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-import '../../../../core/result/failures.dart';
-import '../../../../core/result/result.dart';
-import '../dtos/alarm_setting_dto.dart';
+import '../../../../../core/result/failures.dart';
+import '../../../../../core/result/result.dart';
+import '../../dtos/alarm_setting_dto.dart';
 import 'alarm_setting_datasource.dart';
 
 // [이재은] 알림설정 관련 데이터 소스 (구현체)

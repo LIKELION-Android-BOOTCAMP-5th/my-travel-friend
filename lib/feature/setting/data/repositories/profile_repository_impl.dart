@@ -6,7 +6,7 @@ import 'package:my_travel_friend/core/result/result.dart';
 import '../../../auth/data/models/user_model.dart';
 import '../../../auth/domain/entities/user_entity.dart';
 import '../../domain/repositories/profile_repository.dart';
-import '../datasources/profile_data_source.dart';
+import '../datasources/profile/profile_data_source.dart';
 
 // [이재은] 프로필 repository
 @LazySingleton(as: ProfileRepository)
