@@ -12,7 +12,8 @@ import 'core/theme/app_theme.dart';
 import 'feature/auth/presentation/viewmodel/auth_profile/auth_profile_bloc.dart';
 import 'feature/setting/presentation/viewmodels/theme/theme_bloc.dart';
 import 'feature/setting/presentation/viewmodels/theme/theme_event.dart';
-import 'feature/setting/presentation/viewmodels/theme/theme_state.dart';
+import 'feature/setting/presentation/viewmodels/theme/theme_state.dart'
+    hide AppTheme;
 
 @pragma('vm:entry-point')
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {

@@ -16,28 +16,36 @@ class ThemeBloc extends Bloc<ThemeEvent, ThemeState> {
   final UpdateThemeUseCase _updateThemeUseCase;
 
   ThemeBloc(this._getThemeUseCase, this._updateThemeUseCase)
-    : super(const ThemeState.initial()) {
+    : super(const ThemeState()) {
     on<LoadTheme>(_onLoadTheme);
     on<UpdateTheme>(_onUpdateTheme);
   }
 
   // 현재 ThemeMode 반환 (MaterialApp에서 사용)
   ThemeMode get themeMode {
-    return state.maybeWhen(
-      loaded: (selectedTheme) => _toThemeMode(selectedTheme),
-      orElse: () => ThemeMode.system,
-    );
+    return switch (state.selectedTheme) {
+      ThemeLight() => ThemeMode.light,
+      ThemeDark() => ThemeMode.dark,
+      ThemeSystem() => ThemeMode.system,
+      // TODO: Handle this case.
+      AppThemeMode() => throw UnimplementedError(),
+    };
   }
 
   // 테마 불러오기
   Future<void> _onLoadTheme(LoadTheme event, Emitter<ThemeState> emit) async {
-    emit(const ThemeState.loading());
+    emit(state.copyWith(pageState: ThemePageState.loading));
 
-    final res = _getThemeUseCase();
+    final res = await _getThemeUseCase();
 
     res.when(
       success: (theme) {
-        emit(ThemeState.loaded(selectedTheme: theme));
+        emit(
+          state.copyWith(
+            pageState: ThemePageState.loaded,
+            selectedTheme: theme,
+          ),
+        );
       },
       failure: (failure) {
         final message = failure.when(
@@ -46,7 +54,7 @@ class ThemeBloc extends Bloc<ThemeEvent, ThemeState> {
           authFailure: (msg) => msg,
           undefined: (msg) => msg,
         );
-        emit(ThemeState.error(message: message));
+        emit(state.copyWith(pageState: ThemePageState.error, message: message));
       },
     );
   }
@@ -56,11 +64,11 @@ class ThemeBloc extends Bloc<ThemeEvent, ThemeState> {
     UpdateTheme event,
     Emitter<ThemeState> emit,
   ) async {
-    final res = await _updateThemeUseCase(event.type);
+    final res = await _updateThemeUseCase(event.theme);
 
     res.when(
       success: (_) {
-        emit(ThemeState.loaded(selectedTheme: event.type));
+        emit(state.copyWith(selectedTheme: event.theme));
       },
       failure: (failure) {
         final message = failure.when(
@@ -69,20 +77,8 @@ class ThemeBloc extends Bloc<ThemeEvent, ThemeState> {
           authFailure: (msg) => msg,
           undefined: (msg) => msg,
         );
-        emit(ThemeState.error(message: message));
+        emit(state.copyWith(message: message));
       },
     );
-  }
-
-  // AppThemeType → ThemeMode 변환
-  ThemeMode _toThemeMode(AppThemeType type) {
-    switch (type) {
-      case AppThemeType.light:
-        return ThemeMode.light;
-      case AppThemeType.dark:
-        return ThemeMode.dark;
-      case AppThemeType.system:
-        return ThemeMode.system;
-    }
   }
 }

@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:my_travel_friend/core/theme/app_colors.dart';
+import 'package:my_travel_friend/core/theme/app_font.dart';
 
-import '../../../../core/theme/app_colors.dart';
-import '../../../../core/theme/app_font.dart';
-import '../../../../core/theme/app_icon.dart';
+import '../../../../../core/theme/app_icon.dart';
 import '../viewmodels/theme/theme_state.dart';
 
 // [이재은] 테마 설정 관련 위젯
 class ThemeBox extends StatelessWidget {
-  final ThemeInfo theme;
+  final AppThemeMode theme;
+  final ThemeInfo themeInfo;
   final bool isSelected;
   final VoidCallback onTap;
   final bool isLast;
@@ -15,6 +16,7 @@ class ThemeBox extends StatelessWidget {
   const ThemeBox({
     super.key,
     required this.theme,
+    required this.themeInfo,
     required this.isSelected,
     required this.onTap,
     this.isLast = false,
@@ -39,23 +41,7 @@ class ThemeBox extends StatelessWidget {
               ),
               child: Padding(
                 padding: EdgeInsets.all(16.0),
-                child: switch (theme.type) {
-                  AppThemeType.light => Icon(
-                    AppIcon.lightMode,
-                    size: 24,
-                    color: colorScheme.onSurface,
-                  ),
-                  AppThemeType.dark => Icon(
-                    AppIcon.darkMode,
-                    size: 24,
-                    color: colorScheme.onSurface,
-                  ),
-                  AppThemeType.system => Icon(
-                    AppIcon.system,
-                    size: 24,
-                    color: colorScheme.onSurface,
-                  ),
-                },
+                child: Icon(_getIcon(), size: 24, color: colorScheme.onSurface),
               ),
             ),
             SizedBox(width: 16),
@@ -64,14 +50,14 @@ class ThemeBox extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    theme.title,
+                    themeInfo.title,
                     style: AppFont.medium.copyWith(
                       color: isDark ? AppColors.light : AppColors.dark,
                     ),
                   ),
                   SizedBox(height: 4),
                   Text(
-                    theme.description,
+                    themeInfo.description,
                     style: AppFont.small.copyWith(
                       color: isDark ? AppColors.light : AppColors.dark,
                     ),
@@ -90,5 +76,15 @@ class ThemeBox extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  IconData _getIcon() {
+    return switch (theme) {
+      ThemeLight() => AppIcon.lightMode,
+      ThemeDark() => AppIcon.darkMode,
+      ThemeSystem() => AppIcon.system,
+      // TODO: Handle this case.
+      AppThemeMode() => throw UnimplementedError(),
+    };
   }
 }

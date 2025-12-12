@@ -12,7 +12,7 @@ part of 'theme_state.dart';
 // dart format off
 T _$identity<T>(T value) => value;
 /// @nodoc
-mixin _$ThemeState {
+mixin _$AppThemeMode {
 
 
 
@@ -20,7 +20,7 @@ mixin _$ThemeState {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is ThemeState);
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is AppThemeMode);
 }
 
 
@@ -29,20 +29,20 @@ int get hashCode => runtimeType.hashCode;
 
 @override
 String toString() {
-  return 'ThemeState()';
+  return 'AppThemeMode()';
 }
 
 
 }
 
 /// @nodoc
-class $ThemeStateCopyWith<$Res>  {
-$ThemeStateCopyWith(ThemeState _, $Res Function(ThemeState) __);
+class $AppThemeModeCopyWith<$Res>  {
+$AppThemeModeCopyWith(AppThemeMode _, $Res Function(AppThemeMode) __);
 }
 
 
-/// Adds pattern-matching-related methods to [ThemeState].
-extension ThemeStatePatterns on ThemeState {
+/// Adds pattern-matching-related methods to [AppThemeMode].
+extension AppThemeModePatterns on AppThemeMode {
 /// A variant of `map` that fallback to returning `orElse`.
 ///
 /// It is equivalent to doing:
@@ -55,14 +55,13 @@ extension ThemeStatePatterns on ThemeState {
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( ThemeInitial value)?  initial,TResult Function( ThemeLoading value)?  loading,TResult Function( ThemeLoaded value)?  loaded,TResult Function( ThemeError value)?  error,required TResult orElse(),}){
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( ThemeLight value)?  light,TResult Function( ThemeDark value)?  dark,TResult Function( ThemeSystem value)?  system,required TResult orElse(),}){
 final _that = this;
 switch (_that) {
-case ThemeInitial() when initial != null:
-return initial(_that);case ThemeLoading() when loading != null:
-return loading(_that);case ThemeLoaded() when loaded != null:
-return loaded(_that);case ThemeError() when error != null:
-return error(_that);case _:
+case ThemeLight() when light != null:
+return light(_that);case ThemeDark() when dark != null:
+return dark(_that);case ThemeSystem() when system != null:
+return system(_that);case _:
   return orElse();
 
 }
@@ -80,14 +79,13 @@ return error(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( ThemeInitial value)  initial,required TResult Function( ThemeLoading value)  loading,required TResult Function( ThemeLoaded value)  loaded,required TResult Function( ThemeError value)  error,}){
+@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( ThemeLight value)  light,required TResult Function( ThemeDark value)  dark,required TResult Function( ThemeSystem value)  system,}){
 final _that = this;
 switch (_that) {
-case ThemeInitial():
-return initial(_that);case ThemeLoading():
-return loading(_that);case ThemeLoaded():
-return loaded(_that);case ThemeError():
-return error(_that);case _:
+case ThemeLight():
+return light(_that);case ThemeDark():
+return dark(_that);case ThemeSystem():
+return system(_that);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -104,14 +102,13 @@ return error(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( ThemeInitial value)?  initial,TResult? Function( ThemeLoading value)?  loading,TResult? Function( ThemeLoaded value)?  loaded,TResult? Function( ThemeError value)?  error,}){
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( ThemeLight value)?  light,TResult? Function( ThemeDark value)?  dark,TResult? Function( ThemeSystem value)?  system,}){
 final _that = this;
 switch (_that) {
-case ThemeInitial() when initial != null:
-return initial(_that);case ThemeLoading() when loading != null:
-return loading(_that);case ThemeLoaded() when loaded != null:
-return loaded(_that);case ThemeError() when error != null:
-return error(_that);case _:
+case ThemeLight() when light != null:
+return light(_that);case ThemeDark() when dark != null:
+return dark(_that);case ThemeSystem() when system != null:
+return system(_that);case _:
   return null;
 
 }
@@ -128,13 +125,12 @@ return error(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  initial,TResult Function()?  loading,TResult Function( AppThemeType selectedTheme)?  loaded,TResult Function( String message)?  error,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  light,TResult Function()?  dark,TResult Function()?  system,required TResult orElse(),}) {final _that = this;
 switch (_that) {
-case ThemeInitial() when initial != null:
-return initial();case ThemeLoading() when loading != null:
-return loading();case ThemeLoaded() when loaded != null:
-return loaded(_that.selectedTheme);case ThemeError() when error != null:
-return error(_that.message);case _:
+case ThemeLight() when light != null:
+return light();case ThemeDark() when dark != null:
+return dark();case ThemeSystem() when system != null:
+return system();case _:
   return orElse();
 
 }
@@ -152,13 +148,12 @@ return error(_that.message);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  initial,required TResult Function()  loading,required TResult Function( AppThemeType selectedTheme)  loaded,required TResult Function( String message)  error,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  light,required TResult Function()  dark,required TResult Function()  system,}) {final _that = this;
 switch (_that) {
-case ThemeInitial():
-return initial();case ThemeLoading():
-return loading();case ThemeLoaded():
-return loaded(_that.selectedTheme);case ThemeError():
-return error(_that.message);case _:
+case ThemeLight():
+return light();case ThemeDark():
+return dark();case ThemeSystem():
+return system();case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -175,13 +170,12 @@ return error(_that.message);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  initial,TResult? Function()?  loading,TResult? Function( AppThemeType selectedTheme)?  loaded,TResult? Function( String message)?  error,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  light,TResult? Function()?  dark,TResult? Function()?  system,}) {final _that = this;
 switch (_that) {
-case ThemeInitial() when initial != null:
-return initial();case ThemeLoading() when loading != null:
-return loading();case ThemeLoaded() when loaded != null:
-return loaded(_that.selectedTheme);case ThemeError() when error != null:
-return error(_that.message);case _:
+case ThemeLight() when light != null:
+return light();case ThemeDark() when dark != null:
+return dark();case ThemeSystem() when system != null:
+return system();case _:
   return null;
 
 }
@@ -192,8 +186,8 @@ return error(_that.message);case _:
 /// @nodoc
 
 
-class ThemeInitial implements ThemeState {
-  const ThemeInitial();
+class ThemeLight implements AppThemeMode {
+  const ThemeLight();
   
 
 
@@ -203,7 +197,7 @@ class ThemeInitial implements ThemeState {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is ThemeInitial);
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ThemeLight);
 }
 
 
@@ -212,7 +206,7 @@ int get hashCode => runtimeType.hashCode;
 
 @override
 String toString() {
-  return 'ThemeState.initial()';
+  return 'AppThemeMode.light()';
 }
 
 
@@ -224,8 +218,8 @@ String toString() {
 /// @nodoc
 
 
-class ThemeLoading implements ThemeState {
-  const ThemeLoading();
+class ThemeDark implements AppThemeMode {
+  const ThemeDark();
   
 
 
@@ -235,7 +229,7 @@ class ThemeLoading implements ThemeState {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is ThemeLoading);
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ThemeDark);
 }
 
 
@@ -244,7 +238,7 @@ int get hashCode => runtimeType.hashCode;
 
 @override
 String toString() {
-  return 'ThemeState.loading()';
+  return 'AppThemeMode.dark()';
 }
 
 
@@ -256,133 +250,314 @@ String toString() {
 /// @nodoc
 
 
-class ThemeLoaded implements ThemeState {
-  const ThemeLoaded({required this.selectedTheme});
+class ThemeSystem implements AppThemeMode {
+  const ThemeSystem();
   
 
- final  AppThemeType selectedTheme;
 
-/// Create a copy of ThemeState
-/// with the given fields replaced by the non-null parameter values.
-@JsonKey(includeFromJson: false, includeToJson: false)
-@pragma('vm:prefer-inline')
-$ThemeLoadedCopyWith<ThemeLoaded> get copyWith => _$ThemeLoadedCopyWithImpl<ThemeLoaded>(this, _$identity);
+
 
 
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is ThemeLoaded&&(identical(other.selectedTheme, selectedTheme) || other.selectedTheme == selectedTheme));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ThemeSystem);
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,selectedTheme);
+int get hashCode => runtimeType.hashCode;
 
 @override
 String toString() {
-  return 'ThemeState.loaded(selectedTheme: $selectedTheme)';
+  return 'AppThemeMode.system()';
 }
 
 
 }
+
+
+
 
 /// @nodoc
-abstract mixin class $ThemeLoadedCopyWith<$Res> implements $ThemeStateCopyWith<$Res> {
-  factory $ThemeLoadedCopyWith(ThemeLoaded value, $Res Function(ThemeLoaded) _then) = _$ThemeLoadedCopyWithImpl;
-@useResult
-$Res call({
- AppThemeType selectedTheme
-});
+mixin _$ThemeState {
 
-
-
-
-}
-/// @nodoc
-class _$ThemeLoadedCopyWithImpl<$Res>
-    implements $ThemeLoadedCopyWith<$Res> {
-  _$ThemeLoadedCopyWithImpl(this._self, this._then);
-
-  final ThemeLoaded _self;
-  final $Res Function(ThemeLoaded) _then;
-
-/// Create a copy of ThemeState
-/// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') $Res call({Object? selectedTheme = null,}) {
-  return _then(ThemeLoaded(
-selectedTheme: null == selectedTheme ? _self.selectedTheme : selectedTheme // ignore: cast_nullable_to_non_nullable
-as AppThemeType,
-  ));
-}
-
-
-}
-
-/// @nodoc
-
-
-class ThemeError implements ThemeState {
-  const ThemeError({required this.message});
-  
-
- final  String message;
-
+ ThemePageState get pageState; AppThemeMode get selectedTheme; String? get message;
 /// Create a copy of ThemeState
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
 @pragma('vm:prefer-inline')
-$ThemeErrorCopyWith<ThemeError> get copyWith => _$ThemeErrorCopyWithImpl<ThemeError>(this, _$identity);
+$ThemeStateCopyWith<ThemeState> get copyWith => _$ThemeStateCopyWithImpl<ThemeState>(this as ThemeState, _$identity);
 
 
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is ThemeError&&(identical(other.message, message) || other.message == message));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ThemeState&&(identical(other.pageState, pageState) || other.pageState == pageState)&&(identical(other.selectedTheme, selectedTheme) || other.selectedTheme == selectedTheme)&&(identical(other.message, message) || other.message == message));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,message);
+int get hashCode => Object.hash(runtimeType,pageState,selectedTheme,message);
 
 @override
 String toString() {
-  return 'ThemeState.error(message: $message)';
+  return 'ThemeState(pageState: $pageState, selectedTheme: $selectedTheme, message: $message)';
 }
 
 
 }
 
 /// @nodoc
-abstract mixin class $ThemeErrorCopyWith<$Res> implements $ThemeStateCopyWith<$Res> {
-  factory $ThemeErrorCopyWith(ThemeError value, $Res Function(ThemeError) _then) = _$ThemeErrorCopyWithImpl;
+abstract mixin class $ThemeStateCopyWith<$Res>  {
+  factory $ThemeStateCopyWith(ThemeState value, $Res Function(ThemeState) _then) = _$ThemeStateCopyWithImpl;
 @useResult
 $Res call({
- String message
+ ThemePageState pageState, AppThemeMode selectedTheme, String? message
 });
 
 
-
+$AppThemeModeCopyWith<$Res> get selectedTheme;
 
 }
 /// @nodoc
-class _$ThemeErrorCopyWithImpl<$Res>
-    implements $ThemeErrorCopyWith<$Res> {
-  _$ThemeErrorCopyWithImpl(this._self, this._then);
+class _$ThemeStateCopyWithImpl<$Res>
+    implements $ThemeStateCopyWith<$Res> {
+  _$ThemeStateCopyWithImpl(this._self, this._then);
 
-  final ThemeError _self;
-  final $Res Function(ThemeError) _then;
+  final ThemeState _self;
+  final $Res Function(ThemeState) _then;
 
 /// Create a copy of ThemeState
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') $Res call({Object? message = null,}) {
-  return _then(ThemeError(
-message: null == message ? _self.message : message // ignore: cast_nullable_to_non_nullable
-as String,
+@pragma('vm:prefer-inline') @override $Res call({Object? pageState = null,Object? selectedTheme = null,Object? message = freezed,}) {
+  return _then(_self.copyWith(
+pageState: null == pageState ? _self.pageState : pageState // ignore: cast_nullable_to_non_nullable
+as ThemePageState,selectedTheme: null == selectedTheme ? _self.selectedTheme : selectedTheme // ignore: cast_nullable_to_non_nullable
+as AppThemeMode,message: freezed == message ? _self.message : message // ignore: cast_nullable_to_non_nullable
+as String?,
   ));
+}
+/// Create a copy of ThemeState
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$AppThemeModeCopyWith<$Res> get selectedTheme {
+  
+  return $AppThemeModeCopyWith<$Res>(_self.selectedTheme, (value) {
+    return _then(_self.copyWith(selectedTheme: value));
+  });
+}
 }
 
 
+/// Adds pattern-matching-related methods to [ThemeState].
+extension ThemeStatePatterns on ThemeState {
+/// A variant of `map` that fallback to returning `orElse`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>(TResult Function( _ThemeState value)?  $default,{required TResult orElse(),}){
+final _that = this;
+switch (_that) {
+case _ThemeState() when $default != null:
+return $default(_that);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// Callbacks receives the raw object, upcasted.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case final Subclass2 value:
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult map<TResult extends Object?>(TResult Function( _ThemeState value)  $default,){
+final _that = this;
+switch (_that) {
+case _ThemeState():
+return $default(_that);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `map` that fallback to returning `null`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>(TResult? Function( _ThemeState value)?  $default,){
+final _that = this;
+switch (_that) {
+case _ThemeState() when $default != null:
+return $default(_that);case _:
+  return null;
+
+}
+}
+/// A variant of `when` that fallback to an `orElse` callback.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( ThemePageState pageState,  AppThemeMode selectedTheme,  String? message)?  $default,{required TResult orElse(),}) {final _that = this;
+switch (_that) {
+case _ThemeState() when $default != null:
+return $default(_that.pageState,_that.selectedTheme,_that.message);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// As opposed to `map`, this offers destructuring.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case Subclass2(:final field2):
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( ThemePageState pageState,  AppThemeMode selectedTheme,  String? message)  $default,) {final _that = this;
+switch (_that) {
+case _ThemeState():
+return $default(_that.pageState,_that.selectedTheme,_that.message);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `when` that fallback to returning `null`
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( ThemePageState pageState,  AppThemeMode selectedTheme,  String? message)?  $default,) {final _that = this;
+switch (_that) {
+case _ThemeState() when $default != null:
+return $default(_that.pageState,_that.selectedTheme,_that.message);case _:
+  return null;
+
+}
+}
+
+}
+
+/// @nodoc
+
+
+class _ThemeState implements ThemeState {
+  const _ThemeState({this.pageState = ThemePageState.initial, this.selectedTheme = const AppThemeMode.system(), this.message});
+  
+
+@override@JsonKey() final  ThemePageState pageState;
+@override@JsonKey() final  AppThemeMode selectedTheme;
+@override final  String? message;
+
+/// Create a copy of ThemeState
+/// with the given fields replaced by the non-null parameter values.
+@override @JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$ThemeStateCopyWith<_ThemeState> get copyWith => __$ThemeStateCopyWithImpl<_ThemeState>(this, _$identity);
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ThemeState&&(identical(other.pageState, pageState) || other.pageState == pageState)&&(identical(other.selectedTheme, selectedTheme) || other.selectedTheme == selectedTheme)&&(identical(other.message, message) || other.message == message));
+}
+
+
+@override
+int get hashCode => Object.hash(runtimeType,pageState,selectedTheme,message);
+
+@override
+String toString() {
+  return 'ThemeState(pageState: $pageState, selectedTheme: $selectedTheme, message: $message)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class _$ThemeStateCopyWith<$Res> implements $ThemeStateCopyWith<$Res> {
+  factory _$ThemeStateCopyWith(_ThemeState value, $Res Function(_ThemeState) _then) = __$ThemeStateCopyWithImpl;
+@override @useResult
+$Res call({
+ ThemePageState pageState, AppThemeMode selectedTheme, String? message
+});
+
+
+@override $AppThemeModeCopyWith<$Res> get selectedTheme;
+
+}
+/// @nodoc
+class __$ThemeStateCopyWithImpl<$Res>
+    implements _$ThemeStateCopyWith<$Res> {
+  __$ThemeStateCopyWithImpl(this._self, this._then);
+
+  final _ThemeState _self;
+  final $Res Function(_ThemeState) _then;
+
+/// Create a copy of ThemeState
+/// with the given fields replaced by the non-null parameter values.
+@override @pragma('vm:prefer-inline') $Res call({Object? pageState = null,Object? selectedTheme = null,Object? message = freezed,}) {
+  return _then(_ThemeState(
+pageState: null == pageState ? _self.pageState : pageState // ignore: cast_nullable_to_non_nullable
+as ThemePageState,selectedTheme: null == selectedTheme ? _self.selectedTheme : selectedTheme // ignore: cast_nullable_to_non_nullable
+as AppThemeMode,message: freezed == message ? _self.message : message // ignore: cast_nullable_to_non_nullable
+as String?,
+  ));
+}
+
+/// Create a copy of ThemeState
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$AppThemeModeCopyWith<$Res> get selectedTheme {
+  
+  return $AppThemeModeCopyWith<$Res>(_self.selectedTheme, (value) {
+    return _then(_self.copyWith(selectedTheme: value));
+  });
+}
 }
 
 // dart format on

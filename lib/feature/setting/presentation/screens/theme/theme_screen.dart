@@ -1,4 +1,3 @@
-// [이재은] 테마 설정 화면
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -12,6 +11,7 @@ import '../../viewmodels/theme/theme_event.dart';
 import '../../viewmodels/theme/theme_state.dart';
 import '../../widgets/theme_box.dart';
 
+// [이재은] 테마 설정 화면
 class ThemeScreen extends StatelessWidget {
   const ThemeScreen({super.key});
 
@@ -35,24 +35,26 @@ class ThemeScreen extends StatelessWidget {
       ),
       body: BlocBuilder<ThemeBloc, ThemeState>(
         builder: (context, state) {
-          return state.when(
-            initial: () => const SizedBox.shrink(),
-            loading: () => const Center(child: CircularProgressIndicator()),
-            loaded: (selectedTheme) => _buildThemeList(context, selectedTheme),
-            error: (message) => Center(child: Text(message)),
-          );
+          if (state.pageState == ThemePageState.loading) {
+            return const Center(child: CircularProgressIndicator());
+          }
+
+          if (state.pageState == ThemePageState.error) {
+            return Center(child: Text(state.message ?? '오류가 발생했습니다'));
+          }
+
+          return _buildThemeList(context, state);
         },
       ),
     );
   }
 
-  Widget _buildThemeList(BuildContext context, AppThemeType selectedTheme) {
+  Widget _buildThemeList(BuildContext context, ThemeState state) {
     final colorScheme = Theme.of(context).colorScheme;
 
     return Column(
       children: [
         SizedBox(height: 16),
-        // 테마 옵션 목록
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
           child: Container(
@@ -68,28 +70,28 @@ class ThemeScreen extends StatelessWidget {
                   // 라이트 모드
                   _buildItem(
                     context: context,
-                    theme: getThemeInfo(AppThemeType.light)!,
-                    isSelected: selectedTheme == AppThemeType.light,
+                    theme: const AppThemeMode.light(),
+                    isSelected: state.selectedTheme is ThemeLight,
                     onTap: () => context.read<ThemeBloc>().add(
-                      const UpdateTheme(AppThemeType.light),
+                      const UpdateTheme(AppThemeMode.light()),
                     ),
                   ),
                   // 다크 모드
                   _buildItem(
                     context: context,
-                    theme: getThemeInfo(AppThemeType.dark)!,
-                    isSelected: selectedTheme == AppThemeType.dark,
+                    theme: const AppThemeMode.dark(),
+                    isSelected: state.selectedTheme is ThemeDark,
                     onTap: () => context.read<ThemeBloc>().add(
-                      const UpdateTheme(AppThemeType.dark),
+                      const UpdateTheme(AppThemeMode.dark()),
                     ),
                   ),
                   // 시스템 설정
                   _buildItem(
                     context: context,
-                    theme: getThemeInfo(AppThemeType.system)!,
-                    isSelected: selectedTheme == AppThemeType.system,
+                    theme: const AppThemeMode.system(),
+                    isSelected: state.selectedTheme is ThemeSystem,
                     onTap: () => context.read<ThemeBloc>().add(
-                      const UpdateTheme(AppThemeType.system),
+                      const UpdateTheme(AppThemeMode.system()),
                     ),
                     isLast: true,
                   ),
@@ -103,20 +105,23 @@ class ThemeScreen extends StatelessWidget {
     );
   }
 
-  // 개별 아이템 + Divider(마지막이 아닐때만)
   Widget _buildItem({
     required BuildContext context,
-    required ThemeInfo theme,
+    required AppThemeMode theme,
     required bool isSelected,
     required VoidCallback onTap,
     bool isLast = false,
   }) {
     final colorScheme = Theme.of(context).colorScheme;
+    final themeInfo = getThemeInfo(theme);
+
+    if (themeInfo == null) return const SizedBox.shrink();
 
     return Column(
       children: [
         ThemeBox(
           theme: theme,
+          themeInfo: themeInfo,
           isSelected: isSelected,
           onTap: onTap,
           isLast: isLast,

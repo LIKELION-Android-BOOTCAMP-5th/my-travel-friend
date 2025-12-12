@@ -12,9 +12,9 @@ class GetThemeUseCase {
 
   GetThemeUseCase(this._themeService);
 
-  Result<AppThemeType> call() {
+  Future<Result<AppThemeMode>> call() async {
     try {
-      final theme = _themeService.getTheme();
+      final theme = await _themeService.getTheme();
       return Result.success(theme);
     } catch (e) {
       return Result.failure(Failure.undefined(message: '테마를 불러오는데 실패했어요'));

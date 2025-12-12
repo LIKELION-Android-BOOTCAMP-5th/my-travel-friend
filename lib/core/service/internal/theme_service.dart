@@ -8,25 +8,33 @@ import '../../../feature/setting/presentation/viewmodels/theme/theme_state.dart'
 class ThemeService {
   static const String _themeKey = 'app_theme';
 
-  final SharedPreferences _prefs; // 👈 DI로 주입
-
-  ThemeService(this._prefs); // 👈 생성자 주입
-
   // 현재 테마 가져오기
-  AppThemeType getTheme() {
-    // 👈 async 제거
-    final themeString = _prefs.getString(_themeKey);
+  Future<AppThemeMode> getTheme() async {
+    final prefs = await SharedPreferences.getInstance();
+    final themeString = prefs.getString(_themeKey);
 
-    if (themeString == null) return AppThemeType.system;
-
-    return AppThemeType.values.firstWhere(
-      (e) => e.name == themeString,
-      orElse: () => AppThemeType.system,
-    );
+    switch (themeString) {
+      case 'light':
+        return const AppThemeMode.light();
+      case 'dark':
+        return const AppThemeMode.dark();
+      case 'system':
+      default:
+        return const AppThemeMode.system();
+    }
   }
 
   // 테마 저장하기
-  Future<void> updateTheme(AppThemeType type) async {
-    await _prefs.setString(_themeKey, type.name);
+  Future<void> updateTheme(AppThemeMode theme) async {
+    final prefs = await SharedPreferences.getInstance();
+
+    final themeString = switch (theme) {
+      ThemeLight() => 'light',
+      ThemeDark() => 'dark',
+      ThemeSystem() => 'system',
+      AppThemeMode() => throw UnimplementedError(),
+    };
+
+    await prefs.setString(_themeKey, themeString);
   }
 }

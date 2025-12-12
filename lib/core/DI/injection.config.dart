@@ -251,9 +251,7 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.lazySingleton<_i507.DeepLinkService>(() => _i507.DeepLinkService());
     gh.lazySingleton<_i213.PermissionService>(() => _i213.PermissionService());
-    gh.lazySingleton<_i1026.ThemeService>(
-      () => _i1026.ThemeService(gh<_i460.SharedPreferences>()),
-    );
+    gh.lazySingleton<_i1026.ThemeService>(() => _i1026.ThemeService());
     gh.lazySingleton<_i278.AppleAuthDataSource>(
       () => _i45.AppleAuthDataSourceImpl(gh<_i454.SupabaseClient>()),
     );
