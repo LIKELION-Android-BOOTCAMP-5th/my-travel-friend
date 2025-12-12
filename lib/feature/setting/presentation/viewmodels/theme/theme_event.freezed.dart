@@ -122,11 +122,11 @@ return updateTheme(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  loadTheme,TResult Function( AppThemeType type)?  updateTheme,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  loadTheme,TResult Function( AppThemeMode theme)?  updateTheme,required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case LoadTheme() when loadTheme != null:
 return loadTheme();case UpdateTheme() when updateTheme != null:
-return updateTheme(_that.type);case _:
+return updateTheme(_that.theme);case _:
   return orElse();
 
 }
@@ -144,11 +144,11 @@ return updateTheme(_that.type);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  loadTheme,required TResult Function( AppThemeType type)  updateTheme,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  loadTheme,required TResult Function( AppThemeMode theme)  updateTheme,}) {final _that = this;
 switch (_that) {
 case LoadTheme():
 return loadTheme();case UpdateTheme():
-return updateTheme(_that.type);case _:
+return updateTheme(_that.theme);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -165,11 +165,11 @@ return updateTheme(_that.type);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  loadTheme,TResult? Function( AppThemeType type)?  updateTheme,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  loadTheme,TResult? Function( AppThemeMode theme)?  updateTheme,}) {final _that = this;
 switch (_that) {
 case LoadTheme() when loadTheme != null:
 return loadTheme();case UpdateTheme() when updateTheme != null:
-return updateTheme(_that.type);case _:
+return updateTheme(_that.theme);case _:
   return null;
 
 }
@@ -213,10 +213,10 @@ String toString() {
 
 
 class UpdateTheme implements ThemeEvent {
-  const UpdateTheme(this.type);
+  const UpdateTheme(this.theme);
   
 
- final  AppThemeType type;
+ final  AppThemeMode theme;
 
 /// Create a copy of ThemeEvent
 /// with the given fields replaced by the non-null parameter values.
@@ -228,16 +228,16 @@ $UpdateThemeCopyWith<UpdateTheme> get copyWith => _$UpdateThemeCopyWithImpl<Upda
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is UpdateTheme&&(identical(other.type, type) || other.type == type));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is UpdateTheme&&(identical(other.theme, theme) || other.theme == theme));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,type);
+int get hashCode => Object.hash(runtimeType,theme);
 
 @override
 String toString() {
-  return 'ThemeEvent.updateTheme(type: $type)';
+  return 'ThemeEvent.updateTheme(theme: $theme)';
 }
 
 
@@ -248,11 +248,11 @@ abstract mixin class $UpdateThemeCopyWith<$Res> implements $ThemeEventCopyWith<$
   factory $UpdateThemeCopyWith(UpdateTheme value, $Res Function(UpdateTheme) _then) = _$UpdateThemeCopyWithImpl;
 @useResult
 $Res call({
- AppThemeType type
+ AppThemeMode theme
 });
 
 
-
+$AppThemeModeCopyWith<$Res> get theme;
 
 }
 /// @nodoc
@@ -265,14 +265,23 @@ class _$UpdateThemeCopyWithImpl<$Res>
 
 /// Create a copy of ThemeEvent
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') $Res call({Object? type = null,}) {
+@pragma('vm:prefer-inline') $Res call({Object? theme = null,}) {
   return _then(UpdateTheme(
-null == type ? _self.type : type // ignore: cast_nullable_to_non_nullable
-as AppThemeType,
+null == theme ? _self.theme : theme // ignore: cast_nullable_to_non_nullable
+as AppThemeMode,
   ));
 }
 
-
+/// Create a copy of ThemeEvent
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$AppThemeModeCopyWith<$Res> get theme {
+  
+  return $AppThemeModeCopyWith<$Res>(_self.theme, (value) {
+    return _then(_self.copyWith(theme: value));
+  });
+}
 }
 
 // dart format on

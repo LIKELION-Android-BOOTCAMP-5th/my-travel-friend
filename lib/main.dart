@@ -12,7 +12,8 @@ import 'core/theme/app_theme.dart';
 import 'feature/auth/presentation/viewmodel/auth_profile/auth_profile_bloc.dart';
 import 'feature/setting/presentation/viewmodels/theme/theme_bloc.dart';
 import 'feature/setting/presentation/viewmodels/theme/theme_event.dart';
-import 'feature/setting/presentation/viewmodels/theme/theme_state.dart';
+import 'feature/setting/presentation/viewmodels/theme/theme_state.dart'
+    hide AppTheme;
 
 @pragma('vm:entry-point')
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
@@ -76,7 +77,6 @@ Future<void> _requestPermissions() async {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<ThemeBloc, ThemeState>(
@@ -86,11 +86,7 @@ class MyApp extends StatelessWidget {
           debugShowCheckedModeBanner: false,
           theme: AppTheme.light,
           darkTheme: AppTheme.dark,
-          themeMode: switch (state.selectedTheme) {
-            AppThemeType.light => ThemeMode.light,
-            AppThemeType.dark => ThemeMode.dark,
-            AppThemeType.system => ThemeMode.system,
-          },
+          themeMode: context.read<ThemeBloc>().themeMode,
         );
       },
     );

@@ -51,12 +51,10 @@ class ThemeScreen extends StatelessWidget {
 
   Widget _buildThemeList(BuildContext context, ThemeState state) {
     final colorScheme = Theme.of(context).colorScheme;
-    final themeOptions = state.themeOptions;
 
     return Column(
       children: [
         SizedBox(height: 16),
-        // 테마 옵션 목록
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
           child: Container(
@@ -70,60 +68,60 @@ class ThemeScreen extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   // 라이트 모드
-                  if (state.getThemeInfo(AppThemeType.light) != null)
-                    _buildItem(
-                      context: context,
-                      theme: state.getThemeInfo(AppThemeType.light)!,
-                      isSelected: state.selectedTheme == AppThemeType.light,
-                      onTap: () => context.read<ThemeBloc>().add(
-                        const UpdateTheme(AppThemeType.light),
-                      ),
+                  _buildItem(
+                    context: context,
+                    theme: const AppThemeMode.light(),
+                    isSelected: state.selectedTheme is ThemeLight,
+                    onTap: () => context.read<ThemeBloc>().add(
+                      const UpdateTheme(AppThemeMode.light()),
                     ),
+                  ),
                   // 다크 모드
-                  if (state.getThemeInfo(AppThemeType.dark) != null)
-                    _buildItem(
-                      context: context,
-                      theme: state.getThemeInfo(AppThemeType.dark)!,
-                      isSelected: state.selectedTheme == AppThemeType.dark,
-                      onTap: () => context.read<ThemeBloc>().add(
-                        const UpdateTheme(AppThemeType.dark),
-                      ),
+                  _buildItem(
+                    context: context,
+                    theme: const AppThemeMode.dark(),
+                    isSelected: state.selectedTheme is ThemeDark,
+                    onTap: () => context.read<ThemeBloc>().add(
+                      const UpdateTheme(AppThemeMode.dark()),
                     ),
+                  ),
                   // 시스템 설정
-                  if (state.getThemeInfo(AppThemeType.system) != null)
-                    _buildItem(
-                      context: context,
-                      theme: state.getThemeInfo(AppThemeType.system)!,
-                      isSelected: state.selectedTheme == AppThemeType.system,
-                      onTap: () => context.read<ThemeBloc>().add(
-                        const UpdateTheme(AppThemeType.system),
-                      ),
-                      isLast: true,
+                  _buildItem(
+                    context: context,
+                    theme: const AppThemeMode.system(),
+                    isSelected: state.selectedTheme is ThemeSystem,
+                    onTap: () => context.read<ThemeBloc>().add(
+                      const UpdateTheme(AppThemeMode.system()),
                     ),
+                    isLast: true,
+                  ),
                 ],
               ),
             ),
           ),
         ),
-        Expanded(child: Column(children: [SizedBox(width: 3)])),
+        Expanded(child: SizedBox()),
       ],
     );
   }
 
-  // 개별 아이템 + Divider(마지막이 아닐때만)
   Widget _buildItem({
     required BuildContext context,
-    required ThemeInfo theme,
+    required AppThemeMode theme,
     required bool isSelected,
     required VoidCallback onTap,
     bool isLast = false,
   }) {
     final colorScheme = Theme.of(context).colorScheme;
+    final themeInfo = getThemeInfo(theme);
+
+    if (themeInfo == null) return const SizedBox.shrink();
 
     return Column(
       children: [
         ThemeBox(
           theme: theme,
+          themeInfo: themeInfo,
           isSelected: isSelected,
           onTap: onTap,
           isLast: isLast,

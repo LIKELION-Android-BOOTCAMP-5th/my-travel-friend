@@ -9,21 +9,33 @@ class ThemeService {
   static const String _themeKey = 'app_theme';
 
   // 현재 테마 가져오기
-  Future<AppThemeType> getTheme() async {
+  Future<AppThemeMode> getTheme() async {
     final prefs = await SharedPreferences.getInstance();
     final themeString = prefs.getString(_themeKey);
 
-    if (themeString == null) return AppThemeType.system;
-
-    return AppThemeType.values.firstWhere(
-      (e) => e.name == themeString,
-      orElse: () => AppThemeType.system,
-    );
+    switch (themeString) {
+      case 'light':
+        return const AppThemeMode.light();
+      case 'dark':
+        return const AppThemeMode.dark();
+      case 'system':
+      default:
+        return const AppThemeMode.system();
+    }
   }
 
   // 테마 저장하기
-  Future<void> updateTheme(AppThemeType type) async {
+  Future<void> updateTheme(AppThemeMode theme) async {
     final prefs = await SharedPreferences.getInstance();
-    await prefs.setString(_themeKey, type.name);
+
+    final themeString = switch (theme) {
+      ThemeLight() => 'light',
+      ThemeDark() => 'dark',
+      ThemeSystem() => 'system',
+      // TODO: Handle this case.
+      AppThemeMode() => throw UnimplementedError(),
+    };
+
+    await prefs.setString(_themeKey, themeString);
   }
 }

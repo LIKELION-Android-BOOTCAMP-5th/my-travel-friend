@@ -21,8 +21,13 @@ class ThemeBloc extends Bloc<ThemeEvent, ThemeState> {
     on<UpdateTheme>(_onUpdateTheme);
   }
 
-  // 현재 ThemeMode 반환
-  ThemeMode get themeMode => _toThemeMode(state.selectedTheme);
+  // 현재 ThemeMode 반환 (MaterialApp에서 사용)
+  ThemeMode get themeMode {
+    final theme = state.selectedTheme;
+    if (theme is ThemeLight) return ThemeMode.light;
+    if (theme is ThemeDark) return ThemeMode.dark;
+    return ThemeMode.system;
+  }
 
   // 테마 불러오기
   Future<void> _onLoadTheme(LoadTheme event, Emitter<ThemeState> emit) async {
@@ -56,11 +61,11 @@ class ThemeBloc extends Bloc<ThemeEvent, ThemeState> {
     UpdateTheme event,
     Emitter<ThemeState> emit,
   ) async {
-    final res = await _updateThemeUseCase(event.type);
+    final res = await _updateThemeUseCase(event.theme);
 
     res.when(
       success: (_) {
-        emit(state.copyWith(selectedTheme: event.type));
+        emit(state.copyWith(selectedTheme: event.theme));
       },
       failure: (failure) {
         final message = failure.when(
@@ -72,17 +77,5 @@ class ThemeBloc extends Bloc<ThemeEvent, ThemeState> {
         emit(state.copyWith(message: message));
       },
     );
-  }
-
-  // AppThemeType → ThemeMode 변환
-  ThemeMode _toThemeMode(AppThemeType type) {
-    switch (type) {
-      case AppThemeType.light:
-        return ThemeMode.light;
-      case AppThemeType.dark:
-        return ThemeMode.dark;
-      case AppThemeType.system:
-        return ThemeMode.system;
-    }
   }
 }
