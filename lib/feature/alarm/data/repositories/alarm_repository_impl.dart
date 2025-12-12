@@ -61,4 +61,22 @@ class AlarmRepositoryImpl implements AlarmRepository {
       failure: (failure) => Result.failure(failure),
     );
   }
+
+  // Realtime 구독 - DTO -> Entity 변환
+  @override
+  Stream<Result<List<AlarmEntity>>> watchAlarms(int userId) {
+    return _dataSource.watchAlarms(userId).map((result) {
+      return result.when(
+        success: (dtos) =>
+            Result.success(dtos.map((dto) => dto.toEntity()).toList()),
+        failure: (failure) => Result.failure(failure),
+      );
+    });
+  }
+
+  // 구독해제
+  @override
+  Future<void> unsubscribeAlarms() {
+    return _dataSource.unsubscribeAlarms();
+  }
 }

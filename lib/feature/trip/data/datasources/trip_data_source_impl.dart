@@ -1,9 +1,12 @@
+import 'dart:io';
+
 import 'package:injectable/injectable.dart';
 import 'package:my_travel_friend/core/result/failures.dart';
 import 'package:my_travel_friend/core/result/result.dart';
 import 'package:my_travel_friend/feature/trip/data/dtos/trip_dto.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
+import '../../../../core/service/internal/supabase_storage_service.dart';
 import 'trip_data_source.dart';
 
 // 신강현
@@ -12,8 +15,12 @@ import 'trip_data_source.dart';
 @LazySingleton(as: TripDataSource)
 class TripDataSourceImpl implements TripDataSource {
   final SupabaseClient _supabaseClient;
+  final SupabaseStorageService _storageService;
 
-  TripDataSourceImpl(this._supabaseClient);
+  TripDataSourceImpl(this._supabaseClient, this._storageService);
+
+  // Storage 버킷 이름
+  static const String _bucketName = 'trip_cover_image';
 
   @override
   Future<Result<List<TripDto>>> getMyTrips(int userId, int page) async {
@@ -22,17 +29,33 @@ class TripDataSourceImpl implements TripDataSource {
       final offset = (page - 1) * limit;
 
       final res = await _supabaseClient
-          .from('trip')
-          .select('*, trip_crew(count)')
-          .eq('trip_crew.member_id', userId)
-          .order('created_at', ascending: false)
+          .from('trip_crew')
+          .select('''
+          trip (
+            id,
+            created_at,
+            title,
+            place,
+            start_at,
+            end_at,
+            cover_type,
+            cover_img,
+            user_id,
+            country,
+            trip_crew (member_id)
+          )
+        ''')
+          .eq('member_id', userId)
+          .order('trip(created_at)', ascending: false)
           .range(offset, offset + limit - 1);
 
       final trips = (res as List).map((row) {
-        return TripDto.fromJson({
-          ...row,
-          'crew_count': row['trip_crew'][0]['count'],
-        });
+        final tripData = row['trip'];
+
+        final crewList = tripData['trip_crew'] as List? ?? [];
+        final crewCount = crewList.length;
+
+        return TripDto.fromJson({...tripData, 'crew_count': crewCount});
       }).toList();
 
       return Result.success(trips);
@@ -44,13 +67,31 @@ class TripDataSourceImpl implements TripDataSource {
   @override
   Future<Result<TripDto>> createTrip(TripDto trip) async {
     try {
+      //  trip 먼저 생성
       final res = await _supabaseClient
           .from('trip')
-          .insert(trip.toJson())
+          .insert({
+            "title": trip.title,
+            "place": trip.place,
+            "start_at": trip.startAt,
+            "end_at": trip.endAt,
+            "cover_type": trip.coverType,
+            "cover_img": trip.coverImg,
+            "user_id": trip.userId,
+            "country": trip.country,
+          })
           .select()
           .single();
-      final list = TripDto.fromJson(res);
-      return Result.success(list);
+
+      final createdTrip = TripDto.fromJson(res);
+
+      //  trip_crew에 자기 자신 추가
+      await _supabaseClient.from('trip_crew').insert({
+        "trip_id": createdTrip.id,
+        "member_id": trip.userId,
+      });
+
+      return Result.success(createdTrip);
     } catch (e) {
       return Result.failure(Failure.serverFailure(message: e.toString()));
     }
@@ -61,19 +102,28 @@ class TripDataSourceImpl implements TripDataSource {
     try {
       final res = await _supabaseClient
           .from('trip')
-          .update(trip.toJson())
+          .update({
+            "title": trip.title,
+            "place": trip.place,
+            "country": trip.country,
+            "start_at": trip.startAt,
+            "end_at": trip.endAt,
+            "cover_type": trip.coverType,
+            "cover_img": trip.coverImg,
+          })
           .eq('id', trip.id!)
-          .select()
+          .select('*')
           .single();
-      final list = TripDto.fromJson(res);
-      return Result.success(list);
+
+      final dto = TripDto.fromJson(res);
+      return Result.success(dto);
     } catch (e) {
       return Result.failure(Failure.serverFailure(message: e.toString()));
     }
   }
 
   @override
-  Future<Result<void>> giveUpTrip(int userId, int tripId) async {
+  Future<Result<void>> giveUpTrip(int tripId, int userId) async {
     try {
       await _supabaseClient
           .from('trip_crew')
@@ -101,7 +151,7 @@ class TripDataSourceImpl implements TripDataSource {
     try {
       final crew = await _supabaseClient
           .from('trip_crew')
-          .select('id')
+          .select('member_id')
           .eq('trip_id', tripId);
       final int crewmember = crew.length;
 
@@ -137,5 +187,46 @@ class TripDataSourceImpl implements TripDataSource {
     } catch (e) {
       return Result.failure(Failure.serverFailure(message: e.toString()));
     }
+  }
+
+  @override
+  Future<Result<String>> uploadImg({
+    required File file,
+    required String bucketName,
+  }) async {
+    try {
+      final url = await _storageService.uploadImage(
+        file,
+        bucketName: _bucketName,
+      );
+      return Result.success(url);
+    } catch (e) {
+      return Result.failure(Failure.serverFailure(message: e.toString()));
+    }
+  }
+
+  @override
+  Future<Result<void>> deleteImg(
+    String imgUrl, {
+    required String bucketName,
+  }) async {
+    try {
+      await _storageService.deleteImage(imgUrl, bucketName: _bucketName);
+      return const Result.success(null);
+    } catch (e) {
+      return Result.failure(Failure.serverFailure(message: e.toString()));
+    }
+  }
+
+  // 아이디로 여행 정보 가져오기
+  @override
+  Future<TripDto> getTripById(int tripId) async {
+    final response = await _supabaseClient
+        .from('trip')
+        .select()
+        .eq('id', tripId)
+        .single();
+
+    return TripDto.fromJson(response);
   }
 }

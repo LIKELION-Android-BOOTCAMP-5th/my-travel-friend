@@ -3,7 +3,7 @@
 
 import 'package:flutter/material.dart';
 
-import '../../../../theme/app_font.dart';
+import '../../../../core/theme/app_font.dart';
 
 class KakaoLoginButton extends StatelessWidget {
   final VoidCallback? onTap;

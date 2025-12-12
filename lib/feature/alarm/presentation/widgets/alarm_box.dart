@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:my_travel_friend/feature/alarm/domain/entities/alarm_entity.dart';
-import 'package:my_travel_friend/theme/app_colors.dart';
-import 'package:my_travel_friend/theme/app_font.dart';
 
+import '../../../../core/theme/app_colors.dart';
+import '../../../../core/theme/app_font.dart';
 import '../../../../core/util/time_ago.dart';
 import 'alarm_icon_color.dart';
 
@@ -61,26 +61,28 @@ class AlarmBox extends StatelessWidget {
                       ],
                     ),
                     SizedBox(width: 12),
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          alarm.content,
-                          style: AppFont.regular.copyWith(
-                            color: colorScheme.onSurface,
+                    Expanded(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            alarm.content,
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                            style: AppFont.regular.copyWith(
+                              color: colorScheme.onSurface,
+                            ),
                           ),
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                        SizedBox(height: 8),
-                        Text(
-                          TimeAgo.getTimeAgo(alarm.createdAt!),
-                          style: AppFont.small.copyWith(
-                            color: colorScheme.onSurfaceVariant,
+                          SizedBox(height: 8),
+                          Text(
+                            TimeAgo.getTimeAgo(alarm.createdAt!),
+                            style: AppFont.small.copyWith(
+                              color: colorScheme.onSurfaceVariant,
+                            ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ],
                 ),

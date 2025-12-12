@@ -1,6 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 import 'package:my_travel_friend/core/result/result.dart';
+import 'package:my_travel_friend/feature/trip/domain/entities/trip_entity.dart';
 import 'package:my_travel_friend/feature/trip/domain/usecases/delete_trip_usecase.dart';
 import 'package:my_travel_friend/feature/trip/domain/usecases/get_crew_member_count_usecase.dart';
 import 'package:my_travel_friend/feature/trip/domain/usecases/get_my_trip_usecase.dart';
@@ -9,20 +10,23 @@ import 'package:my_travel_friend/feature/trip/domain/usecases/search_trip_usecas
 import 'package:my_travel_friend/feature/trip/presentation/viewmodels/trip/trip_event.dart';
 import 'package:my_travel_friend/feature/trip/presentation/viewmodels/trip/trip_state.dart';
 
+import '../../../domain/usecases/delete_img_usecase.dart';
+
 @injectable
 class TripBloc extends Bloc<TripEvent, TripState> {
   final GetMyTripUsecase _getMyTripUsecase;
   final GetCrewMemberCountUsecase _getCrewMemberCountUsecase;
   final DeleteTripUsecase _deleteTripUsecase;
-  final GiveUpTripUsecase _giveUpTripUsecase;
+  final GiveUpTripUseCase _giveUpTripUseCase;
   final SearchTripUsecase _searchTripUsecase;
-
+  final DeleteImgUsecase _deleteImgUsecase;
   TripBloc(
     this._getMyTripUsecase,
     this._getCrewMemberCountUsecase,
     this._deleteTripUsecase,
-    this._giveUpTripUsecase,
+    this._giveUpTripUseCase,
     this._searchTripUsecase,
+    this._deleteImgUsecase,
   ) : super(TripState(trips: [])) {
     on<GetMyTrips>(_onGetMyTrips);
     on<LoadMoreTrips>(_onLoadMoreTrips);
@@ -37,6 +41,10 @@ class TripBloc extends Bloc<TripEvent, TripState> {
     on<ChangeSorting>(_onChangeSorting);
     on<CreateNewTrip>(_onCreateNewTrip);
     on<UpdateTrip>(_onUpdateTrip);
+    //네비게이션
+    on<NavigationHandled>((event, emit) {
+      emit(state.copyWith(navigateToCreate: false, navigateToEdit: false));
+    });
   }
 
   Future<void> _onGetMyTrips(GetMyTrips event, Emitter<TripState> emit) async {
@@ -173,11 +181,42 @@ class TripBloc extends Bloc<TripEvent, TripState> {
     add(RefreshTrips(userId: state.trips?.first.userId ?? 0));
   }
 
-  // 여행 포기 후 리스트 업데이트
+  //여행 포기
   Future<void> _onLeaveTrip(LeaveTrip event, Emitter<TripState> emit) async {
-    await _giveUpTripUsecase(event.userId, event.tripId);
+    final crewCountResult = await _getCrewMemberCountUsecase(event.tripId);
 
-    add(RefreshTrips(userId: event.userId));
+    await crewCountResult.when(
+      success: (crewCount) async {
+        if (crewCount > 1) {
+          // 2명 이상 → 나만 trip_crew에서 제거
+          await _giveUpTripUseCase(event.userId, event.tripId);
+        } else {
+          // 마지막 사용자 → trip_crew 전체 삭제
+          await _giveUpTripUseCase(event.userId, event.tripId);
+
+          final trip = state.trips?.firstWhere(
+            (t) => t.id == event.tripId,
+            orElse: () => null as TripEntity,
+          );
+
+          final imageUrl = trip?.coverImg;
+
+          // 이미지가 있을 경우 storage 삭제
+          if (imageUrl != null && imageUrl.isNotEmpty) {
+            await _deleteImgUsecase(imageUrl);
+          }
+
+          // trip 테이블 삭제
+          await _deleteTripUsecase(event.tripId);
+        }
+
+        // UI 갱신
+        add(RefreshTrips(userId: event.userId));
+      },
+      failure: (_) {
+        emit(state.copyWith(message: "여행 나가기 실패"));
+      },
+    );
   }
 
   // 새로고침 이벤트 → 다시 첫 페이지부터 get
@@ -190,13 +229,12 @@ class TripBloc extends Bloc<TripEvent, TripState> {
     emit(state.copyWith(sorting: event.sorting, currentPage: 1));
   }
 
-  //  새로운 여행 생성 시 선택한 Trip 해제
   void _onCreateNewTrip(CreateNewTrip event, Emitter<TripState> emit) {
-    emit(state.copyWith(selectedTrip: null));
+    emit(state.copyWith(selectedTrip: null, navigateToCreate: true));
   }
 
   // 수정할 Trip 저장 (이후 UI에서 이동 처리)
   void _onUpdateTrip(UpdateTrip event, Emitter<TripState> emit) {
-    emit(state.copyWith(selectedTrip: event.trip));
+    emit(state.copyWith(selectedTrip: event.trip, navigateToEdit: true));
   }
 }

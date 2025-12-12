@@ -25,6 +25,12 @@ abstract class TripState with _$TripState {
     @Default(false) bool hasMore,
     @Default(false) bool isLoadingMore,
 
+    // 네비게이션 (작성 화면 이동)
+    @Default(false) bool navigateToCreate,
+
+    // 네비게이션 (수정 화면 이동)
+    @Default(false) bool navigateToEdit,
+
     // 메세지 (성공/에러)
     String? message,
     String? errorType,

@@ -4,13 +4,13 @@ import 'package:my_travel_friend/feature/diary/presentation/widgets/cost_tag.dar
 import 'package:my_travel_friend/feature/diary/presentation/widgets/profile_box.dart';
 import 'package:my_travel_friend/feature/diary/presentation/widgets/star_rating.dart';
 
+import '../../../../core/theme/app_font.dart';
+import '../../../../core/theme/app_icon.dart';
 import '../../../../core/widget/bottom_sheat.dart';
 import '../../../../core/widget/pop_up_box.dart';
-import '../../../../theme/app_font.dart';
-import '../../../../theme/app_icon.dart';
 import '../../domain/entities/diary_entity.dart';
-import '../viewmodels/diary_bloc.dart';
-import '../viewmodels/diary_event.dart';
+import '../viewmodels/diary/diary_bloc.dart';
+import '../viewmodels/diary/diary_event.dart';
 import 'image_with_actions.dart';
 
 // [이재은] 다이어리 리스트용 박스 위젯

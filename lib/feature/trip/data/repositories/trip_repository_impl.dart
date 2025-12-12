@@ -1,9 +1,13 @@
+import 'dart:io';
+
 import 'package:injectable/injectable.dart';
 import 'package:my_travel_friend/core/result/result.dart';
 import 'package:my_travel_friend/feature/trip/data/datasources/trip_data_source.dart';
 import 'package:my_travel_friend/feature/trip/data/dtos/trip_dto.dart';
 import 'package:my_travel_friend/feature/trip/domain/entities/trip_entity.dart';
 import 'package:my_travel_friend/feature/trip/domain/repositories/trip_repository.dart';
+
+import '../../../../core/result/failures.dart';
 
 //신강현
 //여행 레포지터리 임플리먼트
@@ -27,6 +31,7 @@ class TripRepositoryImpl implements TripRepository {
   @override
   Future<Result<TripEntity>> editTrip(TripEntity trip) async {
     final dto = TripDto(
+      id: trip.id,
       title: trip.title,
       place: trip.place,
       startAt: trip.startAt,
@@ -77,8 +82,8 @@ class TripRepositoryImpl implements TripRepository {
   }
 
   @override
-  Future<Result<void>> giveUpTrip(int userId, int id) async {
-    return await _dataSource.giveUpTrip(userId, id);
+  Future<Result<void>> giveUpTrip(int tripId, int userId) async {
+    return await _dataSource.giveUpTrip(tripId, userId);
   }
 
   @override
@@ -93,5 +98,31 @@ class TripRepositoryImpl implements TripRepository {
           Result.success(data.map((dto) => dto.toEntity()).toList()),
       failure: (failure) => Result.failure(failure),
     );
+  }
+
+  // 이미지 업로드
+  @override
+  Future<Result<String>> uploadImg({required File file}) async {
+    return await _dataSource.uploadImg(
+      file: file,
+      bucketName: 'trip_cover_image',
+    );
+  }
+
+  // 이미지 삭제
+  @override
+  Future<Result<void>> deleteImg(String imgUrl) async {
+    return await _dataSource.deleteImg(imgUrl, bucketName: 'trip_cover_image');
+  }
+
+  // 아이디로 여행정보 가져오기
+  @override
+  Future<Result<TripEntity>> getTripById(int tripId) async {
+    try {
+      final response = await _dataSource.getTripById(tripId);
+      return Result.success(response.toEntity());
+    } catch (e) {
+      return Result.failure(ServerFailure(message: e.toString()));
+    }
   }
 }

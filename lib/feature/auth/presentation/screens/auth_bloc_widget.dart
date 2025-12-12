@@ -5,9 +5,9 @@ import 'package:my_travel_friend/feature/auth/presentation/screens/auth_screen.d
 import 'package:my_travel_friend/feature/auth/presentation/viewmodel/auth/auth_bloc.dart';
 import 'package:my_travel_friend/feature/auth/presentation/viewmodel/auth/auth_state.dart';
 
+import '../../../../core/theme/app_colors.dart';
+import '../../../../core/theme/app_font.dart';
 import '../../../../core/widget/toast_pop.dart';
-import '../../../../theme/app_colors.dart';
-import '../../../../theme/app_font.dart';
 import '../viewmodel/auth/auth_event.dart';
 
 // [전재민]
@@ -31,7 +31,7 @@ class AuthBlocWidget extends StatelessWidget {
           // 인증 성공 상태로 변경되면 홈 화면으로 이동
           authenticated: (userId) {
             // Navigator.of(context).pushReplacementNamed('/home');
-            ToastPop.show('로그인 성공! User ID: $userId');
+            ToastPop.show("로그인 성공! 여행을 떠나볼까요? ✈️");
             context.pop();
             context.push('/');
           },

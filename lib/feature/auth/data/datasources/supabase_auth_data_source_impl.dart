@@ -117,9 +117,15 @@ class SupabaseAuthDataSourceImpl implements SupabaseAuthDataSource {
   //리스너 구독
   @override
   void initializeAuthListener() {
-    supabaseClient.auth.onAuthStateChange.listen((data) {
-      _handleAuthChange(data.event, data.session);
-    });
+    try {
+      supabaseClient.auth.onAuthStateChange.listen((data) {
+        _handleAuthChange(data.event, data.session);
+      });
+    } catch (e) {
+      _userStreamController.add(
+        Result.failure(Failure.authFailure(message: "auth listener에러 $e")),
+      );
+    }
   }
 
   //AuthChangeEvent를 처리하고 UserDTO를 스트림에 추가
