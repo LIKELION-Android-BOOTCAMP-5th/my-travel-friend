@@ -109,7 +109,7 @@ class PermissionBox extends StatelessWidget {
                       textAlign: TextAlign.center,
                     ),
                     AppPermissionType.camera => Text(
-                      "여행 사진을 촬영해서 다이어리에 추가할 수 있어요",
+                      "다이어리에 추가할 사진을 촬영할 수 있어요",
                       style: AppFont.small.copyWith(
                         color: isDark ? AppColors.light : AppColors.dark,
                       ),
