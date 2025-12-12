@@ -303,6 +303,7 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.lazySingleton<_i456.ScheduleRepository>(
       () => _i625.ScheduleRepositoryImpl(gh<_i334.ScheduleDataSource>()),
+    );
     gh.lazySingleton<_i172.ProfileDataSource>(
       () => _i632.ProfileDataSourceImpl(gh<_i454.SupabaseClient>()),
     );
@@ -375,16 +376,6 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.lazySingleton<_i324.GetTripMembersUseCase>(
       () => _i324.GetTripMembersUseCase(gh<_i456.ScheduleRepository>()),
-    );
-    gh.factory<_i616.TripBloc>(
-      () => _i616.TripBloc(
-        gh<_i521.GetMyTripUsecase>(),
-        gh<_i267.GetCrewMemberCountUsecase>(),
-        gh<_i832.DeleteTripUsecase>(),
-        gh<_i317.GiveUpTripUsecase>(),
-        gh<_i437.SearchTripUsecase>(),
-        gh<_i202.DeleteImgUsecase>(),
-      ),
     );
     gh.lazySingleton<_i739.CancelOauthUseCase>(
       () => _i739.CancelOauthUseCase(gh<_i488.AuthRepository>()),
