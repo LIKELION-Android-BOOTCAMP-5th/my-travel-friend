@@ -24,6 +24,7 @@ import '../feature/diary/presentation/viewmodels/diary/diary_bloc.dart';
 import '../feature/diary/presentation/viewmodels/new_diary/new_diary_bloc.dart';
 import '../feature/setting/presentation/screens/alarm/alarm_setting_bloc_widget.dart';
 import '../feature/setting/presentation/screens/profile/profile_bloc_widget.dart';
+import '../feature/setting/presentation/screens/theme/theme_bloc_widget.dart';
 import '../feature/trip/domain/entities/trip_entity.dart';
 import '../feature/trip/presentation/screens/edit_trip_bloc_widget.dart';
 import '../feature/trip/presentation/screens/trip_shell_scaffold.dart';
@@ -148,6 +149,10 @@ class AppRouter {
       GoRoute(
         path: '/setting/permission',
         builder: (context, state) => const PermissionBlocWidget(),
+      ),
+      GoRoute(
+        path: '/setting/theme',
+        builder: (context, state) => const ThemeBlocWidget(),
       ),
       // Trip ShellRoute
       ShellRoute(

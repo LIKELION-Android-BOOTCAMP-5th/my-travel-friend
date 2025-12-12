@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:my_travel_friend/theme/app_colors.dart';
 
-import '../../../../theme/app_icon.dart';
+import '../../../../core/theme/app_colors.dart';
+import '../../../../core/theme/app_icon.dart';
 
 // [이재은] 알람 타입별 아이콘 및 아이콘 컬러
 extension AlarmTypeExtension on String {

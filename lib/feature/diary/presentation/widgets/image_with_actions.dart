@@ -3,10 +3,10 @@ import 'dart:typed_data';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:gal/gal.dart';
-import 'package:my_travel_friend/theme/app_colors.dart';
 
+import '../../../../core/theme/app_colors.dart';
+import '../../../../core/theme/app_icon.dart';
 import '../../../../core/widget/toast_pop.dart';
-import '../../../../theme/app_icon.dart';
 
 // [이재은] 이미지 확대 + 다운로드 기능까지 있는 이미지 표시
 // - 이미지 상단에 버튼 오버레이

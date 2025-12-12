@@ -139,10 +139,10 @@ class AppIcon {
   static const letter = FontAwesomeIcons.envelope;
 
   // 테마 설정(라이트)
-  static const lightMode = Icon(FeatherIcons.sun);
+  static const lightMode = FeatherIcons.sun;
 
   // 테마 설정(다크)
-  static const darkMode = Icon(FeatherIcons.moon);
+  static const darkMode = FeatherIcons.moon;
 
   // 권한 설정(방패)
   static const defense = FontAwesomeIcons.shield;
@@ -162,6 +162,12 @@ class AppIcon {
   // 빈 사각형(체크박스용)
   static const emptyBox = FontAwesomeIcons.square;
 
-  // 체워진 사각형(체크박스용)
+  // 채워진 사각형(체크박스용)
   static const checkedBox = FontAwesomeIcons.solidSquareCheck;
+
+  // 선택됨 표시(원 체크)
+  static const checkCircle = FontAwesomeIcons.solidCircleCheck;
+
+  // 팔레트
+  static const palette = FontAwesomeIcons.palette;
 }

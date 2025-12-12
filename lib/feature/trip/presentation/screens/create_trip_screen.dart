@@ -10,12 +10,12 @@ import 'package:my_travel_friend/feature/trip/presentation/viewmodels/create_tri
 import 'package:my_travel_friend/feature/trip/presentation/viewmodels/create_trip/create_trip_event.dart';
 import 'package:my_travel_friend/feature/trip/presentation/viewmodels/create_trip/create_trip_state.dart';
 import 'package:my_travel_friend/feature/trip/presentation/widgets/date_picker.dart';
-import 'package:my_travel_friend/theme/app_font.dart';
 
+import '../../../../core/theme/app_colors.dart';
+import '../../../../core/theme/app_font.dart';
+import '../../../../core/theme/app_icon.dart';
 import '../../../../core/widget/app_bar.dart';
 import '../../../../core/widget/button.dart';
-import '../../../../theme/app_colors.dart';
-import '../../../../theme/app_icon.dart';
 
 class CreateTripScreen extends StatelessWidget {
   final int userId;

@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:my_travel_friend/theme/app_color_theme.dart';
-import 'package:my_travel_friend/theme/app_font.dart';
+
+import 'app_color_theme.dart';
+import 'app_font.dart';
 
 // [이재은] 앱 전체 테마 설정
 class AppTheme {

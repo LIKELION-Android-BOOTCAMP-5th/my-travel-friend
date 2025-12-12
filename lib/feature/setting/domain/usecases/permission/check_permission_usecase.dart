@@ -8,9 +8,7 @@ import '../../../../../core/service/internal/permission_service.dart';
 @LazySingleton()
 class CheckPermissionsUseCase {
   final PermissionService _service;
-
   CheckPermissionsUseCase(this._service);
-
   Future<Result<List<PermissionInfo>>> call() async {
     try {
       final permissions = await _service.checkAllPermissions();

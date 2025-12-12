@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:my_travel_friend/theme/app_colors.dart';
+
+import '../theme/app_colors.dart';
 
 // [이재은] 알림 설정 이나 공개/비공개 설정 등에 사용할 수 있는 토글 스위치
 // -> onChanged 되었을 때의 동작과 어떤 bool 값을 표기 하고 바꿀 건지 그 value 필요함

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:my_travel_friend/theme/app_colors.dart';
+
+import 'app_colors.dart';
 
 // [이재은] 앱 테마에서 사용할 컬러 지정
 class AppColorTheme {

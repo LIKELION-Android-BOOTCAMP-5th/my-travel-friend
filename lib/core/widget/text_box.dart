@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:my_travel_friend/theme/app_colors.dart';
+
+import '../theme/app_colors.dart';
 
 // [이재은] UI 디자인에 맞춘 텍스트 필드 컴포넌트
 // ===============================================

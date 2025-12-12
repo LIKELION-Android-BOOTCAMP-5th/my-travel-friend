@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:my_travel_friend/feature/diary/presentation/widgets/type_tag.dart';
 
+import '../../../../core/theme/app_font.dart';
+import '../../../../core/theme/app_icon.dart';
 import '../../../../core/util/time_ago.dart';
 import '../../../../core/widget/profile_img.dart';
-import '../../../../theme/app_font.dart';
-import '../../../../theme/app_icon.dart';
 import '../../domain/entities/diary_entity.dart';
 
 // [이재은] 다이어리 프로필 정보 모음

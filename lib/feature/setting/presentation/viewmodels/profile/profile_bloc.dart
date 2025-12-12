@@ -3,14 +3,14 @@ import 'dart:async';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
-import 'package:my_travel_friend/feature/setting/domain/usecases/profile/delete_img_usecase.dart';
-import 'package:my_travel_friend/feature/setting/domain/usecases/profile/upload_img_usecase.dart';
 import 'package:my_travel_friend/feature/setting/presentation/viewmodels/profile/profile_event.dart';
 import 'package:my_travel_friend/feature/setting/presentation/viewmodels/profile/profile_state.dart';
 
 import '../../../../../core/result/result.dart';
 import '../../../domain/usecases/profile/check_nickname_duplicate_usecase.dart';
+import '../../../domain/usecases/profile/delete_img_usecase.dart';
 import '../../../domain/usecases/profile/update_profile_usecase.dart';
+import '../../../domain/usecases/profile/upload_img_usecase.dart';
 
 @injectable
 class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {

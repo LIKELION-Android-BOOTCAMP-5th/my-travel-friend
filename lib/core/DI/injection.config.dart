@@ -173,15 +173,17 @@ import '../../feature/setting/domain/usecases/profile/update_profile_usecase.dar
 import '../../feature/setting/domain/usecases/profile/upload_img_usecase.dart'
     as _i304;
 import '../../feature/setting/domain/usecases/theme/get_theme_usecase.dart'
-    as _i231;
+    as _i586;
 import '../../feature/setting/domain/usecases/theme/update_theme_usecase.dart'
-    as _i668;
+    as _i880;
 import '../../feature/setting/presentation/viewmodels/alarm/alarm_setting_bloc.dart'
     as _i695;
 import '../../feature/setting/presentation/viewmodels/permission/permission_bloc.dart'
     as _i862;
 import '../../feature/setting/presentation/viewmodels/profile/profile_bloc.dart'
     as _i557;
+import '../../feature/setting/presentation/viewmodels/theme/theme_bloc.dart'
+    as _i495;
 import '../../feature/trip/data/datasources/trip_data_source.dart' as _i1063;
 import '../../feature/trip/data/datasources/trip_data_source_impl.dart'
     as _i386;
@@ -211,6 +213,7 @@ import '../service/internal/deep_link_service.dart' as _i507;
 import '../service/internal/permission_service.dart' as _i213;
 import '../service/internal/push_notification_service.dart' as _i737;
 import '../service/internal/supabase_storage_service.dart' as _i1051;
+import '../service/internal/theme_service.dart' as _i1026;
 import 'register_module.dart' as _i291;
 
 extension GetItInjectableX on _i174.GetIt {
@@ -241,6 +244,7 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.lazySingleton<_i507.DeepLinkService>(() => _i507.DeepLinkService());
     gh.lazySingleton<_i213.PermissionService>(() => _i213.PermissionService());
+    gh.lazySingleton<_i1026.ThemeService>(() => _i1026.ThemeService());
     gh.lazySingleton<_i278.AppleAuthDataSource>(
       () => _i45.AppleAuthDataSourceImpl(gh<_i454.SupabaseClient>()),
     );
@@ -260,6 +264,12 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i737.PushNotificationService>(),
       ),
     );
+    gh.lazySingleton<_i586.GetThemeUseCase>(
+      () => _i586.GetThemeUseCase(gh<_i1026.ThemeService>()),
+    );
+    gh.lazySingleton<_i880.UpdateThemeUseCase>(
+      () => _i880.UpdateThemeUseCase(gh<_i1026.ThemeService>()),
+    );
     gh.lazySingleton<_i1051.SupabaseStorageService>(
       () => _i1051.SupabaseStorageService(gh<_i454.SupabaseClient>()),
     );
@@ -269,11 +279,11 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i1051.SupabaseStorageService>(),
       ),
     );
-    gh.lazySingleton<_i231.GetThemeUseCase>(
-      () => _i231.GetThemeUseCase(gh<InvalidType>()),
-    );
-    gh.lazySingleton<_i668.UpdateThemeUseCase>(
-      () => _i668.UpdateThemeUseCase(gh<InvalidType>()),
+    gh.singleton<_i495.ThemeBloc>(
+      () => _i495.ThemeBloc(
+        gh<_i586.GetThemeUseCase>(),
+        gh<_i880.UpdateThemeUseCase>(),
+      ),
     );
     gh.lazySingleton<_i584.CheckPermissionsUseCase>(
       () => _i584.CheckPermissionsUseCase(gh<_i213.PermissionService>()),

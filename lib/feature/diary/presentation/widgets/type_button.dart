@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:my_travel_friend/theme/app_colors.dart';
-import 'package:my_travel_friend/theme/app_font.dart';
+
+import '../../../../core/theme/app_colors.dart';
+import '../../../../core/theme/app_font.dart';
 
 // [이재은] 다이어리 작성 시 타입을 결정하는 버튼
 class TypeButton extends StatelessWidget {

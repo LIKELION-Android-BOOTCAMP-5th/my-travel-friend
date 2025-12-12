@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../theme/app_icon.dart';
+import '../theme/app_icon.dart';
 
 // [이재은] 여행 홈용 하단 네비게이션 UI
 // -> 추후 라우팅 필요

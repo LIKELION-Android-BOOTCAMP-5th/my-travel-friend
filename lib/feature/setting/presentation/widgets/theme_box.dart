@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:my_travel_friend/theme/app_colors.dart';
-import 'package:my_travel_friend/theme/app_font.dart';
 
-import '../../../../core/service/internal/theme_service.dart';
-import '../../../../theme/app_icon.dart';
+import '../../../../core/theme/app_colors.dart';
+import '../../../../core/theme/app_font.dart';
+import '../../../../core/theme/app_icon.dart';
+import '../viewmodels/theme/theme_state.dart';
 
 // [이재은] 테마 설정 관련 위젯
 class ThemeBox extends StatelessWidget {
@@ -26,9 +26,10 @@ class ThemeBox extends StatelessWidget {
     final isDark = colorScheme.brightness == Brightness.dark;
 
     return GestureDetector(
+      behavior: HitTestBehavior.opaque,
       onTap: onTap,
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+        padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 16.0),
         child: Row(
           children: [
             Container(
@@ -57,7 +58,7 @@ class ThemeBox extends StatelessWidget {
                 },
               ),
             ),
-            SizedBox(width: 12),
+            SizedBox(width: 16),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:my_travel_friend/theme/app_font.dart';
 
-import '../../../../theme/app_colors.dart';
+import '../../../../core/theme/app_colors.dart';
+import '../../../../core/theme/app_font.dart';
 
 // [이재은] 일정 선택 버튼
 class SchedulePickerButton extends StatelessWidget {
