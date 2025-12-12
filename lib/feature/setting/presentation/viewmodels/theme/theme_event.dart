@@ -1,5 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:my_travel_friend/core/service/internal/theme_service.dart';
+import 'package:my_travel_friend/feature/setting/presentation/viewmodels/theme/theme_state.dart';
 
 part 'theme_event.freezed.dart';
 

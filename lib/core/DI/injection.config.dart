@@ -315,6 +315,12 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i437.SearchTripUsecase>(
       () => _i437.SearchTripUsecase(gh<_i161.TripRepository>()),
     );
+    gh.singleton<_i572.ThemeBloc>(
+      () => _i572.ThemeBloc(
+        gh<_i231.GetThemeUseCase>(),
+        gh<_i668.UpdateThemeUseCase>(),
+      ),
+    );
     gh.lazySingleton<_i456.ScheduleRepository>(
       () => _i625.ScheduleRepositoryImpl(gh<_i334.ScheduleDataSource>()),
     );
@@ -335,13 +341,6 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i317.GiveUpTripUseCase>(),
         gh<_i437.SearchTripUsecase>(),
         gh<_i202.DeleteImgUsecase>(),
-      ),
-    );
-    gh.singleton<_i572.ThemeBloc>(
-      () => _i572.ThemeBloc(
-        gh<_i231.GetThemeUseCase>(),
-        gh<_i668.UpdateThemeUseCase>(),
-        gh<_i1026.ThemeService>(),
       ),
     );
     gh.lazySingleton<_i766.AlarmSettingDataSource>(

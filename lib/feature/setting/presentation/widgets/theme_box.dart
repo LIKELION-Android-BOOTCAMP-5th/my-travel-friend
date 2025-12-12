@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:my_travel_friend/theme/app_colors.dart';
 import 'package:my_travel_friend/theme/app_font.dart';
 
-import '../../../../core/service/internal/theme_service.dart';
 import '../../../../theme/app_icon.dart';
+import '../viewmodels/theme/theme_state.dart';
 
 // [이재은] 테마 설정 관련 위젯
 class ThemeBox extends StatelessWidget {
