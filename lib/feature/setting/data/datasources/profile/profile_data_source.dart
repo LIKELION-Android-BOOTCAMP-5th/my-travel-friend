@@ -1,7 +1,7 @@
 import 'dart:io';
 
-import '../../../../core/result/result.dart';
-import '../../../auth/data/models/user_model.dart';
+import '../../../../../core/result/result.dart';
+import '../../../../auth/data/models/user_model.dart';
 
 abstract class ProfileDataSource {
   // 프로필 업데이트

@@ -2,11 +2,11 @@ import 'dart:async';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
-import 'package:my_travel_friend/feature/setting/domain/usecases/alarm/get_my_alarm_setting_usecase.dart';
-import 'package:my_travel_friend/feature/setting/domain/usecases/alarm/update_alarm_setting_usecase.dart';
 
 import '../../../../../core/result/result.dart';
 import '../../../domain/entities/alarm_setting_entity.dart';
+import '../../../domain/usecases/alarm/get_my_alarm_setting_usecase.dart';
+import '../../../domain/usecases/alarm/update_alarm_setting_usecase.dart';
 import 'alarm_setting_event.dart';
 import 'alarm_setting_state.dart';
 

@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:my_travel_friend/feature/setting/presentation/screens/profile_screen.dart';
+import 'package:my_travel_friend/feature/setting/presentation/screens/profile/profile_screen.dart';
 
-import '../../../../core/DI/injection.dart';
-import '../../../../core/widget/toast_pop.dart';
-import '../../../auth/presentation/viewmodel/auth_profile/auth_profile_bloc.dart';
-import '../../../auth/presentation/viewmodel/auth_profile/auth_profile_event.dart';
-import '../../../auth/presentation/viewmodel/auth_profile/auth_profile_state.dart';
-import '../viewmodels/profile/profile_bloc.dart';
-import '../viewmodels/profile/profile_event.dart';
-import '../viewmodels/profile/profile_state.dart';
+import '../../../../../core/DI/injection.dart';
+import '../../../../../core/widget/toast_pop.dart';
+import '../../../../auth/presentation/viewmodel/auth_profile/auth_profile_bloc.dart';
+import '../../../../auth/presentation/viewmodel/auth_profile/auth_profile_event.dart';
+import '../../../../auth/presentation/viewmodel/auth_profile/auth_profile_state.dart';
+import '../../viewmodels/profile/profile_bloc.dart';
+import '../../viewmodels/profile/profile_event.dart';
+import '../../viewmodels/profile/profile_state.dart';
 
 // [이재은] 프로필 설정을 감싸는 위젯
 class ProfileBlocWidget extends StatelessWidget {

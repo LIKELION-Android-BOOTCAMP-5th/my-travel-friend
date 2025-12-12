@@ -1,13 +1,13 @@
 import 'dart:io';
 
 import 'package:injectable/injectable.dart';
-import 'package:my_travel_friend/feature/setting/data/datasources/profile_data_source.dart';
+import 'package:my_travel_friend/feature/setting/data/datasources/profile/profile_data_source.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-import '../../../../core/extension/extract_Url_path_extension.dart';
-import '../../../../core/result/failures.dart';
-import '../../../../core/result/result.dart';
-import '../../../auth/data/models/user_model.dart';
+import '../../../../../core/extension/extract_Url_path_extension.dart';
+import '../../../../../core/result/failures.dart';
+import '../../../../../core/result/result.dart';
+import '../../../../auth/data/models/user_model.dart';
 
 // [이재은] 프로필 설정 관련 데이터 소스 (구현체)
 @LazySingleton(as: ProfileDataSource)
