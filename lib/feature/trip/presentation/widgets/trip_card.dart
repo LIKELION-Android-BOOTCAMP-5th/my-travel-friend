@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:my_travel_friend/theme/app_colors.dart';
 
-import '../../../../theme/app_icon.dart';
+import '../../../../core/theme/app_colors.dart';
+import '../../../../core/theme/app_icon.dart';
 
 //신강현
 //여행 리스트 목록에 넣은 카드 컴포넌트 완선

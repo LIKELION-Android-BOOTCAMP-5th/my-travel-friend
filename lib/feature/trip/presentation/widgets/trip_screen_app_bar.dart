@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:my_travel_friend/core/widget/button.dart';
-import 'package:my_travel_friend/theme/app_colors.dart';
-import 'package:my_travel_friend/theme/app_icon.dart';
+
+import '../../../../core/theme/app_colors.dart';
+import '../../../../core/theme/app_icon.dart';
 
 class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
   final VoidCallback? onLogoTap;

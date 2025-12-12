@@ -11,12 +11,12 @@ import 'package:my_travel_friend/feature/trip/presentation/viewmodels/edit_trip/
 import 'package:my_travel_friend/feature/trip/presentation/viewmodels/edit_trip/edit_trip_event.dart';
 import 'package:my_travel_friend/feature/trip/presentation/viewmodels/edit_trip/edit_trip_state.dart';
 import 'package:my_travel_friend/feature/trip/presentation/widgets/date_picker.dart';
-import 'package:my_travel_friend/theme/app_font.dart';
 
+import '../../../../core/theme/app_colors.dart';
+import '../../../../core/theme/app_font.dart';
+import '../../../../core/theme/app_icon.dart';
 import '../../../../core/widget/app_bar.dart';
 import '../../../../core/widget/button.dart';
-import '../../../../theme/app_colors.dart';
-import '../../../../theme/app_icon.dart';
 
 class EditTripScreen extends StatefulWidget {
   final TripEntity trip;

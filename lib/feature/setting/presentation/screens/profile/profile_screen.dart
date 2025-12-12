@@ -6,9 +6,9 @@ import 'package:my_travel_friend/feature/setting/presentation/viewmodels/profile
 import 'package:my_travel_friend/feature/setting/presentation/widgets/delete_profile_button.dart';
 import 'package:my_travel_friend/feature/setting/presentation/widgets/profile_img_box.dart';
 
+import '../../../../../core/theme/app_colors.dart';
+import '../../../../../core/theme/app_icon.dart';
 import '../../../../../core/widget/button.dart';
-import '../../../../../theme/app_colors.dart';
-import '../../../../../theme/app_icon.dart';
 import '../../viewmodels/profile/profile_event.dart';
 import '../../viewmodels/profile/profile_state.dart';
 import '../../widgets/email_box.dart';

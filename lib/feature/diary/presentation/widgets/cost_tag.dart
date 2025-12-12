@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../../core/extension/cost_format_extension.dart';
-import '../../../../theme/app_font.dart';
+import '../../../../core/theme/app_font.dart';
 
 // [이재은] 다이어리 소비 - 가격 표시 위젯
 class CostTag extends StatelessWidget {

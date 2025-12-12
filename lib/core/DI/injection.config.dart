@@ -172,12 +172,18 @@ import '../../feature/setting/domain/usecases/profile/update_profile_usecase.dar
     as _i473;
 import '../../feature/setting/domain/usecases/profile/upload_img_usecase.dart'
     as _i304;
+import '../../feature/setting/domain/usecases/theme/get_theme_usecase.dart'
+    as _i586;
+import '../../feature/setting/domain/usecases/theme/update_theme_usecase.dart'
+    as _i880;
 import '../../feature/setting/presentation/viewmodels/alarm/alarm_setting_bloc.dart'
     as _i695;
 import '../../feature/setting/presentation/viewmodels/permission/permission_bloc.dart'
     as _i862;
 import '../../feature/setting/presentation/viewmodels/profile/profile_bloc.dart'
     as _i557;
+import '../../feature/setting/presentation/viewmodels/theme/theme_bloc.dart'
+    as _i495;
 import '../../feature/trip/data/datasources/trip_data_source.dart' as _i1063;
 import '../../feature/trip/data/datasources/trip_data_source_impl.dart'
     as _i386;
@@ -208,9 +214,6 @@ import '../service/internal/permission_service.dart' as _i213;
 import '../service/internal/push_notification_service.dart' as _i737;
 import '../service/internal/supabase_storage_service.dart' as _i1051;
 import '../service/internal/theme_service.dart' as _i1026;
-import '../theme/domain/usecases/get_theme_usecase.dart' as _i586;
-import '../theme/domain/usecases/update_theme_usecase.dart' as _i880;
-import '../theme/presentation/viewmodels/theme_bloc.dart' as _i495;
 import 'register_module.dart' as _i291;
 
 extension GetItInjectableX on _i174.GetIt {

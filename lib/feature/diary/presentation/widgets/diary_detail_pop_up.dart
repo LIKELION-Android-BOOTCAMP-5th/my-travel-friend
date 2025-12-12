@@ -3,8 +3,8 @@ import 'package:my_travel_friend/feature/diary/presentation/widgets/cost_tag.dar
 import 'package:my_travel_friend/feature/diary/presentation/widgets/profile_box.dart';
 import 'package:my_travel_friend/feature/diary/presentation/widgets/star_rating.dart';
 
-import '../../../../theme/app_font.dart';
-import '../../../../theme/app_icon.dart';
+import '../../../../core/theme/app_font.dart';
+import '../../../../core/theme/app_icon.dart';
 import '../../domain/entities/diary_entity.dart';
 import 'image_with_actions.dart';
 

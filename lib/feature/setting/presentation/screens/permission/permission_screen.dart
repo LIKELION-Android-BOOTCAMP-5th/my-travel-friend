@@ -3,14 +3,14 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:my_travel_friend/theme/app_font.dart';
 
 import '../../../../../core/service/internal/permission_service.dart';
+import '../../../../../core/theme/app_colors.dart';
+import '../../../../../core/theme/app_font.dart';
+import '../../../../../core/theme/app_icon.dart';
 import '../../../../../core/widget/app_bar.dart';
 import '../../../../../core/widget/button.dart';
 import '../../../../../core/widget/pop_up_box.dart';
-import '../../../../../theme/app_colors.dart';
-import '../../../../../theme/app_icon.dart';
 import '../../viewmodels/permission/permission_bloc.dart';
 import '../../viewmodels/permission/permission_event.dart';
 import '../../viewmodels/permission/permission_state.dart';

@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:my_travel_friend/core/widget/button.dart';
-import 'package:my_travel_friend/theme/app_colors.dart';
-import 'package:my_travel_friend/theme/app_font.dart';
+
+import '../theme/app_colors.dart';
+import '../theme/app_font.dart';
 
 class CustomButtonAppBar extends StatelessWidget
     implements PreferredSizeWidget {

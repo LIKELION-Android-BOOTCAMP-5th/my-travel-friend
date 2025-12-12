@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../../theme/app_font.dart';
+import '../../../../core/theme/app_font.dart';
 
 // [이재은] 체크리스트 <-> 투두리스트 탭 버튼
 class CheckTodoTab extends StatelessWidget {

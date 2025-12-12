@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../../../../theme/app_colors.dart';
-import '../../../../theme/app_font.dart';
+import '../../../../core/theme/app_colors.dart';
+import '../../../../core/theme/app_font.dart';
 import '../../domain/entities/diary_entity.dart';
 
 // [이재은] 다이어리 타입 표기하는 tag 위젯 생성

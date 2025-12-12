@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:my_travel_friend/theme/app_colors.dart';
-import 'package:my_travel_friend/theme/app_font.dart';
-import 'package:my_travel_friend/theme/app_icon.dart';
+
+import '../../../../core/theme/app_colors.dart';
+import '../../../../core/theme/app_font.dart';
+import '../../../../core/theme/app_icon.dart';
 
 class EmptyScheduleCard extends StatelessWidget {
   final VoidCallback onAdd; // 일정 추가 버튼 클릭 콜백

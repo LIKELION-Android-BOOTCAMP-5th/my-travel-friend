@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:my_travel_friend/theme/app_colors.dart';
-import 'package:my_travel_friend/theme/app_font.dart';
 
+import '../../../../core/theme/app_colors.dart';
+import '../../../../core/theme/app_font.dart';
+import '../../../../core/theme/app_icon.dart';
 import '../../../../core/widget/toggle_switch.dart';
-import '../../../../theme/app_icon.dart';
 
 class PublicSelectBox extends StatelessWidget {
   final bool isPublic;

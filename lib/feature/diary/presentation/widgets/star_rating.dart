@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../../../../theme/app_colors.dart';
-import '../../../../theme/app_icon.dart';
+import '../../../../core/theme/app_colors.dart';
+import '../../../../core/theme/app_icon.dart';
 
 // [이재은] 다이어리 리뷰 별점 위젯
 // - 편집 시 드래그해서 0.5점 단위 0 - 5점 별점 매기기 가능

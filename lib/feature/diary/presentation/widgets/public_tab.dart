@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:my_travel_friend/theme/app_font.dart';
+
+import '../../../../core/theme/app_font.dart';
 
 // [이재은] 공유 다이어리 <-> 내 다이어리 탭 버튼
 class PublicTab extends StatelessWidget {

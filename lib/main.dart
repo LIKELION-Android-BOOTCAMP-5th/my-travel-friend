@@ -5,14 +5,14 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get_it/get_it.dart';
 import 'package:my_travel_friend/config/router.dart';
 import 'package:my_travel_friend/core/DI/injection.dart';
-import 'package:my_travel_friend/theme/app_theme.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 import 'core/service/internal/push_notification_service.dart';
-import 'core/theme/presentation/viewmodels/theme_bloc.dart';
-import 'core/theme/presentation/viewmodels/theme_event.dart';
-import 'core/theme/presentation/viewmodels/theme_state.dart';
+import 'core/theme/app_theme.dart';
 import 'feature/auth/presentation/viewmodel/auth_profile/auth_profile_bloc.dart';
+import 'feature/setting/presentation/viewmodels/theme/theme_bloc.dart';
+import 'feature/setting/presentation/viewmodels/theme/theme_event.dart';
+import 'feature/setting/presentation/viewmodels/theme/theme_state.dart';
 
 @pragma('vm:entry-point')
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {

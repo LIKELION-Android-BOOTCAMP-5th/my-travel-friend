@@ -5,9 +5,9 @@ import 'package:my_travel_friend/feature/auth/presentation/screens/auth_screen.d
 import 'package:my_travel_friend/feature/auth/presentation/viewmodel/auth/auth_bloc.dart';
 import 'package:my_travel_friend/feature/auth/presentation/viewmodel/auth/auth_state.dart';
 
+import '../../../../core/theme/app_colors.dart';
+import '../../../../core/theme/app_font.dart';
 import '../../../../core/widget/toast_pop.dart';
-import '../../../../theme/app_colors.dart';
-import '../../../../theme/app_font.dart';
 import '../viewmodel/auth/auth_event.dart';
 
 // [전재민]

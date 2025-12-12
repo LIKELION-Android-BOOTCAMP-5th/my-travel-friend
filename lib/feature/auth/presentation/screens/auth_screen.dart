@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_travel_friend/feature/auth/presentation/viewmodel/auth/auth_bloc.dart';
 import 'package:my_travel_friend/feature/auth/presentation/widgets/apple_login_button.dart';
-import 'package:my_travel_friend/theme/app_font.dart';
 
-import '../../../../theme/app_colors.dart';
+import '../../../../core/theme/app_colors.dart';
+import '../../../../core/theme/app_font.dart';
 import '../../domain/entities/user_entity.dart';
 import '../viewmodel/auth/auth_event.dart';
 import '../widgets/google_login_button.dart';

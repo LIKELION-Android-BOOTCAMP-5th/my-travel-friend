@@ -1,5 +1,6 @@
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:my_travel_friend/theme/app_colors.dart';
+
+import '../theme/app_colors.dart';
 
 // [이재은] 토스트 팝업 디자인
 

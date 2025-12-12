@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:my_travel_friend/theme/app_colors.dart';
+
+import '../../../../core/theme/app_colors.dart';
 
 class DatePickerBox extends StatelessWidget {
   final String label;

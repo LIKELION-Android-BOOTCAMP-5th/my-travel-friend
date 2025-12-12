@@ -14,7 +14,6 @@ import 'package:my_travel_friend/feature/trip/presentation/viewmodels/trip/trip_
 import 'package:my_travel_friend/splash.dart';
 import 'package:my_travel_friend/temp_screen.dart';
 
-import '../core/theme/presentation/screens/theme_bloc_widget.dart';
 import '../feature/alarm/presentation/screens/alarm_bloc_widget.dart';
 import '../feature/checklist/presentation/screens/lists_bloc_widget.dart';
 import '../feature/diary/domain/entities/diary_entity.dart';
@@ -25,6 +24,7 @@ import '../feature/diary/presentation/viewmodels/diary/diary_bloc.dart';
 import '../feature/diary/presentation/viewmodels/new_diary/new_diary_bloc.dart';
 import '../feature/setting/presentation/screens/alarm/alarm_setting_bloc_widget.dart';
 import '../feature/setting/presentation/screens/profile/profile_bloc_widget.dart';
+import '../feature/setting/presentation/screens/theme/theme_bloc_widget.dart';
 import '../feature/trip/domain/entities/trip_entity.dart';
 import '../feature/trip/presentation/screens/edit_trip_bloc_widget.dart';
 import '../feature/trip/presentation/screens/trip_shell_scaffold.dart';

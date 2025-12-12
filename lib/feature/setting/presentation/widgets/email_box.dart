@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../core/theme/app_font.dart';
 import '../../../../core/widget/text_box.dart';
-import '../../../../theme/app_font.dart';
 import '../viewmodels/profile/profile_bloc.dart';
 import '../viewmodels/profile/profile_state.dart';
 

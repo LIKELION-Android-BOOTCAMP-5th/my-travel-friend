@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:my_travel_friend/theme/app_font.dart';
+
+import '../theme/app_font.dart';
 
 class Button extends StatelessWidget {
   final String? text;
