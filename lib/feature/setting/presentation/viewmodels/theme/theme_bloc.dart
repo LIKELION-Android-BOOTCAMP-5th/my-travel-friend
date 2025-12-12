@@ -15,32 +15,13 @@ class ThemeBloc extends Bloc<ThemeEvent, ThemeState> {
   final GetThemeUseCase _getThemeUseCase;
   final UpdateThemeUseCase _updateThemeUseCase;
 
-  // 테마 옵션 목록
-  static const List<ThemeInfo> themeOptions = [
-    ThemeInfo(
-      type: AppThemeType.light,
-      title: '라이트 모드',
-      description: '밝은 테마로 표시됩니다',
-    ),
-    ThemeInfo(
-      type: AppThemeType.dark,
-      title: '다크 모드',
-      description: '어두운 테마로 표시됩니다',
-    ),
-    ThemeInfo(
-      type: AppThemeType.system,
-      title: '시스템 설정',
-      description: '기기 설정을 따릅니다',
-    ),
-  ];
-
   ThemeBloc(this._getThemeUseCase, this._updateThemeUseCase)
     : super(const ThemeState()) {
     on<LoadTheme>(_onLoadTheme);
     on<UpdateTheme>(_onUpdateTheme);
   }
 
-  // 현재 ThemeMode 반환 (MaterialApp에서 사용)
+  // 현재 ThemeMode 반환
   ThemeMode get themeMode => _toThemeMode(state.selectedTheme);
 
   // 테마 불러오기
@@ -55,7 +36,6 @@ class ThemeBloc extends Bloc<ThemeEvent, ThemeState> {
           state.copyWith(
             pageState: ThemePageState.loaded,
             selectedTheme: theme,
-            themeOptions: themeOptions,
           ),
         );
       },

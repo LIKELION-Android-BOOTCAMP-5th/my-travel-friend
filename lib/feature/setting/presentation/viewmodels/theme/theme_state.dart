@@ -20,6 +20,25 @@ class ThemeInfo {
   });
 }
 
+// 테마 옵션 목록 (Map)
+const Map<AppThemeType, ThemeInfo> themeOptionsMap = {
+  AppThemeType.light: ThemeInfo(
+    type: AppThemeType.light,
+    title: '라이트 모드',
+    description: '밝은 테마로 표시됩니다',
+  ),
+  AppThemeType.dark: ThemeInfo(
+    type: AppThemeType.dark,
+    title: '다크 모드',
+    description: '어두운 테마로 표시됩니다',
+  ),
+  AppThemeType.system: ThemeInfo(
+    type: AppThemeType.system,
+    title: '시스템 설정',
+    description: '기기 설정을 따릅니다',
+  ),
+};
+
 // 페이지 상태
 enum ThemePageState { initial, loading, loaded, error }
 
@@ -35,7 +54,5 @@ abstract class ThemeState with _$ThemeState {
   const ThemeState._();
 
   // 테마 정보 가져오기
-  ThemeInfo? getThemeInfo(AppThemeType type) {
-    return themeOptions.where((t) => t.type == type).firstOrNull;
-  }
+  ThemeInfo? getThemeInfo(AppThemeType type) => themeOptionsMap[type];
 }
