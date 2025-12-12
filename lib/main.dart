@@ -9,11 +9,10 @@ import 'package:my_travel_friend/theme/app_theme.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 import 'core/service/internal/push_notification_service.dart';
-import 'core/service/internal/theme_service.dart';
+import 'core/theme/presentation/viewmodels/theme_bloc.dart';
+import 'core/theme/presentation/viewmodels/theme_event.dart';
+import 'core/theme/presentation/viewmodels/theme_state.dart';
 import 'feature/auth/presentation/viewmodel/auth_profile/auth_profile_bloc.dart';
-import 'feature/setting/presentation/viewmodels/theme/theme_bloc.dart';
-import 'feature/setting/presentation/viewmodels/theme/theme_event.dart';
-import 'feature/setting/presentation/viewmodels/theme/theme_state.dart';
 
 @pragma('vm:entry-point')
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {

@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
-import 'package:my_travel_friend/feature/setting/presentation/viewmodels/theme/theme_event.dart';
-import 'package:my_travel_friend/feature/setting/presentation/viewmodels/theme/theme_state.dart';
+import 'package:my_travel_friend/core/theme/presentation/viewmodels/theme_event.dart';
+import 'package:my_travel_friend/core/theme/presentation/viewmodels/theme_state.dart';
 
-import '../../../../../core/result/failures.dart';
-import '../../../../../core/result/result.dart';
-import '../../../domain/usecases/theme/get_theme_usecase.dart';
-import '../../../domain/usecases/theme/update_theme_usecase.dart';
+import '../../../result/failures.dart';
+import '../../../result/result.dart';
+import '../../domain/usecases/get_theme_usecase.dart';
+import '../../domain/usecases/update_theme_usecase.dart';
 
 // [이재은] 테마 설정 관련 bloc (전역)
 @singleton

@@ -166,16 +166,10 @@ import '../../feature/setting/domain/usecases/profile/update_profile_usecase.dar
     as _i473;
 import '../../feature/setting/domain/usecases/profile/upload_img_usecase.dart'
     as _i304;
-import '../../feature/setting/domain/usecases/theme/get_theme_usecase.dart'
-    as _i231;
-import '../../feature/setting/domain/usecases/theme/update_theme_usecase.dart'
-    as _i668;
 import '../../feature/setting/presentation/viewmodels/alarm/alarm_setting_bloc.dart'
     as _i695;
 import '../../feature/setting/presentation/viewmodels/profile/profile_bloc.dart'
     as _i557;
-import '../../feature/setting/presentation/viewmodels/theme/theme_bloc.dart'
-    as _i572;
 import '../../feature/trip/data/datasources/trip_data_source.dart' as _i1063;
 import '../../feature/trip/data/datasources/trip_data_source_impl.dart'
     as _i386;
@@ -205,6 +199,9 @@ import '../service/internal/deep_link_service.dart' as _i507;
 import '../service/internal/push_notification_service.dart' as _i737;
 import '../service/internal/supabase_storage_service.dart' as _i1051;
 import '../service/internal/theme_service.dart' as _i1026;
+import '../theme/domain/usecases/get_theme_usecase.dart' as _i586;
+import '../theme/domain/usecases/update_theme_usecase.dart' as _i880;
+import '../theme/presentation/viewmodels/theme_bloc.dart' as _i495;
 import 'register_module.dart' as _i291;
 
 extension GetItInjectableX on _i174.GetIt {
@@ -254,11 +251,11 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i737.PushNotificationService>(),
       ),
     );
-    gh.lazySingleton<_i231.GetThemeUseCase>(
-      () => _i231.GetThemeUseCase(gh<_i1026.ThemeService>()),
+    gh.lazySingleton<_i586.GetThemeUseCase>(
+      () => _i586.GetThemeUseCase(gh<_i1026.ThemeService>()),
     );
-    gh.lazySingleton<_i668.UpdateThemeUseCase>(
-      () => _i668.UpdateThemeUseCase(gh<_i1026.ThemeService>()),
+    gh.lazySingleton<_i880.UpdateThemeUseCase>(
+      () => _i880.UpdateThemeUseCase(gh<_i1026.ThemeService>()),
     );
     gh.lazySingleton<_i1051.SupabaseStorageService>(
       () => _i1051.SupabaseStorageService(gh<_i454.SupabaseClient>()),
@@ -267,6 +264,12 @@ extension GetItInjectableX on _i174.GetIt {
       () => _i386.TripDataSourceImpl(
         gh<_i454.SupabaseClient>(),
         gh<_i1051.SupabaseStorageService>(),
+      ),
+    );
+    gh.singleton<_i495.ThemeBloc>(
+      () => _i495.ThemeBloc(
+        gh<_i586.GetThemeUseCase>(),
+        gh<_i880.UpdateThemeUseCase>(),
       ),
     );
     gh.lazySingleton<_i334.ScheduleDataSource>(
@@ -314,12 +317,6 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.lazySingleton<_i437.SearchTripUsecase>(
       () => _i437.SearchTripUsecase(gh<_i161.TripRepository>()),
-    );
-    gh.singleton<_i572.ThemeBloc>(
-      () => _i572.ThemeBloc(
-        gh<_i231.GetThemeUseCase>(),
-        gh<_i668.UpdateThemeUseCase>(),
-      ),
     );
     gh.lazySingleton<_i456.ScheduleRepository>(
       () => _i625.ScheduleRepositoryImpl(gh<_i334.ScheduleDataSource>()),

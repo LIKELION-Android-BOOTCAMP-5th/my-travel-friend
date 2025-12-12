@@ -1,7 +1,7 @@
 import 'package:injectable/injectable.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../../feature/setting/presentation/viewmodels/theme/theme_state.dart';
+import '../../theme/presentation/viewmodels/theme_state.dart';
 
 // [이재은] 테마 설정 관련 서비스
 @LazySingleton()

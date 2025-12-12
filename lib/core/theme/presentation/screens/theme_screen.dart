@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:my_travel_friend/feature/setting/presentation/viewmodels/theme/theme_bloc.dart';
 
 import '../../../../../core/widget/app_bar.dart';
 import '../../../../../core/widget/button.dart';
 import '../../../../../theme/app_colors.dart';
 import '../../../../../theme/app_icon.dart';
-import '../../viewmodels/theme/theme_event.dart';
-import '../../viewmodels/theme/theme_state.dart';
-import '../../widgets/theme_box.dart';
+import '../viewmodels/theme_bloc.dart';
+import '../viewmodels/theme_event.dart';
+import '../viewmodels/theme_state.dart';
+import '../widgets/theme_box.dart';
 
 // [이재은] 테마 설정 화면
 class ThemeScreen extends StatelessWidget {
