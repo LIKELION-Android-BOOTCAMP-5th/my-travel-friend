@@ -8,10 +8,14 @@ import '../../../feature/setting/presentation/viewmodels/theme/theme_state.dart'
 class ThemeService {
   static const String _themeKey = 'app_theme';
 
+  final SharedPreferences _prefs; // 👈 DI로 주입
+
+  ThemeService(this._prefs); // 👈 생성자 주입
+
   // 현재 테마 가져오기
-  Future<AppThemeType> getTheme() async {
-    final prefs = await SharedPreferences.getInstance();
-    final themeString = prefs.getString(_themeKey);
+  AppThemeType getTheme() {
+    // 👈 async 제거
+    final themeString = _prefs.getString(_themeKey);
 
     if (themeString == null) return AppThemeType.system;
 
@@ -23,7 +27,6 @@ class ThemeService {
 
   // 테마 저장하기
   Future<void> updateTheme(AppThemeType type) async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setString(_themeKey, type.name);
+    await _prefs.setString(_themeKey, type.name);
   }
 }

@@ -16,28 +16,28 @@ class ThemeBloc extends Bloc<ThemeEvent, ThemeState> {
   final UpdateThemeUseCase _updateThemeUseCase;
 
   ThemeBloc(this._getThemeUseCase, this._updateThemeUseCase)
-    : super(const ThemeState()) {
+    : super(const ThemeState.initial()) {
     on<LoadTheme>(_onLoadTheme);
     on<UpdateTheme>(_onUpdateTheme);
   }
 
-  // 현재 ThemeMode 반환
-  ThemeMode get themeMode => _toThemeMode(state.selectedTheme);
+  // 현재 ThemeMode 반환 (MaterialApp에서 사용)
+  ThemeMode get themeMode {
+    return state.maybeWhen(
+      loaded: (selectedTheme) => _toThemeMode(selectedTheme),
+      orElse: () => ThemeMode.system,
+    );
+  }
 
   // 테마 불러오기
   Future<void> _onLoadTheme(LoadTheme event, Emitter<ThemeState> emit) async {
-    emit(state.copyWith(pageState: ThemePageState.loading));
+    emit(const ThemeState.loading());
 
-    final res = await _getThemeUseCase();
+    final res = _getThemeUseCase();
 
     res.when(
       success: (theme) {
-        emit(
-          state.copyWith(
-            pageState: ThemePageState.loaded,
-            selectedTheme: theme,
-          ),
-        );
+        emit(ThemeState.loaded(selectedTheme: theme));
       },
       failure: (failure) {
         final message = failure.when(
@@ -46,7 +46,7 @@ class ThemeBloc extends Bloc<ThemeEvent, ThemeState> {
           authFailure: (msg) => msg,
           undefined: (msg) => msg,
         );
-        emit(state.copyWith(pageState: ThemePageState.error, message: message));
+        emit(ThemeState.error(message: message));
       },
     );
   }
@@ -60,7 +60,7 @@ class ThemeBloc extends Bloc<ThemeEvent, ThemeState> {
 
     res.when(
       success: (_) {
-        emit(state.copyWith(selectedTheme: event.type));
+        emit(ThemeState.loaded(selectedTheme: event.type));
       },
       failure: (failure) {
         final message = failure.when(
@@ -69,7 +69,7 @@ class ThemeBloc extends Bloc<ThemeEvent, ThemeState> {
           authFailure: (msg) => msg,
           undefined: (msg) => msg,
         );
-        emit(state.copyWith(message: message));
+        emit(ThemeState.error(message: message));
       },
     );
   }

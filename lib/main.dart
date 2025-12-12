@@ -76,7 +76,6 @@ Future<void> _requestPermissions() async {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<ThemeBloc, ThemeState>(
@@ -86,11 +85,7 @@ class MyApp extends StatelessWidget {
           debugShowCheckedModeBanner: false,
           theme: AppTheme.light,
           darkTheme: AppTheme.dark,
-          themeMode: switch (state.selectedTheme) {
-            AppThemeType.light => ThemeMode.light,
-            AppThemeType.dark => ThemeMode.dark,
-            AppThemeType.system => ThemeMode.system,
-          },
+          themeMode: context.read<ThemeBloc>().themeMode,
         );
       },
     );

@@ -39,20 +39,21 @@ const Map<AppThemeType, ThemeInfo> themeOptionsMap = {
   ),
 };
 
-// 페이지 상태
-enum ThemePageState { initial, loading, loaded, error }
-
 @freezed
 abstract class ThemeState with _$ThemeState {
-  const factory ThemeState({
-    @Default(ThemePageState.initial) ThemePageState pageState,
-    @Default(AppThemeType.system) AppThemeType selectedTheme,
-    @Default([]) List<ThemeInfo> themeOptions,
-    String? message,
-  }) = _ThemeState;
+  /// 초기 상태
+  const factory ThemeState.initial() = ThemeInitial;
 
-  const ThemeState._();
+  /// 로딩 상태
+  const factory ThemeState.loading() = ThemeLoading;
 
-  // 테마 정보 가져오기
-  ThemeInfo? getThemeInfo(AppThemeType type) => themeOptionsMap[type];
+  /// 로드 완료 상태
+  const factory ThemeState.loaded({required AppThemeType selectedTheme}) =
+      ThemeLoaded;
+
+  /// 에러 상태
+  const factory ThemeState.error({required String message}) = ThemeError;
 }
+
+// 테마 정보 가져오기 (전역 함수)
+ThemeInfo? getThemeInfo(AppThemeType type) => themeOptionsMap[type];

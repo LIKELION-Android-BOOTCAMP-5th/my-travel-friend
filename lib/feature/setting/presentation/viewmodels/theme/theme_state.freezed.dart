@@ -14,64 +14,30 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$ThemeState {
 
- ThemePageState get pageState; AppThemeType get selectedTheme; List<ThemeInfo> get themeOptions; String? get message;
-/// Create a copy of ThemeState
-/// with the given fields replaced by the non-null parameter values.
-@JsonKey(includeFromJson: false, includeToJson: false)
-@pragma('vm:prefer-inline')
-$ThemeStateCopyWith<ThemeState> get copyWith => _$ThemeStateCopyWithImpl<ThemeState>(this as ThemeState, _$identity);
+
 
 
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is ThemeState&&(identical(other.pageState, pageState) || other.pageState == pageState)&&(identical(other.selectedTheme, selectedTheme) || other.selectedTheme == selectedTheme)&&const DeepCollectionEquality().equals(other.themeOptions, themeOptions)&&(identical(other.message, message) || other.message == message));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ThemeState);
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,pageState,selectedTheme,const DeepCollectionEquality().hash(themeOptions),message);
+int get hashCode => runtimeType.hashCode;
 
 @override
 String toString() {
-  return 'ThemeState(pageState: $pageState, selectedTheme: $selectedTheme, themeOptions: $themeOptions, message: $message)';
+  return 'ThemeState()';
 }
 
 
 }
 
 /// @nodoc
-abstract mixin class $ThemeStateCopyWith<$Res>  {
-  factory $ThemeStateCopyWith(ThemeState value, $Res Function(ThemeState) _then) = _$ThemeStateCopyWithImpl;
-@useResult
-$Res call({
- ThemePageState pageState, AppThemeType selectedTheme, List<ThemeInfo> themeOptions, String? message
-});
-
-
-
-
-}
-/// @nodoc
-class _$ThemeStateCopyWithImpl<$Res>
-    implements $ThemeStateCopyWith<$Res> {
-  _$ThemeStateCopyWithImpl(this._self, this._then);
-
-  final ThemeState _self;
-  final $Res Function(ThemeState) _then;
-
-/// Create a copy of ThemeState
-/// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? pageState = null,Object? selectedTheme = null,Object? themeOptions = null,Object? message = freezed,}) {
-  return _then(_self.copyWith(
-pageState: null == pageState ? _self.pageState : pageState // ignore: cast_nullable_to_non_nullable
-as ThemePageState,selectedTheme: null == selectedTheme ? _self.selectedTheme : selectedTheme // ignore: cast_nullable_to_non_nullable
-as AppThemeType,themeOptions: null == themeOptions ? _self.themeOptions : themeOptions // ignore: cast_nullable_to_non_nullable
-as List<ThemeInfo>,message: freezed == message ? _self.message : message // ignore: cast_nullable_to_non_nullable
-as String?,
-  ));
-}
-
+class $ThemeStateCopyWith<$Res>  {
+$ThemeStateCopyWith(ThemeState _, $Res Function(ThemeState) __);
 }
 
 
@@ -89,11 +55,14 @@ extension ThemeStatePatterns on ThemeState {
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeMap<TResult extends Object?>(TResult Function( _ThemeState value)?  $default,{required TResult orElse(),}){
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( ThemeInitial value)?  initial,TResult Function( ThemeLoading value)?  loading,TResult Function( ThemeLoaded value)?  loaded,TResult Function( ThemeError value)?  error,required TResult orElse(),}){
 final _that = this;
 switch (_that) {
-case _ThemeState() when $default != null:
-return $default(_that);case _:
+case ThemeInitial() when initial != null:
+return initial(_that);case ThemeLoading() when loading != null:
+return loading(_that);case ThemeLoaded() when loaded != null:
+return loaded(_that);case ThemeError() when error != null:
+return error(_that);case _:
   return orElse();
 
 }
@@ -111,11 +80,14 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult map<TResult extends Object?>(TResult Function( _ThemeState value)  $default,){
+@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( ThemeInitial value)  initial,required TResult Function( ThemeLoading value)  loading,required TResult Function( ThemeLoaded value)  loaded,required TResult Function( ThemeError value)  error,}){
 final _that = this;
 switch (_that) {
-case _ThemeState():
-return $default(_that);case _:
+case ThemeInitial():
+return initial(_that);case ThemeLoading():
+return loading(_that);case ThemeLoaded():
+return loaded(_that);case ThemeError():
+return error(_that);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -132,11 +104,14 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>(TResult? Function( _ThemeState value)?  $default,){
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( ThemeInitial value)?  initial,TResult? Function( ThemeLoading value)?  loading,TResult? Function( ThemeLoaded value)?  loaded,TResult? Function( ThemeError value)?  error,}){
 final _that = this;
 switch (_that) {
-case _ThemeState() when $default != null:
-return $default(_that);case _:
+case ThemeInitial() when initial != null:
+return initial(_that);case ThemeLoading() when loading != null:
+return loading(_that);case ThemeLoaded() when loaded != null:
+return loaded(_that);case ThemeError() when error != null:
+return error(_that);case _:
   return null;
 
 }
@@ -153,10 +128,13 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( ThemePageState pageState,  AppThemeType selectedTheme,  List<ThemeInfo> themeOptions,  String? message)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  initial,TResult Function()?  loading,TResult Function( AppThemeType selectedTheme)?  loaded,TResult Function( String message)?  error,required TResult orElse(),}) {final _that = this;
 switch (_that) {
-case _ThemeState() when $default != null:
-return $default(_that.pageState,_that.selectedTheme,_that.themeOptions,_that.message);case _:
+case ThemeInitial() when initial != null:
+return initial();case ThemeLoading() when loading != null:
+return loading();case ThemeLoaded() when loaded != null:
+return loaded(_that.selectedTheme);case ThemeError() when error != null:
+return error(_that.message);case _:
   return orElse();
 
 }
@@ -174,10 +152,13 @@ return $default(_that.pageState,_that.selectedTheme,_that.themeOptions,_that.mes
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( ThemePageState pageState,  AppThemeType selectedTheme,  List<ThemeInfo> themeOptions,  String? message)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  initial,required TResult Function()  loading,required TResult Function( AppThemeType selectedTheme)  loaded,required TResult Function( String message)  error,}) {final _that = this;
 switch (_that) {
-case _ThemeState():
-return $default(_that.pageState,_that.selectedTheme,_that.themeOptions,_that.message);case _:
+case ThemeInitial():
+return initial();case ThemeLoading():
+return loading();case ThemeLoaded():
+return loaded(_that.selectedTheme);case ThemeError():
+return error(_that.message);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -194,10 +175,13 @@ return $default(_that.pageState,_that.selectedTheme,_that.themeOptions,_that.mes
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( ThemePageState pageState,  AppThemeType selectedTheme,  List<ThemeInfo> themeOptions,  String? message)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  initial,TResult? Function()?  loading,TResult? Function( AppThemeType selectedTheme)?  loaded,TResult? Function( String message)?  error,}) {final _that = this;
 switch (_that) {
-case _ThemeState() when $default != null:
-return $default(_that.pageState,_that.selectedTheme,_that.themeOptions,_that.message);case _:
+case ThemeInitial() when initial != null:
+return initial();case ThemeLoading() when loading != null:
+return loading();case ThemeLoaded() when loaded != null:
+return loaded(_that.selectedTheme);case ThemeError() when error != null:
+return error(_that.message);case _:
   return null;
 
 }
@@ -208,52 +192,107 @@ return $default(_that.pageState,_that.selectedTheme,_that.themeOptions,_that.mes
 /// @nodoc
 
 
-class _ThemeState extends ThemeState {
-  const _ThemeState({this.pageState = ThemePageState.initial, this.selectedTheme = AppThemeType.system, final  List<ThemeInfo> themeOptions = const [], this.message}): _themeOptions = themeOptions,super._();
+class ThemeInitial implements ThemeState {
+  const ThemeInitial();
   
 
-@override@JsonKey() final  ThemePageState pageState;
-@override@JsonKey() final  AppThemeType selectedTheme;
- final  List<ThemeInfo> _themeOptions;
-@override@JsonKey() List<ThemeInfo> get themeOptions {
-  if (_themeOptions is EqualUnmodifiableListView) return _themeOptions;
-  // ignore: implicit_dynamic_type
-  return EqualUnmodifiableListView(_themeOptions);
-}
 
-@override final  String? message;
 
-/// Create a copy of ThemeState
-/// with the given fields replaced by the non-null parameter values.
-@override @JsonKey(includeFromJson: false, includeToJson: false)
-@pragma('vm:prefer-inline')
-_$ThemeStateCopyWith<_ThemeState> get copyWith => __$ThemeStateCopyWithImpl<_ThemeState>(this, _$identity);
 
 
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ThemeState&&(identical(other.pageState, pageState) || other.pageState == pageState)&&(identical(other.selectedTheme, selectedTheme) || other.selectedTheme == selectedTheme)&&const DeepCollectionEquality().equals(other._themeOptions, _themeOptions)&&(identical(other.message, message) || other.message == message));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ThemeInitial);
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,pageState,selectedTheme,const DeepCollectionEquality().hash(_themeOptions),message);
+int get hashCode => runtimeType.hashCode;
 
 @override
 String toString() {
-  return 'ThemeState(pageState: $pageState, selectedTheme: $selectedTheme, themeOptions: $themeOptions, message: $message)';
+  return 'ThemeState.initial()';
+}
+
+
+}
+
+
+
+
+/// @nodoc
+
+
+class ThemeLoading implements ThemeState {
+  const ThemeLoading();
+  
+
+
+
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ThemeLoading);
+}
+
+
+@override
+int get hashCode => runtimeType.hashCode;
+
+@override
+String toString() {
+  return 'ThemeState.loading()';
+}
+
+
+}
+
+
+
+
+/// @nodoc
+
+
+class ThemeLoaded implements ThemeState {
+  const ThemeLoaded({required this.selectedTheme});
+  
+
+ final  AppThemeType selectedTheme;
+
+/// Create a copy of ThemeState
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$ThemeLoadedCopyWith<ThemeLoaded> get copyWith => _$ThemeLoadedCopyWithImpl<ThemeLoaded>(this, _$identity);
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ThemeLoaded&&(identical(other.selectedTheme, selectedTheme) || other.selectedTheme == selectedTheme));
+}
+
+
+@override
+int get hashCode => Object.hash(runtimeType,selectedTheme);
+
+@override
+String toString() {
+  return 'ThemeState.loaded(selectedTheme: $selectedTheme)';
 }
 
 
 }
 
 /// @nodoc
-abstract mixin class _$ThemeStateCopyWith<$Res> implements $ThemeStateCopyWith<$Res> {
-  factory _$ThemeStateCopyWith(_ThemeState value, $Res Function(_ThemeState) _then) = __$ThemeStateCopyWithImpl;
-@override @useResult
+abstract mixin class $ThemeLoadedCopyWith<$Res> implements $ThemeStateCopyWith<$Res> {
+  factory $ThemeLoadedCopyWith(ThemeLoaded value, $Res Function(ThemeLoaded) _then) = _$ThemeLoadedCopyWithImpl;
+@useResult
 $Res call({
- ThemePageState pageState, AppThemeType selectedTheme, List<ThemeInfo> themeOptions, String? message
+ AppThemeType selectedTheme
 });
 
 
@@ -261,22 +300,85 @@ $Res call({
 
 }
 /// @nodoc
-class __$ThemeStateCopyWithImpl<$Res>
-    implements _$ThemeStateCopyWith<$Res> {
-  __$ThemeStateCopyWithImpl(this._self, this._then);
+class _$ThemeLoadedCopyWithImpl<$Res>
+    implements $ThemeLoadedCopyWith<$Res> {
+  _$ThemeLoadedCopyWithImpl(this._self, this._then);
 
-  final _ThemeState _self;
-  final $Res Function(_ThemeState) _then;
+  final ThemeLoaded _self;
+  final $Res Function(ThemeLoaded) _then;
 
 /// Create a copy of ThemeState
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? pageState = null,Object? selectedTheme = null,Object? themeOptions = null,Object? message = freezed,}) {
-  return _then(_ThemeState(
-pageState: null == pageState ? _self.pageState : pageState // ignore: cast_nullable_to_non_nullable
-as ThemePageState,selectedTheme: null == selectedTheme ? _self.selectedTheme : selectedTheme // ignore: cast_nullable_to_non_nullable
-as AppThemeType,themeOptions: null == themeOptions ? _self._themeOptions : themeOptions // ignore: cast_nullable_to_non_nullable
-as List<ThemeInfo>,message: freezed == message ? _self.message : message // ignore: cast_nullable_to_non_nullable
-as String?,
+@pragma('vm:prefer-inline') $Res call({Object? selectedTheme = null,}) {
+  return _then(ThemeLoaded(
+selectedTheme: null == selectedTheme ? _self.selectedTheme : selectedTheme // ignore: cast_nullable_to_non_nullable
+as AppThemeType,
+  ));
+}
+
+
+}
+
+/// @nodoc
+
+
+class ThemeError implements ThemeState {
+  const ThemeError({required this.message});
+  
+
+ final  String message;
+
+/// Create a copy of ThemeState
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$ThemeErrorCopyWith<ThemeError> get copyWith => _$ThemeErrorCopyWithImpl<ThemeError>(this, _$identity);
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ThemeError&&(identical(other.message, message) || other.message == message));
+}
+
+
+@override
+int get hashCode => Object.hash(runtimeType,message);
+
+@override
+String toString() {
+  return 'ThemeState.error(message: $message)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class $ThemeErrorCopyWith<$Res> implements $ThemeStateCopyWith<$Res> {
+  factory $ThemeErrorCopyWith(ThemeError value, $Res Function(ThemeError) _then) = _$ThemeErrorCopyWithImpl;
+@useResult
+$Res call({
+ String message
+});
+
+
+
+
+}
+/// @nodoc
+class _$ThemeErrorCopyWithImpl<$Res>
+    implements $ThemeErrorCopyWith<$Res> {
+  _$ThemeErrorCopyWithImpl(this._self, this._then);
+
+  final ThemeError _self;
+  final $Res Function(ThemeError) _then;
+
+/// Create a copy of ThemeState
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') $Res call({Object? message = null,}) {
+  return _then(ThemeError(
+message: null == message ? _self.message : message // ignore: cast_nullable_to_non_nullable
+as String,
   ));
 }
 
