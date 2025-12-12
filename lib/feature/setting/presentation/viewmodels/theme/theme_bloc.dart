@@ -55,7 +55,7 @@ class ThemeBloc extends Bloc<ThemeEvent, ThemeState> {
           state.copyWith(
             pageState: ThemePageState.loaded,
             selectedTheme: theme,
-            themeOptions: themeOptions, // 👈 static 사용
+            themeOptions: themeOptions,
           ),
         );
       },
