@@ -1,3 +1,6 @@
+import 'package:injectable/injectable.dart';
+import 'package:my_travel_friend/core/result/result.dart';
+
 import '../entities/friend_request_entity.dart';
 import '../repositories/friend_request_repository.dart';
 
@@ -9,7 +12,7 @@ class CreateFriendRequestUsecase {
   CreateFriendRequestUsecase(this._friendRequestRepository);
 
   // 친구요청
-  Future<FriendRequestEntity> call(int requestId, int targetId) {
+  Future<Result<FriendRequestEntity>> call(int requestId, int targetId) {
     return _friendRequestRepository.createFriendRequest(requestId, targetId);
   }
 }

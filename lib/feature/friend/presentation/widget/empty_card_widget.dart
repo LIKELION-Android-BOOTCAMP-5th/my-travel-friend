@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:my_travel_friend/theme/app_colors.dart';
 
-import '../../../../theme/app_icon.dart';
+import '../../../../core/theme/app_colors.dart';
+import '../../../../core/theme/app_icon.dart';
 
 /// 친구 없음, 데이터 없음 등 비어있는 상태를 보여줄 때 쓰는 카드
 class EmptyCard extends StatelessWidget {

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:my_travel_friend/theme/app_icon.dart';
+
+import '../../../../core/theme/app_icon.dart';
 
 class FriendMoreMenuButton extends StatelessWidget {
   final VoidCallback? onGoTravel; // 친구랑 여행가기

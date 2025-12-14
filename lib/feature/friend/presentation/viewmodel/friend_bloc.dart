@@ -4,7 +4,7 @@ import 'package:my_travel_friend/feature/friend/domain/usecases/get_friend_users
 
 import '../../../../core/result/result.dart';
 import '../../../auth/domain/entities/user_entity.dart';
-import '../../domain/usecases/delete_friend_usecase.dart';
+import '../../domain/usecases/delete_friend_usecases.dart';
 import '../../domain/usecases/get_friends_usecase.dart';
 import '../../domain/usecases/search_nickname_usecase.dart';
 import 'friend_event.dart';
