@@ -2,7 +2,7 @@ import '../entities/friend_request_entity.dart';
 import '../repositories/friend_request_repository.dart';
 
 // // [엄수빈] 친구 요청 usecase
-// @LazySingleton()
+@LazySingleton()
 class CreateFriendRequestUsecase {
   final FriendRequestRepository _friendRequestRepository;
 

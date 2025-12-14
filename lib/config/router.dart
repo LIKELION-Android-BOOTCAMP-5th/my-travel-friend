@@ -237,6 +237,22 @@ class AppRouter {
           return EditDiaryBlocWidget(diary: diary);
         },
       ),
+      GoRoute(
+        path: '/friend',
+        builder: (context, state) => const FriendBlocWidget(userId: 4),
+      ),
+      GoRoute(
+        path: '/friend/request',
+        builder: (context, state) {
+          final extra = state.extra as Map<String, dynamic>;
+          final requestId = extra['requestId'] as int;
+          return FriendRequestBlocWidget(requestId: requestId);
+        },
+      ),
+      GoRoute(
+        path: '/friend_recevice',
+        builder: (context, state) => ReceviceListBlocWidget(userId: 4),
+      ),
     ],
   );
 }
