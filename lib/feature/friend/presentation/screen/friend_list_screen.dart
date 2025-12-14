@@ -4,11 +4,11 @@ import 'package:go_router/go_router.dart';
 import 'package:my_travel_friend/core/widget/button.dart';
 import 'package:my_travel_friend/feature/friend/presentation/widget/empty_card_widget.dart';
 
+import '../../../../core/theme/app_colors.dart';
+import '../../../../core/theme/app_icon.dart';
 import '../../../../core/widget/app_bar.dart';
 import '../../../../core/widget/pop_up_box.dart';
 import '../../../../core/widget/text_box.dart';
-import '../../../../theme/app_colors.dart';
-import '../../../../theme/app_icon.dart';
 import '../../../auth/domain/entities/user_entity.dart';
 import '../viewmodel/friend_bloc.dart';
 import '../viewmodel/friend_event.dart';

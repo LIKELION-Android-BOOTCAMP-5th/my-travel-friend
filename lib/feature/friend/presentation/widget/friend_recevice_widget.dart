@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:my_travel_friend/core/util/time_ago.dart';
-import 'package:my_travel_friend/theme/app_colors.dart';
 
+import '../../../../core/theme/app_colors.dart';
 import '../../../../core/widget/profile_img.dart';
 import '../../../auth/domain/entities/user_entity.dart';
 

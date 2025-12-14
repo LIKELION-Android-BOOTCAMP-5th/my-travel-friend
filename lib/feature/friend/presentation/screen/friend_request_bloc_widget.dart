@@ -32,26 +32,7 @@ class FriendRequestBlocWidget extends StatelessWidget {
         },
         child: BlocBuilder<FriendRequestBloc, FriendRequestState>(
           builder: (context, state) {
-            return FriendRequestScreen(
-              requestId: requestId,
-              state: state,
-              onSearchChanged: (value) {
-                context.read<FriendRequestBloc>().add(
-                  FriendRequestEvent.searchRequestName(
-                    myId: requestId,
-                    keyword: value,
-                  ),
-                );
-              },
-              onConfirmRequest: (targetId) {
-                context.read<FriendRequestBloc>().add(
-                  FriendRequestEvent.requestCreate(
-                    requestId: requestId,
-                    targetId: targetId,
-                  ),
-                );
-              },
-            );
+            return FriendRequestScreen(requestId: requestId);
           },
         ),
       ),

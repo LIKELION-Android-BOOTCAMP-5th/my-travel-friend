@@ -4,7 +4,8 @@ import '../../../../core/result/result.dart';
 import '../entities/friend_request_entity.dart';
 import '../repositories/friend_request_repository.dart';
 
-@injectable
+//[엄수빈] 보낸 친구 요청
+@LazySingleton()
 class GetSentRequestUsecase {
   final FriendRequestRepository _repo;
   GetSentRequestUsecase(this._repo);

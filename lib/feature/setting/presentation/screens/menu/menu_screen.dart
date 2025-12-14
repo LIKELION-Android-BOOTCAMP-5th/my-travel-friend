@@ -159,6 +159,13 @@ class MenuScreen extends StatelessWidget {
   }) {
     final colorScheme = Theme.of(context).colorScheme;
     final isDark = colorScheme.brightness == Brightness.dark;
+    final user = context.read<AuthProfileBloc>().state;
+
+    if (user is! AuthProfileAuthenticated) {
+      return const Center(child: Text("로그인이 필요합니다"));
+    }
+
+    final userProfile = user.userInfo;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -176,12 +183,30 @@ class MenuScreen extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  MenuBox(state: state, title: "친구 목록 보기", onTap: () {}),
+                  MenuBox(
+                    state: state,
+                    title: "친구 목록 보기",
+                    onTap: () {
+                      context.push(
+                        '/setting/friend',
+                        extra: {'userId': userProfile.id},
+                      );
+                    },
+                  ),
                   Divider(
                     height: 0.5,
                     color: colorScheme.outlineVariant.withOpacity(0.3),
                   ),
-                  MenuBox(state: state, title: "내가 받은 친구 요청", onTap: () {}),
+                  MenuBox(
+                    state: state,
+                    title: "내가 받은 친구 요청",
+                    onTap: () {
+                      context.push(
+                        '/setting/friend_recevice',
+                        extra: {'userId': userProfile.id},
+                      );
+                    },
+                  ),
                   Divider(
                     height: 0.5,
                     color: colorScheme.outlineVariant.withOpacity(0.3),
