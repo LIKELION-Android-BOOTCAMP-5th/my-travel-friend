@@ -102,6 +102,8 @@ import '../../feature/diary/data/repositories/diary_repository_impl.dart'
     as _i148;
 import '../../feature/diary/domain/repositories/diary_repository.dart' as _i871;
 import '../../feature/diary/domain/usecases/create_diary_usecase.dart' as _i27;
+import '../../feature/diary/domain/usecases/delete_diary_img_usecase.dart'
+    as _i55;
 import '../../feature/diary/domain/usecases/delete_diary_usecase.dart' as _i699;
 import '../../feature/diary/domain/usecases/get_diary_by_id_usecase.dart'
     as _i236;
@@ -111,6 +113,8 @@ import '../../feature/diary/domain/usecases/get_our_diaries_usecase.dart'
     as _i849;
 import '../../feature/diary/domain/usecases/update_diary_usecase.dart'
     as _i1039;
+import '../../feature/diary/domain/usecases/upload_diary_img_usecase.dart'
+    as _i998;
 import '../../feature/diary/presentation/viewmodels/diary/diary_bloc.dart'
     as _i27;
 import '../../feature/diary/presentation/viewmodels/edit_diary/edit_diary_bloc.dart'
@@ -483,6 +487,9 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i27.CreateDiaryUseCase>(
       () => _i27.CreateDiaryUseCase(gh<_i871.DiaryRepository>()),
     );
+    gh.lazySingleton<_i55.DeleteDiaryImgUseCase>(
+      () => _i55.DeleteDiaryImgUseCase(gh<_i871.DiaryRepository>()),
+    );
     gh.lazySingleton<_i699.DeleteDiaryUseCase>(
       () => _i699.DeleteDiaryUseCase(gh<_i871.DiaryRepository>()),
     );
@@ -497,6 +504,9 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.lazySingleton<_i1039.UpdateDiaryUseCase>(
       () => _i1039.UpdateDiaryUseCase(gh<_i871.DiaryRepository>()),
+    );
+    gh.lazySingleton<_i998.UploadDiaryImgUseCase>(
+      () => _i998.UploadDiaryImgUseCase(gh<_i871.DiaryRepository>()),
     );
     gh.lazySingleton<_i212.AlarmSettingRepository>(
       () =>
@@ -562,13 +572,15 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i885.NewDiaryBloc>(
       () => _i885.NewDiaryBloc(
         gh<_i27.CreateDiaryUseCase>(),
-        gh<_i871.DiaryRepository>(),
+        gh<_i998.UploadDiaryImgUseCase>(),
+        gh<_i818.GetUserScheduleUseCase>(),
       ),
     );
     gh.factory<_i935.EditDiaryBloc>(
       () => _i935.EditDiaryBloc(
         gh<_i1039.UpdateDiaryUseCase>(),
-        gh<_i871.DiaryRepository>(),
+        gh<_i998.UploadDiaryImgUseCase>(),
+        gh<_i55.DeleteDiaryImgUseCase>(),
       ),
     );
     gh.lazySingleton<_i889.CheckAlarmsUseCase>(

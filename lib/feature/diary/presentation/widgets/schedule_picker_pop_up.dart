@@ -1,73 +1,36 @@
 import 'package:flutter/material.dart';
-import 'package:get_it/get_it.dart';
+import 'package:go_router/go_router.dart';
 
-import '../../../../core/result/result.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_font.dart';
 import '../../../../core/theme/app_icon.dart';
 import '../../../schedule/domain/entities/schedule_entity.dart';
-import '../../../schedule/domain/usecases/get_user_schudule_usecase.dart';
 import '../../../trip/presentation/screens/edit_trip_screen.dart';
 
-// [이재은] 일정 선택 팝업
-class SchedulePickerPopup extends StatefulWidget {
-  final int tripId;
-  final int userId;
+// [이재은] 일정 선택 팝업 (순수 UI - 데이터는 외부에서 주입)
+class SchedulePickerPopup extends StatelessWidget {
+  final List<ScheduleEntity> schedules;
+  final bool isLoading;
 
   const SchedulePickerPopup({
     super.key,
-    required this.tripId,
-    required this.userId,
+    required this.schedules,
+    this.isLoading = false,
   });
 
+  /// 팝업 표시 (스케줄 목록을 외부에서 받음)
   static Future<ScheduleEntity?> show(
     BuildContext context, {
-    required int tripId,
-    required int userId,
+    required List<ScheduleEntity> schedules,
+    bool isLoading = false,
   }) {
     return showModalBottomSheet<ScheduleEntity>(
       context: context,
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
-      builder: (_) => SchedulePickerPopup(tripId: tripId, userId: userId),
+      builder: (_) =>
+          SchedulePickerPopup(schedules: schedules, isLoading: isLoading),
     );
-  }
-
-  @override
-  State<SchedulePickerPopup> createState() => _ScheduleSelectPopupState();
-}
-
-class _ScheduleSelectPopupState extends State<SchedulePickerPopup> {
-  List<ScheduleEntity> _schedules = [];
-  bool _isLoading = true;
-
-  @override
-  void initState() {
-    super.initState();
-    _loadSchedules();
-  }
-
-  Future<void> _loadSchedules() async {
-    final useCase = GetIt.instance<GetUserScheduleUseCase>();
-
-    final res = await useCase(tripId: widget.tripId, userId: widget.userId);
-
-    if (mounted) {
-      res.when(
-        success: (schedules) {
-          setState(() {
-            _schedules = schedules;
-            _isLoading = false;
-          });
-        },
-        failure: (_) {
-          setState(() {
-            _schedules = [];
-            _isLoading = false;
-          });
-        },
-      );
-    }
   }
 
   @override
@@ -79,13 +42,13 @@ class _ScheduleSelectPopupState extends State<SchedulePickerPopup> {
       height: MediaQuery.of(context).size.height * 0.6,
       decoration: BoxDecoration(
         color: colorScheme.surface,
-        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+        borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
       ),
       child: Column(
         children: [
           // 핸들
           Container(
-            margin: EdgeInsets.only(top: 12),
+            margin: const EdgeInsets.only(top: 12),
             width: 40,
             height: 4,
             decoration: BoxDecoration(
@@ -96,7 +59,7 @@ class _ScheduleSelectPopupState extends State<SchedulePickerPopup> {
 
           // 헤더
           Padding(
-            padding: EdgeInsets.all(16),
+            padding: const EdgeInsets.all(16),
             child: Row(
               children: [
                 Text(
@@ -106,9 +69,9 @@ class _ScheduleSelectPopupState extends State<SchedulePickerPopup> {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                Spacer(),
+                const Spacer(),
                 IconButton(
-                  onPressed: () => Navigator.pop(context),
+                  onPressed: () => context.pop(),
                   icon: Icon(
                     AppIcon.close,
                     color: colorScheme.onSurfaceVariant,
@@ -118,7 +81,7 @@ class _ScheduleSelectPopupState extends State<SchedulePickerPopup> {
             ),
           ),
 
-          Divider(height: 1),
+          const Divider(height: 1),
 
           // 스케줄 목록
           Expanded(child: _buildContent(context)),
@@ -130,11 +93,11 @@ class _ScheduleSelectPopupState extends State<SchedulePickerPopup> {
   Widget _buildContent(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
 
-    if (_isLoading) {
-      return Center(child: CircularProgressIndicator());
+    if (isLoading) {
+      return const Center(child: CircularProgressIndicator());
     }
 
-    if (_schedules.isEmpty) {
+    if (schedules.isEmpty) {
       return Center(
         child: Text(
           '참여 중인 일정이 없어요',
@@ -144,15 +107,15 @@ class _ScheduleSelectPopupState extends State<SchedulePickerPopup> {
     }
 
     return ListView.separated(
-      padding: EdgeInsets.all(16),
-      itemCount: _schedules.length,
-      separatorBuilder: (_, __) => SizedBox(height: 8),
+      padding: const EdgeInsets.all(16),
+      itemCount: schedules.length,
+      separatorBuilder: (_, __) => const SizedBox(height: 8),
       itemBuilder: (context, index) {
-        final schedule = _schedules[index];
+        final schedule = schedules[index];
 
         return _ScheduleItem(
           schedule: schedule,
-          onTap: () => Navigator.pop(context, schedule),
+          onTap: () => context.pop(schedule),
         );
       },
     );
@@ -173,7 +136,7 @@ class _ScheduleItem extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        padding: EdgeInsets.all(16),
+        padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
           color: _getColor(schedule),
           borderRadius: BorderRadius.circular(12),
@@ -188,7 +151,7 @@ class _ScheduleItem extends StatelessWidget {
                 fontWeight: FontWeight.w600,
               ),
             ),
-            SizedBox(height: 4),
+            const SizedBox(height: 4),
             Row(
               children: [
                 Text(
@@ -198,7 +161,7 @@ class _ScheduleItem extends StatelessWidget {
                   ),
                 ),
                 if (schedule.place != null) ...[
-                  SizedBox(width: 16),
+                  const SizedBox(width: 16),
                   Text(
                     schedule.place!,
                     style: AppFont.regular.copyWith(
@@ -216,24 +179,15 @@ class _ScheduleItem extends StatelessWidget {
 
   Color _getColor(ScheduleEntity schedule) {
     return switch (schedule.categoryId) {
-      // 이동
       1 => AppColors.lightPink.withOpacity(0.3),
-      // 먹거리
       2 => AppColors.secondary.withOpacity(0.3),
-      // 관광
       3 => AppColors.primaryLight.withOpacity(0.3),
-      // 휴식
       4 => AppColors.onMemoContainerDark.withOpacity(0.3),
-      // 숙박
       5 => AppColors.tertiary.withOpacity(0.3),
-      // 쇼핑
       6 => AppColors.lightPurple.withOpacity(0.3),
-      // 액티비티
       7 => AppColors.lightGreen.withOpacity(0.3),
-      // 기타
       8 => AppColors.navyOutline.withOpacity(0.3),
-      // TODO: Handle this case.
-      int() => throw UnimplementedError(),
+      _ => AppColors.navyOutline.withOpacity(0.3),
     };
   }
 }

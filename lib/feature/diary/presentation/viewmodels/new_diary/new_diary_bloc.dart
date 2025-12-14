@@ -1,10 +1,11 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 import 'package:my_travel_friend/feature/diary/domain/usecases/create_diary_usecase.dart';
+import 'package:my_travel_friend/feature/diary/domain/usecases/upload_diary_img_usecase.dart';
 
 import '../../../../../core/result/failures.dart';
 import '../../../../../core/result/result.dart';
-import '../../../domain/repositories/diary_repository.dart';
+import '../../../../schedule/domain/usecases/get_user_schudule_usecase.dart';
 import 'new_diary_event.dart';
 import 'new_diary_state.dart';
 
@@ -13,12 +14,13 @@ import 'new_diary_state.dart';
 class NewDiaryBloc extends Bloc<NewDiaryEvent, NewDiaryState> {
   // usecase 주입
   final CreateDiaryUseCase _createDiaryUseCase;
-  final DiaryRepository _diaryRepository;
-  // schedule 관련 필요
+  final UploadDiaryImgUseCase _uploadDiaryImgUseCase;
+  final GetUserScheduleUseCase _getUserScheduleUseCase;
 
   NewDiaryBloc(
     this._createDiaryUseCase,
-    this._diaryRepository,
+    this._uploadDiaryImgUseCase,
+    this._getUserScheduleUseCase,
     // schedule 관련 필요
   ) : super(const NewDiaryState()) {
     on<CreateDiary>(_onCreateDiary);
@@ -32,7 +34,9 @@ class NewDiaryBloc extends Bloc<NewDiaryEvent, NewDiaryState> {
     on<ChangePublic>(_onChangePublic);
     on<ChooseSchedule>(_onChooseSchedule);
     on<Reset>(_onReset);
-    // 일정 관련
+    on<LoadSchedules>(_onLoadSchedules);
+    on<SchedulesLoaded>(_onSchedulesLoaded);
+    on<SchedulesLoadFailed>(_onSchedulesLoadFailed);
   }
 
   // 핸들러
@@ -69,7 +73,7 @@ class NewDiaryBloc extends Bloc<NewDiaryEvent, NewDiaryState> {
     if (state.type == 'PHOTO' && state.localImgFile != null) {
       emit(state.copyWith(isUploading: true));
 
-      final uploadResult = await _diaryRepository.uploadImg(
+      final uploadResult = await _uploadDiaryImgUseCase(
         file: state.localImgFile!,
         userId: state.userId,
       );
@@ -124,6 +128,8 @@ class NewDiaryBloc extends Bloc<NewDiaryEvent, NewDiaryState> {
       },
     );
   }
+
+  // 일정 목록 로드
 
   // 타입 변경
   Future<void> _onChangeType(
@@ -211,4 +217,35 @@ class NewDiaryBloc extends Bloc<NewDiaryEvent, NewDiaryState> {
   }
 
   // 일정 목록 로드
+  Future<void> _onLoadSchedules(
+    LoadSchedules event,
+    Emitter<NewDiaryState> emit,
+  ) async {
+    emit(state.copyWith(isLoadingSchedules: true));
+
+    final res = await _getUserScheduleUseCase(
+      tripId: state.tripId,
+      userId: state.userId,
+    );
+
+    res.when(
+      success: (schedules) {
+        emit(state.copyWith(schedules: schedules, isLoadingSchedules: false));
+      },
+      failure: (_) {
+        emit(state.copyWith(schedules: [], isLoadingSchedules: false));
+      },
+    );
+  }
+
+  void _onSchedulesLoaded(SchedulesLoaded event, Emitter<NewDiaryState> emit) {
+    emit(state.copyWith(schedules: event.schedules, isLoadingSchedules: false));
+  }
+
+  void _onSchedulesLoadFailed(
+    SchedulesLoadFailed event,
+    Emitter<NewDiaryState> emit,
+  ) {
+    emit(state.copyWith(schedules: [], isLoadingSchedules: false));
+  }
 }

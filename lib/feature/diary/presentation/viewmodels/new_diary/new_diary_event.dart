@@ -2,6 +2,8 @@ import 'dart:io';
 
 import 'package:freezed_annotation/freezed_annotation.dart';
 
+import '../../../../schedule/domain/entities/schedule_entity.dart';
+
 part 'new_diary_event.freezed.dart';
 
 // [이재은] 다이어리 작성 관련 이벤트 (사용자의 행동, 시스템에서 발생하는 일)
@@ -42,6 +44,14 @@ abstract class NewDiaryEvent with _$NewDiaryEvent {
 
   // 일정 목록 로드
   const factory NewDiaryEvent.loadSchedules() = LoadSchedules;
+
+  // 일정 로드 성공
+  const factory NewDiaryEvent.schedulesLoaded({
+    required List<ScheduleEntity> schedules,
+  }) = SchedulesLoaded;
+
+  // 일정 로드 실패
+  const factory NewDiaryEvent.schedulesLoadFailed() = SchedulesLoadFailed;
 
   // 일정 선택
   const factory NewDiaryEvent.chooseSchedule({required int? scheduleId}) =
