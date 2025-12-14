@@ -24,7 +24,7 @@ class ChecklistDataSourceImpl implements ChecklistDataSource {
           .select()
           .eq('trip_id', tripId)
           .eq('user_id', userId)
-          .order('created_at');
+          .order('id');
 
       final list = (res as List)
           .map((json) => ChecklistDTO.fromJson(json))
@@ -39,9 +39,7 @@ class ChecklistDataSourceImpl implements ChecklistDataSource {
   @override
   Future<Result<ChecklistDTO>> createChecklist(ChecklistDTO checklist) async {
     try {
-      final insertData = checklist.toJson()
-        ..remove('id')
-        ..remove('created_at');
+      final insertData = checklist.toJson()..remove('id');
 
       final res = await _supabaseClient
           .from('checklist')
