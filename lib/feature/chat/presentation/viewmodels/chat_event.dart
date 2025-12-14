@@ -34,4 +34,7 @@ abstract class ChatEvent with _$ChatEvent {
 
   // 에러 메시지 초기화
   const factory ChatEvent.clearError() = ClearError;
+
+  // 크루 목록에 채팅 보낸 사람 없으면 크루 목록 다시 로드
+  const factory ChatEvent.refreshCrews() = RefreshCrews;
 }

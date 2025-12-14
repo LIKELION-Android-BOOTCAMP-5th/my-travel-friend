@@ -229,7 +229,17 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
   void _onNewChatReceive(OnNewChatReceive event, Emitter<ChatState> emit) {
     final newChats = event.chats.cast<ChatEntity>();
 
-    // 안 읽은 메시지 개수 업데이트
+    // 이전에 불러둔 크루 목록이랑 메세지 보낸 사람 체크 -> 일치하는 userID 없을 경우 크루 목록 갱신
+    final unknownUserIds = newChats
+        .map((c) => c.userId)
+        .toSet()
+        .where((userId) => state.getCrewById(userId) == null)
+        .toList();
+
+    if (unknownUserIds.isNotEmpty) {
+      add(const RefreshCrews());
+    }
+
     int unreadCount = 0;
     if (state.lastReadChatId != null) {
       unreadCount = newChats
@@ -238,6 +248,21 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     }
 
     emit(state.copyWith(chats: newChats, unreadCount: unreadCount));
+  }
+
+  // 멤버 리스트 갱신
+  Future<void> _onRefreshCrews(
+    RefreshCrews event,
+    Emitter<ChatState> emit,
+  ) async {
+    final res = await _getTripCrewUseCase(tripId: state.tripId);
+
+    res.when(
+      success: (members) {
+        emit(state.copyWith(crews: members));
+      },
+      failure: (_) {},
+    );
   }
 
   // 읽음 상태 업데이트 (디바운스 적용)
