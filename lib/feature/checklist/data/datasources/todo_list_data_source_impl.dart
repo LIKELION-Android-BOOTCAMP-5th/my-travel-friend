@@ -24,7 +24,7 @@ class TodoListDataSourceImpl implements TodoListDataSource {
           .select()
           .eq('trip_id', tripId)
           .eq('user_id', userId)
-          .order('created_at');
+          .order('id');
 
       final list = (res as List)
           .map((json) => TodoListDTO.fromJson(json))
@@ -39,9 +39,7 @@ class TodoListDataSourceImpl implements TodoListDataSource {
   @override
   Future<Result<TodoListDTO>> createTodoList(TodoListDTO todolist) async {
     try {
-      final insertData = todolist.toJson()
-        ..remove('id')
-        ..remove('created_at');
+      final insertData = todolist.toJson()..remove('id');
 
       final res = await _supabaseClient
           .from('todo_list')

@@ -59,7 +59,7 @@ class ListsBloc extends Bloc<ListsEvent, ListsState> {
     );
 
     List<ChecklistEntity> checklists = [];
-    List<TodoListEntity> todolists = [];
+    List<TodoListEntity> todoLists = [];
     String? errorMessage;
 
     // 체크리스트 로드
@@ -78,7 +78,7 @@ class ListsBloc extends Bloc<ListsEvent, ListsState> {
       userId: event.userId,
     );
     todolistResult.when(
-      success: (data) => todolists = data,
+      success: (data) => todoLists = data,
       failure: (failure) => errorMessage = failure.message,
     );
 
@@ -86,7 +86,8 @@ class ListsBloc extends Bloc<ListsEvent, ListsState> {
       state.copyWith(
         isLoading: false,
         checklists: checklists,
-        todolists: todolists,
+        todolists: todoLists,
+        message: errorMessage,
       ),
     );
   }
@@ -149,52 +150,62 @@ class ListsBloc extends Bloc<ListsEvent, ListsState> {
     );
   }
 
-  // 체크리스트 토글
+  // 체크리스트 토글 (수정됨)
   Future<void> _onToggleChecklist(
     ToggleChecklist event,
     Emitter<ListsState> emit,
   ) async {
-    // 이미 토글 중이면 무시
-    if (state.isToggling) return;
+    // 해당 아이템이 이미 토글 중인지 확인
+    if (state.togglingChecklistIds.contains(event.id)) return;
 
-    // 토글 시작
-    emit(state.copyWith(isToggling: true));
+    // 토글 중인 ID 추가
+    final togglingIds = Set<int>.from(state.togglingChecklistIds)
+      ..add(event.id);
 
-    // UI 먼저 변경
-    final originalList = List<ChecklistEntity>.from(state.checklists);
-    final updated = List<ChecklistEntity>.from(state.checklists);
-
-    for (int i = 0; i < updated.length; i++) {
-      if (updated[i].id == event.id) {
-        updated[i] = updated[i].copyWith(isChecked: event.isChecked);
-        break;
+    // UI 먼저 변경 (Optimistic Update)
+    final updated = state.checklists.map((item) {
+      if (item.id == event.id) {
+        return item.copyWith(isChecked: event.isChecked);
       }
-    }
+      return item;
+    }).toList();
 
-    emit(state.copyWith(checklists: updated));
+    emit(
+      state.copyWith(checklists: updated, togglingChecklistIds: togglingIds),
+    );
 
     // 서버 요청
-    final resFuture = _toggleChecklistUseCase.call(
+    final res = await _toggleChecklistUseCase.call(
       id: event.id,
       isChecked: event.isChecked,
     );
 
-    resFuture.then((res) {
-      res.when(
-        success: (_) {
-          emit(state.copyWith(isToggling: false));
-        },
-        failure: (failue) {
-          emit(
-            state.copyWith(
-              checklists: originalList,
-              isToggling: false,
-              message: '변경실패',
-            ),
-          );
-        },
-      );
-    });
+    // 토글 중인 ID 제거
+    final updatedTogglingIds = Set<int>.from(state.togglingChecklistIds)
+      ..remove(event.id);
+
+    res.when(
+      success: (_) {
+        emit(state.copyWith(togglingChecklistIds: updatedTogglingIds));
+      },
+      failure: (failure) {
+        // 실패 시 원래 상태로 롤백
+        final rolledBack = state.checklists.map((item) {
+          if (item.id == event.id) {
+            return item.copyWith(isChecked: !event.isChecked);
+          }
+          return item;
+        }).toList();
+
+        emit(
+          state.copyWith(
+            checklists: rolledBack,
+            togglingChecklistIds: updatedTogglingIds,
+            message: '변경 실패',
+          ),
+        );
+      },
+    );
   }
 
   // 투두리스트 생성
@@ -203,13 +214,13 @@ class ListsBloc extends Bloc<ListsEvent, ListsState> {
     Emitter<ListsState> emit,
   ) async {
     final content = event.content.trim();
-    if (content.isEmpty) return; // ← event.content 사용
+    if (content.isEmpty) return;
 
     final newItem = TodoListEntity(
       id: null,
       tripId: state.tripId,
       userId: state.userId,
-      content: content, // ← event.content 사용
+      content: content,
       isChecked: false,
     );
 
@@ -246,51 +257,58 @@ class ListsBloc extends Bloc<ListsEvent, ListsState> {
     );
   }
 
-  // 투두리스트 토글
+  // 투두리스트 토글 (수정됨)
   Future<void> _onToggleTodoList(
     ToggleTodoList event,
     Emitter<ListsState> emit,
   ) async {
-    // 이미 토글 중이면 무시
-    if (state.isToggling) return;
+    // 해당 아이템이 이미 토글 중인지 확인
+    if (state.togglingTodoIds.contains(event.id)) return;
 
-    // 토글 시작
-    emit(state.copyWith(isToggling: true));
+    // 토글 중인 ID 추가
+    final togglingIds = Set<int>.from(state.togglingTodoIds)..add(event.id);
 
-    // UI 먼저 변경
-    final originalList = List<TodoListEntity>.from(state.todolists);
-    final updated = List<TodoListEntity>.from(state.todolists);
-
-    for (int i = 0; i < updated.length; i++) {
-      if (updated[i].id == event.id) {
-        updated[i] = updated[i].copyWith(isChecked: event.isChecked);
-        break;
+    // UI 먼저 변경 (Optimistic Update)
+    final updated = state.todolists.map((item) {
+      if (item.id == event.id) {
+        return item.copyWith(isChecked: event.isChecked);
       }
-    }
+      return item;
+    }).toList();
 
-    emit(state.copyWith(todolists: updated));
+    emit(state.copyWith(todolists: updated, togglingTodoIds: togglingIds));
 
     // 서버 요청
-    final resFuture = _toggleTodoListUseCase.call(
+    final res = await _toggleTodoListUseCase.call(
       id: event.id,
       isChecked: event.isChecked,
     );
 
-    resFuture.then((res) {
-      res.when(
-        success: (_) {
-          emit(state.copyWith(isToggling: false));
-        },
-        failure: (failure) {
-          emit(
-            state.copyWith(
-              todolists: originalList,
-              isToggling: false,
-              message: '변경 실패',
-            ),
-          );
-        },
-      );
-    });
+    // 토글 중인 ID 제거
+    final updatedTogglingIds = Set<int>.from(state.togglingTodoIds)
+      ..remove(event.id);
+
+    res.when(
+      success: (_) {
+        emit(state.copyWith(togglingTodoIds: updatedTogglingIds));
+      },
+      failure: (failure) {
+        // 실패 시 원래 상태로 롤백
+        final rolledBack = state.todolists.map((item) {
+          if (item.id == event.id) {
+            return item.copyWith(isChecked: !event.isChecked);
+          }
+          return item;
+        }).toList();
+
+        emit(
+          state.copyWith(
+            todolists: rolledBack,
+            togglingTodoIds: updatedTogglingIds,
+            message: '변경 실패',
+          ),
+        );
+      },
+    );
   }
 }
