@@ -5,6 +5,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../../../../core/result/failures.dart';
 import '../../../../core/result/result.dart';
+import '../../../auth/data/models/user_model.dart';
 import '../dtos/chat_dto.dart';
 import '../dtos/chat_read_status_dto.dart';
 import 'chat_data_source.dart';
@@ -20,18 +21,6 @@ class ChatDataSourceImpl implements ChatDataSource {
   StreamController<Result<List<ChatDTO>>>? _chatStreamController;
 
   ChatDataSourceImpl(this._supabaseClient);
-  // user 테이블이랑 조인
-  static const String _selectWithUser = '''
-    *,
-    user : user!user_id(
-      id, 
-      uuid, 
-      nickname, 
-      email, 
-      profile_img, 
-      delete_at
-    ) 
-  ''';
 
   // 채팅 내용 가져오기 (여행아이디로)
   @override
@@ -45,7 +34,7 @@ class ChatDataSourceImpl implements ChatDataSource {
 
       final res = await _supabaseClient
           .from('chat')
-          .select(_selectWithUser)
+          .select('*')
           .eq('trip_id', tripId)
           .order('created_at', ascending: true)
           .range(offset, offset + limit - 1);
@@ -69,10 +58,10 @@ class ChatDataSourceImpl implements ChatDataSource {
       final res = await _supabaseClient
           .from('chat')
           .insert(insertData)
-          .select(_selectWithUser)
+          .select('*')
           .single();
-      final list = ChatDTO.fromJson(res);
-      return Result.success(list);
+      final dto = ChatDTO.fromJson(res);
+      return Result.success(dto);
     } catch (e) {
       return Result.failure(Failure.serverFailure(message: e.toString()));
     }
@@ -125,6 +114,36 @@ class ChatDataSourceImpl implements ChatDataSource {
     _chatChannel = null;
     await _chatStreamController?.close();
     _chatStreamController = null;
+  }
+
+  // 여행 크루 리스트 조회
+  @override
+  Future<Result<List<UserDTO>>> getTripCrews({required int tripId}) async {
+    try {
+      final res = await _supabaseClient
+          .from('trip_crew')
+          .select('''
+            user:member_id (
+              id,
+              uuid,
+              nickname,
+              email,
+              token,
+              profile_img,
+              delete_at
+            )
+          ''')
+          .eq('trip_id', tripId);
+
+      final crews = (res as List)
+          .where((row) => row['user'] != null)
+          .map((row) => UserDTO.fromJson(row['user']))
+          .toList();
+
+      return Result.success(crews);
+    } catch (e) {
+      return Result.failure(Failure.serverFailure(message: e.toString()));
+    }
   }
 
   // 채팅 마지막 읽은 위치 조회

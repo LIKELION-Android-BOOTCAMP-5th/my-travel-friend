@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$ChatDTO {
 
- int? get id;@JsonKey(name: 'created_at') String? get createdAt;@JsonKey(name: 'trip_id') int get tripId;@JsonKey(name: 'user_id') int get userId;@JsonKey(name: 'content') String get message;@JsonKey(name: 'user') Map<String, dynamic>? get userJson;
+ int? get id;@JsonKey(name: 'created_at') String? get createdAt;@JsonKey(name: 'trip_id') int get tripId;@JsonKey(name: 'user_id') int get userId;@JsonKey(name: 'content') String get message;
 /// Create a copy of ChatDTO
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,16 +28,16 @@ $ChatDTOCopyWith<ChatDTO> get copyWith => _$ChatDTOCopyWithImpl<ChatDTO>(this as
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is ChatDTO&&(identical(other.id, id) || other.id == id)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.tripId, tripId) || other.tripId == tripId)&&(identical(other.userId, userId) || other.userId == userId)&&(identical(other.message, message) || other.message == message)&&const DeepCollectionEquality().equals(other.userJson, userJson));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ChatDTO&&(identical(other.id, id) || other.id == id)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.tripId, tripId) || other.tripId == tripId)&&(identical(other.userId, userId) || other.userId == userId)&&(identical(other.message, message) || other.message == message));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,createdAt,tripId,userId,message,const DeepCollectionEquality().hash(userJson));
+int get hashCode => Object.hash(runtimeType,id,createdAt,tripId,userId,message);
 
 @override
 String toString() {
-  return 'ChatDTO(id: $id, createdAt: $createdAt, tripId: $tripId, userId: $userId, message: $message, userJson: $userJson)';
+  return 'ChatDTO(id: $id, createdAt: $createdAt, tripId: $tripId, userId: $userId, message: $message)';
 }
 
 
@@ -48,7 +48,7 @@ abstract mixin class $ChatDTOCopyWith<$Res>  {
   factory $ChatDTOCopyWith(ChatDTO value, $Res Function(ChatDTO) _then) = _$ChatDTOCopyWithImpl;
 @useResult
 $Res call({
- int? id,@JsonKey(name: 'created_at') String? createdAt,@JsonKey(name: 'trip_id') int tripId,@JsonKey(name: 'user_id') int userId,@JsonKey(name: 'content') String message,@JsonKey(name: 'user') Map<String, dynamic>? userJson
+ int? id,@JsonKey(name: 'created_at') String? createdAt,@JsonKey(name: 'trip_id') int tripId,@JsonKey(name: 'user_id') int userId,@JsonKey(name: 'content') String message
 });
 
 
@@ -65,15 +65,14 @@ class _$ChatDTOCopyWithImpl<$Res>
 
 /// Create a copy of ChatDTO
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = freezed,Object? createdAt = freezed,Object? tripId = null,Object? userId = null,Object? message = null,Object? userJson = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = freezed,Object? createdAt = freezed,Object? tripId = null,Object? userId = null,Object? message = null,}) {
   return _then(_self.copyWith(
 id: freezed == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as int?,createdAt: freezed == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
 as String?,tripId: null == tripId ? _self.tripId : tripId // ignore: cast_nullable_to_non_nullable
 as int,userId: null == userId ? _self.userId : userId // ignore: cast_nullable_to_non_nullable
 as int,message: null == message ? _self.message : message // ignore: cast_nullable_to_non_nullable
-as String,userJson: freezed == userJson ? _self.userJson : userJson // ignore: cast_nullable_to_non_nullable
-as Map<String, dynamic>?,
+as String,
   ));
 }
 
@@ -158,10 +157,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int? id, @JsonKey(name: 'created_at')  String? createdAt, @JsonKey(name: 'trip_id')  int tripId, @JsonKey(name: 'user_id')  int userId, @JsonKey(name: 'content')  String message, @JsonKey(name: 'user')  Map<String, dynamic>? userJson)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int? id, @JsonKey(name: 'created_at')  String? createdAt, @JsonKey(name: 'trip_id')  int tripId, @JsonKey(name: 'user_id')  int userId, @JsonKey(name: 'content')  String message)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _ChatDTO() when $default != null:
-return $default(_that.id,_that.createdAt,_that.tripId,_that.userId,_that.message,_that.userJson);case _:
+return $default(_that.id,_that.createdAt,_that.tripId,_that.userId,_that.message);case _:
   return orElse();
 
 }
@@ -179,10 +178,10 @@ return $default(_that.id,_that.createdAt,_that.tripId,_that.userId,_that.message
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int? id, @JsonKey(name: 'created_at')  String? createdAt, @JsonKey(name: 'trip_id')  int tripId, @JsonKey(name: 'user_id')  int userId, @JsonKey(name: 'content')  String message, @JsonKey(name: 'user')  Map<String, dynamic>? userJson)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int? id, @JsonKey(name: 'created_at')  String? createdAt, @JsonKey(name: 'trip_id')  int tripId, @JsonKey(name: 'user_id')  int userId, @JsonKey(name: 'content')  String message)  $default,) {final _that = this;
 switch (_that) {
 case _ChatDTO():
-return $default(_that.id,_that.createdAt,_that.tripId,_that.userId,_that.message,_that.userJson);case _:
+return $default(_that.id,_that.createdAt,_that.tripId,_that.userId,_that.message);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -199,10 +198,10 @@ return $default(_that.id,_that.createdAt,_that.tripId,_that.userId,_that.message
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int? id, @JsonKey(name: 'created_at')  String? createdAt, @JsonKey(name: 'trip_id')  int tripId, @JsonKey(name: 'user_id')  int userId, @JsonKey(name: 'content')  String message, @JsonKey(name: 'user')  Map<String, dynamic>? userJson)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int? id, @JsonKey(name: 'created_at')  String? createdAt, @JsonKey(name: 'trip_id')  int tripId, @JsonKey(name: 'user_id')  int userId, @JsonKey(name: 'content')  String message)?  $default,) {final _that = this;
 switch (_that) {
 case _ChatDTO() when $default != null:
-return $default(_that.id,_that.createdAt,_that.tripId,_that.userId,_that.message,_that.userJson);case _:
+return $default(_that.id,_that.createdAt,_that.tripId,_that.userId,_that.message);case _:
   return null;
 
 }
@@ -214,7 +213,7 @@ return $default(_that.id,_that.createdAt,_that.tripId,_that.userId,_that.message
 @JsonSerializable()
 
 class _ChatDTO extends ChatDTO {
-  const _ChatDTO({this.id, @JsonKey(name: 'created_at') this.createdAt, @JsonKey(name: 'trip_id') required this.tripId, @JsonKey(name: 'user_id') required this.userId, @JsonKey(name: 'content') required this.message, @JsonKey(name: 'user') final  Map<String, dynamic>? userJson}): _userJson = userJson,super._();
+  const _ChatDTO({this.id, @JsonKey(name: 'created_at') this.createdAt, @JsonKey(name: 'trip_id') required this.tripId, @JsonKey(name: 'user_id') required this.userId, @JsonKey(name: 'content') required this.message}): super._();
   factory _ChatDTO.fromJson(Map<String, dynamic> json) => _$ChatDTOFromJson(json);
 
 @override final  int? id;
@@ -222,15 +221,6 @@ class _ChatDTO extends ChatDTO {
 @override@JsonKey(name: 'trip_id') final  int tripId;
 @override@JsonKey(name: 'user_id') final  int userId;
 @override@JsonKey(name: 'content') final  String message;
- final  Map<String, dynamic>? _userJson;
-@override@JsonKey(name: 'user') Map<String, dynamic>? get userJson {
-  final value = _userJson;
-  if (value == null) return null;
-  if (_userJson is EqualUnmodifiableMapView) return _userJson;
-  // ignore: implicit_dynamic_type
-  return EqualUnmodifiableMapView(value);
-}
-
 
 /// Create a copy of ChatDTO
 /// with the given fields replaced by the non-null parameter values.
@@ -245,16 +235,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ChatDTO&&(identical(other.id, id) || other.id == id)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.tripId, tripId) || other.tripId == tripId)&&(identical(other.userId, userId) || other.userId == userId)&&(identical(other.message, message) || other.message == message)&&const DeepCollectionEquality().equals(other._userJson, _userJson));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ChatDTO&&(identical(other.id, id) || other.id == id)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.tripId, tripId) || other.tripId == tripId)&&(identical(other.userId, userId) || other.userId == userId)&&(identical(other.message, message) || other.message == message));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,createdAt,tripId,userId,message,const DeepCollectionEquality().hash(_userJson));
+int get hashCode => Object.hash(runtimeType,id,createdAt,tripId,userId,message);
 
 @override
 String toString() {
-  return 'ChatDTO(id: $id, createdAt: $createdAt, tripId: $tripId, userId: $userId, message: $message, userJson: $userJson)';
+  return 'ChatDTO(id: $id, createdAt: $createdAt, tripId: $tripId, userId: $userId, message: $message)';
 }
 
 
@@ -265,7 +255,7 @@ abstract mixin class _$ChatDTOCopyWith<$Res> implements $ChatDTOCopyWith<$Res> {
   factory _$ChatDTOCopyWith(_ChatDTO value, $Res Function(_ChatDTO) _then) = __$ChatDTOCopyWithImpl;
 @override @useResult
 $Res call({
- int? id,@JsonKey(name: 'created_at') String? createdAt,@JsonKey(name: 'trip_id') int tripId,@JsonKey(name: 'user_id') int userId,@JsonKey(name: 'content') String message,@JsonKey(name: 'user') Map<String, dynamic>? userJson
+ int? id,@JsonKey(name: 'created_at') String? createdAt,@JsonKey(name: 'trip_id') int tripId,@JsonKey(name: 'user_id') int userId,@JsonKey(name: 'content') String message
 });
 
 
@@ -282,15 +272,14 @@ class __$ChatDTOCopyWithImpl<$Res>
 
 /// Create a copy of ChatDTO
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = freezed,Object? createdAt = freezed,Object? tripId = null,Object? userId = null,Object? message = null,Object? userJson = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = freezed,Object? createdAt = freezed,Object? tripId = null,Object? userId = null,Object? message = null,}) {
   return _then(_ChatDTO(
 id: freezed == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as int?,createdAt: freezed == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
 as String?,tripId: null == tripId ? _self.tripId : tripId // ignore: cast_nullable_to_non_nullable
 as int,userId: null == userId ? _self.userId : userId // ignore: cast_nullable_to_non_nullable
 as int,message: null == message ? _self.message : message // ignore: cast_nullable_to_non_nullable
-as String,userJson: freezed == userJson ? _self._userJson : userJson // ignore: cast_nullable_to_non_nullable
-as Map<String, dynamic>?,
+as String,
   ));
 }
 

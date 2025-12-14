@@ -7,6 +7,7 @@ import '../../../../core/result/result.dart';
 import '../../domain/entities/chat_entity.dart';
 import '../../domain/usecases/get_chat_usecase.dart';
 import '../../domain/usecases/get_read_status_usecase.dart';
+import '../../domain/usecases/get_trip_crew_usecase.dart';
 import '../../domain/usecases/send_chat_usecase.dart';
 import '../../domain/usecases/subscribe_chat_usecase.dart';
 import '../../domain/usecases/update_read_status_usecase.dart';
@@ -22,6 +23,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
   final SubscribeChatUseCase _subscribeChatUseCase;
   final GetReadStatusUseCase _getReadStatusUseCase;
   final UpdateReadStatusUseCase _updateReadStatusUseCase;
+  final GetTripCrewUseCase _getTripCrewUseCase;
 
   StreamSubscription? _chatSubscription;
   Timer? _readStatusDebounce;
@@ -33,6 +35,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     this._subscribeChatUseCase,
     this._getReadStatusUseCase,
     this._updateReadStatusUseCase,
+    this._getTripCrewUseCase,
   ) : super(const ChatState()) {
     on<EnterChat>(_onEnterChat);
     on<LeaveChat>(_onLeaveChat);
@@ -52,6 +55,15 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
         userId: event.userId,
         pageState: ChatPageState.loading,
       ),
+    );
+
+    // 여행 크루 정보 가져오기
+    final crewsRes = await _getTripCrewUseCase(tripId: event.tripId);
+    crewsRes.when(
+      success: (crews) {
+        emit(state.copyWith(crews: crews));
+      },
+      failure: (_) {},
     );
 
     // 마지막 읽은 위치 조회

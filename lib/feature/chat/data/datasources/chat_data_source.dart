@@ -1,4 +1,5 @@
 import '../../../../core/result/result.dart';
+import '../../../auth/data/models/user_model.dart';
 import '../dtos/chat_dto.dart';
 import '../dtos/chat_read_status_dto.dart';
 
@@ -19,6 +20,9 @@ abstract class ChatDataSource {
 
   // 구독 해제
   Future<void> unsubscribeChat();
+
+  // 여행 크루 리스트 조회
+  Future<Result<List<UserDTO>>> getTripCrews({required int tripId});
 
   // 마지막 읽은 위치 조회
   Future<Result<ChatReadStatusDTO?>> getReadStatus({

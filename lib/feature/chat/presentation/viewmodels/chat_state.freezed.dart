@@ -15,7 +15,8 @@ T _$identity<T>(T value) => value;
 mixin _$ChatState {
 
 // 채팅방 정보
- int get tripId; int get userId;// 채팅창 (오래된 순 정렬)
+ int get tripId; int get userId;// 여행 크루 목록
+ List<UserEntity> get crews;// 채팅창 (오래된 순 정렬)
  List<ChatEntity> get chats;// 읽음 상태
  int? get lastReadChatId;// 마지막으로 읽은 채팅 id
  int get unreadCount;// 안 읽은 채팅 개수
@@ -35,16 +36,16 @@ $ChatStateCopyWith<ChatState> get copyWith => _$ChatStateCopyWithImpl<ChatState>
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is ChatState&&(identical(other.tripId, tripId) || other.tripId == tripId)&&(identical(other.userId, userId) || other.userId == userId)&&const DeepCollectionEquality().equals(other.chats, chats)&&(identical(other.lastReadChatId, lastReadChatId) || other.lastReadChatId == lastReadChatId)&&(identical(other.unreadCount, unreadCount) || other.unreadCount == unreadCount)&&(identical(other.scrollToChatId, scrollToChatId) || other.scrollToChatId == scrollToChatId)&&(identical(other.hasScrolledToLastRead, hasScrolledToLastRead) || other.hasScrolledToLastRead == hasScrolledToLastRead)&&(identical(other.currentPage, currentPage) || other.currentPage == currentPage)&&(identical(other.hasMore, hasMore) || other.hasMore == hasMore)&&(identical(other.isLoadingMore, isLoadingMore) || other.isLoadingMore == isLoadingMore)&&(identical(other.isSending, isSending) || other.isSending == isSending)&&(identical(other.errorMessage, errorMessage) || other.errorMessage == errorMessage)&&(identical(other.pageState, pageState) || other.pageState == pageState));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ChatState&&(identical(other.tripId, tripId) || other.tripId == tripId)&&(identical(other.userId, userId) || other.userId == userId)&&const DeepCollectionEquality().equals(other.crews, crews)&&const DeepCollectionEquality().equals(other.chats, chats)&&(identical(other.lastReadChatId, lastReadChatId) || other.lastReadChatId == lastReadChatId)&&(identical(other.unreadCount, unreadCount) || other.unreadCount == unreadCount)&&(identical(other.scrollToChatId, scrollToChatId) || other.scrollToChatId == scrollToChatId)&&(identical(other.hasScrolledToLastRead, hasScrolledToLastRead) || other.hasScrolledToLastRead == hasScrolledToLastRead)&&(identical(other.currentPage, currentPage) || other.currentPage == currentPage)&&(identical(other.hasMore, hasMore) || other.hasMore == hasMore)&&(identical(other.isLoadingMore, isLoadingMore) || other.isLoadingMore == isLoadingMore)&&(identical(other.isSending, isSending) || other.isSending == isSending)&&(identical(other.errorMessage, errorMessage) || other.errorMessage == errorMessage)&&(identical(other.pageState, pageState) || other.pageState == pageState));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,tripId,userId,const DeepCollectionEquality().hash(chats),lastReadChatId,unreadCount,scrollToChatId,hasScrolledToLastRead,currentPage,hasMore,isLoadingMore,isSending,errorMessage,pageState);
+int get hashCode => Object.hash(runtimeType,tripId,userId,const DeepCollectionEquality().hash(crews),const DeepCollectionEquality().hash(chats),lastReadChatId,unreadCount,scrollToChatId,hasScrolledToLastRead,currentPage,hasMore,isLoadingMore,isSending,errorMessage,pageState);
 
 @override
 String toString() {
-  return 'ChatState(tripId: $tripId, userId: $userId, chats: $chats, lastReadChatId: $lastReadChatId, unreadCount: $unreadCount, scrollToChatId: $scrollToChatId, hasScrolledToLastRead: $hasScrolledToLastRead, currentPage: $currentPage, hasMore: $hasMore, isLoadingMore: $isLoadingMore, isSending: $isSending, errorMessage: $errorMessage, pageState: $pageState)';
+  return 'ChatState(tripId: $tripId, userId: $userId, crews: $crews, chats: $chats, lastReadChatId: $lastReadChatId, unreadCount: $unreadCount, scrollToChatId: $scrollToChatId, hasScrolledToLastRead: $hasScrolledToLastRead, currentPage: $currentPage, hasMore: $hasMore, isLoadingMore: $isLoadingMore, isSending: $isSending, errorMessage: $errorMessage, pageState: $pageState)';
 }
 
 
@@ -55,7 +56,7 @@ abstract mixin class $ChatStateCopyWith<$Res>  {
   factory $ChatStateCopyWith(ChatState value, $Res Function(ChatState) _then) = _$ChatStateCopyWithImpl;
 @useResult
 $Res call({
- int tripId, int userId, List<ChatEntity> chats, int? lastReadChatId, int unreadCount, int? scrollToChatId, bool hasScrolledToLastRead, int currentPage, bool hasMore, bool isLoadingMore, bool isSending, String? errorMessage, ChatPageState pageState
+ int tripId, int userId, List<UserEntity> crews, List<ChatEntity> chats, int? lastReadChatId, int unreadCount, int? scrollToChatId, bool hasScrolledToLastRead, int currentPage, bool hasMore, bool isLoadingMore, bool isSending, String? errorMessage, ChatPageState pageState
 });
 
 
@@ -72,11 +73,12 @@ class _$ChatStateCopyWithImpl<$Res>
 
 /// Create a copy of ChatState
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? tripId = null,Object? userId = null,Object? chats = null,Object? lastReadChatId = freezed,Object? unreadCount = null,Object? scrollToChatId = freezed,Object? hasScrolledToLastRead = null,Object? currentPage = null,Object? hasMore = null,Object? isLoadingMore = null,Object? isSending = null,Object? errorMessage = freezed,Object? pageState = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? tripId = null,Object? userId = null,Object? crews = null,Object? chats = null,Object? lastReadChatId = freezed,Object? unreadCount = null,Object? scrollToChatId = freezed,Object? hasScrolledToLastRead = null,Object? currentPage = null,Object? hasMore = null,Object? isLoadingMore = null,Object? isSending = null,Object? errorMessage = freezed,Object? pageState = null,}) {
   return _then(_self.copyWith(
 tripId: null == tripId ? _self.tripId : tripId // ignore: cast_nullable_to_non_nullable
 as int,userId: null == userId ? _self.userId : userId // ignore: cast_nullable_to_non_nullable
-as int,chats: null == chats ? _self.chats : chats // ignore: cast_nullable_to_non_nullable
+as int,crews: null == crews ? _self.crews : crews // ignore: cast_nullable_to_non_nullable
+as List<UserEntity>,chats: null == chats ? _self.chats : chats // ignore: cast_nullable_to_non_nullable
 as List<ChatEntity>,lastReadChatId: freezed == lastReadChatId ? _self.lastReadChatId : lastReadChatId // ignore: cast_nullable_to_non_nullable
 as int?,unreadCount: null == unreadCount ? _self.unreadCount : unreadCount // ignore: cast_nullable_to_non_nullable
 as int,scrollToChatId: freezed == scrollToChatId ? _self.scrollToChatId : scrollToChatId // ignore: cast_nullable_to_non_nullable
@@ -172,10 +174,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int tripId,  int userId,  List<ChatEntity> chats,  int? lastReadChatId,  int unreadCount,  int? scrollToChatId,  bool hasScrolledToLastRead,  int currentPage,  bool hasMore,  bool isLoadingMore,  bool isSending,  String? errorMessage,  ChatPageState pageState)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int tripId,  int userId,  List<UserEntity> crews,  List<ChatEntity> chats,  int? lastReadChatId,  int unreadCount,  int? scrollToChatId,  bool hasScrolledToLastRead,  int currentPage,  bool hasMore,  bool isLoadingMore,  bool isSending,  String? errorMessage,  ChatPageState pageState)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _ChatState() when $default != null:
-return $default(_that.tripId,_that.userId,_that.chats,_that.lastReadChatId,_that.unreadCount,_that.scrollToChatId,_that.hasScrolledToLastRead,_that.currentPage,_that.hasMore,_that.isLoadingMore,_that.isSending,_that.errorMessage,_that.pageState);case _:
+return $default(_that.tripId,_that.userId,_that.crews,_that.chats,_that.lastReadChatId,_that.unreadCount,_that.scrollToChatId,_that.hasScrolledToLastRead,_that.currentPage,_that.hasMore,_that.isLoadingMore,_that.isSending,_that.errorMessage,_that.pageState);case _:
   return orElse();
 
 }
@@ -193,10 +195,10 @@ return $default(_that.tripId,_that.userId,_that.chats,_that.lastReadChatId,_that
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int tripId,  int userId,  List<ChatEntity> chats,  int? lastReadChatId,  int unreadCount,  int? scrollToChatId,  bool hasScrolledToLastRead,  int currentPage,  bool hasMore,  bool isLoadingMore,  bool isSending,  String? errorMessage,  ChatPageState pageState)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int tripId,  int userId,  List<UserEntity> crews,  List<ChatEntity> chats,  int? lastReadChatId,  int unreadCount,  int? scrollToChatId,  bool hasScrolledToLastRead,  int currentPage,  bool hasMore,  bool isLoadingMore,  bool isSending,  String? errorMessage,  ChatPageState pageState)  $default,) {final _that = this;
 switch (_that) {
 case _ChatState():
-return $default(_that.tripId,_that.userId,_that.chats,_that.lastReadChatId,_that.unreadCount,_that.scrollToChatId,_that.hasScrolledToLastRead,_that.currentPage,_that.hasMore,_that.isLoadingMore,_that.isSending,_that.errorMessage,_that.pageState);case _:
+return $default(_that.tripId,_that.userId,_that.crews,_that.chats,_that.lastReadChatId,_that.unreadCount,_that.scrollToChatId,_that.hasScrolledToLastRead,_that.currentPage,_that.hasMore,_that.isLoadingMore,_that.isSending,_that.errorMessage,_that.pageState);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -213,10 +215,10 @@ return $default(_that.tripId,_that.userId,_that.chats,_that.lastReadChatId,_that
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int tripId,  int userId,  List<ChatEntity> chats,  int? lastReadChatId,  int unreadCount,  int? scrollToChatId,  bool hasScrolledToLastRead,  int currentPage,  bool hasMore,  bool isLoadingMore,  bool isSending,  String? errorMessage,  ChatPageState pageState)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int tripId,  int userId,  List<UserEntity> crews,  List<ChatEntity> chats,  int? lastReadChatId,  int unreadCount,  int? scrollToChatId,  bool hasScrolledToLastRead,  int currentPage,  bool hasMore,  bool isLoadingMore,  bool isSending,  String? errorMessage,  ChatPageState pageState)?  $default,) {final _that = this;
 switch (_that) {
 case _ChatState() when $default != null:
-return $default(_that.tripId,_that.userId,_that.chats,_that.lastReadChatId,_that.unreadCount,_that.scrollToChatId,_that.hasScrolledToLastRead,_that.currentPage,_that.hasMore,_that.isLoadingMore,_that.isSending,_that.errorMessage,_that.pageState);case _:
+return $default(_that.tripId,_that.userId,_that.crews,_that.chats,_that.lastReadChatId,_that.unreadCount,_that.scrollToChatId,_that.hasScrolledToLastRead,_that.currentPage,_that.hasMore,_that.isLoadingMore,_that.isSending,_that.errorMessage,_that.pageState);case _:
   return null;
 
 }
@@ -228,12 +230,21 @@ return $default(_that.tripId,_that.userId,_that.chats,_that.lastReadChatId,_that
 
 
 class _ChatState extends ChatState {
-  const _ChatState({this.tripId = 0, this.userId = 0, final  List<ChatEntity> chats = const [], this.lastReadChatId, this.unreadCount = 0, this.scrollToChatId, this.hasScrolledToLastRead = false, this.currentPage = 0, this.hasMore = false, this.isLoadingMore = false, this.isSending = false, this.errorMessage, this.pageState = ChatPageState.initial}): _chats = chats,super._();
+  const _ChatState({this.tripId = 0, this.userId = 0, final  List<UserEntity> crews = const [], final  List<ChatEntity> chats = const [], this.lastReadChatId, this.unreadCount = 0, this.scrollToChatId, this.hasScrolledToLastRead = false, this.currentPage = 0, this.hasMore = false, this.isLoadingMore = false, this.isSending = false, this.errorMessage, this.pageState = ChatPageState.initial}): _crews = crews,_chats = chats,super._();
   
 
 // 채팅방 정보
 @override@JsonKey() final  int tripId;
 @override@JsonKey() final  int userId;
+// 여행 크루 목록
+ final  List<UserEntity> _crews;
+// 여행 크루 목록
+@override@JsonKey() List<UserEntity> get crews {
+  if (_crews is EqualUnmodifiableListView) return _crews;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableListView(_crews);
+}
+
 // 채팅창 (오래된 순 정렬)
  final  List<ChatEntity> _chats;
 // 채팅창 (오래된 순 정렬)
@@ -272,16 +283,16 @@ _$ChatStateCopyWith<_ChatState> get copyWith => __$ChatStateCopyWithImpl<_ChatSt
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ChatState&&(identical(other.tripId, tripId) || other.tripId == tripId)&&(identical(other.userId, userId) || other.userId == userId)&&const DeepCollectionEquality().equals(other._chats, _chats)&&(identical(other.lastReadChatId, lastReadChatId) || other.lastReadChatId == lastReadChatId)&&(identical(other.unreadCount, unreadCount) || other.unreadCount == unreadCount)&&(identical(other.scrollToChatId, scrollToChatId) || other.scrollToChatId == scrollToChatId)&&(identical(other.hasScrolledToLastRead, hasScrolledToLastRead) || other.hasScrolledToLastRead == hasScrolledToLastRead)&&(identical(other.currentPage, currentPage) || other.currentPage == currentPage)&&(identical(other.hasMore, hasMore) || other.hasMore == hasMore)&&(identical(other.isLoadingMore, isLoadingMore) || other.isLoadingMore == isLoadingMore)&&(identical(other.isSending, isSending) || other.isSending == isSending)&&(identical(other.errorMessage, errorMessage) || other.errorMessage == errorMessage)&&(identical(other.pageState, pageState) || other.pageState == pageState));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ChatState&&(identical(other.tripId, tripId) || other.tripId == tripId)&&(identical(other.userId, userId) || other.userId == userId)&&const DeepCollectionEquality().equals(other._crews, _crews)&&const DeepCollectionEquality().equals(other._chats, _chats)&&(identical(other.lastReadChatId, lastReadChatId) || other.lastReadChatId == lastReadChatId)&&(identical(other.unreadCount, unreadCount) || other.unreadCount == unreadCount)&&(identical(other.scrollToChatId, scrollToChatId) || other.scrollToChatId == scrollToChatId)&&(identical(other.hasScrolledToLastRead, hasScrolledToLastRead) || other.hasScrolledToLastRead == hasScrolledToLastRead)&&(identical(other.currentPage, currentPage) || other.currentPage == currentPage)&&(identical(other.hasMore, hasMore) || other.hasMore == hasMore)&&(identical(other.isLoadingMore, isLoadingMore) || other.isLoadingMore == isLoadingMore)&&(identical(other.isSending, isSending) || other.isSending == isSending)&&(identical(other.errorMessage, errorMessage) || other.errorMessage == errorMessage)&&(identical(other.pageState, pageState) || other.pageState == pageState));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,tripId,userId,const DeepCollectionEquality().hash(_chats),lastReadChatId,unreadCount,scrollToChatId,hasScrolledToLastRead,currentPage,hasMore,isLoadingMore,isSending,errorMessage,pageState);
+int get hashCode => Object.hash(runtimeType,tripId,userId,const DeepCollectionEquality().hash(_crews),const DeepCollectionEquality().hash(_chats),lastReadChatId,unreadCount,scrollToChatId,hasScrolledToLastRead,currentPage,hasMore,isLoadingMore,isSending,errorMessage,pageState);
 
 @override
 String toString() {
-  return 'ChatState(tripId: $tripId, userId: $userId, chats: $chats, lastReadChatId: $lastReadChatId, unreadCount: $unreadCount, scrollToChatId: $scrollToChatId, hasScrolledToLastRead: $hasScrolledToLastRead, currentPage: $currentPage, hasMore: $hasMore, isLoadingMore: $isLoadingMore, isSending: $isSending, errorMessage: $errorMessage, pageState: $pageState)';
+  return 'ChatState(tripId: $tripId, userId: $userId, crews: $crews, chats: $chats, lastReadChatId: $lastReadChatId, unreadCount: $unreadCount, scrollToChatId: $scrollToChatId, hasScrolledToLastRead: $hasScrolledToLastRead, currentPage: $currentPage, hasMore: $hasMore, isLoadingMore: $isLoadingMore, isSending: $isSending, errorMessage: $errorMessage, pageState: $pageState)';
 }
 
 
@@ -292,7 +303,7 @@ abstract mixin class _$ChatStateCopyWith<$Res> implements $ChatStateCopyWith<$Re
   factory _$ChatStateCopyWith(_ChatState value, $Res Function(_ChatState) _then) = __$ChatStateCopyWithImpl;
 @override @useResult
 $Res call({
- int tripId, int userId, List<ChatEntity> chats, int? lastReadChatId, int unreadCount, int? scrollToChatId, bool hasScrolledToLastRead, int currentPage, bool hasMore, bool isLoadingMore, bool isSending, String? errorMessage, ChatPageState pageState
+ int tripId, int userId, List<UserEntity> crews, List<ChatEntity> chats, int? lastReadChatId, int unreadCount, int? scrollToChatId, bool hasScrolledToLastRead, int currentPage, bool hasMore, bool isLoadingMore, bool isSending, String? errorMessage, ChatPageState pageState
 });
 
 
@@ -309,11 +320,12 @@ class __$ChatStateCopyWithImpl<$Res>
 
 /// Create a copy of ChatState
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? tripId = null,Object? userId = null,Object? chats = null,Object? lastReadChatId = freezed,Object? unreadCount = null,Object? scrollToChatId = freezed,Object? hasScrolledToLastRead = null,Object? currentPage = null,Object? hasMore = null,Object? isLoadingMore = null,Object? isSending = null,Object? errorMessage = freezed,Object? pageState = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? tripId = null,Object? userId = null,Object? crews = null,Object? chats = null,Object? lastReadChatId = freezed,Object? unreadCount = null,Object? scrollToChatId = freezed,Object? hasScrolledToLastRead = null,Object? currentPage = null,Object? hasMore = null,Object? isLoadingMore = null,Object? isSending = null,Object? errorMessage = freezed,Object? pageState = null,}) {
   return _then(_ChatState(
 tripId: null == tripId ? _self.tripId : tripId // ignore: cast_nullable_to_non_nullable
 as int,userId: null == userId ? _self.userId : userId // ignore: cast_nullable_to_non_nullable
-as int,chats: null == chats ? _self._chats : chats // ignore: cast_nullable_to_non_nullable
+as int,crews: null == crews ? _self._crews : crews // ignore: cast_nullable_to_non_nullable
+as List<UserEntity>,chats: null == chats ? _self._chats : chats // ignore: cast_nullable_to_non_nullable
 as List<ChatEntity>,lastReadChatId: freezed == lastReadChatId ? _self.lastReadChatId : lastReadChatId // ignore: cast_nullable_to_non_nullable
 as int?,unreadCount: null == unreadCount ? _self.unreadCount : unreadCount // ignore: cast_nullable_to_non_nullable
 as int,scrollToChatId: freezed == scrollToChatId ? _self.scrollToChatId : scrollToChatId // ignore: cast_nullable_to_non_nullable

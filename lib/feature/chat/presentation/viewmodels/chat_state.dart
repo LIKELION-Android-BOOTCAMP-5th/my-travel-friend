@@ -1,5 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
+import '../../../auth/domain/entities/user_entity.dart';
 import '../../domain/entities/chat_entity.dart';
 
 part 'chat_state.freezed.dart';
@@ -14,6 +15,9 @@ abstract class ChatState with _$ChatState {
     // 채팅방 정보
     @Default(0) int tripId,
     @Default(0) int userId,
+
+    // 여행 크루 목록
+    @Default([]) List<UserEntity> crews,
 
     // 채팅창 (오래된 순 정렬)
     @Default([]) List<ChatEntity> chats,
@@ -38,6 +42,15 @@ abstract class ChatState with _$ChatState {
     // 페이지 상태
     @Default(ChatPageState.initial) ChatPageState pageState,
   }) = _ChatState;
+
+  // userID로 크루 정보 가져오기
+  UserEntity? getCrewById(int userId) {
+    try {
+      return crews.firstWhere((m) => m.id == userId);
+    } catch (_) {
+      return null;
+    }
+  }
 
   // 특정 인덱스에 안읽음 구분선 표시 여부
   bool shouldShowUnreadDivider(int index) {

@@ -14,6 +14,5 @@ abstract class ChatEntity with _$ChatEntity {
     required int tripId,
     required int userId,
     required String message,
-    UserEntity? user,
   }) = _ChatEntity;
 }

@@ -69,6 +69,7 @@ import '../../feature/chat/domain/repositories/chat_repository.dart' as _i167;
 import '../../feature/chat/domain/usecases/get_chat_usecase.dart' as _i91;
 import '../../feature/chat/domain/usecases/get_read_status_usecase.dart'
     as _i38;
+import '../../feature/chat/domain/usecases/get_trip_crew_usecase.dart' as _i285;
 import '../../feature/chat/domain/usecases/get_unread_count_usecase.dart'
     as _i562;
 import '../../feature/chat/domain/usecases/send_chat_usecase.dart' as _i239;
@@ -561,6 +562,9 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i38.GetReadStatusUseCase>(
       () => _i38.GetReadStatusUseCase(gh<_i167.ChatRepository>()),
     );
+    gh.lazySingleton<_i285.GetTripCrewUseCase>(
+      () => _i285.GetTripCrewUseCase(gh<_i167.ChatRepository>()),
+    );
     gh.lazySingleton<_i562.GetUnreadCountUseCase>(
       () => _i562.GetUnreadCountUseCase(gh<_i167.ChatRepository>()),
     );
@@ -606,6 +610,16 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i871.DiaryRepository>(),
       ),
     );
+    gh.factory<_i663.ChatBloc>(
+      () => _i663.ChatBloc(
+        gh<_i91.GetChatUseCase>(),
+        gh<_i239.SendChatUseCase>(),
+        gh<_i284.SubscribeChatUseCase>(),
+        gh<_i38.GetReadStatusUseCase>(),
+        gh<_i383.UpdateReadStatusUseCase>(),
+        gh<_i285.GetTripCrewUseCase>(),
+      ),
+    );
     gh.lazySingleton<_i889.CheckAlarmsUseCase>(
       () => _i889.CheckAlarmsUseCase(gh<_i831.AlarmRepository>()),
     );
@@ -629,15 +643,6 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.lazySingleton<_i87.UpdateAlarmSettingUseCase>(
       () => _i87.UpdateAlarmSettingUseCase(gh<_i212.AlarmSettingRepository>()),
-    );
-    gh.factory<_i663.ChatBloc>(
-      () => _i663.ChatBloc(
-        gh<_i91.GetChatUseCase>(),
-        gh<_i239.SendChatUseCase>(),
-        gh<_i284.SubscribeChatUseCase>(),
-        gh<_i38.GetReadStatusUseCase>(),
-        gh<_i383.UpdateReadStatusUseCase>(),
-      ),
     );
     gh.factory<_i693.AlarmBloc>(
       () => _i693.AlarmBloc(

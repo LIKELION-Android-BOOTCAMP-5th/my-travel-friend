@@ -194,7 +194,7 @@ class _ChatScreenState extends State<ChatScreen> {
                       ChatDateDivider(dateString: chat.createdAt),
                     if (state.shouldShowUnreadDivider(chatIndex))
                       const ChatUnreadDivider(),
-                    MessageBox(chat: chat, user: userProfile),
+                    MessageBox(chat: chat),
                   ],
                 );
               },

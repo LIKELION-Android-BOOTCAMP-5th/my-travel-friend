@@ -12,7 +12,6 @@ _ChatDTO _$ChatDTOFromJson(Map<String, dynamic> json) => _ChatDTO(
   tripId: (json['trip_id'] as num).toInt(),
   userId: (json['user_id'] as num).toInt(),
   message: json['content'] as String,
-  userJson: json['user'] as Map<String, dynamic>?,
 );
 
 Map<String, dynamic> _$ChatDTOToJson(_ChatDTO instance) => <String, dynamic>{
@@ -21,5 +20,4 @@ Map<String, dynamic> _$ChatDTOToJson(_ChatDTO instance) => <String, dynamic>{
   'trip_id': instance.tripId,
   'user_id': instance.userId,
   'content': instance.message,
-  'user': instance.userJson,
 };

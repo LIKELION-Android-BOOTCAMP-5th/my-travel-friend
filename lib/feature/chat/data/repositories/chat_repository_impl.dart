@@ -1,6 +1,7 @@
 import 'package:injectable/injectable.dart';
 
 import '../../../../core/result/result.dart';
+import '../../../auth/domain/entities/user_entity.dart';
 import '../../domain/entities/chat_entity.dart';
 import '../../domain/entities/chat_read_status_entity.dart';
 import '../../domain/repositories/chat_repository.dart';
@@ -24,6 +25,18 @@ class ChatRepositoryImpl implements ChatRepository {
       page: page,
       limit: limit,
     );
+
+    return res.when(
+      success: (data) =>
+          Result.success(data.map((dto) => dto.toEntity()).toList()),
+      failure: (failure) => Result.failure(failure),
+    );
+  }
+
+  // 여행 크루 가져오기
+  @override
+  Future<Result<List<UserEntity>>> getTripCrews({required int tripId}) async {
+    final res = await _dataSource.getTripCrews(tripId: tripId);
 
     return res.when(
       success: (data) =>
