@@ -24,8 +24,6 @@ class _MapSearchScreenState extends State<MapSearchScreen> {
           prev.selectedPlace != curr.selectedPlace &&
           curr.selectedPlace != null,
       listener: (context, state) {
-        debugPrint('enker ✅ place confirmed → pop with result');
-
         Navigator.pop(context, state.selectedPlace);
       },
       child: _buildBody(context),
@@ -34,8 +32,6 @@ class _MapSearchScreenState extends State<MapSearchScreen> {
 
   void _moveCameraToPlaces(List<PlaceCandidate> places) async {
     if (_mapController == null || places.isEmpty) return;
-
-    debugPrint('enker 🎯 moveCamera places=${places.length}');
 
     double minLat = places.first.lat;
     double maxLat = places.first.lat;
@@ -72,7 +68,6 @@ class _MapSearchScreenState extends State<MapSearchScreen> {
               initialCameraPosition: _initialCamera(state),
               markers: _buildMarkers(context, state),
               onMapCreated: (c) {
-                debugPrint('enker 🗺️ GoogleMap CREATED');
                 _mapController = c;
               },
               myLocationEnabled: true,
@@ -256,11 +251,11 @@ class _PlaceItem extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          /// 상단 정보 영역
+          // 상단 정보 영역
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              /// 왼쪽 아이콘 (썸네일 대체)
+              //왼쪽 아이콘 (썸네일 대체)
               Container(
                 width: 44,
                 height: 44,
@@ -273,12 +268,12 @@ class _PlaceItem extends StatelessWidget {
 
               const SizedBox(width: 12),
 
-              /// 장소 정보
+              // 장소 정보
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    /// 장소명
+                    //장소명
                     Text(
                       place.place,
                       style: const TextStyle(
@@ -289,7 +284,7 @@ class _PlaceItem extends StatelessWidget {
 
                     const SizedBox(height: 4),
 
-                    /// 평점 (있을 때만)
+                    // 평점 (있을 때만)
                     if (place.rating != null)
                       Row(
                         children: [
@@ -304,7 +299,7 @@ class _PlaceItem extends StatelessWidget {
 
                     const SizedBox(height: 4),
 
-                    /// 주소
+                    // 주소
                     Text(
                       place.address,
                       maxLines: 1,
@@ -319,7 +314,7 @@ class _PlaceItem extends StatelessWidget {
 
           const SizedBox(height: 10),
 
-          /// ✅ AI 추천 이유
+          // AI 추천 이유
           Container(
             width: double.infinity,
             padding: const EdgeInsets.all(10),
@@ -350,7 +345,7 @@ class _PlaceItem extends StatelessWidget {
 
           const SizedBox(height: 12),
 
-          /// 하단 버튼
+          // 하단 버튼
           SizedBox(
             width: double.infinity,
             child: ElevatedButton(

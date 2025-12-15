@@ -37,9 +37,7 @@ class CreateScheduleBloc
     on<ClearMessage>(_onClearMessage);
   }
 
-  // ===============================
-  // 🔧 공통 유틸
-  // ===============================
+  //  공통 유틸
 
   DateTime? _combineDateTime(DateTime? date, TimeOfDay? time) {
     if (date == null || time == null) return null;
@@ -54,9 +52,7 @@ class CreateScheduleBloc
         state.selectedScheduleCrew.isNotEmpty;
   }
 
-  // ===============================
-  // ✏️ 입력
-  // ===============================
+  // 입력
 
   void _onTitleChanged(TitleChanged event, Emitter<CreateScheduleState> emit) {
     final next = state.copyWith(title: event.title, isDirty: true);
@@ -77,7 +73,7 @@ class CreateScheduleBloc
   ) {
     final text = event.text.trim();
 
-    // 🔥 전부 지운 경우 → 장소 완전 초기화
+    //  전부 지운 경우 → 장소 완전 초기화
     if (text.isEmpty) {
       emit(
         state.copyWith(
@@ -92,21 +88,20 @@ class CreateScheduleBloc
       return;
     }
 
-    // ✍️ 직접 타이핑 → place만 유지
+    //  직접 타이핑 → place만 유지
     emit(
       state.copyWith(
         place: text,
         address: null,
         lat: null,
         lng: null,
-        isPlaceFromMap: false, // 🔥 타이핑
+        isPlaceFromMap: false,
         isDirty: true,
       ),
     );
   }
-  // ===============================
-  // 📅 날짜 / 시간
-  // ===============================
+
+  //  날짜 / 시간
 
   void _onDateSelected(DateSelected event, Emitter<CreateScheduleState> emit) {
     final startAt = _combineDateTime(event.date, state.time);
@@ -132,9 +127,7 @@ class CreateScheduleBloc
     emit(next.copyWith(isValid: _validate(next)));
   }
 
-  // ===============================
-  // 📍 장소
-  // ===============================
+  //  장소
 
   void _onPlaceSelected(
     PlaceSelected event,
@@ -146,7 +139,7 @@ class CreateScheduleBloc
         address: event.address,
         lat: event.lat,
         lng: event.lng,
-        isPlaceFromMap: true, // 🔥 지도 검색
+        isPlaceFromMap: true,
         isDirty: true,
       ),
     );
@@ -165,9 +158,7 @@ class CreateScheduleBloc
     );
   }
 
-  // ===============================
-  // 🏷️ 카테고리
-  // ===============================
+  //  카테고리
 
   void _onCategorySelected(
     CategorySelected event,
@@ -181,9 +172,8 @@ class CreateScheduleBloc
     emit(next.copyWith(isValid: _validate(next)));
   }
 
-  // ===============================
-  // 👥 참여자
-  // ===============================
+  // 참여자
+
   Future<void> _onLoadTripMembers(
     LoadTripMembers event,
     Emitter<CreateScheduleState> emit,
@@ -235,9 +225,7 @@ class CreateScheduleBloc
     emit(next.copyWith(isValid: _validate(next)));
   }
 
-  // ===============================
-  // 💾 일정 생성
-  // ===============================
+  //  일정 생성
 
   Future<void> _onSubmitPressed(
     SubmitPressed event,
@@ -297,9 +285,7 @@ class CreateScheduleBloc
     );
   }
 
-  // ===============================
-  // 🚪 나가기
-  // ===============================
+  //  나가기
 
   void _onExitRequested(
     ExitRequested event,
@@ -321,9 +307,7 @@ class CreateScheduleBloc
     emit(state.copyWith(actionType: 'pop'));
   }
 
-  // ===============================
-  // 🧼 메시지 초기화
-  // ===============================
+  //  메시지 초기화
 
   void _onClearMessage(ClearMessage event, Emitter<CreateScheduleState> emit) {
     emit(state.copyWith(message: null, errorType: null, actionType: null));

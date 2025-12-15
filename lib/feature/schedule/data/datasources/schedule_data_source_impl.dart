@@ -20,19 +20,21 @@ class ScheduleDataSourceImpl implements ScheduleDataSource {
     required int page,
   }) async {
     try {
-      final start = (page - 1) * 10;
-      final end = start + 9;
+      final from = (page - 1) * 10;
+      final to = from + 9;
 
       final res = await supabase
           .from('schedule')
           .select('''
-          *,
-          category:category_id (id, content),
-          trip:trip_id (*)
-        ''')
+      *,
+      category:category_id (
+        id,
+        content
+      )
+    ''')
           .eq('trip_id', tripId)
           .order('date', ascending: true)
-          .range(start, end);
+          .range(from, to);
 
       final data = (res as List)
           .map((json) => ScheduleDTO.fromJson(json))
