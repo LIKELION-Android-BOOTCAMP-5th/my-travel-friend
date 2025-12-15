@@ -245,7 +245,7 @@ class CreateScheduleBloc
     final schedule = ScheduleEntity(
       tripId: state.tripId,
       title: state.title!,
-      date: state.startAt!.toIso8601String(),
+      date: state.startAt!.toUtc().toIso8601String(),
       place: state.place,
       address: state.isPlaceFromMap ? state.address : null,
       lat: state.isPlaceFromMap ? state.lat : null,

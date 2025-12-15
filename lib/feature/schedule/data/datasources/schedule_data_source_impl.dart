@@ -96,7 +96,17 @@ class ScheduleDataSourceImpl implements ScheduleDataSource {
       // 1) 스케줄 수정
       final res = await supabase
           .from('schedule')
-          .update(schedule.toJson())
+          .update({
+            'trip_id': schedule.tripId,
+            'title': schedule.title,
+            'date': schedule.date,
+            'place': schedule.place,
+            'address': schedule.address,
+            'lat': schedule.lat,
+            'lng': schedule.lng,
+            'description': schedule.description,
+            'category_id': schedule.categoryId,
+          })
           .eq('id', schedule.id!)
           .select()
           .single();

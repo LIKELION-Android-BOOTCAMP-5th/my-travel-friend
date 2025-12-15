@@ -185,7 +185,7 @@ class ScheduleBloc extends Bloc<ScheduleEvent, ScheduleState> {
   // 수정 화면 이동
 
   void _onNavigateToEdit(NavigateToEdit event, Emitter<ScheduleState> emit) {
-    emit(state.copyWith(navigateToEdit: true));
+    emit(state.copyWith(navigateToEdit: true, editingSchedule: event.schedule));
   }
 
   // 스케줄 참여 멤버

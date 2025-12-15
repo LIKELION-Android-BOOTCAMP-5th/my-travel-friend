@@ -4,12 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:my_travel_friend/feature/schedule/presentation/viewmodels/map_search/map_search_bloc.dart';
+import 'package:my_travel_friend/feature/schedule/presentation/viewmodels/map_search/map_search_event.dart';
 import 'package:my_travel_friend/feature/schedule/presentation/viewmodels/map_search/map_search_state.dart';
-
-import '../viewmodels/map_search/map_search_event.dart';
 
 class MapSearchScreen extends StatefulWidget {
   const MapSearchScreen({super.key});
+
   @override
   State<MapSearchScreen> createState() => _MapSearchScreenState();
 }
@@ -17,15 +17,49 @@ class MapSearchScreen extends StatefulWidget {
 class _MapSearchScreenState extends State<MapSearchScreen> {
   GoogleMapController? _mapController;
 
+  final DraggableScrollableController _sheetController =
+      DraggableScrollableController();
+
   @override
   Widget build(BuildContext context) {
-    return BlocListener<MapSearchBloc, MapSearchState>(
-      listenWhen: (prev, curr) =>
-          prev.selectedPlace != curr.selectedPlace &&
-          curr.selectedPlace != null,
-      listener: (context, state) {
-        Navigator.pop(context, state.selectedPlace);
-      },
+    return MultiBlocListener(
+      listeners: [
+        BlocListener<MapSearchBloc, MapSearchState>(
+          listenWhen: (p, c) =>
+              p.candidates != c.candidates && c.candidates.isNotEmpty,
+          listener: (context, state) {
+            _moveCameraToPlaces(state.candidates);
+          },
+        ),
+
+        BlocListener<MapSearchBloc, MapSearchState>(
+          listenWhen: (p, c) =>
+              p.selectedPlace != c.selectedPlace && c.selectedPlace != null,
+          listener: (context, state) {
+            Navigator.pop(context, state.selectedPlace);
+          },
+        ),
+
+        BlocListener<MapSearchBloc, MapSearchState>(
+          listenWhen: (p, c) =>
+              p.focusedPlace != c.focusedPlace && c.focusedPlace != null,
+          listener: (context, state) async {
+            final p = state.focusedPlace!;
+
+            await _mapController?.animateCamera(
+              CameraUpdate.newLatLngZoom(LatLng(p.lat, p.lng), 16),
+            );
+
+            await Future.delayed(const Duration(milliseconds: 120));
+
+            _sheetController.animateTo(
+              0.4,
+              duration: const Duration(milliseconds: 300),
+              curve: Curves.easeOutCubic,
+            );
+          },
+        ),
+      ],
       child: _buildBody(context),
     );
   }
@@ -45,13 +79,14 @@ class _MapSearchScreenState extends State<MapSearchScreen> {
       maxLng = math.max(maxLng, p.lng);
     }
 
-    final bounds = LatLngBounds(
-      southwest: LatLng(minLat, minLng),
-      northeast: LatLng(maxLat, maxLng),
-    );
-
     await _mapController!.animateCamera(
-      CameraUpdate.newLatLngBounds(bounds, 80),
+      CameraUpdate.newLatLngBounds(
+        LatLngBounds(
+          southwest: LatLng(minLat, minLng),
+          northeast: LatLng(maxLat, maxLng),
+        ),
+        80,
+      ),
     );
   }
 
@@ -61,22 +96,37 @@ class _MapSearchScreenState extends State<MapSearchScreen> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       extendBody: true,
-      body: Stack(
-        children: [
-          Positioned.fill(
-            child: GoogleMap(
-              initialCameraPosition: _initialCamera(state),
-              markers: _buildMarkers(context, state),
-              onMapCreated: (c) {
-                _mapController = c;
-              },
-              myLocationEnabled: true,
-              myLocationButtonEnabled: true,
+      body: SafeArea(
+        child: Stack(
+          children: [
+            Positioned.fill(
+              child: GoogleMap(
+                initialCameraPosition: _initialCamera(state),
+                markers: _buildMarkers(context, state),
+                onMapCreated: (c) async {
+                  _mapController = c;
+
+                  if (state.hasInitialLocation &&
+                      state.initialLat != null &&
+                      state.initialLng != null) {
+                    await _mapController!.animateCamera(
+                      CameraUpdate.newLatLngZoom(
+                        LatLng(state.initialLat!, state.initialLng!),
+                        16,
+                      ),
+                    );
+                  }
+                },
+                myLocationEnabled: true,
+                myLocationButtonEnabled: true,
+              ),
             ),
-          ),
-          _SearchBar(),
-          _DraggableBottomSheet(state: state),
-        ],
+
+            _SearchBar(),
+
+            _DraggableBottomSheet(state: state, controller: _sheetController),
+          ],
+        ),
       ),
     );
   }
@@ -94,22 +144,40 @@ class _MapSearchScreenState extends State<MapSearchScreen> {
   }
 
   Set<Marker> _buildMarkers(BuildContext context, MapSearchState state) {
-    return state.candidates.map((place) {
-      return Marker(
-        markerId: MarkerId(place.place),
-        position: LatLng(place.lat, place.lng),
-        infoWindow: InfoWindow(title: place.place, snippet: place.address),
-        onTap: () async {
-          context.read<MapSearchBloc>().add(
-            MapSearchEvent.placeSelected(place),
-          );
+    final markers = <Marker>{};
 
-          await _mapController?.animateCamera(
-            CameraUpdate.newLatLngZoom(LatLng(place.lat, place.lng), 16),
-          );
-        },
+    if (state.hasInitialLocation &&
+        state.initialLat != null &&
+        state.initialLng != null) {
+      markers.add(
+        Marker(
+          markerId: const MarkerId('initial'),
+          position: LatLng(state.initialLat!, state.initialLng!),
+          icon: BitmapDescriptor.defaultMarkerWithHue(
+            BitmapDescriptor.hueAzure,
+          ),
+          infoWindow: InfoWindow(
+            title: '기존 장소',
+            snippet: state.initialAddress ?? '',
+          ),
+        ),
       );
-    }).toSet();
+    }
+
+    for (final p in state.candidates) {
+      markers.add(
+        Marker(
+          markerId: MarkerId(p.place),
+          position: LatLng(p.lat, p.lng),
+          infoWindow: InfoWindow(title: p.place, snippet: p.address),
+          onTap: () {
+            context.read<MapSearchBloc>().add(MapSearchEvent.placeFocused(p));
+          },
+        ),
+      );
+    }
+
+    return markers;
   }
 }
 
@@ -161,10 +229,14 @@ class _SearchBar extends StatelessWidget {
 
 class _DraggableBottomSheet extends StatelessWidget {
   final MapSearchState state;
-  const _DraggableBottomSheet({required this.state});
+  final DraggableScrollableController controller;
+
+  const _DraggableBottomSheet({required this.state, required this.controller});
+
   @override
   Widget build(BuildContext context) {
     return DraggableScrollableSheet(
+      controller: controller,
       initialChildSize: 0.12,
       minChildSize: 0.12,
       maxChildSize: 0.7,
@@ -182,7 +254,12 @@ class _DraggableBottomSheet extends StatelessWidget {
               _Handle(),
               Expanded(
                 child: state.candidates.isEmpty
-                    ? _EmptyGuide()
+                    ? const Center(
+                        child: Text(
+                          '상단 검색창에서 장소를 검색해보세요',
+                          style: TextStyle(color: Colors.grey),
+                        ),
+                      )
                     : _PlaceList(
                         scrollController: scrollController,
                         places: state.candidates,
@@ -242,131 +319,137 @@ class _PlaceList extends StatelessWidget {
 
 class _PlaceItem extends StatelessWidget {
   final PlaceCandidate place;
+
   const _PlaceItem({required this.place});
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(16, 12, 16, 16),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // 상단 정보 영역
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              //왼쪽 아이콘 (썸네일 대체)
-              Container(
-                width: 44,
-                height: 44,
-                decoration: BoxDecoration(
-                  color: Colors.grey.shade200,
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: const Icon(Icons.place, color: Colors.grey),
-              ),
-
-              const SizedBox(width: 12),
-
-              // 장소 정보
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    //장소명
-                    Text(
-                      place.place,
-                      style: const TextStyle(
-                        fontSize: 15,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-
-                    const SizedBox(height: 4),
-
-                    // 평점 (있을 때만)
-                    if (place.rating != null)
-                      Row(
-                        children: [
-                          const Icon(Icons.star, size: 14, color: Colors.amber),
-                          const SizedBox(width: 4),
-                          Text(
-                            place.rating!.toStringAsFixed(1),
-                            style: const TextStyle(fontSize: 12),
-                          ),
-                        ],
-                      ),
-
-                    const SizedBox(height: 4),
-
-                    // 주소
-                    Text(
-                      place.address,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style: const TextStyle(fontSize: 12, color: Colors.grey),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-
-          const SizedBox(height: 10),
-
-          // AI 추천 이유
-          Container(
-            width: double.infinity,
-            padding: const EdgeInsets.all(10),
-            decoration: BoxDecoration(
-              color: Colors.blueGrey.withOpacity(0.08),
-              borderRadius: BorderRadius.circular(10),
-            ),
-            child: Row(
+    return GestureDetector(
+      onTap: () {
+        context.read<MapSearchBloc>().add(MapSearchEvent.placeFocused(place));
+      },
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // 상단 정보 영역
+            Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Icon(
-                  Icons.auto_awesome,
-                  size: 16,
-                  color: Colors.blueGrey,
+                Container(
+                  width: 44,
+                  height: 44,
+                  decoration: BoxDecoration(
+                    color: Colors.grey.shade200,
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: const Icon(Icons.place, color: Colors.grey),
                 ),
-                const SizedBox(width: 6),
+
+                const SizedBox(width: 12),
+
                 Expanded(
-                  child: Text(
-                    place.aiReason,
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                    style: const TextStyle(fontSize: 12, color: Colors.black87),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        place.place,
+                        style: const TextStyle(
+                          fontSize: 15,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+
+                      const SizedBox(height: 4),
+
+                      if (place.rating != null)
+                        Row(
+                          children: [
+                            const Icon(
+                              Icons.star,
+                              size: 14,
+                              color: Colors.amber,
+                            ),
+                            const SizedBox(width: 4),
+                            Text(
+                              place.rating!.toStringAsFixed(1),
+                              style: const TextStyle(fontSize: 12),
+                            ),
+                          ],
+                        ),
+
+                      const SizedBox(height: 4),
+
+                      Text(
+                        place.address,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: const TextStyle(
+                          fontSize: 12,
+                          color: Colors.grey,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ],
             ),
-          ),
 
-          const SizedBox(height: 12),
+            const SizedBox(height: 10),
 
-          // 하단 버튼
-          SizedBox(
-            width: double.infinity,
-            child: ElevatedButton(
-              onPressed: () {
-                context.read<MapSearchBloc>().add(
-                  MapSearchEvent.placeSelected(place),
-                );
-                context.read<MapSearchBloc>().add(
-                  const MapSearchEvent.confirmPressed(),
-                );
-              },
-              style: ElevatedButton.styleFrom(
-                minimumSize: const Size.fromHeight(44),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
-                ),
+            Container(
+              width: double.infinity,
+              padding: const EdgeInsets.all(10),
+              decoration: BoxDecoration(
+                color: Colors.blueGrey.withOpacity(0.08),
+                borderRadius: BorderRadius.circular(10),
               ),
-              child: const Text('이 장소로 일정 추가'),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Icon(
+                    Icons.auto_awesome,
+                    size: 16,
+                    color: Colors.blueGrey,
+                  ),
+                  const SizedBox(width: 6),
+                  Expanded(
+                    child: Text(
+                      place.aiReason,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      style: const TextStyle(fontSize: 12),
+                    ),
+                  ),
+                ],
+              ),
             ),
-          ),
-        ],
+
+            const SizedBox(height: 12),
+
+            SizedBox(
+              width: double.infinity,
+              child: ElevatedButton(
+                onPressed: () {
+                  context.read<MapSearchBloc>().add(
+                    MapSearchEvent.placeSelected(place),
+                  );
+                  context.read<MapSearchBloc>().add(
+                    const MapSearchEvent.confirmPressed(),
+                  );
+                },
+                style: ElevatedButton.styleFrom(
+                  minimumSize: const Size.fromHeight(44),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                ),
+                child: const Text('이 장소로 일정 추가'),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

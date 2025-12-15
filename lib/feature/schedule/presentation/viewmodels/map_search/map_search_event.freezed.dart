@@ -55,13 +55,14 @@ extension MapSearchEventPatterns on MapSearchEvent {
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( Initialized value)?  initialized,TResult Function( QueryChanged value)?  queryChanged,TResult Function( SearchRequested value)?  searchRequested,TResult Function( PlaceSelected value)?  placeSelected,TResult Function( ConfirmPressed value)?  confirmPressed,required TResult orElse(),}){
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( Initialized value)?  initialized,TResult Function( QueryChanged value)?  queryChanged,TResult Function( SearchRequested value)?  searchRequested,TResult Function( PlaceFocused value)?  placeFocused,TResult Function( PlaceSelected value)?  placeSelected,TResult Function( ConfirmPressed value)?  confirmPressed,required TResult orElse(),}){
 final _that = this;
 switch (_that) {
 case Initialized() when initialized != null:
 return initialized(_that);case QueryChanged() when queryChanged != null:
 return queryChanged(_that);case SearchRequested() when searchRequested != null:
-return searchRequested(_that);case PlaceSelected() when placeSelected != null:
+return searchRequested(_that);case PlaceFocused() when placeFocused != null:
+return placeFocused(_that);case PlaceSelected() when placeSelected != null:
 return placeSelected(_that);case ConfirmPressed() when confirmPressed != null:
 return confirmPressed(_that);case _:
   return orElse();
@@ -81,13 +82,14 @@ return confirmPressed(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( Initialized value)  initialized,required TResult Function( QueryChanged value)  queryChanged,required TResult Function( SearchRequested value)  searchRequested,required TResult Function( PlaceSelected value)  placeSelected,required TResult Function( ConfirmPressed value)  confirmPressed,}){
+@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( Initialized value)  initialized,required TResult Function( QueryChanged value)  queryChanged,required TResult Function( SearchRequested value)  searchRequested,required TResult Function( PlaceFocused value)  placeFocused,required TResult Function( PlaceSelected value)  placeSelected,required TResult Function( ConfirmPressed value)  confirmPressed,}){
 final _that = this;
 switch (_that) {
 case Initialized():
 return initialized(_that);case QueryChanged():
 return queryChanged(_that);case SearchRequested():
-return searchRequested(_that);case PlaceSelected():
+return searchRequested(_that);case PlaceFocused():
+return placeFocused(_that);case PlaceSelected():
 return placeSelected(_that);case ConfirmPressed():
 return confirmPressed(_that);case _:
   throw StateError('Unexpected subclass');
@@ -106,13 +108,14 @@ return confirmPressed(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( Initialized value)?  initialized,TResult? Function( QueryChanged value)?  queryChanged,TResult? Function( SearchRequested value)?  searchRequested,TResult? Function( PlaceSelected value)?  placeSelected,TResult? Function( ConfirmPressed value)?  confirmPressed,}){
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( Initialized value)?  initialized,TResult? Function( QueryChanged value)?  queryChanged,TResult? Function( SearchRequested value)?  searchRequested,TResult? Function( PlaceFocused value)?  placeFocused,TResult? Function( PlaceSelected value)?  placeSelected,TResult? Function( ConfirmPressed value)?  confirmPressed,}){
 final _that = this;
 switch (_that) {
 case Initialized() when initialized != null:
 return initialized(_that);case QueryChanged() when queryChanged != null:
 return queryChanged(_that);case SearchRequested() when searchRequested != null:
-return searchRequested(_that);case PlaceSelected() when placeSelected != null:
+return searchRequested(_that);case PlaceFocused() when placeFocused != null:
+return placeFocused(_that);case PlaceSelected() when placeSelected != null:
 return placeSelected(_that);case ConfirmPressed() when confirmPressed != null:
 return confirmPressed(_that);case _:
   return null;
@@ -131,12 +134,13 @@ return confirmPressed(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function( int tripId,  double? lat,  double? lng,  String? address)?  initialized,TResult Function( String query)?  queryChanged,TResult Function()?  searchRequested,TResult Function( PlaceCandidate place)?  placeSelected,TResult Function()?  confirmPressed,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function( int tripId,  double? lat,  double? lng,  String? address)?  initialized,TResult Function( String query)?  queryChanged,TResult Function()?  searchRequested,TResult Function( PlaceCandidate place)?  placeFocused,TResult Function( PlaceCandidate place)?  placeSelected,TResult Function()?  confirmPressed,required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case Initialized() when initialized != null:
 return initialized(_that.tripId,_that.lat,_that.lng,_that.address);case QueryChanged() when queryChanged != null:
 return queryChanged(_that.query);case SearchRequested() when searchRequested != null:
-return searchRequested();case PlaceSelected() when placeSelected != null:
+return searchRequested();case PlaceFocused() when placeFocused != null:
+return placeFocused(_that.place);case PlaceSelected() when placeSelected != null:
 return placeSelected(_that.place);case ConfirmPressed() when confirmPressed != null:
 return confirmPressed();case _:
   return orElse();
@@ -156,12 +160,13 @@ return confirmPressed();case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function( int tripId,  double? lat,  double? lng,  String? address)  initialized,required TResult Function( String query)  queryChanged,required TResult Function()  searchRequested,required TResult Function( PlaceCandidate place)  placeSelected,required TResult Function()  confirmPressed,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function( int tripId,  double? lat,  double? lng,  String? address)  initialized,required TResult Function( String query)  queryChanged,required TResult Function()  searchRequested,required TResult Function( PlaceCandidate place)  placeFocused,required TResult Function( PlaceCandidate place)  placeSelected,required TResult Function()  confirmPressed,}) {final _that = this;
 switch (_that) {
 case Initialized():
 return initialized(_that.tripId,_that.lat,_that.lng,_that.address);case QueryChanged():
 return queryChanged(_that.query);case SearchRequested():
-return searchRequested();case PlaceSelected():
+return searchRequested();case PlaceFocused():
+return placeFocused(_that.place);case PlaceSelected():
 return placeSelected(_that.place);case ConfirmPressed():
 return confirmPressed();case _:
   throw StateError('Unexpected subclass');
@@ -180,12 +185,13 @@ return confirmPressed();case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function( int tripId,  double? lat,  double? lng,  String? address)?  initialized,TResult? Function( String query)?  queryChanged,TResult? Function()?  searchRequested,TResult? Function( PlaceCandidate place)?  placeSelected,TResult? Function()?  confirmPressed,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function( int tripId,  double? lat,  double? lng,  String? address)?  initialized,TResult? Function( String query)?  queryChanged,TResult? Function()?  searchRequested,TResult? Function( PlaceCandidate place)?  placeFocused,TResult? Function( PlaceCandidate place)?  placeSelected,TResult? Function()?  confirmPressed,}) {final _that = this;
 switch (_that) {
 case Initialized() when initialized != null:
 return initialized(_that.tripId,_that.lat,_that.lng,_that.address);case QueryChanged() when queryChanged != null:
 return queryChanged(_that.query);case SearchRequested() when searchRequested != null:
-return searchRequested();case PlaceSelected() when placeSelected != null:
+return searchRequested();case PlaceFocused() when placeFocused != null:
+return placeFocused(_that.place);case PlaceSelected() when placeSelected != null:
 return placeSelected(_that.place);case ConfirmPressed() when confirmPressed != null:
 return confirmPressed();case _:
   return null;
@@ -203,7 +209,6 @@ class Initialized implements MapSearchEvent {
   
 
  final  int tripId;
-// ✅ 추가
  final  double? lat;
  final  double? lng;
  final  String? address;
@@ -365,6 +370,72 @@ String toString() {
 
 
 
+
+/// @nodoc
+
+
+class PlaceFocused implements MapSearchEvent {
+  const PlaceFocused(this.place);
+  
+
+ final  PlaceCandidate place;
+
+/// Create a copy of MapSearchEvent
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$PlaceFocusedCopyWith<PlaceFocused> get copyWith => _$PlaceFocusedCopyWithImpl<PlaceFocused>(this, _$identity);
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is PlaceFocused&&(identical(other.place, place) || other.place == place));
+}
+
+
+@override
+int get hashCode => Object.hash(runtimeType,place);
+
+@override
+String toString() {
+  return 'MapSearchEvent.placeFocused(place: $place)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class $PlaceFocusedCopyWith<$Res> implements $MapSearchEventCopyWith<$Res> {
+  factory $PlaceFocusedCopyWith(PlaceFocused value, $Res Function(PlaceFocused) _then) = _$PlaceFocusedCopyWithImpl;
+@useResult
+$Res call({
+ PlaceCandidate place
+});
+
+
+
+
+}
+/// @nodoc
+class _$PlaceFocusedCopyWithImpl<$Res>
+    implements $PlaceFocusedCopyWith<$Res> {
+  _$PlaceFocusedCopyWithImpl(this._self, this._then);
+
+  final PlaceFocused _self;
+  final $Res Function(PlaceFocused) _then;
+
+/// Create a copy of MapSearchEvent
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') $Res call({Object? place = null,}) {
+  return _then(PlaceFocused(
+null == place ? _self.place : place // ignore: cast_nullable_to_non_nullable
+as PlaceCandidate,
+  ));
+}
+
+
+}
 
 /// @nodoc
 
