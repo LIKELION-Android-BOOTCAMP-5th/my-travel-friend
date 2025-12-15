@@ -20,7 +20,7 @@ abstract class MapSearchState with _$MapSearchState {
     @Default([]) List<PlaceCandidate> candidates,
 
     PlaceCandidate? selectedPlace,
-
+    PlaceCandidate? focusedPlace,
     @Default(false) bool showBottomSheet,
     String? message,
   }) = _MapSearchState;

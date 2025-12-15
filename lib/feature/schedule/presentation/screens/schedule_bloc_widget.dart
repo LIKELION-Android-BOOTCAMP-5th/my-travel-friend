@@ -53,11 +53,9 @@ class _ScheduleBlocContent extends StatelessWidget {
           );
         }
 
-        if (state.navigateToEdit) {
-          final schedule = state.schedules.firstWhere(
-            (e) => e.id == state.selectedCategoryId,
-          );
-          context.push('/schedule/edit?scheduleId=${schedule.id}');
+        if (state.navigateToEdit && state.editingSchedule != null) {
+          context.push('/schedule/edit/$tripId', extra: state.editingSchedule);
+
           context.read<ScheduleBloc>().add(
             const ScheduleEvent.resetNavigation(),
           );

@@ -24,7 +24,9 @@ import '../feature/diary/presentation/screens/edit_diary/edit_diary_bloc_widget.
 import '../feature/diary/presentation/screens/new_diary/new_diary_bloc_widget.dart';
 import '../feature/diary/presentation/viewmodels/diary/diary_bloc.dart';
 import '../feature/diary/presentation/viewmodels/new_diary/new_diary_bloc.dart';
+import '../feature/schedule/domain/entities/schedule_entity.dart';
 import '../feature/schedule/presentation/screens/create_schedule_bloc_widget.dart';
+import '../feature/schedule/presentation/screens/edit_schedule_bloc_widget.dart';
 import '../feature/schedule/presentation/viewmodels/schedule/schedule_bloc.dart';
 import '../feature/setting/presentation/screens/alarm/alarm_setting_bloc_widget.dart';
 import '../feature/setting/presentation/screens/profile/profile_bloc_widget.dart';
@@ -261,6 +263,14 @@ class AppRouter {
           final tripId = int.parse(state.pathParameters['tripId']!);
 
           return CreateScheduleBlocWidget(tripId: tripId);
+        },
+      ),
+      GoRoute(
+        path: '/schedule/edit/:tripId',
+        builder: (context, state) {
+          final tripId = int.parse(state.pathParameters['tripId']!);
+          final schedule = state.extra as ScheduleEntity;
+          return EditScheduleBlocWidget(schedule: schedule, tripId: tripId);
         },
       ),
     ],

@@ -22,6 +22,7 @@ class MapSearchBloc extends Bloc<MapSearchEvent, MapSearchState> {
     on<SearchRequested>(_onSearchRequested);
     on<PlaceSelected>(_onPlaceSelected);
     on<ConfirmPressed>(_onConfirmPressed);
+    on<PlaceFocused>(_onPlaceFocused);
   }
 
   // 초기 진입
@@ -62,7 +63,11 @@ class MapSearchBloc extends Bloc<MapSearchEvent, MapSearchState> {
     try {
       final prompt =
           '''
-"$query" 와 관련된 실제 방문 가능한 장소를 추천해줘.
+"$query" 와 관련된 실제 방문 가능한 장소를 최대 5개 추천해줘.
+지역는 반드시 검색어에 포함된 지역과 일치해야한다.
+장소의 주소 또한 지역안에 있어야한다.
+다른지역이면 추천하지 마라.
+
 결과는 반드시 아래 형식으로만 답해줘.
 
 장소명: 추천 이유
@@ -153,6 +158,10 @@ class MapSearchBloc extends Bloc<MapSearchEvent, MapSearchState> {
         selectedLng: event.place.lng,
       ),
     );
+  }
+
+  void _onPlaceFocused(PlaceFocused event, Emitter<MapSearchState> emit) {
+    emit(state.copyWith(focusedPlace: event.place));
   }
 
   // 선택 확정

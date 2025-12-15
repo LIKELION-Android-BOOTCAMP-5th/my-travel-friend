@@ -19,6 +19,9 @@ class MapSearchEvent with _$MapSearchEvent {
 
   // 검색 실행 (Gemini → GoogleMap 검증)
   const factory MapSearchEvent.searchRequested() = SearchRequested;
+  // 아이템 누르면 해당 마커로 이동
+  const factory MapSearchEvent.placeFocused(PlaceCandidate place) =
+      PlaceFocused;
 
   // 장소 선택
   const factory MapSearchEvent.placeSelected(PlaceCandidate place) =

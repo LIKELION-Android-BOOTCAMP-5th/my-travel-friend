@@ -164,6 +164,8 @@ import '../../feature/schedule/domain/usecases/get_user_schudule_usecase.dart'
     as _i818;
 import '../../feature/schedule/presentation/viewmodels/create_schedule/create_schedule_blco.dart'
     as _i725;
+import '../../feature/schedule/presentation/viewmodels/edit_schedule/edit_schedule_bloc.dart'
+    as _i229;
 import '../../feature/schedule/presentation/viewmodels/map_search/map_search_bloc.dart'
     as _i196;
 import '../../feature/schedule/presentation/viewmodels/schedule/schedule_bloc.dart'
@@ -584,6 +586,13 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.lazySingleton<_i57.ToggleTodoListUseCase>(
       () => _i57.ToggleTodoListUseCase(gh<_i579.TodoListRepository>()),
+    );
+    gh.factory<_i229.EditScheduleBloc>(
+      () => _i229.EditScheduleBloc(
+        gh<_i29.UpdateScheduleUseCase>(),
+        gh<_i324.GetTripMembersUseCase>(),
+        gh<_i415.GetScheduleMembersUseCase>(),
+      ),
     );
     gh.singleton<_i387.AuthProfileBloc>(
       () => _i387.AuthProfileBloc(

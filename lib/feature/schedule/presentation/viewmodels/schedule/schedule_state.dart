@@ -47,7 +47,7 @@ abstract class ScheduleState with _$ScheduleState {
 
     // 네비게이션 (작성 화면 이동)
     @Default(false) bool navigateToCreate,
-
+    ScheduleEntity? editingSchedule,
     // 네비게이션 (수정 화면 이동)
     @Default(false) bool navigateToEdit,
     //카테고리
