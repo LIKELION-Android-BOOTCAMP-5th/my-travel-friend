@@ -40,6 +40,11 @@
 	<string>595568080788-m3j8eivev0nqnok2n5tfngo0kuspndm6.apps.googleusercontent.com</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+    <key>LSApplicationQueriesSchemes</key>
+    <array>
+        <string>https</string>
+        <string>http</string>
+    </array>
     <!-- 알림 -->
     <key>UIBackgroundModes</key>
     <array>
