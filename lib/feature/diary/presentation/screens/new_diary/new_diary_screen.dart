@@ -81,7 +81,7 @@ class _NewDiaryScreenState extends State<NewDiaryScreen> {
 
     return MultiBlocListener(
       listeners: [
-        // ✅ 리스너 1: 성공/에러 처리
+        // 리스너 1: 성공/에러 처리
         BlocListener<NewDiaryBloc, NewDiaryState>(
           listenWhen: (prev, curr) => prev.pageState != curr.pageState,
           listener: (context, state) {
@@ -94,7 +94,7 @@ class _NewDiaryScreenState extends State<NewDiaryScreen> {
             }
           },
         ),
-        // ✅ 리스너 2: 스케줄 로드 완료 시 팝업 표시
+        // 리스너 2: 스케줄 로드 완료 시 팝업 표시
         BlocListener<NewDiaryBloc, NewDiaryState>(
           listenWhen: (prev, curr) =>
               prev.isLoadingSchedules && !curr.isLoadingSchedules,

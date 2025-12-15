@@ -33,9 +33,6 @@ abstract class NewDiaryState with _$NewDiaryState {
     @Default([]) List<ScheduleEntity> schedules,
     @Default(false) bool isLoadingSchedules,
 
-    // 생성된 다이어리
-    DiaryEntity? createdDiary,
-
     // 메세지 (성공/에러)
     String? message,
     String? errorType,

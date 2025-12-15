@@ -35,8 +35,6 @@ class NewDiaryBloc extends Bloc<NewDiaryEvent, NewDiaryState> {
     on<ChooseSchedule>(_onChooseSchedule);
     on<Reset>(_onReset);
     on<LoadSchedules>(_onLoadSchedules);
-    on<SchedulesLoaded>(_onSchedulesLoaded);
-    on<SchedulesLoadFailed>(_onSchedulesLoadFailed);
   }
 
   // 핸들러
@@ -111,7 +109,6 @@ class NewDiaryBloc extends Bloc<NewDiaryEvent, NewDiaryState> {
         emit(
           state.copyWith(
             pageState: NewDiaryPageState.success,
-            createdDiary: createdDiary,
             message: '다이어리를 작성했습니다',
             actionType: 'create',
           ),
@@ -236,16 +233,5 @@ class NewDiaryBloc extends Bloc<NewDiaryEvent, NewDiaryState> {
         emit(state.copyWith(schedules: [], isLoadingSchedules: false));
       },
     );
-  }
-
-  void _onSchedulesLoaded(SchedulesLoaded event, Emitter<NewDiaryState> emit) {
-    emit(state.copyWith(schedules: event.schedules, isLoadingSchedules: false));
-  }
-
-  void _onSchedulesLoadFailed(
-    SchedulesLoadFailed event,
-    Emitter<NewDiaryState> emit,
-  ) {
-    emit(state.copyWith(schedules: [], isLoadingSchedules: false));
   }
 }

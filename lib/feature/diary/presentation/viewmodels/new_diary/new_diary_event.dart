@@ -45,14 +45,6 @@ abstract class NewDiaryEvent with _$NewDiaryEvent {
   // 일정 목록 로드
   const factory NewDiaryEvent.loadSchedules() = LoadSchedules;
 
-  // 일정 로드 성공
-  const factory NewDiaryEvent.schedulesLoaded({
-    required List<ScheduleEntity> schedules,
-  }) = SchedulesLoaded;
-
-  // 일정 로드 실패
-  const factory NewDiaryEvent.schedulesLoadFailed() = SchedulesLoadFailed;
-
   // 일정 선택
   const factory NewDiaryEvent.chooseSchedule({required int? scheduleId}) =
       ChooseSchedule;
