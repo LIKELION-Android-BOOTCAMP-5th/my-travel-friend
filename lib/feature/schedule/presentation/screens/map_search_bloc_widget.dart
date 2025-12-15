@@ -22,17 +22,9 @@ class MapSearchBlocWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    debugPrint('enker 🧩 MapSearchBlocWidget build');
-
     return BlocProvider(
       create: (_) {
-        debugPrint('enker 🧩 MapSearchBloc created');
         final bloc = sl<MapSearchBloc>();
-
-        debugPrint(
-          'enker 🧩 send Initialized '
-          'lat=$initialLat lng=$initialLng address=$initialAddress',
-        );
 
         bloc.add(
           MapSearchEvent.initialized(

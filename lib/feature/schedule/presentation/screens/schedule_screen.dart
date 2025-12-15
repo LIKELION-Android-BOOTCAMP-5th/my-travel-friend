@@ -170,9 +170,6 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                               .whereType<String>()
                               .where((img) => img.isNotEmpty && img != 'null')
                               .toList();
-                          debugPrint(
-                            'enker 🖼 raw profileImgs=${members.map((e) => e.profileImg).toList()}',
-                          );
 
                           return Padding(
                             padding: const EdgeInsets.symmetric(

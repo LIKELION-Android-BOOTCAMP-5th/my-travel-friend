@@ -24,9 +24,8 @@ class MapSearchBloc extends Bloc<MapSearchEvent, MapSearchState> {
     on<ConfirmPressed>(_onConfirmPressed);
   }
 
-  // ===============================
   // 초기 진입
-  // ===============================
+
   void _onInitialized(Initialized event, Emitter<MapSearchState> emit) {
     if (event.lat != null && event.lng != null) {
       emit(
@@ -43,16 +42,14 @@ class MapSearchBloc extends Bloc<MapSearchEvent, MapSearchState> {
     }
   }
 
-  // ===============================
   // 검색어 입력
-  // ===============================
+
   void _onQueryChanged(QueryChanged event, Emitter<MapSearchState> emit) {
     emit(state.copyWith(query: event.query));
   }
 
-  // ===============================
   // 검색 실행
-  // ===============================
+
   Future<void> _onSearchRequested(
     SearchRequested event,
     Emitter<MapSearchState> emit,
@@ -63,9 +60,6 @@ class MapSearchBloc extends Bloc<MapSearchEvent, MapSearchState> {
     emit(state.copyWith(isSearching: true));
 
     try {
-      // ===============================
-      // 1️⃣ Gemini에게 장소 후보 + 추천 이유 요청
-      // ===============================
       final prompt =
           '''
 "$query" 와 관련된 실제 방문 가능한 장소를 추천해줘.
@@ -93,9 +87,6 @@ class MapSearchBloc extends Bloc<MapSearchEvent, MapSearchState> {
         return;
       }
 
-      // ===============================
-      // 2️⃣ Google Places TextSearch 병렬 호출
-      // ===============================
       final futures = placePairs.take(5).map((pair) async {
         try {
           final name = pair['name']!;
@@ -122,7 +113,7 @@ class MapSearchBloc extends Bloc<MapSearchEvent, MapSearchState> {
             rating: r['rating'] != null
                 ? (r['rating'] as num).toDouble()
                 : null,
-            aiReason: reason, // ✅ AI 추천 이유
+            aiReason: reason,
           );
         } catch (_) {
           return null;
@@ -152,9 +143,8 @@ class MapSearchBloc extends Bloc<MapSearchEvent, MapSearchState> {
     }
   }
 
-  // ===============================
   // 장소 선택
-  // ===============================
+
   void _onPlaceSelected(PlaceSelected event, Emitter<MapSearchState> emit) {
     emit(
       state.copyWith(
@@ -165,9 +155,8 @@ class MapSearchBloc extends Bloc<MapSearchEvent, MapSearchState> {
     );
   }
 
-  // ===============================
   // 선택 확정
-  // ===============================
+
   void _onConfirmPressed(ConfirmPressed event, Emitter<MapSearchState> emit) {
     if (state.selectedPlace == null) {
       emit(state.copyWith(message: '장소를 선택해주세요'));

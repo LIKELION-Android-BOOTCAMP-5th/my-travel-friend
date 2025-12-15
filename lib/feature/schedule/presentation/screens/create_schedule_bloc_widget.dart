@@ -27,10 +27,8 @@ class CreateScheduleBlocWidget extends StatelessWidget {
       create: (_) {
         final bloc = sl<CreateScheduleBloc>();
 
-        // ✅ tripId를 state에 먼저 넣고
         bloc.emit(bloc.state.copyWith(tripId: tripId));
 
-        // ✅ 여행 참여자 로드 이벤트 호출
         bloc.add(const CreateScheduleEvent.loadTripMembers());
 
         return bloc;

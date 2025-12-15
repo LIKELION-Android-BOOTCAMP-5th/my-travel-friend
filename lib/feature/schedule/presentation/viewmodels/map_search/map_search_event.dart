@@ -8,7 +8,7 @@ part 'map_search_event.freezed.dart';
 class MapSearchEvent with _$MapSearchEvent {
   // 초기 진입
   const factory MapSearchEvent.initialized({
-    required int tripId, // ✅ 추가
+    required int tripId,
     double? lat,
     double? lng,
     String? address,
