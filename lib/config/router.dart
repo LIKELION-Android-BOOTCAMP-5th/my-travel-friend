@@ -7,7 +7,6 @@ import 'package:my_travel_friend/feature/auth/presentation/viewmodel/auth/auth_b
 import 'package:my_travel_friend/feature/auth/presentation/viewmodel/auth_profile/auth_profile_bloc.dart';
 import 'package:my_travel_friend/feature/auth/presentation/viewmodel/auth_profile/auth_profile_state.dart';
 import 'package:my_travel_friend/feature/schedule/presentation/screens/schedule_bloc_widget.dart';
-import 'package:my_travel_friend/feature/schedule/presentation/viewmodels/schedule_bloc.dart';
 import 'package:my_travel_friend/feature/setting/presentation/screens/menu/menu_bloc_widget.dart';
 import 'package:my_travel_friend/feature/setting/presentation/screens/permission/permission_bloc_widget.dart';
 import 'package:my_travel_friend/feature/trip/presentation/screens/create_trip_bloc_widget.dart';
@@ -25,6 +24,8 @@ import '../feature/diary/presentation/screens/edit_diary/edit_diary_bloc_widget.
 import '../feature/diary/presentation/screens/new_diary/new_diary_bloc_widget.dart';
 import '../feature/diary/presentation/viewmodels/diary/diary_bloc.dart';
 import '../feature/diary/presentation/viewmodels/new_diary/new_diary_bloc.dart';
+import '../feature/schedule/presentation/screens/create_schedule_bloc_widget.dart';
+import '../feature/schedule/presentation/viewmodels/schedule/schedule_bloc.dart';
 import '../feature/setting/presentation/screens/alarm/alarm_setting_bloc_widget.dart';
 import '../feature/setting/presentation/screens/profile/profile_bloc_widget.dart';
 import '../feature/setting/presentation/screens/theme/theme_bloc_widget.dart';
@@ -252,6 +253,14 @@ class AppRouter {
           final extra = state.extra as Map<String, dynamic>;
           final diary = extra['diary'] as DiaryEntity;
           return EditDiaryBlocWidget(diary: diary);
+        },
+      ),
+      GoRoute(
+        path: '/schedule/create/:tripId',
+        builder: (context, state) {
+          final tripId = int.parse(state.pathParameters['tripId']!);
+
+          return CreateScheduleBlocWidget(tripId: tripId);
         },
       ),
     ],
