@@ -217,6 +217,4 @@ class ScheduleDataSourceImpl implements ScheduleDataSource {
       return Result.failure(Failure.undefined(message: '스케줄을 불러오는데 실패했어요: $e'));
     }
   }
-
-
 }
