@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:freezed_annotation/freezed_annotation.dart';
 
+import '../../../../schedule/domain/entities/schedule_entity.dart';
 import '../../../domain/entities/diary_entity.dart';
 
 part 'new_diary_state.freezed.dart';
@@ -28,8 +29,9 @@ abstract class NewDiaryState with _$NewDiaryState {
     @Default(true) bool isPublic,
     int? scheduleId,
 
-    // 생성된 다이어리
-    DiaryEntity? createdDiary,
+    // 일정 관련 (팝업용)
+    @Default([]) List<ScheduleEntity> schedules,
+    @Default(false) bool isLoadingSchedules,
 
     // 메세지 (성공/에러)
     String? message,

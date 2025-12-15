@@ -61,7 +61,6 @@ class AppRouter {
         '/friend',
         '/setting',
         '/alarm',
-        '/setting',
         '/diary',
         '/trip',
         '/home',
@@ -70,6 +69,11 @@ class AppRouter {
       final isGoingToLockedPath = lockedPaths.any(
         (path) => currentPath.startsWith(path),
       );
+
+      // 초기 상태거나 로딩 중이면 스플래시로
+      if (authState is AuthProfileInitial || authState is AuthProfileLoading) {
+        return '/splash';
+      }
 
       // 2. 미인증 시 접근 불가 경로 차단
       if (!isLoggedIn && isGoingToLockedPath) {

@@ -5,9 +5,10 @@ import '../../../../core/theme/app_font.dart';
 
 // [이재은] 일정 선택 버튼
 class SchedulePickerButton extends StatelessWidget {
+  BuildContext context;
   final VoidCallback onTap;
 
-  const SchedulePickerButton({super.key, required this.onTap});
+  SchedulePickerButton({super.key, required this.context, required this.onTap});
 
   @override
   Widget build(BuildContext context) {

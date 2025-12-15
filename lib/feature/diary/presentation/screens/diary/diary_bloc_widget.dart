@@ -83,7 +83,7 @@ class _DiaryBlocConsumer extends StatelessWidget {
     );
   }
 
-  /// 다이어리 상세 팝업 표시
+  // 다이어리 상세 팝업 표시
   void _showDiaryDetailPopUp(BuildContext context, dynamic diary) {
     showDialog(
       context: context,

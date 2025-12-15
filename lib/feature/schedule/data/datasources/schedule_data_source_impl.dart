@@ -158,4 +158,29 @@ class ScheduleDataSourceImpl implements ScheduleDataSource {
       return Result.failure(Failure.serverFailure(message: e.toString()));
     }
   }
+
+  // [이재은] 여행 ID와 유저 ID로 해당 유저가 참여하는 스케줄 가져오기
+  @override
+  Future<Result<List<ScheduleDTO>>> getUserSchedule({
+    required int tripId,
+    required int userId,
+  }) async {
+    try {
+      // schedul_crew를 inner join으로 필터링
+      final response = await supabase
+          .from('schedule')
+          .select('*, schedul_crew!inner(member_id)')
+          .eq('trip_id', tripId)
+          .eq('schedul_crew.member_id', userId)
+          .order('date', ascending: true);
+
+      final schedules = (response as List)
+          .map((e) => ScheduleDTO.fromJson(e))
+          .toList();
+
+      return Result.success(schedules);
+    } catch (e) {
+      return Result.failure(Failure.undefined(message: '스케줄을 불러오는데 실패했어요: $e'));
+    }
+  }
 }

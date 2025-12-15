@@ -1,20 +1,25 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 import 'package:my_travel_friend/feature/diary/domain/usecases/update_diary_usecase.dart';
+import 'package:my_travel_friend/feature/diary/domain/usecases/upload_diary_img_usecase.dart';
 
 import '../../../../../core/result/failures.dart';
 import '../../../../../core/result/result.dart';
-import '../../../domain/repositories/diary_repository.dart';
+import '../../../domain/usecases/delete_diary_img_usecase.dart';
 import 'edit_diary_event.dart';
 import 'edit_diary_state.dart';
 
 @injectable
 class EditDiaryBloc extends Bloc<EditDiaryEvent, EditDiaryState> {
   final UpdateDiaryUseCase _updateDiaryUseCase;
-  final DiaryRepository _diaryRepository;
+  final UploadDiaryImgUseCase _uploadDiaryImgUseCase;
+  final DeleteDiaryImgUseCase _deleteDiaryImgUseCase;
 
-  EditDiaryBloc(this._updateDiaryUseCase, this._diaryRepository)
-    : super(const EditDiaryState()) {
+  EditDiaryBloc(
+    this._updateDiaryUseCase,
+    this._uploadDiaryImgUseCase,
+    this._deleteDiaryImgUseCase,
+  ) : super(const EditDiaryState()) {
     on<LoadDiary>(_onLoadDiary);
     on<UpdateDiary>(_onUpdateDiary);
     on<ChangeType>(_onChangeType);
@@ -81,10 +86,10 @@ class EditDiaryBloc extends Bloc<EditDiaryEvent, EditDiaryState> {
       // 기존 이미지가 있으면 삭제
       if (state.originalDiary?.img != null &&
           state.originalDiary!.img!.isNotEmpty) {
-        await _diaryRepository.deleteImg(state.originalDiary!.img!);
+        await _deleteDiaryImgUseCase(state.originalDiary!.img!);
       }
 
-      final uploadResult = await _diaryRepository.uploadImg(
+      final uploadResult = await await _uploadDiaryImgUseCase(
         file: state.localImgFile!,
         userId: state.userId,
       );
