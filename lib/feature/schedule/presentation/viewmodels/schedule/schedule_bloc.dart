@@ -4,15 +4,15 @@ import 'package:my_travel_friend/core/result/result.dart';
 import 'package:my_travel_friend/feature/schedule/domain/usecases/delete_schedule_usecase.dart';
 import 'package:my_travel_friend/feature/schedule/domain/usecases/get_all_schedule_usecase.dart';
 import 'package:my_travel_friend/feature/schedule/domain/usecases/get_schedule_member_usecase.dart';
+import 'package:my_travel_friend/feature/schedule/presentation/viewmodels/schedule/schedule_state.dart';
 
-import '../../../auth/domain/entities/user_entity.dart';
-import '../../../trip/domain/entities/trip_entity.dart';
-import '../../../trip/domain/usecases/get_trip_by_id_usecase.dart';
-import '../../domain/entities/category_entity.dart';
-import '../../domain/entities/schedule_entity.dart';
-import '../../domain/usecases/get_category_usecase.dart';
+import '../../../../auth/domain/entities/user_entity.dart';
+import '../../../../trip/domain/entities/trip_entity.dart';
+import '../../../../trip/domain/usecases/get_trip_by_id_usecase.dart';
+import '../../../domain/entities/category_entity.dart';
+import '../../../domain/entities/schedule_entity.dart';
+import '../../../domain/usecases/get_category_usecase.dart';
 import 'schedule_event.dart';
-import 'schedule_state.dart';
 
 @injectable
 class ScheduleBloc extends Bloc<ScheduleEvent, ScheduleState> {
@@ -42,6 +42,7 @@ class ScheduleBloc extends Bloc<ScheduleEvent, ScheduleState> {
     on<DeleteSchedule>(_onDeleteSchedule);
     on<SwitchToDateMode>(_onSwitchToDateMode);
     on<SwitchToCategoryMode>(_onSwitchToCategoryMode);
+    on<Refresh>(_onRefreshSchedules);
   }
 
   Future<void> _onFetchSchedules(
@@ -113,6 +114,7 @@ class ScheduleBloc extends Bloc<ScheduleEvent, ScheduleState> {
         selectedCategoryId: null,
         viewMode: ScheduleFilterType.date,
         pageState: SchedulepageState.loaded,
+        scheduleMembersMap: state.scheduleMembersMap, // ✅ 유지
       ),
     );
 
@@ -166,6 +168,11 @@ class ScheduleBloc extends Bloc<ScheduleEvent, ScheduleState> {
     );
   }
 
+  //화면 재구성
+  void _onRefreshSchedules(Refresh event, Emitter<ScheduleState> emit) {
+    add(ScheduleEvent.fetchSchedules(tripId: event.tripId));
+  }
+
   // 작성 화면 이동
 
   void _onNavigateToCreate(
@@ -209,7 +216,21 @@ class ScheduleBloc extends Bloc<ScheduleEvent, ScheduleState> {
   ) async {
     emit(state.copyWith(pageState: SchedulepageState.loading));
 
-    await deleteSchedule.call(event.scheduleId);
+    final result = await deleteSchedule.call(event.scheduleId);
+
+    result.when(
+      success: (_) {
+        add(ScheduleEvent.fetchSchedules(tripId: state.trip!.id!));
+      },
+      failure: (failure) {
+        emit(
+          state.copyWith(
+            pageState: SchedulepageState.error,
+            message: failure.message,
+          ),
+        );
+      },
+    );
   }
 
   // 메모 접기/펼치기

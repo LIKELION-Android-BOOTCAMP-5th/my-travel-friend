@@ -1,9 +1,9 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-import '../../../auth/domain/entities/user_entity.dart';
-import '../../../trip/domain/entities/trip_entity.dart';
-import '../../domain/entities/category_entity.dart';
-import '../../domain/entities/schedule_entity.dart';
+import '../../../../auth/domain/entities/user_entity.dart';
+import '../../../../trip/domain/entities/trip_entity.dart';
+import '../../../domain/entities/category_entity.dart';
+import '../../../domain/entities/schedule_entity.dart';
 
 part 'schedule_state.freezed.dart';
 

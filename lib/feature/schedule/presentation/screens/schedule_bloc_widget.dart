@@ -3,11 +3,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:my_travel_friend/core/widget/toast_pop.dart';
 import 'package:my_travel_friend/feature/schedule/presentation/screens/schedule_screen.dart';
-import 'package:my_travel_friend/feature/schedule/presentation/viewmodels/schedule_bloc.dart';
-import 'package:my_travel_friend/feature/schedule/presentation/viewmodels/schedule_event.dart';
-import 'package:my_travel_friend/feature/schedule/presentation/viewmodels/schedule_state.dart';
+import 'package:my_travel_friend/feature/schedule/presentation/viewmodels/schedule/schedule_state.dart';
 
 import '../../../../core/DI/injection.dart';
+import '../viewmodels/schedule/schedule_bloc.dart';
+import '../viewmodels/schedule/schedule_event.dart';
 
 class ScheduleBlocWidget extends StatelessWidget {
   final int tripId;
@@ -46,7 +46,8 @@ class _ScheduleBlocContent extends StatelessWidget {
 
         // 화면 이동
         if (state.navigateToCreate) {
-          context.push('/schedule/create?tripId=$tripId');
+          context.push('/schedule/create/$tripId');
+
           context.read<ScheduleBloc>().add(
             const ScheduleEvent.resetNavigation(),
           );

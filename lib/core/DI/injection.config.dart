@@ -162,8 +162,12 @@ import '../../feature/schedule/domain/usecases/get_trip_member_usecase.dart'
     as _i324;
 import '../../feature/schedule/domain/usecases/get_user_schudule_usecase.dart'
     as _i818;
-import '../../feature/schedule/presentation/viewmodels/schedule_bloc.dart'
-    as _i166;
+import '../../feature/schedule/presentation/viewmodels/create_schedule/create_schedule_blco.dart'
+    as _i725;
+import '../../feature/schedule/presentation/viewmodels/map_search/map_search_bloc.dart'
+    as _i196;
+import '../../feature/schedule/presentation/viewmodels/schedule/schedule_bloc.dart'
+    as _i865;
 import '../../feature/setting/data/datasources/alarm/alarm_setting_datasource.dart'
     as _i1030;
 import '../../feature/setting/data/datasources/alarm/alarm_setting_datasource_impl.dart'
@@ -258,6 +262,7 @@ extension GetItInjectableX on _i174.GetIt {
       () => themeModule.prefs,
       preResolve: true,
     );
+    gh.factory<_i196.MapSearchBloc>(() => _i196.MapSearchBloc());
     gh.factory<_i70.MenuBloc>(() => _i70.MenuBloc());
     gh.lazySingleton<_i892.FirebaseMessaging>(
       () => registerModule.firebaseMessaging,
@@ -497,8 +502,14 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i161.TripRepository>(),
       ),
     );
-    gh.factory<_i166.ScheduleBloc>(
-      () => _i166.ScheduleBloc(
+    gh.factory<_i725.CreateScheduleBloc>(
+      () => _i725.CreateScheduleBloc(
+        gh<_i361.CreateScheduleUseCase>(),
+        gh<_i324.GetTripMembersUseCase>(),
+      ),
+    );
+    gh.factory<_i865.ScheduleBloc>(
+      () => _i865.ScheduleBloc(
         gh<_i600.GetAllScheduleUseCase>(),
         gh<_i714.DeleteScheduleUseCase>(),
         gh<_i415.GetScheduleMembersUseCase>(),
