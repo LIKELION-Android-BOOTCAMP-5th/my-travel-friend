@@ -17,6 +17,7 @@ import 'package:my_travel_friend/feature/trip/presentation/viewmodels/trip/trip_
 import 'package:my_travel_friend/splash.dart';
 
 import '../feature/alarm/presentation/screens/alarm_bloc_widget.dart';
+import '../feature/chat/presentation/screens/chat_bloc_widget.dart';
 import '../feature/checklist/presentation/screens/lists_bloc_widget.dart';
 import '../feature/diary/domain/entities/diary_entity.dart';
 import '../feature/diary/presentation/screens/diary/diary_bloc_widget.dart';
@@ -63,7 +64,6 @@ class AppRouter {
         '/friend',
         '/setting',
         '/alarm',
-        '/setting',
         '/diary',
         '/trip',
         '/home',
@@ -72,6 +72,11 @@ class AppRouter {
       final isGoingToLockedPath = lockedPaths.any(
         (path) => currentPath.startsWith(path),
       );
+
+      // 초기 상태거나 로딩 중이면 스플래시로
+      if (authState is AuthProfileInitial || authState is AuthProfileLoading) {
+        return '/splash';
+      }
 
       // 2. 미인증 시 접근 불가 경로 차단
       if (!isLoggedIn && isGoingToLockedPath) {
@@ -220,6 +225,13 @@ class AppRouter {
             },
           ),
           // [4] 여행 톡톡
+          GoRoute(
+            path: '/trip/:tripId/talk',
+            builder: (context, state) {
+              final tripId = int.parse(state.pathParameters['tripId']!);
+              return ChatBlocWidget(tripId: tripId);
+            },
+          ),
         ],
       ),
       // [3-1] 다이어리 생성 (쉘라우터 밖)

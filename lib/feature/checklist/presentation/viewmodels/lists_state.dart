@@ -40,16 +40,16 @@ abstract class ListsState with _$ListsState {
     // 페이지 상태
     @Default(ListsPageState.initial) ListsPageState pageState,
     @Default(false) bool isLoading,
-    @Default(false) bool isToggling,
-    // AI 추천 관련 추가
+
+    // 개별 토글 상태 관리 (수정됨)
+    @Default({}) Set<int> togglingChecklistIds,
+    @Default({}) Set<int> togglingTodoIds,
   }) = _ListsState;
 
-  // 진행률(나중에 추가할까 싶어서 넣어둠!!)
-  // 현재 탭에 따른 리스트 갯수
+  // 진행률
   int get totalCount =>
       currentTab == ListsTab.checklist ? checklists.length : todolists.length;
 
-  // 체크된 항목 수
   int get checkedCount => currentTab == ListsTab.checklist
       ? checklists.where((e) => e.isChecked).length
       : todolists.where((e) => e.isChecked).length;

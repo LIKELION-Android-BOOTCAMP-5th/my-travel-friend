@@ -61,6 +61,23 @@ import '../../feature/auth/domain/usecases/watch_auth_state_usecase.dart'
 import '../../feature/auth/presentation/viewmodel/auth/auth_bloc.dart' as _i474;
 import '../../feature/auth/presentation/viewmodel/auth_profile/auth_profile_bloc.dart'
     as _i387;
+import '../../feature/chat/data/datasources/chat_data_source.dart' as _i888;
+import '../../feature/chat/data/datasources/chat_data_source_impl.dart' as _i96;
+import '../../feature/chat/data/repositories/chat_repository_impl.dart'
+    as _i269;
+import '../../feature/chat/domain/repositories/chat_repository.dart' as _i167;
+import '../../feature/chat/domain/usecases/get_chat_usecase.dart' as _i91;
+import '../../feature/chat/domain/usecases/get_read_status_usecase.dart'
+    as _i38;
+import '../../feature/chat/domain/usecases/get_trip_crew_usecase.dart' as _i285;
+import '../../feature/chat/domain/usecases/get_unread_count_usecase.dart'
+    as _i562;
+import '../../feature/chat/domain/usecases/send_chat_usecase.dart' as _i239;
+import '../../feature/chat/domain/usecases/subscribe_chat_usecase.dart'
+    as _i284;
+import '../../feature/chat/domain/usecases/update_read_status_usecase.dart'
+    as _i383;
+import '../../feature/chat/presentation/viewmodels/chat_bloc.dart' as _i663;
 import '../../feature/checklist/data/datasources/checklist_data_source.dart'
     as _i877;
 import '../../feature/checklist/data/datasources/checklist_data_source_impl.dart'
@@ -102,6 +119,8 @@ import '../../feature/diary/data/repositories/diary_repository_impl.dart'
     as _i148;
 import '../../feature/diary/domain/repositories/diary_repository.dart' as _i871;
 import '../../feature/diary/domain/usecases/create_diary_usecase.dart' as _i27;
+import '../../feature/diary/domain/usecases/delete_diary_img_usecase.dart'
+    as _i55;
 import '../../feature/diary/domain/usecases/delete_diary_usecase.dart' as _i699;
 import '../../feature/diary/domain/usecases/get_diary_by_id_usecase.dart'
     as _i236;
@@ -111,6 +130,8 @@ import '../../feature/diary/domain/usecases/get_our_diaries_usecase.dart'
     as _i849;
 import '../../feature/diary/domain/usecases/update_diary_usecase.dart'
     as _i1039;
+import '../../feature/diary/domain/usecases/upload_diary_img_usecase.dart'
+    as _i998;
 import '../../feature/diary/presentation/viewmodels/diary/diary_bloc.dart'
     as _i27;
 import '../../feature/diary/presentation/viewmodels/edit_diary/edit_diary_bloc.dart'
@@ -139,6 +160,8 @@ import '../../feature/schedule/domain/usecases/get_schedule_member_usecase.dart'
     as _i415;
 import '../../feature/schedule/domain/usecases/get_trip_member_usecase.dart'
     as _i324;
+import '../../feature/schedule/domain/usecases/get_user_schudule_usecase.dart'
+    as _i818;
 import '../../feature/schedule/presentation/viewmodels/schedule_bloc.dart'
     as _i166;
 import '../../feature/setting/data/datasources/alarm/alarm_setting_datasource.dart'
@@ -374,6 +397,9 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i565.ProfileRepository>(
       () => _i73.ProfileRepositoryImpl(gh<_i1071.ProfileDataSource>()),
     );
+    gh.lazySingleton<_i888.ChatDataSource>(
+      () => _i96.ChatDataSourceImpl(gh<_i454.SupabaseClient>()),
+    );
     gh.lazySingleton<_i1030.AlarmSettingDataSource>(
       () => _i96.AlarmSettingDataSourceImpl(gh<_i454.SupabaseClient>()),
     );
@@ -411,6 +437,9 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i161.TripRepository>(),
       ),
     );
+    gh.lazySingleton<_i167.ChatRepository>(
+      () => _i269.ChatRepositoryImpl(gh<_i888.ChatDataSource>()),
+    );
     gh.factory<_i1000.TripDetailBloc>(
       () => _i1000.TripDetailBloc(
         gh<_i277.GetTripByIdUseCase>(),
@@ -441,6 +470,9 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i324.GetTripMembersUseCase>(
       () => _i324.GetTripMembersUseCase(gh<_i456.ScheduleRepository>()),
     );
+    gh.lazySingleton<_i818.GetUserScheduleUseCase>(
+      () => _i818.GetUserScheduleUseCase(gh<_i456.ScheduleRepository>()),
+    );
     gh.lazySingleton<_i945.CheckNicknameDuplicateUseCase>(
       () => _i945.CheckNicknameDuplicateUseCase(gh<_i565.ProfileRepository>()),
     );
@@ -449,6 +481,15 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.singleton<_i456.WatchAuthStateUseCase>(
       () => _i456.WatchAuthStateUseCase(gh<_i488.AuthRepository>()),
+    );
+    gh.lazySingleton<_i91.GetChatUseCase>(
+      () => _i91.GetChatUseCase(gh<_i167.ChatRepository>()),
+    );
+    gh.lazySingleton<_i239.SendChatUseCase>(
+      () => _i239.SendChatUseCase(gh<_i167.ChatRepository>()),
+    );
+    gh.lazySingleton<_i284.SubscribeChatUseCase>(
+      () => _i284.SubscribeChatUseCase(gh<_i167.ChatRepository>()),
     );
     gh.factory<_i873.CreateTripBloc>(
       () => _i873.CreateTripBloc(
@@ -492,6 +533,9 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i27.CreateDiaryUseCase>(
       () => _i27.CreateDiaryUseCase(gh<_i871.DiaryRepository>()),
     );
+    gh.lazySingleton<_i55.DeleteDiaryImgUseCase>(
+      () => _i55.DeleteDiaryImgUseCase(gh<_i871.DiaryRepository>()),
+    );
     gh.lazySingleton<_i699.DeleteDiaryUseCase>(
       () => _i699.DeleteDiaryUseCase(gh<_i871.DiaryRepository>()),
     );
@@ -506,6 +550,9 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.lazySingleton<_i1039.UpdateDiaryUseCase>(
       () => _i1039.UpdateDiaryUseCase(gh<_i871.DiaryRepository>()),
+    );
+    gh.lazySingleton<_i998.UploadDiaryImgUseCase>(
+      () => _i998.UploadDiaryImgUseCase(gh<_i871.DiaryRepository>()),
     );
     gh.lazySingleton<_i212.AlarmSettingRepository>(
       () =>
@@ -533,6 +580,18 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i529.GetCurrentUserUseCase>(),
         gh<_i858.SignOutUseCase>(),
       ),
+    );
+    gh.lazySingleton<_i38.GetReadStatusUseCase>(
+      () => _i38.GetReadStatusUseCase(gh<_i167.ChatRepository>()),
+    );
+    gh.lazySingleton<_i285.GetTripCrewUseCase>(
+      () => _i285.GetTripCrewUseCase(gh<_i167.ChatRepository>()),
+    );
+    gh.lazySingleton<_i562.GetUnreadCountUseCase>(
+      () => _i562.GetUnreadCountUseCase(gh<_i167.ChatRepository>()),
+    );
+    gh.lazySingleton<_i383.UpdateReadStatusUseCase>(
+      () => _i383.UpdateReadStatusUseCase(gh<_i167.ChatRepository>()),
     );
     gh.factory<_i557.ProfileBloc>(
       () => _i557.ProfileBloc(
@@ -564,13 +623,25 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i885.NewDiaryBloc>(
       () => _i885.NewDiaryBloc(
         gh<_i27.CreateDiaryUseCase>(),
-        gh<_i871.DiaryRepository>(),
+        gh<_i998.UploadDiaryImgUseCase>(),
+        gh<_i818.GetUserScheduleUseCase>(),
       ),
     );
     gh.factory<_i935.EditDiaryBloc>(
       () => _i935.EditDiaryBloc(
         gh<_i1039.UpdateDiaryUseCase>(),
-        gh<_i871.DiaryRepository>(),
+        gh<_i998.UploadDiaryImgUseCase>(),
+        gh<_i55.DeleteDiaryImgUseCase>(),
+      ),
+    );
+    gh.factory<_i663.ChatBloc>(
+      () => _i663.ChatBloc(
+        gh<_i91.GetChatUseCase>(),
+        gh<_i239.SendChatUseCase>(),
+        gh<_i284.SubscribeChatUseCase>(),
+        gh<_i38.GetReadStatusUseCase>(),
+        gh<_i383.UpdateReadStatusUseCase>(),
+        gh<_i285.GetTripCrewUseCase>(),
       ),
     );
     gh.lazySingleton<_i889.CheckAlarmsUseCase>(

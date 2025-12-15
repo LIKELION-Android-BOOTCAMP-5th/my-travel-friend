@@ -22,6 +22,7 @@ import '../../../../../core/widget/toast_pop.dart';
 import '../../viewmodels/new_diary/new_diary_bloc.dart';
 import '../../viewmodels/new_diary/new_diary_event.dart';
 import '../../viewmodels/new_diary/new_diary_state.dart';
+import '../../widgets/schedule_picker_pop_up.dart';
 import '../../widgets/star_rating.dart';
 import '../../widgets/type_button.dart';
 
@@ -78,117 +79,135 @@ class _NewDiaryScreenState extends State<NewDiaryScreen> {
     final colorScheme = Theme.of(context).colorScheme;
     final isDark = colorScheme.brightness == Brightness.dark;
 
-    return BlocConsumer<NewDiaryBloc, NewDiaryState>(
-      listener: _blocListener,
-      builder: (context, state) {
-        return GestureDetector(
-          onTap: () => FocusScope.of(context).unfocus(),
-          child: Scaffold(
-            // 모드에 따른 배경 색 변경
-            backgroundColor: isDark ? AppColors.navy : AppColors.darkerGray,
-            appBar: CustomButtonAppBar(
-              title: '다이어리 작성',
-              leading: Button(
-                width: 40,
-                height: 40,
-                icon: Icon(AppIcon.back),
-                contentColor: isDark ? colorScheme.onSurface : AppColors.light,
-                borderRadius: 20,
-                onTap: () => context.pop(),
-              ),
-              actions: [
-                Button(
+    return MultiBlocListener(
+      listeners: [
+        // 리스너 1: 성공/에러 처리
+        BlocListener<NewDiaryBloc, NewDiaryState>(
+          listenWhen: (prev, curr) => prev.pageState != curr.pageState,
+          listener: (context, state) {
+            if (state.pageState == NewDiaryPageState.success) {
+              ToastPop.show(state.message ?? '다이어리를 작성했습니다');
+              context.pop(true);
+            }
+            if (state.pageState == NewDiaryPageState.error) {
+              ToastPop.show(state.message ?? '오류가 발생했습니다');
+            }
+          },
+        ),
+        // 리스너 2: 스케줄 로드 완료 시 팝업 표시
+        BlocListener<NewDiaryBloc, NewDiaryState>(
+          listenWhen: (prev, curr) =>
+              prev.isLoadingSchedules && !curr.isLoadingSchedules,
+          listener: (context, state) async {
+            final schedule = await SchedulePickerPopup.show(
+              context,
+              schedules: state.schedules,
+            );
+
+            if (schedule != null && mounted) {
+              _titleController.text = schedule.title;
+              context.read<NewDiaryBloc>().add(
+                ChangeTitle(title: schedule.title),
+              );
+              context.read<NewDiaryBloc>().add(
+                ChooseSchedule(scheduleId: schedule.id),
+              );
+            }
+          },
+        ),
+      ],
+      child: BlocBuilder<NewDiaryBloc, NewDiaryState>(
+        builder: (context, state) {
+          return GestureDetector(
+            onTap: () => FocusScope.of(context).unfocus(),
+            child: Scaffold(
+              backgroundColor: isDark ? AppColors.navy : AppColors.darkerGray,
+              appBar: CustomButtonAppBar(
+                title: '다이어리 작성',
+                leading: Button(
                   width: 40,
                   height: 40,
-                  icon:
-                      state.isUploading ||
-                          state.pageState == NewDiaryPageState.loading
-                      ? SizedBox(
-                          width: 20,
-                          height: 20,
-                          child: CircularProgressIndicator(
-                            strokeWidth: 2,
-                            color: isDark
-                                ? colorScheme.onSurface
-                                : AppColors.light,
-                          ),
-                        )
-                      : AppIcon.save,
+                  icon: Icon(AppIcon.back),
                   contentColor: isDark
                       ? colorScheme.onSurface
                       : AppColors.light,
                   borderRadius: 20,
-                  onTap: state.canSave && !state.isUploading
-                      ? () {
-                          context.read<NewDiaryBloc>().add(
-                            const NewDiaryEvent.createDiary(),
-                          );
-                        }
-                      : null,
+                  onTap: () => context.pop(),
                 ),
-              ],
-            ),
-            body: SingleChildScrollView(
-              child: Padding(
-                padding: const EdgeInsets.all(20.0),
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: isDark
-                        ? colorScheme.surfaceContainerHighest
-                        : AppColors.lightGray,
-                    borderRadius: BorderRadius.all(Radius.circular(24.0)),
+                actions: [
+                  Button(
+                    width: 40,
+                    height: 40,
+                    icon:
+                        state.isUploading ||
+                            state.pageState == NewDiaryPageState.loading
+                        ? SizedBox(
+                            width: 20,
+                            height: 20,
+                            child: CircularProgressIndicator(
+                              strokeWidth: 2,
+                              color: isDark
+                                  ? colorScheme.onSurface
+                                  : AppColors.light,
+                            ),
+                          )
+                        : AppIcon.save,
+                    contentColor: isDark
+                        ? colorScheme.onSurface
+                        : AppColors.light,
+                    borderRadius: 20,
+                    onTap: state.canSave && !state.isUploading
+                        ? () => context.read<NewDiaryBloc>().add(
+                            const CreateDiary(),
+                          )
+                        : null,
                   ),
-                  child: Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        // 타입 버튼
-                        _buildTypeTabs(context, state),
-                        const SizedBox(height: 16),
-
-                        // 제목
-                        _buildTitleSection(context, state),
-                        const SizedBox(height: 16),
-
-                        //내용
-                        _buildContentSection(context, state),
-                        const SizedBox(height: 16),
-
-                        // 타입별 추가 입력필드
-                        _buildTypeSpecificField(context, state),
-                        SizedBox(height: 24),
-
-                        //공개 비공개 여부
-                        PublicSelectBox(
-                          isPublic: state.isPublic,
-                          onChanged: (value) {
-                            context.read<NewDiaryBloc>().add(
-                              NewDiaryEvent.changePublic(isPublic: value),
-                            );
-                          },
-                        ),
-                      ],
+                ],
+              ),
+              body: SingleChildScrollView(
+                child: Padding(
+                  padding: const EdgeInsets.all(20.0),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: isDark
+                          ? colorScheme.surfaceContainerHighest
+                          : AppColors.lightGray,
+                      borderRadius: const BorderRadius.all(
+                        Radius.circular(24.0),
+                      ),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          _buildTypeTabs(context, state),
+                          const SizedBox(height: 16),
+                          _buildTitleSection(context, state),
+                          const SizedBox(height: 16),
+                          _buildContentSection(context, state),
+                          const SizedBox(height: 16),
+                          _buildTypeSpecificField(context, state),
+                          const SizedBox(height: 24),
+                          PublicSelectBox(
+                            isPublic: state.isPublic,
+                            onChanged: (value) {
+                              context.read<NewDiaryBloc>().add(
+                                ChangePublic(isPublic: value),
+                              );
+                            },
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),
               ),
             ),
-          ),
-        );
-      },
+          );
+        },
+      ),
     );
-  }
-
-  void _blocListener(BuildContext context, NewDiaryState state) {
-    if (state.pageState == NewDiaryPageState.success) {
-      ToastPop.show(state.message ?? '다이어리를 작성했습니다');
-      context.pop(true); // 성공 시 true 반환
-    }
-
-    if (state.pageState == NewDiaryPageState.error) {
-      ToastPop.show(state.message ?? '오류가 발생했습니다');
-    }
   }
 
   // 제목 입력 파트
@@ -210,10 +229,16 @@ class _NewDiaryScreenState extends State<NewDiaryScreen> {
                 ),
               ),
             ),
-            SchedulePickerButton(onTap: () {}),
+            SchedulePickerButton(
+              context: context,
+              onTap: () async {
+                // 먼저 스케줄 로드
+                context.read<NewDiaryBloc>().add(const LoadSchedules());
+              },
+            ),
           ],
         ),
-        SizedBox(height: 8),
+        const SizedBox(height: 8),
         TextBox(
           controller: _titleController,
           hintText: '제목을 입력하세요',

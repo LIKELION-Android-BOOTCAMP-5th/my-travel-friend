@@ -91,6 +91,24 @@ class ScheduleRepositoryImpl implements ScheduleRepository {
     );
   }
 
+  // [이재은] 유저 ID와 여행 ID로 해당 유저가 참여하는 해당 여행 속 스케줄 가져오기
+  @override
+  Future<Result<List<ScheduleEntity>>> getUserSchedule({
+    required int tripId,
+    required int userId,
+  }) async {
+    final res = await _dataSource.getUserSchedule(
+      tripId: tripId,
+      userId: userId,
+    );
+
+    return res.when(
+      success: (data) =>
+          Result.success(data.map((dto) => dto.toEntity()).toList()),
+      failure: (failure) => Result.failure(failure),
+    );
+  }
+
   @override
   Future<Result<List<CategoryEntity>>> getCategory() async {
     final res = await _dataSource.getCategory();
