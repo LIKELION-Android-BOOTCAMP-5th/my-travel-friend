@@ -23,6 +23,7 @@ class FriendRequestScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final cs = Theme.of(context).colorScheme;
+    final isDark = cs.brightness == Brightness.dark;
 
     return SafeArea(
       child: Scaffold(
@@ -39,7 +40,7 @@ class FriendRequestScreen extends StatelessWidget {
             borderRadius: 20,
           ),
         ),
-        backgroundColor: cs.surface,
+        backgroundColor: isDark ? AppColors.navy : AppColors.darkGray,
         body: Padding(
           padding: const EdgeInsets.all(16.0),
           child: BlocListener<FriendRequestBloc, FriendRequestState>(
