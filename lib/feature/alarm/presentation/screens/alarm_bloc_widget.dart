@@ -2,11 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_travel_friend/feature/auth/presentation/viewmodel/auth_profile/auth_profile_state.dart';
 
-import '../../../../core/DI/injection.dart';
 import '../../../../core/widget/toast_pop.dart';
 import '../../../auth/presentation/viewmodel/auth_profile/auth_profile_bloc.dart';
 import '../viewmodels/alarm_bloc.dart';
-import '../viewmodels/alarm_event.dart';
 import '../viewmodels/alarm_state.dart';
 import 'alarm_list_screen.dart';
 
@@ -27,34 +25,14 @@ class AlarmBlocWidget extends StatelessWidget {
 
     final userId = user.userInfo.id!;
 
-    return BlocProvider(
-      create: (_) {
-        final bloc = sl<AlarmBloc>();
-        bloc.add(AlarmEvent.getAlarms(userId: userId));
-        bloc.add(AlarmEvent.startWatching(userId: userId));
-        return bloc;
-      },
-      child: _AlarmBlocConsumer(userId: userId),
-    );
+    return _AlarmBlocConsumer(userId: userId);
   }
 }
 
-class _AlarmBlocConsumer extends StatefulWidget {
+class _AlarmBlocConsumer extends StatelessWidget {
   final int userId;
 
   const _AlarmBlocConsumer({required this.userId});
-
-  @override
-  State<_AlarmBlocConsumer> createState() => _AlarmBlocConsumerState();
-}
-
-class _AlarmBlocConsumerState extends State<_AlarmBlocConsumer> {
-  @override
-  void dispose() {
-    // 화면 종료 시 Realtime 구독 해제
-    context.read<AlarmBloc>().add(const AlarmEvent.stopWatching());
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -77,7 +55,7 @@ class _AlarmBlocConsumerState extends State<_AlarmBlocConsumer> {
         if (state.pageState == AlarmPageState.loading) {
           return Stack(
             children: [
-              AlarmListScreen(userId: widget.userId),
+              AlarmListScreen(userId: userId),
               Container(
                 color: Colors.black.withOpacity(0.3),
                 child: const Center(child: CircularProgressIndicator()),
@@ -86,7 +64,7 @@ class _AlarmBlocConsumerState extends State<_AlarmBlocConsumer> {
           );
         }
 
-        return AlarmListScreen(userId: widget.userId);
+        return AlarmListScreen(userId: userId);
       },
     );
   }

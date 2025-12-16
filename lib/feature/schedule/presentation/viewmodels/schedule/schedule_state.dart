@@ -52,6 +52,7 @@ abstract class ScheduleState with _$ScheduleState {
     @Default(false) bool navigateToEdit,
     //카테고리
     @Default([]) List<CategoryEntity> categories,
+
     TripEntity? trip,
 
     @Default(ScheduleFilterType.date) ScheduleFilterType viewMode,

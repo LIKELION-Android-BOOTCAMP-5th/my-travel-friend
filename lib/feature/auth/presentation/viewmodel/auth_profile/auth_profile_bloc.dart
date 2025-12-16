@@ -61,9 +61,8 @@ class AuthProfileBloc extends Bloc<AuthProfileEvent, AuthProfileState> {
             AuthProfileState.authenticated(uuid: user.uuid!, userInfo: user),
           );
         } else {
-          //로딩상태가 되었다가
-          emit(const AuthProfileState.loading());
           //비인증 상태로
+          print("비인증상태");
           emit(const AuthProfileState.unauthenticated());
         }
       },
@@ -72,6 +71,17 @@ class AuthProfileBloc extends Bloc<AuthProfileEvent, AuthProfileState> {
         emit(AuthProfileState.error(message: failure.message));
       },
     );
+  }
+
+  @override
+  void onTransition(Transition<AuthProfileEvent, AuthProfileState> transition) {
+    // 이전 상태(currentState)와 다음 상태(nextState)를 모두 출력합니다.
+    debugPrint('--- AuthProfileBloc Transition ---');
+    debugPrint('Event: ${transition.event.runtimeType}');
+    debugPrint('Prev State: ${transition.currentState.runtimeType}');
+    debugPrint('Next State: ${transition.nextState.runtimeType}');
+    debugPrint('----------------------------------');
+    super.onTransition(transition);
   }
 
   // 유저 DB 정보 로딩 및 상태 업데이트

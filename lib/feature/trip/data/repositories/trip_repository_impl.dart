@@ -5,6 +5,7 @@ import 'package:my_travel_friend/core/result/result.dart';
 import 'package:my_travel_friend/feature/trip/data/datasources/trip_data_source.dart';
 import 'package:my_travel_friend/feature/trip/data/dtos/trip_dto.dart';
 import 'package:my_travel_friend/feature/trip/domain/entities/trip_entity.dart';
+import 'package:my_travel_friend/feature/trip/domain/entities/useful_pharse_entity.dart';
 import 'package:my_travel_friend/feature/trip/domain/repositories/trip_repository.dart';
 
 import '../../../../core/result/failures.dart';
@@ -124,5 +125,19 @@ class TripRepositoryImpl implements TripRepository {
     } catch (e) {
       return Result.failure(ServerFailure(message: e.toString()));
     }
+  }
+
+  @override
+  Future<Result<List<UsefulPharseEntity>>> getUsefulPharse(int tripId) async {
+    final result = await _dataSource.getUsefulPhrasesByTrip(tripId);
+
+    return result.when(
+      success: (dtoList) {
+        return Result.success(dtoList.map((e) => e.toEntity()).toList());
+      },
+      failure: (failure) {
+        return Result.failure(failure);
+      },
+    );
   }
 }

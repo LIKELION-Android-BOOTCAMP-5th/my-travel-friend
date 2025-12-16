@@ -61,6 +61,8 @@ class AlarmBloc extends Bloc<AlarmEvent, AlarmState> {
 
     emit(state.copyWith(userId: event.userId));
 
+    add(AlarmEvent.getAlarms(userId: event.userId));
+
     // 스트림 구독
     _alarmSubscription = _watchAlarmsUseCase(event.userId).listen((res) {
       res.when(
@@ -308,9 +310,9 @@ class AlarmBloc extends Bloc<AlarmEvent, AlarmState> {
       // 여행 초대 알림 -> 설정 - 여행 초대
       'TRIP_REQUEST' => const AlarmNavigationTo('여행 초대 주소'),
       // 친구 요청 알림 -> 설정 - 친구 요청
-      'FRIEND_REQUEST' => const AlarmNavigationTo('친구 요청'),
+      'FRIEND_REQUEST' => const AlarmNavigationTo('/setting/friend_recevice'),
       // 친구 수락 알림 -> 설정 - 친구 목록
-      'NEW_FRIEND' => const AlarmNavigationTo('친구 목록'),
+      'NEW_FRIEND' => const AlarmNavigationTo('/setting/friend'),
 
       // 여행 상세 쪽 - 스케줄, 톡톡
       // 스케줄 생성, 수정 -> 여행 - 일정 - 해당 스케줄 포커스

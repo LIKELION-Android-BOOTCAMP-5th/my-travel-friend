@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:my_travel_friend/core/result/result.dart';
 import 'package:my_travel_friend/feature/trip/data/dtos/trip_dto.dart';
+import 'package:my_travel_friend/feature/trip/data/dtos/useful_pharse_dto.dart';
 
 abstract class TripDataSource {
   //유저 아이디로 본인이 참가하고 있는 여행 목록 가져오기
@@ -38,4 +39,8 @@ abstract class TripDataSource {
 
   // 아이디로 여행정보 가져오기(라우팅)
   Future<TripDto> getTripById(int tripId);
+
+  // tripId로 여행을 조회한 뒤,
+  // 해당 여행의 country와 같은 useful_pharse만 조회
+  Future<Result<List<UsefulPharseDTO>>> getUsefulPhrasesByTrip(int tripId);
 }

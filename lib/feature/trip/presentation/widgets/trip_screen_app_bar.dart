@@ -10,6 +10,7 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
   final VoidCallback? onAlarmTap;
   final VoidCallback? onSettingTap;
   final IconData? searchIcon;
+  final bool hasUnreadAlarm;
 
   const HomeAppBar({
     super.key,
@@ -18,6 +19,7 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
     this.onAlarmTap,
     this.onSettingTap,
     this.searchIcon,
+    this.hasUnreadAlarm = false,
   });
 
   @override
@@ -56,15 +58,7 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
               onTap: onSearchTap,
             ),
             const SizedBox(width: 6),
-            Button(
-              width: 40,
-              height: 40,
-              icon: Icon(AppIcon.alarm),
-              backgroundColor: Colors.transparent,
-              contentColor: AppColors.light,
-              borderRadius: 20,
-              onTap: onAlarmTap,
-            ),
+            _buildAlarmButton(),
             const SizedBox(width: 6),
             Button(
               width: 40,
@@ -78,6 +72,37 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
           ],
         ),
       ),
+    );
+  }
+
+  // 알림 버튼 (빨간점!)
+  Widget _buildAlarmButton() {
+    return Stack(
+      children: [
+        Button(
+          width: 40,
+          height: 40,
+          icon: Icon(AppIcon.alarm),
+          backgroundColor: Colors.transparent,
+          contentColor: AppColors.light,
+          borderRadius: 20,
+          onTap: onAlarmTap,
+        ),
+        // 빨간 점
+        if (hasUnreadAlarm)
+          Positioned(
+            right: 8,
+            bottom: 8,
+            child: Container(
+              width: 10,
+              height: 10,
+              decoration: BoxDecoration(
+                color: AppColors.secondary,
+                shape: BoxShape.circle,
+              ),
+            ),
+          ),
+      ],
     );
   }
 

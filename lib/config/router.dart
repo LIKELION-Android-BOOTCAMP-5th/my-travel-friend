@@ -12,6 +12,7 @@ import 'package:my_travel_friend/feature/setting/presentation/screens/menu/menu_
 import 'package:my_travel_friend/feature/setting/presentation/screens/permission/permission_bloc_widget.dart';
 import 'package:my_travel_friend/feature/trip/presentation/screens/create_trip_bloc_widget.dart';
 import 'package:my_travel_friend/feature/trip/presentation/screens/trip_bloc_widget.dart';
+import 'package:my_travel_friend/feature/trip/presentation/screens/trip_home_bloc_widget.dart';
 import 'package:my_travel_friend/feature/trip/presentation/viewmodels/create_trip/create_trip_bloc.dart';
 import 'package:my_travel_friend/feature/trip/presentation/viewmodels/trip/trip_bloc.dart';
 import 'package:my_travel_friend/splash.dart';
@@ -187,7 +188,7 @@ class AppRouter {
         },
       ),
       GoRoute(
-        path: '/friend/request',
+        path: '/setting/friend/request',
         builder: (context, state) {
           final extra = state.extra as Map<String, dynamic>;
           final requestId = extra['requestId'] as int;
@@ -229,7 +230,10 @@ class AppRouter {
             path: '/trip/:tripId/trip_home',
             builder: (context, state) {
               final tripId = int.parse(state.pathParameters['tripId']!);
-              return Center(child: Text('Trip $tripId Home'));
+              return BlocProvider(
+                create: (context) => GetIt.instance<ScheduleBloc>(),
+                child: TripHomeBlocWidget(tripId: tripId),
+              );
             },
           ),
           // [1] 여행 스케줄

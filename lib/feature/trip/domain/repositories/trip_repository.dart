@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:my_travel_friend/core/result/result.dart';
 import 'package:my_travel_friend/feature/trip/domain/entities/trip_entity.dart';
+import 'package:my_travel_friend/feature/trip/domain/entities/useful_pharse_entity.dart';
 
 // 신강현
 // 트립 레포지터리 완성했습니다
@@ -38,4 +39,6 @@ abstract class TripRepository {
 
   // 아이디로 여행 정보 가져오기(라우팅)
   Future<Result<TripEntity>> getTripById(int tripId);
+
+  Future<Result<List<UsefulPharseEntity>>> getUsefulPharse(int tripId);
 }

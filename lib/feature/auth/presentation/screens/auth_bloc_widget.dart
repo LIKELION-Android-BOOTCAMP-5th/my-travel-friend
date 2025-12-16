@@ -4,11 +4,14 @@ import 'package:go_router/go_router.dart';
 import 'package:my_travel_friend/feature/auth/presentation/screens/auth_screen.dart';
 import 'package:my_travel_friend/feature/auth/presentation/viewmodel/auth/auth_bloc.dart';
 import 'package:my_travel_friend/feature/auth/presentation/viewmodel/auth/auth_state.dart';
+import 'package:my_travel_friend/feature/auth/presentation/viewmodel/auth_profile/auth_profile_bloc.dart';
+import 'package:my_travel_friend/feature/auth/presentation/viewmodel/auth_profile/auth_profile_state.dart';
 
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_font.dart';
 import '../../../../core/widget/toast_pop.dart';
 import '../viewmodel/auth/auth_event.dart';
+import '../viewmodel/auth_profile/auth_profile_event.dart';
 
 // [전재민]
 /*
@@ -18,97 +21,94 @@ import '../viewmodel/auth/auth_event.dart';
 * ui인 auth_screen은 자신의 bloc이 어떤 bloc인지 알지 못하기 때문에 final authBloc = BlocProvider.of<AuthBloc>(context);로 찾아서 사용했습니다.
 * bloc 사용시에 BlocConsumer말고도 BlocListener나 BlocBuilder도 있으니까 이건 찾아보고 사용하세요.
 */
-
-class AuthBlocWidget extends StatelessWidget {
+class AuthBlocWidget extends StatefulWidget {
   const AuthBlocWidget({super.key});
 
   @override
+  State<AuthBlocWidget> createState() => _AuthBlocWidgetState();
+}
+
+class _AuthBlocWidgetState extends State<AuthBlocWidget> {
+  @override
+  void initState() {
+    super.initState();
+    // 페이지 진입 시 AuthBloc에 AuthStarted 이벤트를 추가하여 현재 인증 상태를 확인하도록 요청
+    context.read<AuthBloc>().add(const AuthEvent.authStarted());
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return BlocConsumer<AuthBloc, AuthState>(
-      //  Listener: 상태가 변경될 때 알림이나 네비게이션
-      listener: (context, state) {
-        state.whenOrNull(
-          // 인증 성공 상태로 변경되면 홈 화면으로 이동
-          authenticated: (userId) {
-            // Navigator.of(context).pushReplacementNamed('/home');
-            ToastPop.show("로그인 성공! 여행을 떠나볼까요? ✈️");
-            context.pop();
-            context.push('/');
+    return MultiBlocListener(
+      listeners: [
+        // 1. 로그인 성공 처리 리스너
+        BlocListener<AuthProfileBloc, AuthProfileState>(
+          listenWhen: (prev, curr) => curr is AuthProfileAuthenticated,
+          listener: (context, state) {
+            state.whenOrNull(
+              authenticated: (uuid, userInfo) {
+                final nickname = userInfo.nickname ?? '여행자';
+                ToastPop.show("로그인 성공! $nickname님 환영합니다! ✈️");
+                /*Future.microtask(() {
+                  context.replace('/');
+                });*/
+              },
+            );
           },
-          // 오류 상태가 되면 알림/팝업 표시
-          error: (message) {
-            ToastPop.show('오류 발생: $message');
+        ),
+        /*// 2. 로그아웃 완료 처리 리스너
+        BlocListener<AuthProfileBloc, AuthProfileState>(
+          listenWhen: (prev, curr) => curr is AuthProfileUnauthenticated,
+          listener: (context, state) {
+            state.whenOrNull(
+              unauthenticated: () {
+                print("미인증상태로 돌아감. 로그인 화면으로 이동.");
+                // 로그아웃이 완료되어 Unauthenticated 상태가 된 것이므로,
+                // 별도의 signedOut 이벤트를 다시 추가할 필요 없이 화면 이동만 처리
+                //context.replace('/login');
+              },
+            );
           },
-        );
-      },
-      //Builder: 상태에 따라 UI를 변경 (로딩 표시)
-      //빌더 하위의 위젯이 bloc에 따라 리빌딩 되는겁니다.
-      builder: (context, state) {
-        return state.when(
-          // BLoC의 초기/인증 안 됨/오류 상태일 때 로그인 화면 표시
-          unauthenticated: () => const AuthScreen(),
-          initial: () => const AuthScreen(),
-          error: (message) => const AuthScreen(),
-
-          // 로딩 상태일 때 로딩 인디케이터를 포함한 로그인 화면 표시
-          loading: () => PopScope(
-            canPop: false,
-            child: Stack(
-              children: [
-                const AuthScreen(),
-                Container(
-                  color: Colors.black.withOpacity(0.5),
-                  child: Center(
-                    child: Column(
-                      mainAxisSize: MainAxisSize.max,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const CircularProgressIndicator(),
-                        const SizedBox(height: 16),
-                        TextButton(
-                          onPressed: () {
-                            context.read<AuthBloc>().add(
-                              const AuthEvent.signInCancelled(),
-                            );
-                          },
-                          child: Text(
-                            '로그인 취소',
-                            style: AppFont.regular.copyWith(
-                              color: AppColors.secondary,
-                            ),
-                          ),
-                        ),
-                      ],
+        ),*/
+        // 3. AuthBloc 에러 처리 리스너
+        BlocListener<AuthBloc, AuthState>(
+          listener: (context, state) {
+            state.whenOrNull(
+              error: (message) {
+                ToastPop.show('인증 과정 오류 발생: $message');
+              },
+            );
+          },
+        ),
+      ],
+      child: BlocBuilder<AuthBloc, AuthState>(
+        builder: (context, state) {
+          if (state is AuthLoading) {
+            return Container(
+              color: Colors.black.withOpacity(0.5),
+              child: Center(
+                child: Column(
+                  mainAxisSize: MainAxisSize.max,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const CircularProgressIndicator(),
+                    const SizedBox(height: 16),
+                    TextButton(
+                      onPressed: () {
+                        context.read<AuthBloc>().add(
+                          const AuthEvent.signInCancelled(),
+                        );
+                      },
+                      child: const Text('로그인 취소'),
                     ),
-                  ),
+                  ],
                 ),
-              ],
-            ),
-          ),
-
-          // 인증된 상태일 때 리스너로 네비게이션 될것이기 때문에 빈 컨테이너
-          authenticated: (userId) {
-            // 위젯이 빌드되는 시점에 네비게이션을 수행하는 안전 장치입니다.
-            // 리스너의 네비게이션이 작동하지 않았을 경우에 대비합니다.
-
-            // postFrameCallback을 사용하여 빌드가 완료된 직후 네비게이션을 실행합니다.
-            // 이렇게 하면 'Widget build called multiple times' 오류를 방지할 수 있습니다.
-            WidgetsBinding.instance.addPostFrameCallback((_) {
-              // 현재 화면을 완전히 대체하고 홈 화면으로 이동합니다.
-              // pop/push 대신 pushReplacement를 사용하여 현재 AuthBlocWidget 화면이
-              // 스택에 남아있지 않도록 하는 것이 좋습니다.
-              // context.pushReplacement('/');
-
-              // 하지만 이미 listener에서 push/pop을 사용했으므로,
-              // 중복 네비게이션을 방지하기 위해 간단히 홈 화면으로 이동만 시킵니다.
-              context.pushReplacement('/');
-            });
-
-            // 네비게이션이 일어나기 전 잠시 동안 빈 위젯을 반환합니다.
-            return const SizedBox.shrink();
-          },
-        );
-      },
+              ),
+            );
+          }
+          // 로딩 상태가 아닐 때 AuthScreen 표시
+          return const AuthScreen();
+        },
+      ),
     );
   }
 }
