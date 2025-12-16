@@ -1,5 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
+import 'package:my_travel_friend/feature/friend/domain/usecases/create_friend_relation_usecase.dart';
 import 'package:my_travel_friend/feature/friend/domain/usecases/get_friend_users_usecase.dart';
 
 import '../../../../core/result/result.dart';
@@ -17,18 +18,21 @@ class FriendBloc extends Bloc<FriendEvent, FriendState> {
   final DeleteFriendUsecase _deleteFriendUsecase;
   final GetFriendUsersUsecase _getFriendUsersUsecase;
   final SearchNicknameUsecase _searchNicknameUsecase;
+  final CreateFriendRelationUsecase _createFriendRelationUsecase;
 
   FriendBloc(
     this._getFriendUsecase,
     this._deleteFriendUsecase,
     this._getFriendUsersUsecase,
     this._searchNicknameUsecase,
+    this._createFriendRelationUsecase,
   ) : super(const FriendState()) {
     on<GetFriends>(_onGetFriends);
     on<DeleteFriend>(_onDeleteFriend);
     on<GetFriendUsers>(_onGetFriendUsers);
     on<KeywordChanged>(_onKeywordChanged);
     on<SearchToggle>(_onSearchToggle);
+    on<CreateFriendRelation>(_onCreateFriendRelation);
   }
 
   String _getErrorType(dynamic failure) {
@@ -98,6 +102,49 @@ class FriendBloc extends Bloc<FriendEvent, FriendState> {
           state.copyWith(
             pageState: FriendPageState.error,
             message: failure.message,
+            errorType: _getErrorType(failure),
+          ),
+        );
+      },
+    );
+  }
+
+  // 친구 관계 생성
+  Future<void> _onCreateFriendRelation(
+    CreateFriendRelation event,
+    Emitter<FriendState> emit,
+  ) async {
+    emit(
+      state.copyWith(
+        pageState: FriendPageState.loading,
+        actionType: 'create_friend_relation',
+      ),
+    );
+
+    final result = await _createFriendRelationUsecase(
+      event.userId1,
+      event.userId2,
+    );
+
+    result.when(
+      success: (friendEntity) {
+        final nextList = [...state.friends];
+
+        emit(
+          state.copyWith(
+            pageState: FriendPageState.success,
+            actionType: 'create_friend_relation',
+            friends: nextList,
+            message: '친구가 추가되었어요!',
+          ),
+        );
+      },
+      failure: (failure) {
+        emit(
+          state.copyWith(
+            pageState: FriendPageState.error,
+            actionType: 'create_friend_relation',
+            message: '친구 추가에 실패했어요',
             errorType: _getErrorType(failure),
           ),
         );
@@ -215,9 +262,6 @@ class FriendBloc extends Bloc<FriendEvent, FriendState> {
         message: null,
         pageState: FriendPageState.loaded,
       ),
-    );
-    print(
-      '🔁 toggle=${!state.searchToggle} base=${state.friendUsers.length} keyword="${state.keyword}" results=${state.results.length}',
     );
   }
 }

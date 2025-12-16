@@ -5,69 +5,97 @@ import 'package:my_travel_friend/feature/friend/presentation/viewmodel/friend_re
 
 import '../../../../core/DI/injection.dart';
 import '../../../../core/widget/toast_pop.dart';
+import '../viewmodel/friend_bloc.dart';
+import '../viewmodel/friend_event.dart';
 import '../viewmodel/friend_request_bloc.dart';
 import '../viewmodel/friend_request_state.dart';
-import '../viewmodel/friend_state.dart';
 
 /// [엄수빈] 받은 친구요청을 감싸는 위젯
 class ReceviceListBlocWidget extends StatelessWidget {
-  final int userId; // 현재 로그인한 사용자 ID
+  final int userId;
 
   const ReceviceListBlocWidget({super.key, required this.userId});
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (_) {
-        final bloc = sl<FriendRequestBloc>();
-        // 화면 진입 시 친구 목록 조회 이벤트 한 번 쏴주기
-        bloc.add(FriendRequestEvent.getRequestProfile(myId: userId));
-        bloc.add(FriendRequestEvent.getFriendRequest(userId: userId));
-        return bloc;
-      },
-      child: _FriendBlocConsumer(userId: userId),
-    );
-  }
-}
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (_) {
+            final bloc = sl<FriendRequestBloc>();
+            bloc.add(FriendRequestEvent.getRequestProfile(myId: userId));
+            bloc.add(FriendRequestEvent.getFriendRequest(userId: userId));
+            return bloc;
+          },
+        ),
+        BlocProvider(
+          create: (_) {
+            final bloc = sl<FriendBloc>();
+            return bloc;
+          },
+        ),
+      ],
+      child: BlocConsumer<FriendRequestBloc, FriendRequestState>(
+        listenWhen: (p, c) =>
+            p.pageState != c.pageState &&
+            (c.actionType == 'accept' || c.actionType == 'delete'),
+        listener: (context, state) {
+          if (state.pageState == FriendRequestPageState.success) {
+            ToastPop.show(
+              state.actionType == 'accept' ? '수락하였습니다!' : '거절하였습니다!',
+            );
 
-class _FriendBlocConsumer extends StatelessWidget {
-  final int userId;
+            context.read<FriendRequestBloc>().add(
+              FriendRequestEvent.getFriendRequest(userId: userId),
+            );
+            context.read<FriendRequestBloc>().add(
+              FriendRequestEvent.getRequestProfile(myId: userId),
+            );
+          }
 
-  const _FriendBlocConsumer({required this.userId});
+          if (state.pageState == FriendRequestPageState.error) {
+            ToastPop.show(state.message ?? '오류가 발생했습니다');
+          }
+        },
+        builder: (context, state) {
+          final screen = ReceviceListScreen(
+            userId: userId,
+            state: state,
 
-  @override
-  Widget build(BuildContext context) {
-    return BlocConsumer<FriendRequestBloc, FriendRequestState>(
-      listener: (context, state) {
-        // 성공 상태
-        if (state.pageState == FriendPageState.success) {
-          ToastPop.show(state.message ?? '완료되었습니다');
-        }
+            onAccept: (requestRowId, requestId) {
+              context.read<FriendRequestBloc>().add(
+                FriendRequestEvent.acceptRequest(id: requestRowId),
+              );
+              context.read<FriendBloc>().add(
+                FriendEvent.createFriendRelation(
+                  userId1: requestId,
+                  userId2: userId,
+                ),
+              );
+            },
 
-        // 에러 상태
-        if (state.pageState == FriendPageState.error) {
-          ToastPop.show(state.message ?? '오류가 발생했습니다');
-        }
-      },
-
-      builder: (context, state) {
-        final screen = ReceviceListScreen(userId: userId);
-
-        // 로딩 상태
-        if (state.pageState == FriendRequestPageState.loading) {
-          return Stack(
-            children: [
-              screen,
-              Container(
-                color: Colors.black.withOpacity(0.3),
-                child: const Center(child: CircularProgressIndicator()),
-              ),
-            ],
+            onDelete: (requestRowId) {
+              context.read<FriendRequestBloc>().add(
+                FriendRequestEvent.deleteRequest(id: requestRowId),
+              );
+            },
           );
-        }
 
-        return screen;
-      },
+          if (state.pageState == FriendRequestPageState.loading) {
+            return Stack(
+              children: [
+                screen,
+                Container(
+                  color: Colors.black.withOpacity(0.3),
+                  child: const Center(child: CircularProgressIndicator()),
+                ),
+              ],
+            );
+          }
+
+          return screen;
+        },
+      ),
     );
   }
 }
