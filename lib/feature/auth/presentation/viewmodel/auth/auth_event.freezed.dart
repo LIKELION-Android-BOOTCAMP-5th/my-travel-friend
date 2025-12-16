@@ -55,14 +55,15 @@ extension AuthEventPatterns on AuthEvent {
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( AuthStarted value)?  authStarted,TResult Function( SignInWithSocialPressed value)?  signInWithSocialPressed,TResult Function( SignInCanceled value)?  signInCancelled,TResult Function( SignedOut value)?  signedOut,required TResult orElse(),}){
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( AuthStarted value)?  authStarted,TResult Function( SignInWithSocialPressed value)?  signInWithSocialPressed,TResult Function( SignInCanceled value)?  signInCancelled,TResult Function( SignedOut value)?  signedOut,TResult Function( Authenticated value)?  authenticated,required TResult orElse(),}){
 final _that = this;
 switch (_that) {
 case AuthStarted() when authStarted != null:
 return authStarted(_that);case SignInWithSocialPressed() when signInWithSocialPressed != null:
 return signInWithSocialPressed(_that);case SignInCanceled() when signInCancelled != null:
 return signInCancelled(_that);case SignedOut() when signedOut != null:
-return signedOut(_that);case _:
+return signedOut(_that);case Authenticated() when authenticated != null:
+return authenticated(_that);case _:
   return orElse();
 
 }
@@ -80,14 +81,15 @@ return signedOut(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( AuthStarted value)  authStarted,required TResult Function( SignInWithSocialPressed value)  signInWithSocialPressed,required TResult Function( SignInCanceled value)  signInCancelled,required TResult Function( SignedOut value)  signedOut,}){
+@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( AuthStarted value)  authStarted,required TResult Function( SignInWithSocialPressed value)  signInWithSocialPressed,required TResult Function( SignInCanceled value)  signInCancelled,required TResult Function( SignedOut value)  signedOut,required TResult Function( Authenticated value)  authenticated,}){
 final _that = this;
 switch (_that) {
 case AuthStarted():
 return authStarted(_that);case SignInWithSocialPressed():
 return signInWithSocialPressed(_that);case SignInCanceled():
 return signInCancelled(_that);case SignedOut():
-return signedOut(_that);case _:
+return signedOut(_that);case Authenticated():
+return authenticated(_that);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -104,14 +106,15 @@ return signedOut(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( AuthStarted value)?  authStarted,TResult? Function( SignInWithSocialPressed value)?  signInWithSocialPressed,TResult? Function( SignInCanceled value)?  signInCancelled,TResult? Function( SignedOut value)?  signedOut,}){
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( AuthStarted value)?  authStarted,TResult? Function( SignInWithSocialPressed value)?  signInWithSocialPressed,TResult? Function( SignInCanceled value)?  signInCancelled,TResult? Function( SignedOut value)?  signedOut,TResult? Function( Authenticated value)?  authenticated,}){
 final _that = this;
 switch (_that) {
 case AuthStarted() when authStarted != null:
 return authStarted(_that);case SignInWithSocialPressed() when signInWithSocialPressed != null:
 return signInWithSocialPressed(_that);case SignInCanceled() when signInCancelled != null:
 return signInCancelled(_that);case SignedOut() when signedOut != null:
-return signedOut(_that);case _:
+return signedOut(_that);case Authenticated() when authenticated != null:
+return authenticated(_that);case _:
   return null;
 
 }
@@ -128,13 +131,14 @@ return signedOut(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  authStarted,TResult Function( SocialLoginType type)?  signInWithSocialPressed,TResult Function()?  signInCancelled,TResult Function()?  signedOut,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  authStarted,TResult Function( SocialLoginType type)?  signInWithSocialPressed,TResult Function()?  signInCancelled,TResult Function()?  signedOut,TResult Function()?  authenticated,required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case AuthStarted() when authStarted != null:
 return authStarted();case SignInWithSocialPressed() when signInWithSocialPressed != null:
 return signInWithSocialPressed(_that.type);case SignInCanceled() when signInCancelled != null:
 return signInCancelled();case SignedOut() when signedOut != null:
-return signedOut();case _:
+return signedOut();case Authenticated() when authenticated != null:
+return authenticated();case _:
   return orElse();
 
 }
@@ -152,13 +156,14 @@ return signedOut();case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  authStarted,required TResult Function( SocialLoginType type)  signInWithSocialPressed,required TResult Function()  signInCancelled,required TResult Function()  signedOut,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  authStarted,required TResult Function( SocialLoginType type)  signInWithSocialPressed,required TResult Function()  signInCancelled,required TResult Function()  signedOut,required TResult Function()  authenticated,}) {final _that = this;
 switch (_that) {
 case AuthStarted():
 return authStarted();case SignInWithSocialPressed():
 return signInWithSocialPressed(_that.type);case SignInCanceled():
 return signInCancelled();case SignedOut():
-return signedOut();case _:
+return signedOut();case Authenticated():
+return authenticated();case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -175,13 +180,14 @@ return signedOut();case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  authStarted,TResult? Function( SocialLoginType type)?  signInWithSocialPressed,TResult? Function()?  signInCancelled,TResult? Function()?  signedOut,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  authStarted,TResult? Function( SocialLoginType type)?  signInWithSocialPressed,TResult? Function()?  signInCancelled,TResult? Function()?  signedOut,TResult? Function()?  authenticated,}) {final _that = this;
 switch (_that) {
 case AuthStarted() when authStarted != null:
 return authStarted();case SignInWithSocialPressed() when signInWithSocialPressed != null:
 return signInWithSocialPressed(_that.type);case SignInCanceled() when signInCancelled != null:
 return signInCancelled();case SignedOut() when signedOut != null:
-return signedOut();case _:
+return signedOut();case Authenticated() when authenticated != null:
+return authenticated();case _:
   return null;
 
 }
@@ -343,6 +349,38 @@ int get hashCode => runtimeType.hashCode;
 @override
 String toString() {
   return 'AuthEvent.signedOut()';
+}
+
+
+}
+
+
+
+
+/// @nodoc
+
+
+class Authenticated implements AuthEvent {
+  const Authenticated();
+  
+
+
+
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is Authenticated);
+}
+
+
+@override
+int get hashCode => runtimeType.hashCode;
+
+@override
+String toString() {
+  return 'AuthEvent.authenticated()';
 }
 
 

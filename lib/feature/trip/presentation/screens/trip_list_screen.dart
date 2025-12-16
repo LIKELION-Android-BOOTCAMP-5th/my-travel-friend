@@ -29,7 +29,7 @@ class TripListScreen extends StatefulWidget {
 class _TripListScreenState extends State<TripListScreen> {
   final ScrollController _scrollController = ScrollController();
   final TextEditingController _searchController = TextEditingController();
-
+  late final int userId;
   @override
   void initState() {
     super.initState();
@@ -38,7 +38,7 @@ class _TripListScreenState extends State<TripListScreen> {
     final authState = context.read<AuthProfileBloc>().state;
 
     if (authState is AuthProfileAuthenticated) {
-      final userId = authState.userInfo.id!;
+      userId = authState.userInfo.id!;
 
       _scrollController.addListener(() {
         if (_scrollController.position.pixels >=
@@ -111,13 +111,13 @@ class _TripListScreenState extends State<TripListScreen> {
     final colorScheme = Theme.of(context).colorScheme;
     final isDark = colorScheme.brightness == Brightness.dark;
 
-    final authState = context.watch<AuthProfileBloc>().state;
+    /*    final authState = context.watch<AuthProfileBloc>().state;
 
     if (authState is! AuthProfileAuthenticated) {
       return const Center(child: Text("로그인이 필요합니다"));
     }
 
-    final userId = authState.userInfo.id!;
+    final userId = authState.userInfo.id!;*/
 
     return MultiBlocListener(
       listeners: [
@@ -133,7 +133,7 @@ class _TripListScreenState extends State<TripListScreen> {
                 extra: {"userId": userId},
               );
 
-              if (result == true) {
+              if (result == true && context.mounted) {
                 context.read<TripBloc>().add(
                   TripEvent.refreshTrips(userId: userId),
                 );
@@ -153,7 +153,7 @@ class _TripListScreenState extends State<TripListScreen> {
                 extra: {"trip": state.selectedTrip},
               );
 
-              if (result == true) {
+              if (result == true && context.mounted) {
                 context.read<TripBloc>().add(
                   TripEvent.refreshTrips(userId: userId),
                 );
