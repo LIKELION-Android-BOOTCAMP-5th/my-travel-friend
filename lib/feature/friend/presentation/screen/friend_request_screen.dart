@@ -25,56 +25,54 @@ class FriendRequestScreen extends StatelessWidget {
     final cs = Theme.of(context).colorScheme;
     final isDark = cs.brightness == Brightness.dark;
 
-    return SafeArea(
-      child: Scaffold(
-        appBar: CustomButtonAppBar(
-          title: "친구 추가",
-          leading: Button(
-            onTap: () {
-              context.pop();
-            },
-            width: 40,
-            height: 40,
-            icon: Icon(AppIcon.back),
-            contentColor: AppColors.lessLight,
-            borderRadius: 20,
-          ),
+    return Scaffold(
+      appBar: CustomButtonAppBar(
+        title: "친구 추가",
+        leading: Button(
+          onTap: () {
+            context.pop();
+          },
+          width: 40,
+          height: 40,
+          icon: Icon(AppIcon.back),
+          contentColor: AppColors.lessLight,
+          borderRadius: 20,
         ),
-        backgroundColor: isDark ? AppColors.navy : AppColors.darkGray,
-        body: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: BlocListener<FriendRequestBloc, FriendRequestState>(
-            listenWhen: (prev, curr) =>
-                prev.pageState != curr.pageState &&
-                curr.actionType == 'request_create',
-            listener: (context, state) {
-              // 요청 성공하면 현재 검색어로 다시 검색 => 화면 리로드 효과
-              if (state.pageState == FriendRequestPageState.success) {
-                context.read<FriendRequestBloc>().add(
-                  FriendRequestEvent.searchRequestName(
-                    myId: requestId,
-                    keyword: state.keyword, // 지금 검색어 그대로
+      ),
+      backgroundColor: isDark ? AppColors.navy : AppColors.darkGray,
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: BlocListener<FriendRequestBloc, FriendRequestState>(
+          listenWhen: (prev, curr) =>
+              prev.pageState != curr.pageState &&
+              curr.actionType == 'request_create',
+          listener: (context, state) {
+            // 요청 성공하면 현재 검색어로 다시 검색 => 화면 리로드 효과
+            if (state.pageState == FriendRequestPageState.success) {
+              context.read<FriendRequestBloc>().add(
+                FriendRequestEvent.searchRequestName(
+                  myId: requestId,
+                  keyword: state.keyword, // 지금 검색어 그대로
+                ),
+              );
+            }
+          },
+          child: BlocBuilder<FriendRequestBloc, FriendRequestState>(
+            builder: (context, state) {
+              return CustomScrollView(
+                slivers: [
+                  SliverToBoxAdapter(
+                    child: _NicknameSearchCard(requestId: requestId),
                   ),
-                );
-              }
+                  const SliverToBoxAdapter(child: SizedBox(height: 24)),
+                  SliverToBoxAdapter(
+                    child: _SearchResultSection(requestId: requestId),
+                  ),
+                  const SliverToBoxAdapter(child: SizedBox(height: 24)),
+                  // const SliverToBoxAdapter(child: _InviteLinkSection()),
+                ],
+              );
             },
-            child: BlocBuilder<FriendRequestBloc, FriendRequestState>(
-              builder: (context, state) {
-                return CustomScrollView(
-                  slivers: [
-                    SliverToBoxAdapter(
-                      child: _NicknameSearchCard(requestId: requestId),
-                    ),
-                    const SliverToBoxAdapter(child: SizedBox(height: 24)),
-                    SliverToBoxAdapter(
-                      child: _SearchResultSection(requestId: requestId),
-                    ),
-                    const SliverToBoxAdapter(child: SizedBox(height: 24)),
-                    const SliverToBoxAdapter(child: _InviteLinkSection()),
-                  ],
-                );
-              },
-            ),
           ),
         ),
       ),
