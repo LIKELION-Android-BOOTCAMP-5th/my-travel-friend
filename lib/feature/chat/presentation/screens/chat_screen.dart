@@ -24,21 +24,56 @@ class ChatScreen extends StatefulWidget {
   State<ChatScreen> createState() => _ChatScreenState();
 }
 
-class _ChatScreenState extends State<ChatScreen> {
+class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
   final TextEditingController _messageController = TextEditingController();
   final ScrollController _scrollController = ScrollController();
+  double _previousBottomInset = 0;
 
   @override
   void initState() {
     super.initState();
     _scrollController.addListener(_onScroll);
+    WidgetsBinding.instance.addObserver(this);
   }
 
   @override
   void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
     _messageController.dispose();
     _scrollController.dispose();
     super.dispose();
+  }
+
+  @override
+  void didChangeMetrics() {
+    super.didChangeMetrics();
+
+    if (!_scrollController.hasClients) return;
+
+    final bottomInset = WidgetsBinding
+        .instance
+        .platformDispatcher
+        .views
+        .first
+        .viewInsets
+        .bottom;
+
+    final keyboardDiff = bottomInset - _previousBottomInset;
+    _previousBottomInset = bottomInset;
+
+    // 키보드가 올라왔을 때 → 키보드 높이만큼 스크롤
+    if (keyboardDiff > 0) {
+      SchedulerBinding.instance.addPostFrameCallback((_) {
+        if (_scrollController.hasClients) {
+          _scrollController.jumpTo(
+            (_scrollController.offset + keyboardDiff).clamp(
+              0.0,
+              _scrollController.position.maxScrollExtent,
+            ),
+          );
+        }
+      });
+    }
   }
 
   // ========== 스크롤 ==========

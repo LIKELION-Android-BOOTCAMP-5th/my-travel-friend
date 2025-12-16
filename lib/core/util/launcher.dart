@@ -24,8 +24,19 @@ class Launcher {
   // URL 열기
   static Future<void> openUrl(String url) async {
     final Uri uri = Uri.parse(url);
-    if (await canLaunchUrl(uri)) {
-      await launchUrl(uri, mode: LaunchMode.externalApplication);
+    try {
+      // canLaunchUrl 체크 없이 바로 시도
+      final launched = await launchUrl(
+        uri,
+        mode: LaunchMode.externalApplication,
+      );
+
+      if (!launched) {
+        // 실패 시 인앱 브라우저로 시도
+        await launchUrl(uri, mode: LaunchMode.inAppWebView);
+      }
+    } catch (e) {
+      print('URL 열기 실패: $e');
     }
   }
 

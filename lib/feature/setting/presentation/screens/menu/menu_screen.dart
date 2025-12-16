@@ -159,6 +159,13 @@ class MenuScreen extends StatelessWidget {
   }) {
     final colorScheme = Theme.of(context).colorScheme;
     final isDark = colorScheme.brightness == Brightness.dark;
+    final user = context.read<AuthProfileBloc>().state;
+
+    if (user is! AuthProfileAuthenticated) {
+      return const Center(child: Text("로그인이 필요합니다"));
+    }
+
+    final userProfile = user.userInfo;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -176,12 +183,30 @@ class MenuScreen extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  MenuBox(state: state, title: "친구 목록 보기", onTap: () {}),
+                  MenuBox(
+                    state: state,
+                    title: "친구 목록 보기",
+                    onTap: () {
+                      context.push(
+                        '/setting/friend',
+                        extra: {'userId': userProfile.id},
+                      );
+                    },
+                  ),
                   Divider(
                     height: 0.5,
                     color: colorScheme.outlineVariant.withOpacity(0.3),
                   ),
-                  MenuBox(state: state, title: "내가 받은 친구 요청", onTap: () {}),
+                  MenuBox(
+                    state: state,
+                    title: "내가 받은 친구 요청",
+                    onTap: () {
+                      context.push(
+                        '/setting/friend_recevice',
+                        extra: {'userId': userProfile.id},
+                      );
+                    },
+                  ),
                   Divider(
                     height: 0.5,
                     color: colorScheme.outlineVariant.withOpacity(0.3),
@@ -289,6 +314,19 @@ class MenuScreen extends StatelessWidget {
                       Launcher.sendEmail(
                         email: '1113.mytravelfriend@gmail.com',
                         subject: '나의 여행 친구 문의',
+                      );
+                    },
+                  ),
+                  Divider(
+                    height: 0.5,
+                    color: colorScheme.outlineVariant.withOpacity(0.3),
+                  ),
+                  MenuBox(
+                    state: state,
+                    title: "개인 정보 처리 방침",
+                    onTap: () {
+                      Launcher.openUrl(
+                        'https://shinylee512.notion.site/my-travel-friend-personal-info?source=copy_link',
                       );
                     },
                   ),

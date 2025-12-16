@@ -225,7 +225,7 @@ class _TripListScreenState extends State<TripListScreen> {
                           ? _buildEmptyUI(isSearching)
                           : ListView.builder(
                               controller: _scrollController,
-                              physics: const BouncingScrollPhysics(),
+                              physics: const AlwaysScrollableScrollPhysics(),
                               padding: const EdgeInsets.symmetric(
                                 horizontal: 16,
                                 vertical: 12,
@@ -277,19 +277,21 @@ class _TripListScreenState extends State<TripListScreen> {
 
   /// empty UI
   Widget _buildEmptyUI(bool isSearching) {
-    if (isSearching) {
-      return const Center(
-        child: EmptyTravelCard(
-          title: "검색 결과가 없어요",
-          description: "다른 검색어로 다시 시도해보세요!",
+    return ListView(
+      physics: const AlwaysScrollableScrollPhysics(),
+      children: [
+        SizedBox(
+          height: MediaQuery.of(context).size.height * 0.6, // 중앙 배치용
+          child: Center(
+            child: EmptyTravelCard(
+              title: isSearching ? "검색 결과가 없어요" : "아직 여행이 없어요!",
+              description: isSearching
+                  ? "다른 검색어로 다시 시도해보세요!"
+                  : "새로운 여행을 계획해보세요!",
+            ),
+          ),
         ),
-      );
-    }
-    return const Center(
-      child: EmptyTravelCard(
-        title: "아직 여행이 없어요!",
-        description: "새로운 여행을 계획해보세요!",
-      ),
+      ],
     );
   }
 

@@ -1,14 +1,17 @@
+import 'package:injectable/injectable.dart';
+
+import '../../../../core/result/result.dart';
 import '../repositories/friend_request_repository.dart';
 
 // [엄수빈] 친구 요청 삭제 usecase
-// @LazySingleton()
+@LazySingleton()
 class DeleteRequestUsecase {
   final FriendRequestRepository _friendRequestRepository;
 
   DeleteRequestUsecase(this._friendRequestRepository);
 
   // 친구 요청 삭제
-  Future<void> call(int id) {
+  Future<Result<void>> call(int id) {
     return _friendRequestRepository.deleteRequest(id);
   }
 }

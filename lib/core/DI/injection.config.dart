@@ -138,6 +138,49 @@ import '../../feature/diary/presentation/viewmodels/edit_diary/edit_diary_bloc.d
     as _i935;
 import '../../feature/diary/presentation/viewmodels/new_diary/new_diary_bloc.dart'
     as _i885;
+import '../../feature/friend/data/datasources/friend_data_source.dart' as _i297;
+import '../../feature/friend/data/datasources/friend_data_source_impl.dart'
+    as _i845;
+import '../../feature/friend/data/datasources/friend_request_data_source.dart'
+    as _i340;
+import '../../feature/friend/data/datasources/friend_request_data_source_impl.dart'
+    as _i920;
+import '../../feature/friend/data/repositories/friend_repository_impl.dart'
+    as _i1001;
+import '../../feature/friend/data/repositories/friend_request_repository_impl.dart'
+    as _i742;
+import '../../feature/friend/domain/repositories/friend_repository.dart'
+    as _i359;
+import '../../feature/friend/domain/repositories/friend_request_repository.dart'
+    as _i255;
+import '../../feature/friend/domain/usecases/accept_request_usecase.dart'
+    as _i669;
+import '../../feature/friend/domain/usecases/create_friend_relation_usecase.dart'
+    as _i639;
+import '../../feature/friend/domain/usecases/create_friend_request_usecase.dart'
+    as _i611;
+import '../../feature/friend/domain/usecases/delete_friend_usecases.dart'
+    as _i285;
+import '../../feature/friend/domain/usecases/delete_request_usecase.dart'
+    as _i491;
+import '../../feature/friend/domain/usecases/get_friend_relation_usecase.dart'
+    as _i813;
+import '../../feature/friend/domain/usecases/get_friend_request_usecase.dart'
+    as _i739;
+import '../../feature/friend/domain/usecases/get_friend_users_usecase.dart'
+    as _i151;
+import '../../feature/friend/domain/usecases/get_friends_usecase.dart' as _i806;
+import '../../feature/friend/domain/usecases/get_request_profile_usecase.dart'
+    as _i1062;
+import '../../feature/friend/domain/usecases/get_sent_request_usecase.dart'
+    as _i823;
+import '../../feature/friend/domain/usecases/search_nickname_usecase.dart'
+    as _i617;
+import '../../feature/friend/domain/usecases/search_request_name_usecase.dart'
+    as _i1012;
+import '../../feature/friend/presentation/viewmodel/friend_bloc.dart' as _i186;
+import '../../feature/friend/presentation/viewmodel/friend_request_bloc.dart'
+    as _i69;
 import '../../feature/schedule/data/datasources/schedule_data_source.dart'
     as _i334;
 import '../../feature/schedule/data/datasources/schedule_data_source_impl.dart'
@@ -340,6 +383,9 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i1040.SupabaseAuthDataSource>(),
       ),
     );
+    gh.lazySingleton<_i340.FriendRequestDataSource>(
+      () => _i920.FriendRequestDataSourceImpl(gh<_i454.SupabaseClient>()),
+    );
     gh.lazySingleton<_i540.TodoListDataSource>(
       () => _i79.TodoListDataSourceImpl(gh<_i454.SupabaseClient>()),
     );
@@ -387,6 +433,9 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.lazySingleton<_i456.ScheduleRepository>(
       () => _i625.ScheduleRepositoryImpl(gh<_i334.ScheduleDataSource>()),
+    );
+    gh.lazySingleton<_i297.FriendDataSource>(
+      () => _i845.FriendDataSourceImpl(gh<_i454.SupabaseClient>()),
     );
     gh.factory<_i862.PermissionBloc>(
       () => _i862.PermissionBloc(
@@ -444,6 +493,11 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i161.TripRepository>(),
       ),
     );
+    gh.lazySingleton<_i255.FriendRequestRepository>(
+      () => _i742.FriendRequestRepositoryImpl(
+        gh<_i340.FriendRequestDataSource>(),
+      ),
+    );
     gh.lazySingleton<_i167.ChatRepository>(
       () => _i269.ChatRepositoryImpl(gh<_i888.ChatDataSource>()),
     );
@@ -452,6 +506,10 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i277.GetTripByIdUseCase>(),
         gh<_i317.GiveUpTripUseCase>(),
       ),
+    );
+    gh.lazySingleton<_i1012.SearchRequestNameUsecase>(
+      () =>
+          _i1012.SearchRequestNameUsecase(gh<_i255.FriendRequestRepository>()),
     );
     gh.lazySingleton<_i181.ChecklistRepository>(
       () => _i418.ChecklistRepositoryImpl(gh<_i877.ChecklistDataSource>()),
@@ -498,6 +556,9 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i284.SubscribeChatUseCase>(
       () => _i284.SubscribeChatUseCase(gh<_i167.ChatRepository>()),
     );
+    gh.lazySingleton<_i359.FriendRepository>(
+      () => _i1001.FriendRepositoryImpl(gh<_i297.FriendDataSource>()),
+    );
     gh.factory<_i873.CreateTripBloc>(
       () => _i873.CreateTripBloc(
         gh<_i779.CreateTripUsecase>(),
@@ -527,6 +588,31 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.lazySingleton<_i304.UploadImgUseCase>(
       () => _i304.UploadImgUseCase(gh<_i565.ProfileRepository>()),
+    );
+    gh.lazySingleton<_i669.AcceptRequestUsecase>(
+      () => _i669.AcceptRequestUsecase(gh<_i255.FriendRequestRepository>()),
+    );
+    gh.lazySingleton<_i611.CreateFriendRequestUsecase>(
+      () =>
+          _i611.CreateFriendRequestUsecase(gh<_i255.FriendRequestRepository>()),
+    );
+    gh.lazySingleton<_i491.DeleteRequestUsecase>(
+      () => _i491.DeleteRequestUsecase(gh<_i255.FriendRequestRepository>()),
+    );
+    gh.lazySingleton<_i739.GetFriendRequestUsecase>(
+      () => _i739.GetFriendRequestUsecase(gh<_i255.FriendRequestRepository>()),
+    );
+    gh.lazySingleton<_i639.CreateFriendRelationUsecase>(
+      () => _i639.CreateFriendRelationUsecase(gh<_i359.FriendRepository>()),
+    );
+    gh.lazySingleton<_i285.DeleteFriendUsecase>(
+      () => _i285.DeleteFriendUsecase(gh<_i359.FriendRepository>()),
+    );
+    gh.lazySingleton<_i813.GetFriendRelationUsecase>(
+      () => _i813.GetFriendRelationUsecase(gh<_i359.FriendRepository>()),
+    );
+    gh.lazySingleton<_i806.GetFriendsUsecase>(
+      () => _i806.GetFriendsUsecase(gh<_i359.FriendRepository>()),
     );
     gh.lazySingleton<_i622.CreateChecklistUseCase>(
       () => _i622.CreateChecklistUseCase(gh<_i181.ChecklistRepository>()),
@@ -601,6 +687,9 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i858.SignOutUseCase>(),
       ),
     );
+    gh.lazySingleton<_i823.GetSentRequestUsecase>(
+      () => _i823.GetSentRequestUsecase(gh<_i255.FriendRequestRepository>()),
+    );
     gh.lazySingleton<_i38.GetReadStatusUseCase>(
       () => _i38.GetReadStatusUseCase(gh<_i167.ChatRepository>()),
     );
@@ -621,6 +710,10 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i715.DeleteImgUseCase>(),
       ),
     );
+    gh.lazySingleton<_i1062.GetRequestProfileUsecase>(
+      () =>
+          _i1062.GetRequestProfileUsecase(gh<_i255.FriendRequestRepository>()),
+    );
     gh.factory<_i130.ListsBloc>(
       () => _i130.ListsBloc(
         gh<_i979.GetMyChecklistUseCase>(),
@@ -632,6 +725,23 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i349.ToggleChecklistUseCase>(),
         gh<_i57.ToggleTodoListUseCase>(),
       ),
+    );
+    gh.factory<_i69.FriendRequestBloc>(
+      () => _i69.FriendRequestBloc(
+        gh<_i611.CreateFriendRequestUsecase>(),
+        gh<_i739.GetFriendRequestUsecase>(),
+        gh<_i491.DeleteRequestUsecase>(),
+        gh<_i669.AcceptRequestUsecase>(),
+        gh<_i1062.GetRequestProfileUsecase>(),
+        gh<_i1012.SearchRequestNameUsecase>(),
+        gh<_i823.GetSentRequestUsecase>(),
+      ),
+    );
+    gh.lazySingleton<_i151.GetFriendUsersUsecase>(
+      () => _i151.GetFriendUsersUsecase(gh<_i359.FriendRepository>()),
+    );
+    gh.lazySingleton<_i617.SearchNicknameUsecase>(
+      () => _i617.SearchNicknameUsecase(gh<_i359.FriendRepository>()),
     );
     gh.factory<_i27.DiaryBloc>(
       () => _i27.DiaryBloc(
@@ -645,6 +755,14 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i27.CreateDiaryUseCase>(),
         gh<_i998.UploadDiaryImgUseCase>(),
         gh<_i818.GetUserScheduleUseCase>(),
+      ),
+    );
+    gh.factory<_i186.FriendBloc>(
+      () => _i186.FriendBloc(
+        gh<_i806.GetFriendsUsecase>(),
+        gh<_i285.DeleteFriendUsecase>(),
+        gh<_i151.GetFriendUsersUsecase>(),
+        gh<_i617.SearchNicknameUsecase>(),
       ),
     );
     gh.factory<_i935.EditDiaryBloc>(

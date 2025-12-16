@@ -176,4 +176,7 @@ class AppIcon {
 
   // 비행기
   static const send = FontAwesomeIcons.paperPlane;
+
+  // 개인
+  static const user = FontAwesomeIcons.solidUser;
 }

@@ -6,6 +6,7 @@ import 'package:my_travel_friend/feature/auth/presentation/screens/auth_bloc_wid
 import 'package:my_travel_friend/feature/auth/presentation/viewmodel/auth/auth_bloc.dart';
 import 'package:my_travel_friend/feature/auth/presentation/viewmodel/auth_profile/auth_profile_bloc.dart';
 import 'package:my_travel_friend/feature/auth/presentation/viewmodel/auth_profile/auth_profile_state.dart';
+import 'package:my_travel_friend/feature/friend/presentation/viewmodel/friend_request_bloc.dart';
 import 'package:my_travel_friend/feature/schedule/presentation/screens/schedule_bloc_widget.dart';
 import 'package:my_travel_friend/feature/setting/presentation/screens/menu/menu_bloc_widget.dart';
 import 'package:my_travel_friend/feature/setting/presentation/screens/permission/permission_bloc_widget.dart';
@@ -24,6 +25,10 @@ import '../feature/diary/presentation/screens/edit_diary/edit_diary_bloc_widget.
 import '../feature/diary/presentation/screens/new_diary/new_diary_bloc_widget.dart';
 import '../feature/diary/presentation/viewmodels/diary/diary_bloc.dart';
 import '../feature/diary/presentation/viewmodels/new_diary/new_diary_bloc.dart';
+import '../feature/friend/presentation/screen/friend_bloc_widget.dart';
+import '../feature/friend/presentation/screen/friend_request_bloc_widget.dart';
+import '../feature/friend/presentation/screen/recevice_list_bloc_widget.dart';
+import '../feature/friend/presentation/viewmodel/friend_bloc.dart';
 import '../feature/schedule/domain/entities/schedule_entity.dart';
 import '../feature/schedule/presentation/screens/create_schedule_bloc_widget.dart';
 import '../feature/schedule/presentation/screens/edit_schedule_bloc_widget.dart';
@@ -171,6 +176,42 @@ class AppRouter {
       GoRoute(
         path: '/setting/theme',
         builder: (context, state) => const ThemeBlocWidget(),
+      ),
+      GoRoute(
+        path: '/setting/friend',
+        builder: (context, state) {
+          final authState = context.read<AuthProfileBloc>().state;
+          final userId = (authState is AuthProfileAuthenticated)
+              ? authState.userInfo.id!
+              : 0;
+
+          return BlocProvider(
+            create: (context) => GetIt.instance<FriendBloc>(),
+            child: FriendBlocWidget(userId: userId),
+          );
+        },
+      ),
+      GoRoute(
+        path: '/friend/request',
+        builder: (context, state) {
+          final extra = state.extra as Map<String, dynamic>;
+          final requestId = extra['requestId'] as int;
+          return FriendRequestBlocWidget(requestId: requestId);
+        },
+      ),
+      GoRoute(
+        path: '/setting/friend_recevice',
+        builder: (context, state) {
+          final authState = context.read<AuthProfileBloc>().state;
+          final userId = (authState is AuthProfileAuthenticated)
+              ? authState.userInfo.id!
+              : 0;
+
+          return BlocProvider(
+            create: (context) => GetIt.instance<FriendRequestBloc>(),
+            child: ReceviceListBlocWidget(userId: userId),
+          );
+        },
       ),
       // Trip ShellRoute
       ShellRoute(
