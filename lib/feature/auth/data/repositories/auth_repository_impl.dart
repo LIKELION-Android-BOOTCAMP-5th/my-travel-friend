@@ -64,8 +64,17 @@ class AuthRepositoryImpl implements AuthRepository {
           },
         );
       case SocialLoginType.kakao:
-        // TODO: Handle this case.
-        throw UnimplementedError();
+        final result = await supabaseAuthDataSource.signInWithKakao();
+        return result.when(
+          success: (success) {
+            print("카카오를 통한 로그인 성공");
+            return Result.success(success.toEntity());
+          },
+          failure: (fail) {
+            print("카카오를 통한 로그인 실패 $fail");
+            return Result.failure(fail);
+          },
+        );
 
       case SocialLoginType.apple: // [이재은] 애플 로그인 추가
         final res = await appleDataSource.getAppleToken();

@@ -18,4 +18,7 @@ abstract class AuthEvent with _$AuthEvent {
 
   /// 로그아웃 요청 이벤트
   const factory AuthEvent.signedOut() = SignedOut;
+
+  ///인증됨
+  const factory AuthEvent.authenticated() = Authenticated;
 }

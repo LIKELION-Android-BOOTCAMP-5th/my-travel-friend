@@ -55,12 +55,12 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
             <!--콜백url처리용-->
-            <intent-filter>
+            <!--<intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
                 <data android:scheme="com.example.myTravelFriend" android:host="login-callback" />
-            </intent-filter>
+            </intent-filter>-->
             <!--콜백url처리용-->
             <!-- 애플 로그인 용 -->
             <intent-filter>
