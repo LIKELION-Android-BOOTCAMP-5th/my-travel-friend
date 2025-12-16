@@ -170,7 +170,7 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                               .whereType<String>()
                               .where((img) => img.isNotEmpty && img != 'null')
                               .toList();
-
+                          final category = state.categoryMap[s.categoryId];
                           return Padding(
                             padding: const EdgeInsets.symmetric(
                               horizontal: 12,
@@ -180,7 +180,7 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                               title: s.title,
                               dateTime: formatScheduleDateTime(s.date),
                               place: s.place ?? "",
-                              tagName: s.category?.content ?? "",
+                              tagName: category!.content,
                               profileImages: profileImages,
                               memo: s.description,
                               onEdit: () => bloc.add(

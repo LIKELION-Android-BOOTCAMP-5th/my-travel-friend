@@ -21,7 +21,5 @@ abstract class ScheduleEntity with _$ScheduleEntity {
     required String date,
     String? description,
     required int categoryId,
-    TripEntity? trip,
-    CategoryEntity? category,
   }) = _ScheduleEntity;
 }

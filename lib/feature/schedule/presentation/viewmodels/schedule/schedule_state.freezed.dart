@@ -17,7 +17,7 @@ mixin _$ScheduleState {
 // 전체 스케줄 원본
  List<ScheduleEntity> get schedules;// 날짜 필터링 결과
  List<ScheduleEntity> get dateFilteredSchedules;// 카테고리 필터링 결과
- List<ScheduleEntity> get categoryFilteredSchedules;// 최종 표시할 스케줄
+ List<ScheduleEntity> get categoryFilteredSchedules; Map<int, CategoryEntity> get categoryMap;// 최종 표시할 스케줄
  List<ScheduleEntity> get visibleSchedules;// 스케줄별 참여자 map
  Map<int, List<UserEntity>> get scheduleMembersMap;// 현재 선택된 날짜
  String? get selectedDate;// 현재 선택된 카테고리
@@ -39,16 +39,16 @@ $ScheduleStateCopyWith<ScheduleState> get copyWith => _$ScheduleStateCopyWithImp
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is ScheduleState&&const DeepCollectionEquality().equals(other.schedules, schedules)&&const DeepCollectionEquality().equals(other.dateFilteredSchedules, dateFilteredSchedules)&&const DeepCollectionEquality().equals(other.categoryFilteredSchedules, categoryFilteredSchedules)&&const DeepCollectionEquality().equals(other.visibleSchedules, visibleSchedules)&&const DeepCollectionEquality().equals(other.scheduleMembersMap, scheduleMembersMap)&&(identical(other.selectedDate, selectedDate) || other.selectedDate == selectedDate)&&(identical(other.selectedCategoryId, selectedCategoryId) || other.selectedCategoryId == selectedCategoryId)&&(identical(other.page, page) || other.page == page)&&(identical(other.hasMore, hasMore) || other.hasMore == hasMore)&&(identical(other.pageState, pageState) || other.pageState == pageState)&&(identical(other.message, message) || other.message == message)&&(identical(other.errorType, errorType) || other.errorType == errorType)&&(identical(other.actionType, actionType) || other.actionType == actionType)&&(identical(other.memoOpen, memoOpen) || other.memoOpen == memoOpen)&&(identical(other.navigateToCreate, navigateToCreate) || other.navigateToCreate == navigateToCreate)&&(identical(other.editingSchedule, editingSchedule) || other.editingSchedule == editingSchedule)&&(identical(other.navigateToEdit, navigateToEdit) || other.navigateToEdit == navigateToEdit)&&const DeepCollectionEquality().equals(other.categories, categories)&&(identical(other.trip, trip) || other.trip == trip)&&(identical(other.viewMode, viewMode) || other.viewMode == viewMode));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ScheduleState&&const DeepCollectionEquality().equals(other.schedules, schedules)&&const DeepCollectionEquality().equals(other.dateFilteredSchedules, dateFilteredSchedules)&&const DeepCollectionEquality().equals(other.categoryFilteredSchedules, categoryFilteredSchedules)&&const DeepCollectionEquality().equals(other.categoryMap, categoryMap)&&const DeepCollectionEquality().equals(other.visibleSchedules, visibleSchedules)&&const DeepCollectionEquality().equals(other.scheduleMembersMap, scheduleMembersMap)&&(identical(other.selectedDate, selectedDate) || other.selectedDate == selectedDate)&&(identical(other.selectedCategoryId, selectedCategoryId) || other.selectedCategoryId == selectedCategoryId)&&(identical(other.page, page) || other.page == page)&&(identical(other.hasMore, hasMore) || other.hasMore == hasMore)&&(identical(other.pageState, pageState) || other.pageState == pageState)&&(identical(other.message, message) || other.message == message)&&(identical(other.errorType, errorType) || other.errorType == errorType)&&(identical(other.actionType, actionType) || other.actionType == actionType)&&(identical(other.memoOpen, memoOpen) || other.memoOpen == memoOpen)&&(identical(other.navigateToCreate, navigateToCreate) || other.navigateToCreate == navigateToCreate)&&(identical(other.editingSchedule, editingSchedule) || other.editingSchedule == editingSchedule)&&(identical(other.navigateToEdit, navigateToEdit) || other.navigateToEdit == navigateToEdit)&&const DeepCollectionEquality().equals(other.categories, categories)&&(identical(other.trip, trip) || other.trip == trip)&&(identical(other.viewMode, viewMode) || other.viewMode == viewMode));
 }
 
 
 @override
-int get hashCode => Object.hashAll([runtimeType,const DeepCollectionEquality().hash(schedules),const DeepCollectionEquality().hash(dateFilteredSchedules),const DeepCollectionEquality().hash(categoryFilteredSchedules),const DeepCollectionEquality().hash(visibleSchedules),const DeepCollectionEquality().hash(scheduleMembersMap),selectedDate,selectedCategoryId,page,hasMore,pageState,message,errorType,actionType,memoOpen,navigateToCreate,editingSchedule,navigateToEdit,const DeepCollectionEquality().hash(categories),trip,viewMode]);
+int get hashCode => Object.hashAll([runtimeType,const DeepCollectionEquality().hash(schedules),const DeepCollectionEquality().hash(dateFilteredSchedules),const DeepCollectionEquality().hash(categoryFilteredSchedules),const DeepCollectionEquality().hash(categoryMap),const DeepCollectionEquality().hash(visibleSchedules),const DeepCollectionEquality().hash(scheduleMembersMap),selectedDate,selectedCategoryId,page,hasMore,pageState,message,errorType,actionType,memoOpen,navigateToCreate,editingSchedule,navigateToEdit,const DeepCollectionEquality().hash(categories),trip,viewMode]);
 
 @override
 String toString() {
-  return 'ScheduleState(schedules: $schedules, dateFilteredSchedules: $dateFilteredSchedules, categoryFilteredSchedules: $categoryFilteredSchedules, visibleSchedules: $visibleSchedules, scheduleMembersMap: $scheduleMembersMap, selectedDate: $selectedDate, selectedCategoryId: $selectedCategoryId, page: $page, hasMore: $hasMore, pageState: $pageState, message: $message, errorType: $errorType, actionType: $actionType, memoOpen: $memoOpen, navigateToCreate: $navigateToCreate, editingSchedule: $editingSchedule, navigateToEdit: $navigateToEdit, categories: $categories, trip: $trip, viewMode: $viewMode)';
+  return 'ScheduleState(schedules: $schedules, dateFilteredSchedules: $dateFilteredSchedules, categoryFilteredSchedules: $categoryFilteredSchedules, categoryMap: $categoryMap, visibleSchedules: $visibleSchedules, scheduleMembersMap: $scheduleMembersMap, selectedDate: $selectedDate, selectedCategoryId: $selectedCategoryId, page: $page, hasMore: $hasMore, pageState: $pageState, message: $message, errorType: $errorType, actionType: $actionType, memoOpen: $memoOpen, navigateToCreate: $navigateToCreate, editingSchedule: $editingSchedule, navigateToEdit: $navigateToEdit, categories: $categories, trip: $trip, viewMode: $viewMode)';
 }
 
 
@@ -59,7 +59,7 @@ abstract mixin class $ScheduleStateCopyWith<$Res>  {
   factory $ScheduleStateCopyWith(ScheduleState value, $Res Function(ScheduleState) _then) = _$ScheduleStateCopyWithImpl;
 @useResult
 $Res call({
- List<ScheduleEntity> schedules, List<ScheduleEntity> dateFilteredSchedules, List<ScheduleEntity> categoryFilteredSchedules, List<ScheduleEntity> visibleSchedules, Map<int, List<UserEntity>> scheduleMembersMap, String? selectedDate, int? selectedCategoryId, int page, bool hasMore, SchedulepageState pageState, String? message, String? errorType, String? actionType, bool memoOpen, bool navigateToCreate, ScheduleEntity? editingSchedule, bool navigateToEdit, List<CategoryEntity> categories, TripEntity? trip, ScheduleFilterType viewMode
+ List<ScheduleEntity> schedules, List<ScheduleEntity> dateFilteredSchedules, List<ScheduleEntity> categoryFilteredSchedules, Map<int, CategoryEntity> categoryMap, List<ScheduleEntity> visibleSchedules, Map<int, List<UserEntity>> scheduleMembersMap, String? selectedDate, int? selectedCategoryId, int page, bool hasMore, SchedulepageState pageState, String? message, String? errorType, String? actionType, bool memoOpen, bool navigateToCreate, ScheduleEntity? editingSchedule, bool navigateToEdit, List<CategoryEntity> categories, TripEntity? trip, ScheduleFilterType viewMode
 });
 
 
@@ -76,12 +76,13 @@ class _$ScheduleStateCopyWithImpl<$Res>
 
 /// Create a copy of ScheduleState
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? schedules = null,Object? dateFilteredSchedules = null,Object? categoryFilteredSchedules = null,Object? visibleSchedules = null,Object? scheduleMembersMap = null,Object? selectedDate = freezed,Object? selectedCategoryId = freezed,Object? page = null,Object? hasMore = null,Object? pageState = null,Object? message = freezed,Object? errorType = freezed,Object? actionType = freezed,Object? memoOpen = null,Object? navigateToCreate = null,Object? editingSchedule = freezed,Object? navigateToEdit = null,Object? categories = null,Object? trip = freezed,Object? viewMode = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? schedules = null,Object? dateFilteredSchedules = null,Object? categoryFilteredSchedules = null,Object? categoryMap = null,Object? visibleSchedules = null,Object? scheduleMembersMap = null,Object? selectedDate = freezed,Object? selectedCategoryId = freezed,Object? page = null,Object? hasMore = null,Object? pageState = null,Object? message = freezed,Object? errorType = freezed,Object? actionType = freezed,Object? memoOpen = null,Object? navigateToCreate = null,Object? editingSchedule = freezed,Object? navigateToEdit = null,Object? categories = null,Object? trip = freezed,Object? viewMode = null,}) {
   return _then(_self.copyWith(
 schedules: null == schedules ? _self.schedules : schedules // ignore: cast_nullable_to_non_nullable
 as List<ScheduleEntity>,dateFilteredSchedules: null == dateFilteredSchedules ? _self.dateFilteredSchedules : dateFilteredSchedules // ignore: cast_nullable_to_non_nullable
 as List<ScheduleEntity>,categoryFilteredSchedules: null == categoryFilteredSchedules ? _self.categoryFilteredSchedules : categoryFilteredSchedules // ignore: cast_nullable_to_non_nullable
-as List<ScheduleEntity>,visibleSchedules: null == visibleSchedules ? _self.visibleSchedules : visibleSchedules // ignore: cast_nullable_to_non_nullable
+as List<ScheduleEntity>,categoryMap: null == categoryMap ? _self.categoryMap : categoryMap // ignore: cast_nullable_to_non_nullable
+as Map<int, CategoryEntity>,visibleSchedules: null == visibleSchedules ? _self.visibleSchedules : visibleSchedules // ignore: cast_nullable_to_non_nullable
 as List<ScheduleEntity>,scheduleMembersMap: null == scheduleMembersMap ? _self.scheduleMembersMap : scheduleMembersMap // ignore: cast_nullable_to_non_nullable
 as Map<int, List<UserEntity>>,selectedDate: freezed == selectedDate ? _self.selectedDate : selectedDate // ignore: cast_nullable_to_non_nullable
 as String?,selectedCategoryId: freezed == selectedCategoryId ? _self.selectedCategoryId : selectedCategoryId // ignore: cast_nullable_to_non_nullable
@@ -207,10 +208,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( List<ScheduleEntity> schedules,  List<ScheduleEntity> dateFilteredSchedules,  List<ScheduleEntity> categoryFilteredSchedules,  List<ScheduleEntity> visibleSchedules,  Map<int, List<UserEntity>> scheduleMembersMap,  String? selectedDate,  int? selectedCategoryId,  int page,  bool hasMore,  SchedulepageState pageState,  String? message,  String? errorType,  String? actionType,  bool memoOpen,  bool navigateToCreate,  ScheduleEntity? editingSchedule,  bool navigateToEdit,  List<CategoryEntity> categories,  TripEntity? trip,  ScheduleFilterType viewMode)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( List<ScheduleEntity> schedules,  List<ScheduleEntity> dateFilteredSchedules,  List<ScheduleEntity> categoryFilteredSchedules,  Map<int, CategoryEntity> categoryMap,  List<ScheduleEntity> visibleSchedules,  Map<int, List<UserEntity>> scheduleMembersMap,  String? selectedDate,  int? selectedCategoryId,  int page,  bool hasMore,  SchedulepageState pageState,  String? message,  String? errorType,  String? actionType,  bool memoOpen,  bool navigateToCreate,  ScheduleEntity? editingSchedule,  bool navigateToEdit,  List<CategoryEntity> categories,  TripEntity? trip,  ScheduleFilterType viewMode)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _ScheduleState() when $default != null:
-return $default(_that.schedules,_that.dateFilteredSchedules,_that.categoryFilteredSchedules,_that.visibleSchedules,_that.scheduleMembersMap,_that.selectedDate,_that.selectedCategoryId,_that.page,_that.hasMore,_that.pageState,_that.message,_that.errorType,_that.actionType,_that.memoOpen,_that.navigateToCreate,_that.editingSchedule,_that.navigateToEdit,_that.categories,_that.trip,_that.viewMode);case _:
+return $default(_that.schedules,_that.dateFilteredSchedules,_that.categoryFilteredSchedules,_that.categoryMap,_that.visibleSchedules,_that.scheduleMembersMap,_that.selectedDate,_that.selectedCategoryId,_that.page,_that.hasMore,_that.pageState,_that.message,_that.errorType,_that.actionType,_that.memoOpen,_that.navigateToCreate,_that.editingSchedule,_that.navigateToEdit,_that.categories,_that.trip,_that.viewMode);case _:
   return orElse();
 
 }
@@ -228,10 +229,10 @@ return $default(_that.schedules,_that.dateFilteredSchedules,_that.categoryFilter
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( List<ScheduleEntity> schedules,  List<ScheduleEntity> dateFilteredSchedules,  List<ScheduleEntity> categoryFilteredSchedules,  List<ScheduleEntity> visibleSchedules,  Map<int, List<UserEntity>> scheduleMembersMap,  String? selectedDate,  int? selectedCategoryId,  int page,  bool hasMore,  SchedulepageState pageState,  String? message,  String? errorType,  String? actionType,  bool memoOpen,  bool navigateToCreate,  ScheduleEntity? editingSchedule,  bool navigateToEdit,  List<CategoryEntity> categories,  TripEntity? trip,  ScheduleFilterType viewMode)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( List<ScheduleEntity> schedules,  List<ScheduleEntity> dateFilteredSchedules,  List<ScheduleEntity> categoryFilteredSchedules,  Map<int, CategoryEntity> categoryMap,  List<ScheduleEntity> visibleSchedules,  Map<int, List<UserEntity>> scheduleMembersMap,  String? selectedDate,  int? selectedCategoryId,  int page,  bool hasMore,  SchedulepageState pageState,  String? message,  String? errorType,  String? actionType,  bool memoOpen,  bool navigateToCreate,  ScheduleEntity? editingSchedule,  bool navigateToEdit,  List<CategoryEntity> categories,  TripEntity? trip,  ScheduleFilterType viewMode)  $default,) {final _that = this;
 switch (_that) {
 case _ScheduleState():
-return $default(_that.schedules,_that.dateFilteredSchedules,_that.categoryFilteredSchedules,_that.visibleSchedules,_that.scheduleMembersMap,_that.selectedDate,_that.selectedCategoryId,_that.page,_that.hasMore,_that.pageState,_that.message,_that.errorType,_that.actionType,_that.memoOpen,_that.navigateToCreate,_that.editingSchedule,_that.navigateToEdit,_that.categories,_that.trip,_that.viewMode);case _:
+return $default(_that.schedules,_that.dateFilteredSchedules,_that.categoryFilteredSchedules,_that.categoryMap,_that.visibleSchedules,_that.scheduleMembersMap,_that.selectedDate,_that.selectedCategoryId,_that.page,_that.hasMore,_that.pageState,_that.message,_that.errorType,_that.actionType,_that.memoOpen,_that.navigateToCreate,_that.editingSchedule,_that.navigateToEdit,_that.categories,_that.trip,_that.viewMode);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -248,10 +249,10 @@ return $default(_that.schedules,_that.dateFilteredSchedules,_that.categoryFilter
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( List<ScheduleEntity> schedules,  List<ScheduleEntity> dateFilteredSchedules,  List<ScheduleEntity> categoryFilteredSchedules,  List<ScheduleEntity> visibleSchedules,  Map<int, List<UserEntity>> scheduleMembersMap,  String? selectedDate,  int? selectedCategoryId,  int page,  bool hasMore,  SchedulepageState pageState,  String? message,  String? errorType,  String? actionType,  bool memoOpen,  bool navigateToCreate,  ScheduleEntity? editingSchedule,  bool navigateToEdit,  List<CategoryEntity> categories,  TripEntity? trip,  ScheduleFilterType viewMode)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( List<ScheduleEntity> schedules,  List<ScheduleEntity> dateFilteredSchedules,  List<ScheduleEntity> categoryFilteredSchedules,  Map<int, CategoryEntity> categoryMap,  List<ScheduleEntity> visibleSchedules,  Map<int, List<UserEntity>> scheduleMembersMap,  String? selectedDate,  int? selectedCategoryId,  int page,  bool hasMore,  SchedulepageState pageState,  String? message,  String? errorType,  String? actionType,  bool memoOpen,  bool navigateToCreate,  ScheduleEntity? editingSchedule,  bool navigateToEdit,  List<CategoryEntity> categories,  TripEntity? trip,  ScheduleFilterType viewMode)?  $default,) {final _that = this;
 switch (_that) {
 case _ScheduleState() when $default != null:
-return $default(_that.schedules,_that.dateFilteredSchedules,_that.categoryFilteredSchedules,_that.visibleSchedules,_that.scheduleMembersMap,_that.selectedDate,_that.selectedCategoryId,_that.page,_that.hasMore,_that.pageState,_that.message,_that.errorType,_that.actionType,_that.memoOpen,_that.navigateToCreate,_that.editingSchedule,_that.navigateToEdit,_that.categories,_that.trip,_that.viewMode);case _:
+return $default(_that.schedules,_that.dateFilteredSchedules,_that.categoryFilteredSchedules,_that.categoryMap,_that.visibleSchedules,_that.scheduleMembersMap,_that.selectedDate,_that.selectedCategoryId,_that.page,_that.hasMore,_that.pageState,_that.message,_that.errorType,_that.actionType,_that.memoOpen,_that.navigateToCreate,_that.editingSchedule,_that.navigateToEdit,_that.categories,_that.trip,_that.viewMode);case _:
   return null;
 
 }
@@ -263,7 +264,7 @@ return $default(_that.schedules,_that.dateFilteredSchedules,_that.categoryFilter
 
 
 class _ScheduleState implements ScheduleState {
-  const _ScheduleState({final  List<ScheduleEntity> schedules = const [], final  List<ScheduleEntity> dateFilteredSchedules = const [], final  List<ScheduleEntity> categoryFilteredSchedules = const [], final  List<ScheduleEntity> visibleSchedules = const [], final  Map<int, List<UserEntity>> scheduleMembersMap = const {}, this.selectedDate, this.selectedCategoryId, this.page = 1, this.hasMore = false, this.pageState = SchedulepageState.init, this.message, this.errorType, this.actionType, this.memoOpen = false, this.navigateToCreate = false, this.editingSchedule, this.navigateToEdit = false, final  List<CategoryEntity> categories = const [], this.trip, this.viewMode = ScheduleFilterType.date}): _schedules = schedules,_dateFilteredSchedules = dateFilteredSchedules,_categoryFilteredSchedules = categoryFilteredSchedules,_visibleSchedules = visibleSchedules,_scheduleMembersMap = scheduleMembersMap,_categories = categories;
+  const _ScheduleState({final  List<ScheduleEntity> schedules = const [], final  List<ScheduleEntity> dateFilteredSchedules = const [], final  List<ScheduleEntity> categoryFilteredSchedules = const [], final  Map<int, CategoryEntity> categoryMap = const {}, final  List<ScheduleEntity> visibleSchedules = const [], final  Map<int, List<UserEntity>> scheduleMembersMap = const {}, this.selectedDate, this.selectedCategoryId, this.page = 1, this.hasMore = false, this.pageState = SchedulepageState.init, this.message, this.errorType, this.actionType, this.memoOpen = false, this.navigateToCreate = false, this.editingSchedule, this.navigateToEdit = false, final  List<CategoryEntity> categories = const [], this.trip, this.viewMode = ScheduleFilterType.date}): _schedules = schedules,_dateFilteredSchedules = dateFilteredSchedules,_categoryFilteredSchedules = categoryFilteredSchedules,_categoryMap = categoryMap,_visibleSchedules = visibleSchedules,_scheduleMembersMap = scheduleMembersMap,_categories = categories;
   
 
 // 전체 스케줄 원본
@@ -291,6 +292,13 @@ class _ScheduleState implements ScheduleState {
   if (_categoryFilteredSchedules is EqualUnmodifiableListView) return _categoryFilteredSchedules;
   // ignore: implicit_dynamic_type
   return EqualUnmodifiableListView(_categoryFilteredSchedules);
+}
+
+ final  Map<int, CategoryEntity> _categoryMap;
+@override@JsonKey() Map<int, CategoryEntity> get categoryMap {
+  if (_categoryMap is EqualUnmodifiableMapView) return _categoryMap;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableMapView(_categoryMap);
 }
 
 // 최종 표시할 스케줄
@@ -353,16 +361,16 @@ _$ScheduleStateCopyWith<_ScheduleState> get copyWith => __$ScheduleStateCopyWith
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ScheduleState&&const DeepCollectionEquality().equals(other._schedules, _schedules)&&const DeepCollectionEquality().equals(other._dateFilteredSchedules, _dateFilteredSchedules)&&const DeepCollectionEquality().equals(other._categoryFilteredSchedules, _categoryFilteredSchedules)&&const DeepCollectionEquality().equals(other._visibleSchedules, _visibleSchedules)&&const DeepCollectionEquality().equals(other._scheduleMembersMap, _scheduleMembersMap)&&(identical(other.selectedDate, selectedDate) || other.selectedDate == selectedDate)&&(identical(other.selectedCategoryId, selectedCategoryId) || other.selectedCategoryId == selectedCategoryId)&&(identical(other.page, page) || other.page == page)&&(identical(other.hasMore, hasMore) || other.hasMore == hasMore)&&(identical(other.pageState, pageState) || other.pageState == pageState)&&(identical(other.message, message) || other.message == message)&&(identical(other.errorType, errorType) || other.errorType == errorType)&&(identical(other.actionType, actionType) || other.actionType == actionType)&&(identical(other.memoOpen, memoOpen) || other.memoOpen == memoOpen)&&(identical(other.navigateToCreate, navigateToCreate) || other.navigateToCreate == navigateToCreate)&&(identical(other.editingSchedule, editingSchedule) || other.editingSchedule == editingSchedule)&&(identical(other.navigateToEdit, navigateToEdit) || other.navigateToEdit == navigateToEdit)&&const DeepCollectionEquality().equals(other._categories, _categories)&&(identical(other.trip, trip) || other.trip == trip)&&(identical(other.viewMode, viewMode) || other.viewMode == viewMode));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ScheduleState&&const DeepCollectionEquality().equals(other._schedules, _schedules)&&const DeepCollectionEquality().equals(other._dateFilteredSchedules, _dateFilteredSchedules)&&const DeepCollectionEquality().equals(other._categoryFilteredSchedules, _categoryFilteredSchedules)&&const DeepCollectionEquality().equals(other._categoryMap, _categoryMap)&&const DeepCollectionEquality().equals(other._visibleSchedules, _visibleSchedules)&&const DeepCollectionEquality().equals(other._scheduleMembersMap, _scheduleMembersMap)&&(identical(other.selectedDate, selectedDate) || other.selectedDate == selectedDate)&&(identical(other.selectedCategoryId, selectedCategoryId) || other.selectedCategoryId == selectedCategoryId)&&(identical(other.page, page) || other.page == page)&&(identical(other.hasMore, hasMore) || other.hasMore == hasMore)&&(identical(other.pageState, pageState) || other.pageState == pageState)&&(identical(other.message, message) || other.message == message)&&(identical(other.errorType, errorType) || other.errorType == errorType)&&(identical(other.actionType, actionType) || other.actionType == actionType)&&(identical(other.memoOpen, memoOpen) || other.memoOpen == memoOpen)&&(identical(other.navigateToCreate, navigateToCreate) || other.navigateToCreate == navigateToCreate)&&(identical(other.editingSchedule, editingSchedule) || other.editingSchedule == editingSchedule)&&(identical(other.navigateToEdit, navigateToEdit) || other.navigateToEdit == navigateToEdit)&&const DeepCollectionEquality().equals(other._categories, _categories)&&(identical(other.trip, trip) || other.trip == trip)&&(identical(other.viewMode, viewMode) || other.viewMode == viewMode));
 }
 
 
 @override
-int get hashCode => Object.hashAll([runtimeType,const DeepCollectionEquality().hash(_schedules),const DeepCollectionEquality().hash(_dateFilteredSchedules),const DeepCollectionEquality().hash(_categoryFilteredSchedules),const DeepCollectionEquality().hash(_visibleSchedules),const DeepCollectionEquality().hash(_scheduleMembersMap),selectedDate,selectedCategoryId,page,hasMore,pageState,message,errorType,actionType,memoOpen,navigateToCreate,editingSchedule,navigateToEdit,const DeepCollectionEquality().hash(_categories),trip,viewMode]);
+int get hashCode => Object.hashAll([runtimeType,const DeepCollectionEquality().hash(_schedules),const DeepCollectionEquality().hash(_dateFilteredSchedules),const DeepCollectionEquality().hash(_categoryFilteredSchedules),const DeepCollectionEquality().hash(_categoryMap),const DeepCollectionEquality().hash(_visibleSchedules),const DeepCollectionEquality().hash(_scheduleMembersMap),selectedDate,selectedCategoryId,page,hasMore,pageState,message,errorType,actionType,memoOpen,navigateToCreate,editingSchedule,navigateToEdit,const DeepCollectionEquality().hash(_categories),trip,viewMode]);
 
 @override
 String toString() {
-  return 'ScheduleState(schedules: $schedules, dateFilteredSchedules: $dateFilteredSchedules, categoryFilteredSchedules: $categoryFilteredSchedules, visibleSchedules: $visibleSchedules, scheduleMembersMap: $scheduleMembersMap, selectedDate: $selectedDate, selectedCategoryId: $selectedCategoryId, page: $page, hasMore: $hasMore, pageState: $pageState, message: $message, errorType: $errorType, actionType: $actionType, memoOpen: $memoOpen, navigateToCreate: $navigateToCreate, editingSchedule: $editingSchedule, navigateToEdit: $navigateToEdit, categories: $categories, trip: $trip, viewMode: $viewMode)';
+  return 'ScheduleState(schedules: $schedules, dateFilteredSchedules: $dateFilteredSchedules, categoryFilteredSchedules: $categoryFilteredSchedules, categoryMap: $categoryMap, visibleSchedules: $visibleSchedules, scheduleMembersMap: $scheduleMembersMap, selectedDate: $selectedDate, selectedCategoryId: $selectedCategoryId, page: $page, hasMore: $hasMore, pageState: $pageState, message: $message, errorType: $errorType, actionType: $actionType, memoOpen: $memoOpen, navigateToCreate: $navigateToCreate, editingSchedule: $editingSchedule, navigateToEdit: $navigateToEdit, categories: $categories, trip: $trip, viewMode: $viewMode)';
 }
 
 
@@ -373,7 +381,7 @@ abstract mixin class _$ScheduleStateCopyWith<$Res> implements $ScheduleStateCopy
   factory _$ScheduleStateCopyWith(_ScheduleState value, $Res Function(_ScheduleState) _then) = __$ScheduleStateCopyWithImpl;
 @override @useResult
 $Res call({
- List<ScheduleEntity> schedules, List<ScheduleEntity> dateFilteredSchedules, List<ScheduleEntity> categoryFilteredSchedules, List<ScheduleEntity> visibleSchedules, Map<int, List<UserEntity>> scheduleMembersMap, String? selectedDate, int? selectedCategoryId, int page, bool hasMore, SchedulepageState pageState, String? message, String? errorType, String? actionType, bool memoOpen, bool navigateToCreate, ScheduleEntity? editingSchedule, bool navigateToEdit, List<CategoryEntity> categories, TripEntity? trip, ScheduleFilterType viewMode
+ List<ScheduleEntity> schedules, List<ScheduleEntity> dateFilteredSchedules, List<ScheduleEntity> categoryFilteredSchedules, Map<int, CategoryEntity> categoryMap, List<ScheduleEntity> visibleSchedules, Map<int, List<UserEntity>> scheduleMembersMap, String? selectedDate, int? selectedCategoryId, int page, bool hasMore, SchedulepageState pageState, String? message, String? errorType, String? actionType, bool memoOpen, bool navigateToCreate, ScheduleEntity? editingSchedule, bool navigateToEdit, List<CategoryEntity> categories, TripEntity? trip, ScheduleFilterType viewMode
 });
 
 
@@ -390,12 +398,13 @@ class __$ScheduleStateCopyWithImpl<$Res>
 
 /// Create a copy of ScheduleState
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? schedules = null,Object? dateFilteredSchedules = null,Object? categoryFilteredSchedules = null,Object? visibleSchedules = null,Object? scheduleMembersMap = null,Object? selectedDate = freezed,Object? selectedCategoryId = freezed,Object? page = null,Object? hasMore = null,Object? pageState = null,Object? message = freezed,Object? errorType = freezed,Object? actionType = freezed,Object? memoOpen = null,Object? navigateToCreate = null,Object? editingSchedule = freezed,Object? navigateToEdit = null,Object? categories = null,Object? trip = freezed,Object? viewMode = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? schedules = null,Object? dateFilteredSchedules = null,Object? categoryFilteredSchedules = null,Object? categoryMap = null,Object? visibleSchedules = null,Object? scheduleMembersMap = null,Object? selectedDate = freezed,Object? selectedCategoryId = freezed,Object? page = null,Object? hasMore = null,Object? pageState = null,Object? message = freezed,Object? errorType = freezed,Object? actionType = freezed,Object? memoOpen = null,Object? navigateToCreate = null,Object? editingSchedule = freezed,Object? navigateToEdit = null,Object? categories = null,Object? trip = freezed,Object? viewMode = null,}) {
   return _then(_ScheduleState(
 schedules: null == schedules ? _self._schedules : schedules // ignore: cast_nullable_to_non_nullable
 as List<ScheduleEntity>,dateFilteredSchedules: null == dateFilteredSchedules ? _self._dateFilteredSchedules : dateFilteredSchedules // ignore: cast_nullable_to_non_nullable
 as List<ScheduleEntity>,categoryFilteredSchedules: null == categoryFilteredSchedules ? _self._categoryFilteredSchedules : categoryFilteredSchedules // ignore: cast_nullable_to_non_nullable
-as List<ScheduleEntity>,visibleSchedules: null == visibleSchedules ? _self._visibleSchedules : visibleSchedules // ignore: cast_nullable_to_non_nullable
+as List<ScheduleEntity>,categoryMap: null == categoryMap ? _self._categoryMap : categoryMap // ignore: cast_nullable_to_non_nullable
+as Map<int, CategoryEntity>,visibleSchedules: null == visibleSchedules ? _self._visibleSchedules : visibleSchedules // ignore: cast_nullable_to_non_nullable
 as List<ScheduleEntity>,scheduleMembersMap: null == scheduleMembersMap ? _self._scheduleMembersMap : scheduleMembersMap // ignore: cast_nullable_to_non_nullable
 as Map<int, List<UserEntity>>,selectedDate: freezed == selectedDate ? _self.selectedDate : selectedDate // ignore: cast_nullable_to_non_nullable
 as String?,selectedCategoryId: freezed == selectedCategoryId ? _self.selectedCategoryId : selectedCategoryId // ignore: cast_nullable_to_non_nullable

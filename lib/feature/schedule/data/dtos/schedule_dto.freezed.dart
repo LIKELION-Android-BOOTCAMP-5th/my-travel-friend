@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$ScheduleDTO {
 
- int? get id;@JsonKey(name: 'created_at') String? get createdAt;@JsonKey(name: 'trip_id') int get tripId;@JsonKey(name: 'user') Map<String, dynamic>? get userJson;@JsonKey(name: 'category') Map<String, dynamic>? get categoryJson;@JsonKey(name: 'trip') Map<String, dynamic>? get tripJson; String get title; String? get place; String? get address; double? get lat; double? get lng; String get date; String? get description;@JsonKey(name: 'category_id') int get categoryId;
+ int? get id;@JsonKey(name: 'created_at') String? get createdAt;@JsonKey(name: 'trip_id') int get tripId;@JsonKey(name: 'user') Map<String, dynamic>? get userJson; String get title; String? get place; String? get address; double? get lat; double? get lng; String get date; String? get description;@JsonKey(name: 'category_id') int get categoryId;
 /// Create a copy of ScheduleDTO
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,16 +28,16 @@ $ScheduleDTOCopyWith<ScheduleDTO> get copyWith => _$ScheduleDTOCopyWithImpl<Sche
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is ScheduleDTO&&(identical(other.id, id) || other.id == id)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.tripId, tripId) || other.tripId == tripId)&&const DeepCollectionEquality().equals(other.userJson, userJson)&&const DeepCollectionEquality().equals(other.categoryJson, categoryJson)&&const DeepCollectionEquality().equals(other.tripJson, tripJson)&&(identical(other.title, title) || other.title == title)&&(identical(other.place, place) || other.place == place)&&(identical(other.address, address) || other.address == address)&&(identical(other.lat, lat) || other.lat == lat)&&(identical(other.lng, lng) || other.lng == lng)&&(identical(other.date, date) || other.date == date)&&(identical(other.description, description) || other.description == description)&&(identical(other.categoryId, categoryId) || other.categoryId == categoryId));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ScheduleDTO&&(identical(other.id, id) || other.id == id)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.tripId, tripId) || other.tripId == tripId)&&const DeepCollectionEquality().equals(other.userJson, userJson)&&(identical(other.title, title) || other.title == title)&&(identical(other.place, place) || other.place == place)&&(identical(other.address, address) || other.address == address)&&(identical(other.lat, lat) || other.lat == lat)&&(identical(other.lng, lng) || other.lng == lng)&&(identical(other.date, date) || other.date == date)&&(identical(other.description, description) || other.description == description)&&(identical(other.categoryId, categoryId) || other.categoryId == categoryId));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,createdAt,tripId,const DeepCollectionEquality().hash(userJson),const DeepCollectionEquality().hash(categoryJson),const DeepCollectionEquality().hash(tripJson),title,place,address,lat,lng,date,description,categoryId);
+int get hashCode => Object.hash(runtimeType,id,createdAt,tripId,const DeepCollectionEquality().hash(userJson),title,place,address,lat,lng,date,description,categoryId);
 
 @override
 String toString() {
-  return 'ScheduleDTO(id: $id, createdAt: $createdAt, tripId: $tripId, userJson: $userJson, categoryJson: $categoryJson, tripJson: $tripJson, title: $title, place: $place, address: $address, lat: $lat, lng: $lng, date: $date, description: $description, categoryId: $categoryId)';
+  return 'ScheduleDTO(id: $id, createdAt: $createdAt, tripId: $tripId, userJson: $userJson, title: $title, place: $place, address: $address, lat: $lat, lng: $lng, date: $date, description: $description, categoryId: $categoryId)';
 }
 
 
@@ -48,7 +48,7 @@ abstract mixin class $ScheduleDTOCopyWith<$Res>  {
   factory $ScheduleDTOCopyWith(ScheduleDTO value, $Res Function(ScheduleDTO) _then) = _$ScheduleDTOCopyWithImpl;
 @useResult
 $Res call({
- int? id,@JsonKey(name: 'created_at') String? createdAt,@JsonKey(name: 'trip_id') int tripId,@JsonKey(name: 'user') Map<String, dynamic>? userJson,@JsonKey(name: 'category') Map<String, dynamic>? categoryJson,@JsonKey(name: 'trip') Map<String, dynamic>? tripJson, String title, String? place, String? address, double? lat, double? lng, String date, String? description,@JsonKey(name: 'category_id') int categoryId
+ int? id,@JsonKey(name: 'created_at') String? createdAt,@JsonKey(name: 'trip_id') int tripId,@JsonKey(name: 'user') Map<String, dynamic>? userJson, String title, String? place, String? address, double? lat, double? lng, String date, String? description,@JsonKey(name: 'category_id') int categoryId
 });
 
 
@@ -65,14 +65,12 @@ class _$ScheduleDTOCopyWithImpl<$Res>
 
 /// Create a copy of ScheduleDTO
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = freezed,Object? createdAt = freezed,Object? tripId = null,Object? userJson = freezed,Object? categoryJson = freezed,Object? tripJson = freezed,Object? title = null,Object? place = freezed,Object? address = freezed,Object? lat = freezed,Object? lng = freezed,Object? date = null,Object? description = freezed,Object? categoryId = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = freezed,Object? createdAt = freezed,Object? tripId = null,Object? userJson = freezed,Object? title = null,Object? place = freezed,Object? address = freezed,Object? lat = freezed,Object? lng = freezed,Object? date = null,Object? description = freezed,Object? categoryId = null,}) {
   return _then(_self.copyWith(
 id: freezed == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as int?,createdAt: freezed == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
 as String?,tripId: null == tripId ? _self.tripId : tripId // ignore: cast_nullable_to_non_nullable
 as int,userJson: freezed == userJson ? _self.userJson : userJson // ignore: cast_nullable_to_non_nullable
-as Map<String, dynamic>?,categoryJson: freezed == categoryJson ? _self.categoryJson : categoryJson // ignore: cast_nullable_to_non_nullable
-as Map<String, dynamic>?,tripJson: freezed == tripJson ? _self.tripJson : tripJson // ignore: cast_nullable_to_non_nullable
 as Map<String, dynamic>?,title: null == title ? _self.title : title // ignore: cast_nullable_to_non_nullable
 as String,place: freezed == place ? _self.place : place // ignore: cast_nullable_to_non_nullable
 as String?,address: freezed == address ? _self.address : address // ignore: cast_nullable_to_non_nullable
@@ -166,10 +164,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int? id, @JsonKey(name: 'created_at')  String? createdAt, @JsonKey(name: 'trip_id')  int tripId, @JsonKey(name: 'user')  Map<String, dynamic>? userJson, @JsonKey(name: 'category')  Map<String, dynamic>? categoryJson, @JsonKey(name: 'trip')  Map<String, dynamic>? tripJson,  String title,  String? place,  String? address,  double? lat,  double? lng,  String date,  String? description, @JsonKey(name: 'category_id')  int categoryId)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int? id, @JsonKey(name: 'created_at')  String? createdAt, @JsonKey(name: 'trip_id')  int tripId, @JsonKey(name: 'user')  Map<String, dynamic>? userJson,  String title,  String? place,  String? address,  double? lat,  double? lng,  String date,  String? description, @JsonKey(name: 'category_id')  int categoryId)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _ScheduleDTO() when $default != null:
-return $default(_that.id,_that.createdAt,_that.tripId,_that.userJson,_that.categoryJson,_that.tripJson,_that.title,_that.place,_that.address,_that.lat,_that.lng,_that.date,_that.description,_that.categoryId);case _:
+return $default(_that.id,_that.createdAt,_that.tripId,_that.userJson,_that.title,_that.place,_that.address,_that.lat,_that.lng,_that.date,_that.description,_that.categoryId);case _:
   return orElse();
 
 }
@@ -187,10 +185,10 @@ return $default(_that.id,_that.createdAt,_that.tripId,_that.userJson,_that.categ
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int? id, @JsonKey(name: 'created_at')  String? createdAt, @JsonKey(name: 'trip_id')  int tripId, @JsonKey(name: 'user')  Map<String, dynamic>? userJson, @JsonKey(name: 'category')  Map<String, dynamic>? categoryJson, @JsonKey(name: 'trip')  Map<String, dynamic>? tripJson,  String title,  String? place,  String? address,  double? lat,  double? lng,  String date,  String? description, @JsonKey(name: 'category_id')  int categoryId)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int? id, @JsonKey(name: 'created_at')  String? createdAt, @JsonKey(name: 'trip_id')  int tripId, @JsonKey(name: 'user')  Map<String, dynamic>? userJson,  String title,  String? place,  String? address,  double? lat,  double? lng,  String date,  String? description, @JsonKey(name: 'category_id')  int categoryId)  $default,) {final _that = this;
 switch (_that) {
 case _ScheduleDTO():
-return $default(_that.id,_that.createdAt,_that.tripId,_that.userJson,_that.categoryJson,_that.tripJson,_that.title,_that.place,_that.address,_that.lat,_that.lng,_that.date,_that.description,_that.categoryId);case _:
+return $default(_that.id,_that.createdAt,_that.tripId,_that.userJson,_that.title,_that.place,_that.address,_that.lat,_that.lng,_that.date,_that.description,_that.categoryId);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -207,10 +205,10 @@ return $default(_that.id,_that.createdAt,_that.tripId,_that.userJson,_that.categ
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int? id, @JsonKey(name: 'created_at')  String? createdAt, @JsonKey(name: 'trip_id')  int tripId, @JsonKey(name: 'user')  Map<String, dynamic>? userJson, @JsonKey(name: 'category')  Map<String, dynamic>? categoryJson, @JsonKey(name: 'trip')  Map<String, dynamic>? tripJson,  String title,  String? place,  String? address,  double? lat,  double? lng,  String date,  String? description, @JsonKey(name: 'category_id')  int categoryId)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int? id, @JsonKey(name: 'created_at')  String? createdAt, @JsonKey(name: 'trip_id')  int tripId, @JsonKey(name: 'user')  Map<String, dynamic>? userJson,  String title,  String? place,  String? address,  double? lat,  double? lng,  String date,  String? description, @JsonKey(name: 'category_id')  int categoryId)?  $default,) {final _that = this;
 switch (_that) {
 case _ScheduleDTO() when $default != null:
-return $default(_that.id,_that.createdAt,_that.tripId,_that.userJson,_that.categoryJson,_that.tripJson,_that.title,_that.place,_that.address,_that.lat,_that.lng,_that.date,_that.description,_that.categoryId);case _:
+return $default(_that.id,_that.createdAt,_that.tripId,_that.userJson,_that.title,_that.place,_that.address,_that.lat,_that.lng,_that.date,_that.description,_that.categoryId);case _:
   return null;
 
 }
@@ -222,7 +220,7 @@ return $default(_that.id,_that.createdAt,_that.tripId,_that.userJson,_that.categ
 @JsonSerializable()
 
 class _ScheduleDTO extends ScheduleDTO {
-  const _ScheduleDTO({this.id, @JsonKey(name: 'created_at') this.createdAt, @JsonKey(name: 'trip_id') required this.tripId, @JsonKey(name: 'user') final  Map<String, dynamic>? userJson, @JsonKey(name: 'category') final  Map<String, dynamic>? categoryJson, @JsonKey(name: 'trip') final  Map<String, dynamic>? tripJson, required this.title, this.place, this.address, this.lat, this.lng, required this.date, this.description, @JsonKey(name: 'category_id') required this.categoryId}): _userJson = userJson,_categoryJson = categoryJson,_tripJson = tripJson,super._();
+  const _ScheduleDTO({this.id, @JsonKey(name: 'created_at') this.createdAt, @JsonKey(name: 'trip_id') required this.tripId, @JsonKey(name: 'user') final  Map<String, dynamic>? userJson, required this.title, this.place, this.address, this.lat, this.lng, required this.date, this.description, @JsonKey(name: 'category_id') required this.categoryId}): _userJson = userJson,super._();
   factory _ScheduleDTO.fromJson(Map<String, dynamic> json) => _$ScheduleDTOFromJson(json);
 
 @override final  int? id;
@@ -233,24 +231,6 @@ class _ScheduleDTO extends ScheduleDTO {
   final value = _userJson;
   if (value == null) return null;
   if (_userJson is EqualUnmodifiableMapView) return _userJson;
-  // ignore: implicit_dynamic_type
-  return EqualUnmodifiableMapView(value);
-}
-
- final  Map<String, dynamic>? _categoryJson;
-@override@JsonKey(name: 'category') Map<String, dynamic>? get categoryJson {
-  final value = _categoryJson;
-  if (value == null) return null;
-  if (_categoryJson is EqualUnmodifiableMapView) return _categoryJson;
-  // ignore: implicit_dynamic_type
-  return EqualUnmodifiableMapView(value);
-}
-
- final  Map<String, dynamic>? _tripJson;
-@override@JsonKey(name: 'trip') Map<String, dynamic>? get tripJson {
-  final value = _tripJson;
-  if (value == null) return null;
-  if (_tripJson is EqualUnmodifiableMapView) return _tripJson;
   // ignore: implicit_dynamic_type
   return EqualUnmodifiableMapView(value);
 }
@@ -277,16 +257,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ScheduleDTO&&(identical(other.id, id) || other.id == id)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.tripId, tripId) || other.tripId == tripId)&&const DeepCollectionEquality().equals(other._userJson, _userJson)&&const DeepCollectionEquality().equals(other._categoryJson, _categoryJson)&&const DeepCollectionEquality().equals(other._tripJson, _tripJson)&&(identical(other.title, title) || other.title == title)&&(identical(other.place, place) || other.place == place)&&(identical(other.address, address) || other.address == address)&&(identical(other.lat, lat) || other.lat == lat)&&(identical(other.lng, lng) || other.lng == lng)&&(identical(other.date, date) || other.date == date)&&(identical(other.description, description) || other.description == description)&&(identical(other.categoryId, categoryId) || other.categoryId == categoryId));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ScheduleDTO&&(identical(other.id, id) || other.id == id)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.tripId, tripId) || other.tripId == tripId)&&const DeepCollectionEquality().equals(other._userJson, _userJson)&&(identical(other.title, title) || other.title == title)&&(identical(other.place, place) || other.place == place)&&(identical(other.address, address) || other.address == address)&&(identical(other.lat, lat) || other.lat == lat)&&(identical(other.lng, lng) || other.lng == lng)&&(identical(other.date, date) || other.date == date)&&(identical(other.description, description) || other.description == description)&&(identical(other.categoryId, categoryId) || other.categoryId == categoryId));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,createdAt,tripId,const DeepCollectionEquality().hash(_userJson),const DeepCollectionEquality().hash(_categoryJson),const DeepCollectionEquality().hash(_tripJson),title,place,address,lat,lng,date,description,categoryId);
+int get hashCode => Object.hash(runtimeType,id,createdAt,tripId,const DeepCollectionEquality().hash(_userJson),title,place,address,lat,lng,date,description,categoryId);
 
 @override
 String toString() {
-  return 'ScheduleDTO(id: $id, createdAt: $createdAt, tripId: $tripId, userJson: $userJson, categoryJson: $categoryJson, tripJson: $tripJson, title: $title, place: $place, address: $address, lat: $lat, lng: $lng, date: $date, description: $description, categoryId: $categoryId)';
+  return 'ScheduleDTO(id: $id, createdAt: $createdAt, tripId: $tripId, userJson: $userJson, title: $title, place: $place, address: $address, lat: $lat, lng: $lng, date: $date, description: $description, categoryId: $categoryId)';
 }
 
 
@@ -297,7 +277,7 @@ abstract mixin class _$ScheduleDTOCopyWith<$Res> implements $ScheduleDTOCopyWith
   factory _$ScheduleDTOCopyWith(_ScheduleDTO value, $Res Function(_ScheduleDTO) _then) = __$ScheduleDTOCopyWithImpl;
 @override @useResult
 $Res call({
- int? id,@JsonKey(name: 'created_at') String? createdAt,@JsonKey(name: 'trip_id') int tripId,@JsonKey(name: 'user') Map<String, dynamic>? userJson,@JsonKey(name: 'category') Map<String, dynamic>? categoryJson,@JsonKey(name: 'trip') Map<String, dynamic>? tripJson, String title, String? place, String? address, double? lat, double? lng, String date, String? description,@JsonKey(name: 'category_id') int categoryId
+ int? id,@JsonKey(name: 'created_at') String? createdAt,@JsonKey(name: 'trip_id') int tripId,@JsonKey(name: 'user') Map<String, dynamic>? userJson, String title, String? place, String? address, double? lat, double? lng, String date, String? description,@JsonKey(name: 'category_id') int categoryId
 });
 
 
@@ -314,14 +294,12 @@ class __$ScheduleDTOCopyWithImpl<$Res>
 
 /// Create a copy of ScheduleDTO
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = freezed,Object? createdAt = freezed,Object? tripId = null,Object? userJson = freezed,Object? categoryJson = freezed,Object? tripJson = freezed,Object? title = null,Object? place = freezed,Object? address = freezed,Object? lat = freezed,Object? lng = freezed,Object? date = null,Object? description = freezed,Object? categoryId = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = freezed,Object? createdAt = freezed,Object? tripId = null,Object? userJson = freezed,Object? title = null,Object? place = freezed,Object? address = freezed,Object? lat = freezed,Object? lng = freezed,Object? date = null,Object? description = freezed,Object? categoryId = null,}) {
   return _then(_ScheduleDTO(
 id: freezed == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as int?,createdAt: freezed == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
 as String?,tripId: null == tripId ? _self.tripId : tripId // ignore: cast_nullable_to_non_nullable
 as int,userJson: freezed == userJson ? _self._userJson : userJson // ignore: cast_nullable_to_non_nullable
-as Map<String, dynamic>?,categoryJson: freezed == categoryJson ? _self._categoryJson : categoryJson // ignore: cast_nullable_to_non_nullable
-as Map<String, dynamic>?,tripJson: freezed == tripJson ? _self._tripJson : tripJson // ignore: cast_nullable_to_non_nullable
 as Map<String, dynamic>?,title: null == title ? _self.title : title // ignore: cast_nullable_to_non_nullable
 as String,place: freezed == place ? _self.place : place // ignore: cast_nullable_to_non_nullable
 as String?,address: freezed == address ? _self.address : address // ignore: cast_nullable_to_non_nullable

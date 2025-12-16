@@ -18,7 +18,7 @@ abstract class ScheduleState with _$ScheduleState {
 
     // 카테고리 필터링 결과
     @Default([]) List<ScheduleEntity> categoryFilteredSchedules,
-
+    @Default({}) Map<int, CategoryEntity> categoryMap,
     // 최종 표시할 스케줄
     @Default([]) List<ScheduleEntity> visibleSchedules,
 

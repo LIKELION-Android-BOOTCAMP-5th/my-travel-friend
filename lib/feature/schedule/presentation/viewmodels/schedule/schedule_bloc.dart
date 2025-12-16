@@ -101,7 +101,7 @@ class ScheduleBloc extends Bloc<ScheduleEvent, ScheduleState> {
       },
     );
     if (emit.isDone) return;
-
+    final categoryMap = {for (final c in categories) c.id: c};
     emit(
       state.copyWith(
         trip: trip,
@@ -115,6 +115,7 @@ class ScheduleBloc extends Bloc<ScheduleEvent, ScheduleState> {
         viewMode: ScheduleFilterType.date,
         pageState: SchedulepageState.loaded,
         scheduleMembersMap: state.scheduleMembersMap, // ✅ 유지
+        categoryMap: categoryMap,
       ),
     );
 

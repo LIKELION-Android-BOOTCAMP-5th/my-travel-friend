@@ -25,13 +25,7 @@ class ScheduleDataSourceImpl implements ScheduleDataSource {
 
       final res = await supabase
           .from('schedule')
-          .select('''
-      *,
-      category:category_id (
-        id,
-        content
-      )
-    ''')
+          .select('*')
           .eq('trip_id', tripId)
           .order('date', ascending: true)
           .range(from, to);
