@@ -28,7 +28,6 @@ import '../feature/diary/presentation/viewmodels/new_diary/new_diary_bloc.dart';
 import '../feature/friend/presentation/screen/friend_bloc_widget.dart';
 import '../feature/friend/presentation/screen/friend_request_bloc_widget.dart';
 import '../feature/friend/presentation/screen/recevice_list_bloc_widget.dart';
-import '../feature/friend/presentation/viewmodel/friend_bloc.dart';
 import '../feature/schedule/domain/entities/schedule_entity.dart';
 import '../feature/schedule/presentation/screens/create_schedule_bloc_widget.dart';
 import '../feature/schedule/presentation/screens/edit_schedule_bloc_widget.dart';
@@ -184,11 +183,7 @@ class AppRouter {
           final userId = (authState is AuthProfileAuthenticated)
               ? authState.userInfo.id!
               : 0;
-
-          return BlocProvider(
-            create: (context) => GetIt.instance<FriendBloc>(),
-            child: FriendBlocWidget(userId: userId),
-          );
+          return FriendBlocWidget(userId: userId);
         },
       ),
       GoRoute(
