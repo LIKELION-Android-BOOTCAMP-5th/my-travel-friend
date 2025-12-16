@@ -9,6 +9,8 @@ import 'package:permission_handler/permission_handler.dart';
 
 import 'core/service/internal/push_notification_service.dart';
 import 'core/theme/app_theme.dart';
+import 'feature/alarm/presentation/viewmodels/alarm_bloc.dart';
+import 'feature/alarm/presentation/viewmodels/alarm_event.dart';
 import 'feature/auth/presentation/viewmodel/auth_profile/auth_profile_bloc.dart';
 import 'feature/auth/presentation/viewmodel/auth_profile/auth_profile_state.dart';
 import 'feature/setting/presentation/viewmodels/theme/theme_bloc.dart';
@@ -53,6 +55,8 @@ void main() async {
           create: (context) =>
               GetIt.instance<ThemeBloc>()..add(const LoadTheme()),
         ),
+        // 알림 표시용 bloc
+        BlocProvider(create: (context) => GetIt.instance<AlarmBloc>()),
       ],
       child: const MyApp(),
     ),
@@ -94,14 +98,20 @@ class MyApp extends StatelessWidget {
               listenWhen: (prev, curr) => prev.runtimeType != curr.runtimeType,
               listener: (context, state) {
                 if (state is AuthProfileAuthenticated) {
+                  context.read<AlarmBloc>().add(
+                    AlarmEvent.startWatching(userId: state.userInfo.id!),
+                  );
                   AppRouter.instance.router.go('/home');
                 }
                 if (state is AuthProfileUnauthenticated) {
+                  context.read<AlarmBloc>().add(
+                    const AlarmEvent.stopWatching(),
+                  );
                   AppRouter.instance.router.go('/login');
                 }
               },
               builder: (context, authState) {
-                // 👇 로그아웃 중이면 로딩 오버레이
+                // 로그아웃 중이면 로딩 오버레이
                 if (authState is AuthProfileLoading) {
                   return Stack(
                     children: [
