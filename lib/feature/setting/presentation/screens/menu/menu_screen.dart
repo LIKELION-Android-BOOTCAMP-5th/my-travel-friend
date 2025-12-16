@@ -298,6 +298,19 @@ class MenuScreen extends StatelessWidget {
                   ),
                   MenuBox(
                     state: state,
+                    title: "개인 정보 처리 방침",
+                    onTap: () {
+                      Launcher.openUrl(
+                        'https://shinylee512.notion.site/my-travel-friend-personal-info?source=copy_link',
+                      );
+                    },
+                  ),
+                  Divider(
+                    height: 0.5,
+                    color: colorScheme.outlineVariant.withOpacity(0.3),
+                  ),
+                  MenuBox(
+                    state: state,
                     title: "로그아웃",
                     onTap: () {
                       BlocProvider.of<AuthProfileBloc>(
