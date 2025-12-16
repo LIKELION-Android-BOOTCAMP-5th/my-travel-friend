@@ -182,7 +182,7 @@ class AppRouter {
         },
       ),
       GoRoute(
-        path: '/friend/request',
+        path: '/setting/friend/request',
         builder: (context, state) {
           final extra = state.extra as Map<String, dynamic>;
           final requestId = extra['requestId'] as int;

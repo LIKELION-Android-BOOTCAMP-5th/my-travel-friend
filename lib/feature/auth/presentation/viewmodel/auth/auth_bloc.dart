@@ -22,6 +22,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<SignInWithSocialPressed>(_onSignInWithSocialPressed);
     on<SignInCanceled>(_onSignInCanceled);
     on<SignedOut>(_onSignedOut);
+    on<Authenticated>(_onAuthenticated);
   }
 
   // AuthStarted 이벤트 핸들러: 앱 시작 시 인증 상태 확인
@@ -29,9 +30,15 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     AuthStarted event,
     Emitter<AuthState> emit,
   ) async {
-    ///TODO:로그인 상태 체크
+    emit(const AuthState.initial());
   }
 
+  Future<void> _onAuthenticated(
+    Authenticated event,
+    Emitter<AuthState> emit,
+  ) async {
+    ///TODO:로그인 상태 체크
+  }
   //소셜 로그인 버튼 이벤트 핸들러
   Future<void> _onSignInWithSocialPressed(
     SignInWithSocialPressed event,
@@ -46,8 +53,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     //result결과에 따라 상태 변경
     result.when(
       success: (user) {
-        //성공시 인증 상태로 변경
-        emit(AuthState.authenticated(uuId: user.uuid!));
+        /*//성공시 인증 상태로 변경
+        emit(AuthState.authenticated(uuId: user.uuid!));*/
       },
       failure: (fail) {
         // 실패 시 Error 상태로 전환
@@ -69,16 +76,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
   // 로그아웃 이벤트 핸들러
   Future<void> _onSignedOut(SignedOut event, Emitter<AuthState> emit) async {
-    emit(const AuthState.loading());
-    try {
-      // 주입받은 Use Case의 메서드를 호출
-      await _signOutUseCase.call();
-
-      // 로그아웃 성공 시 Unauthenticated 상태로 전환
-      emit(const AuthState.unauthenticated());
-    } catch (e) {
-      // 로그아웃 실패 시 에러 처리
-      emit(AuthState.error(message: '로그아웃 실패: $e'));
-    }
+    // 로그아웃 성공 시 Unauthenticated 상태로 전환
+    print("로그아웃 authbloc");
+    emit(const AuthState.unauthenticated());
   }
 }

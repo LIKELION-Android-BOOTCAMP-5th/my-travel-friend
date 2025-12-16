@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flutter/foundation.dart';
 import 'package:injectable/injectable.dart';
 import 'package:my_travel_friend/core/result/failures.dart';
 import 'package:my_travel_friend/core/result/result.dart';
@@ -12,7 +13,7 @@ import '../../domain/entities/user_entity.dart';
 
 @LazySingleton(as: SupabaseAuthDataSource)
 class SupabaseAuthDataSourceImpl implements SupabaseAuthDataSource {
-  final SupabaseClient supabaseClient; // SupabaseClient에 명확하게 의존
+  final SupabaseClient _supabaseClient; // SupabaseClient에 명확하게 의존
   final PushNotificationService pushNotificationService;
   //일반 StreamController 선언
   final StreamController<Result<UserDTO?>> _userStreamController =
@@ -20,7 +21,10 @@ class SupabaseAuthDataSourceImpl implements SupabaseAuthDataSource {
 
   // ✅ 2. 가장 최근 값을 저장할 변수 선언
   UserDTO? _latestUserDTO;
-  SupabaseAuthDataSourceImpl(this.supabaseClient, this.pushNotificationService);
+  SupabaseAuthDataSourceImpl(
+    this._supabaseClient,
+    this.pushNotificationService,
+  );
 
   OAuthProvider _getProvider(SocialLoginType type) {
     switch (type) {
@@ -46,11 +50,12 @@ class SupabaseAuthDataSourceImpl implements SupabaseAuthDataSource {
     final provider = _getProvider(type);
 
     try {
-      final AuthResponse response = await supabaseClient.auth.signInWithIdToken(
-        provider: provider,
-        accessToken: accessToken,
-        idToken: idToken,
-      );
+      final AuthResponse response = await _supabaseClient.auth
+          .signInWithIdToken(
+            provider: provider,
+            accessToken: accessToken,
+            idToken: idToken,
+          );
       return Result.success(
         UserDTO(
           id: null,
@@ -68,9 +73,41 @@ class SupabaseAuthDataSourceImpl implements SupabaseAuthDataSource {
   }
 
   @override
+  Future<Result<UserDTO>> signInWithKakao() async {
+    try {
+      final isLaunched = await _supabaseClient.auth.signInWithOAuth(
+        OAuthProvider.kakao,
+        redirectTo: kIsWeb ? null : 'mytravelfriend://login-callback',
+        authScreenLaunchMode: kIsWeb
+            ? LaunchMode.platformDefault
+            : LaunchMode.externalApplication,
+      );
+      //뭔가의 오류로 창이 열리지 못했다면
+      if (!isLaunched) {
+        return Result.failure(Failure.authFailure(message: "카카오 로그인:인증 시도 실패"));
+      }
+      //로그인 정보와 세션은 실제 authProfile에서 담당
+      //해당 성공여부는 창이 잘 열린것에 대한 여부일뿐
+      return Result.success(
+        UserDTO(
+          id: null,
+          uuid: 'signInKakao',
+          nickname: null,
+          email: null,
+          token: null,
+          profileImg: null,
+          deletedAt: null,
+        ),
+      );
+    } catch (e) {
+      return Result.failure(Failure.authFailure(message: "카카오 로그인 실패 $e"));
+    }
+  }
+
+  @override
   Future<Result<void>> signOut() async {
     try {
-      await supabaseClient.auth.signOut();
+      await _supabaseClient.auth.signOut();
       return Result.success(null);
     } catch (e) {
       return Result.failure(Failure.authFailure(message: "로그아웃 실패 $e"));
@@ -80,7 +117,7 @@ class SupabaseAuthDataSourceImpl implements SupabaseAuthDataSource {
   @override
   Future<Result<UserDTO>> getCurrentUser(String uuid) async {
     try {
-      final result = await supabaseClient
+      final result = await _supabaseClient
           .from('user')
           .select("*")
           .eq('uuid', uuid)
@@ -97,7 +134,7 @@ class SupabaseAuthDataSourceImpl implements SupabaseAuthDataSource {
   Future<Result<String>> updateFCMToken(String uuid) async {
     String? token = await pushNotificationService.getToken();
     try {
-      final result = await supabaseClient
+      final result = await _supabaseClient
           .from('user')
           .update({'token': token})
           .eq('uuid', uuid)
@@ -118,7 +155,7 @@ class SupabaseAuthDataSourceImpl implements SupabaseAuthDataSource {
   @override
   void initializeAuthListener() {
     try {
-      supabaseClient.auth.onAuthStateChange.listen((data) {
+      _supabaseClient.auth.onAuthStateChange.listen((data) {
         _handleAuthChange(data.event, data.session);
       });
     } catch (e) {
@@ -216,11 +253,12 @@ class SupabaseAuthDataSourceImpl implements SupabaseAuthDataSource {
     String? familyName,
   }) async {
     try {
-      final AuthResponse response = await supabaseClient.auth.signInWithIdToken(
-        provider: OAuthProvider.apple,
-        idToken: idToken,
-        nonce: rawNonce,
-      );
+      final AuthResponse response = await _supabaseClient.auth
+          .signInWithIdToken(
+            provider: OAuthProvider.apple,
+            idToken: idToken,
+            nonce: rawNonce,
+          );
 
       final user = response.user;
 
@@ -236,7 +274,7 @@ class SupabaseAuthDataSourceImpl implements SupabaseAuthDataSource {
         if (givenName != null) nameParts.add(givenName);
         final fullName = nameParts.join(' ');
 
-        await supabaseClient.auth.updateUser(
+        await _supabaseClient.auth.updateUser(
           UserAttributes(
             data: {
               'full_name': fullName,

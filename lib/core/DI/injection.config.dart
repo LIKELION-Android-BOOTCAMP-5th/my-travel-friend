@@ -334,12 +334,6 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i153.GoogleAuthDataSource>(
       () => _i795.SocialAuthDataSourceImpl(gh<_i116.GoogleSignIn>()),
     );
-    gh.lazySingleton<_i1040.SupabaseAuthDataSource>(
-      () => _i436.SupabaseAuthDataSourceImpl(
-        gh<_i454.SupabaseClient>(),
-        gh<_i737.PushNotificationService>(),
-      ),
-    );
     gh.lazySingleton<_i231.GetThemeUseCase>(
       () => _i231.GetThemeUseCase(gh<_i1026.ThemeService>()),
     );
@@ -366,13 +360,6 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.lazySingleton<_i334.ScheduleDataSource>(
       () => _i77.ScheduleDataSourceImpl(supabase: gh<_i454.SupabaseClient>()),
-    );
-    gh.singleton<_i488.AuthRepository>(
-      () => _i263.AuthRepositoryImpl(
-        gh<_i153.GoogleAuthDataSource>(),
-        gh<_i278.AppleAuthDataSource>(),
-        gh<_i1040.SupabaseAuthDataSource>(),
-      ),
     );
     gh.lazySingleton<_i340.FriendRequestDataSource>(
       () => _i920.FriendRequestDataSourceImpl(gh<_i454.SupabaseClient>()),
@@ -460,6 +447,12 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i202.DeleteImgUsecase>(),
       ),
     );
+    gh.lazySingleton<_i1040.SupabaseAuthDataSource>(
+      () => _i436.SupabaseAuthDataSourceImpl(
+        gh<_i454.SupabaseClient>(),
+        gh<_i737.PushNotificationService>(),
+      ),
+    );
     gh.lazySingleton<_i277.GetTripByIdUseCase>(
       () => _i277.GetTripByIdUseCase(gh<_i161.TripRepository>()),
     );
@@ -468,15 +461,6 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.lazySingleton<_i871.DiaryRepository>(
       () => _i148.DiaryRepositoryImpl(gh<_i881.DiaryDataSource>()),
-    );
-    gh.lazySingleton<_i529.GetCurrentUserUseCase>(
-      () => _i529.GetCurrentUserUseCase(gh<_i488.AuthRepository>()),
-    );
-    gh.lazySingleton<_i858.SignOutUseCase>(
-      () => _i858.SignOutUseCase(gh<_i488.AuthRepository>()),
-    );
-    gh.lazySingleton<_i420.SocialSignInUseCase>(
-      () => _i420.SocialSignInUseCase(gh<_i488.AuthRepository>()),
     );
     gh.factory<_i703.EditTripBloc>(
       () => _i703.EditTripBloc(
@@ -529,12 +513,6 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i945.CheckNicknameDuplicateUseCase>(
       () => _i945.CheckNicknameDuplicateUseCase(gh<_i565.ProfileRepository>()),
     );
-    gh.lazySingleton<_i739.CancelOauthUseCase>(
-      () => _i739.CancelOauthUseCase(gh<_i488.AuthRepository>()),
-    );
-    gh.singleton<_i456.WatchAuthStateUseCase>(
-      () => _i456.WatchAuthStateUseCase(gh<_i488.AuthRepository>()),
-    );
     gh.lazySingleton<_i91.GetChatUseCase>(
       () => _i91.GetChatUseCase(gh<_i167.ChatRepository>()),
     );
@@ -551,6 +529,13 @@ extension GetItInjectableX on _i174.GetIt {
       () => _i873.CreateTripBloc(
         gh<_i779.CreateTripUsecase>(),
         gh<_i161.TripRepository>(),
+      ),
+    );
+    gh.singleton<_i488.AuthRepository>(
+      () => _i263.AuthRepositoryImpl(
+        gh<_i153.GoogleAuthDataSource>(),
+        gh<_i278.AppleAuthDataSource>(),
+        gh<_i1040.SupabaseAuthDataSource>(),
       ),
     );
     gh.lazySingleton<_i715.DeleteImgUseCase>(
@@ -630,13 +615,6 @@ extension GetItInjectableX on _i174.GetIt {
       () =>
           _i124.AlarmSettingRepositoryImpl(gh<_i1030.AlarmSettingDataSource>()),
     );
-    gh.lazySingleton<_i474.AuthBloc>(
-      () => _i474.AuthBloc(
-        gh<_i420.SocialSignInUseCase>(),
-        gh<_i858.SignOutUseCase>(),
-        gh<_i739.CancelOauthUseCase>(),
-      ),
-    );
     gh.factory<_i166.ScheduleBloc>(
       () => _i166.ScheduleBloc(
         gh<_i600.GetAllScheduleUseCase>(),
@@ -652,13 +630,6 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.lazySingleton<_i57.ToggleTodoListUseCase>(
       () => _i57.ToggleTodoListUseCase(gh<_i579.TodoListRepository>()),
-    );
-    gh.singleton<_i387.AuthProfileBloc>(
-      () => _i387.AuthProfileBloc(
-        gh<_i456.WatchAuthStateUseCase>(),
-        gh<_i529.GetCurrentUserUseCase>(),
-        gh<_i858.SignOutUseCase>(),
-      ),
     );
     gh.lazySingleton<_i823.GetSentRequestUsecase>(
       () => _i823.GetSentRequestUsecase(gh<_i255.FriendRequestRepository>()),
@@ -682,6 +653,15 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i304.UploadImgUseCase>(),
         gh<_i715.DeleteImgUseCase>(),
       ),
+    );
+    gh.lazySingleton<_i529.GetCurrentUserUseCase>(
+      () => _i529.GetCurrentUserUseCase(gh<_i488.AuthRepository>()),
+    );
+    gh.lazySingleton<_i858.SignOutUseCase>(
+      () => _i858.SignOutUseCase(gh<_i488.AuthRepository>()),
+    );
+    gh.lazySingleton<_i420.SocialSignInUseCase>(
+      () => _i420.SocialSignInUseCase(gh<_i488.AuthRepository>()),
     );
     gh.lazySingleton<_i1062.GetRequestProfileUsecase>(
       () =>
@@ -715,6 +695,12 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.lazySingleton<_i617.SearchNicknameUsecase>(
       () => _i617.SearchNicknameUsecase(gh<_i359.FriendRepository>()),
+    );
+    gh.lazySingleton<_i739.CancelOauthUseCase>(
+      () => _i739.CancelOauthUseCase(gh<_i488.AuthRepository>()),
+    );
+    gh.singleton<_i456.WatchAuthStateUseCase>(
+      () => _i456.WatchAuthStateUseCase(gh<_i488.AuthRepository>()),
     );
     gh.factory<_i27.DiaryBloc>(
       () => _i27.DiaryBloc(
@@ -778,6 +764,20 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.lazySingleton<_i87.UpdateAlarmSettingUseCase>(
       () => _i87.UpdateAlarmSettingUseCase(gh<_i212.AlarmSettingRepository>()),
+    );
+    gh.lazySingleton<_i474.AuthBloc>(
+      () => _i474.AuthBloc(
+        gh<_i420.SocialSignInUseCase>(),
+        gh<_i858.SignOutUseCase>(),
+        gh<_i739.CancelOauthUseCase>(),
+      ),
+    );
+    gh.singleton<_i387.AuthProfileBloc>(
+      () => _i387.AuthProfileBloc(
+        gh<_i456.WatchAuthStateUseCase>(),
+        gh<_i529.GetCurrentUserUseCase>(),
+        gh<_i858.SignOutUseCase>(),
+      ),
     );
     gh.factory<_i693.AlarmBloc>(
       () => _i693.AlarmBloc(

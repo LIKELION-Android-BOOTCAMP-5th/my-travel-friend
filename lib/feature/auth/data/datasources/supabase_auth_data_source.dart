@@ -9,7 +9,7 @@ abstract class SupabaseAuthDataSource {
     required String idToken,
     required String accessToken,
   });
-
+  Future<Result<UserDTO>> signInWithKakao();
   Future<Result<UserDTO>> signInWithApple({
     required String idToken,
     required String rawNonce,
