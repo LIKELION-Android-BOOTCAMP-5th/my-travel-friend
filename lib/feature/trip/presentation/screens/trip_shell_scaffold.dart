@@ -1,5 +1,7 @@
+// [이재은] Trip 공통 Shell (AppBar + BottomNav)
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../core/theme/app_colors.dart';
@@ -12,103 +14,159 @@ import '../../../../core/widget/pop_up_box.dart';
 import '../../../../core/widget/toast_pop.dart';
 import '../../../auth/presentation/viewmodel/auth_profile/auth_profile_bloc.dart';
 import '../../../auth/presentation/viewmodel/auth_profile/auth_profile_state.dart';
+import '../../../chat/presentation/viewmodels/chat_unread/chat_unread_bloc.dart';
+import '../../../chat/presentation/viewmodels/chat_unread/chat_unread_event.dart';
+import '../../../chat/presentation/viewmodels/chat_unread/chat_unread_state.dart';
 import '../../domain/entities/trip_entity.dart';
 import '../viewmodels/trip_detail/trip_detail_bloc.dart';
 import '../viewmodels/trip_detail/trip_detail_event.dart';
 import '../viewmodels/trip_detail/trip_detail_state.dart';
 import 'edit_trip_screen.dart';
 
-// [이재은] Trip 공통 Shell (AppBar + BottomNav)
-class TripShellScaffold extends StatelessWidget {
+class TripShellScaffold extends StatefulWidget {
   final Widget child;
 
   const TripShellScaffold({super.key, required this.child});
+
+  @override
+  State<TripShellScaffold> createState() => _TripShellScaffoldState();
+}
+
+class _TripShellScaffoldState extends State<TripShellScaffold> {
+  late final ChatUnreadBloc _chatUnreadBloc;
+
+  @override
+  void initState() {
+    super.initState();
+    _chatUnreadBloc = GetIt.instance<ChatUnreadBloc>();
+  }
+
+  @override
+  void dispose() {
+    _chatUnreadBloc.add(const StopUnreadSubscription());
+    _chatUnreadBloc.close();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
     final isDark = colorScheme.brightness == Brightness.dark;
 
-    return BlocConsumer<TripDetailBloc, TripDetailState>(
-      listenWhen: (prev, curr) => prev.pageState != curr.pageState,
-      listener: (context, state) {
-        // 여행 포기 성공 시
-        if (state.pageState == TripDetailPageState.left) {
-          ToastPop.show('여행을 포기했습니다');
-          context.go('/home');
-        }
-      },
-      builder: (context, state) {
-        // 로딩 중
-        if (state.pageState == TripDetailPageState.loading ||
-            state.pageState == TripDetailPageState.initial) {
-          return const Scaffold(
-            body: Center(child: CircularProgressIndicator()),
-          );
-        }
+    return BlocProvider.value(
+      value: _chatUnreadBloc,
+      child: BlocConsumer<TripDetailBloc, TripDetailState>(
+        listenWhen: (prev, curr) => prev.pageState != curr.pageState,
+        listener: (context, state) {
+          // 여행 포기 성공 시
+          if (state.pageState == TripDetailPageState.left) {
+            _chatUnreadBloc.add(const StopUnreadSubscription());
+            ToastPop.show('여행을 포기했습니다');
+            context.go('/home');
+          }
 
-        // 에러
-        if (state.pageState == TripDetailPageState.error) {
-          return Scaffold(
-            appBar: const CustomButtonAppBar(title: '오류'),
-            body: Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text('오류: ${state.errorMessage}'),
-                  const SizedBox(height: 16),
-                  ElevatedButton(
-                    onPressed: () => context.go('/home'),
-                    child: const Text('홈으로 돌아가기'),
+          // trip 로드 완료 시 구독 시작
+          if (state.pageState == TripDetailPageState.loaded &&
+              state.trip != null) {
+            final authState = context.read<AuthProfileBloc>().state;
+            if (authState is AuthProfileAuthenticated) {
+              _chatUnreadBloc.add(
+                StartUnreadSubscription(
+                  tripId: state.trip!.id!,
+                  userId: authState.userInfo.id!,
+                ),
+              );
+            }
+          }
+        },
+        builder: (context, state) {
+          // 로딩 중
+          if (state.pageState == TripDetailPageState.loading ||
+              state.pageState == TripDetailPageState.initial) {
+            return const Scaffold(
+              body: Center(child: CircularProgressIndicator()),
+            );
+          }
+
+          // 에러
+          if (state.pageState == TripDetailPageState.error) {
+            return Scaffold(
+              appBar: const CustomButtonAppBar(title: '오류'),
+              body: Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text('오류: ${state.errorMessage}'),
+                    const SizedBox(height: 16),
+                    ElevatedButton(
+                      onPressed: () => context.go('/home'),
+                      child: const Text('홈으로 돌아가기'),
+                    ),
+                  ],
+                ),
+              ),
+            );
+          }
+
+          // trip 없으면 로딩
+          final trip = state.trip;
+          if (trip == null) {
+            return const Scaffold(
+              body: Center(child: CircularProgressIndicator()),
+            );
+          }
+
+          // 정상
+          final tripId = trip.id!;
+          final currentIndex = _getSelectedIndex(context);
+
+          return BlocBuilder<ChatUnreadBloc, ChatUnreadState>(
+            builder: (context, unreadState) {
+              // 채팅 탭에 있으면 배지 숨기기
+              final showBadge = currentIndex != 4;
+
+              return Scaffold(
+                appBar: CustomButtonAppBar(
+                  title: trip.title ?? '여행',
+                  subtitle:
+                      "${formatDate(trip.startAt)} - ${formatDate(trip.endAt)}",
+                  leading: Button(
+                    width: 40,
+                    height: 40,
+                    icon: Icon(AppIcon.back),
+                    contentColor: isDark
+                        ? colorScheme.onSurface
+                        : AppColors.light,
+                    borderRadius: 20,
+                    onTap: () {
+                      _chatUnreadBloc.add(const StopUnreadSubscription());
+                      context.go('/home');
+                    },
                   ),
-                ],
-              ),
-            ),
+                  actions: [
+                    Button(
+                      icon: Icon(AppIcon.threeDots),
+                      contentColor: isDark
+                          ? colorScheme.onSurface
+                          : AppColors.light,
+                      onTap: () => _showBottomSheet(context, trip),
+                      width: 40,
+                      height: 40,
+                      borderRadius: 20,
+                    ),
+                  ],
+                ),
+                body: widget.child,
+                bottomNavigationBar: BottomNavigation(
+                  currentIndex: currentIndex,
+                  onTap: (index) => _onNavTap(context, index, tripId),
+                  chatUnreadCount: showBadge ? unreadState.unreadCount : 0,
+                ),
+              );
+            },
           );
-        }
-
-        // trip 없으면 로딩
-        final trip = state.trip;
-        if (trip == null) {
-          return const Scaffold(
-            body: Center(child: CircularProgressIndicator()),
-          );
-        }
-
-        // 정상
-        final tripId = trip.id!;
-        final currentIndex = _getSelectedIndex(context);
-
-        return Scaffold(
-          appBar: CustomButtonAppBar(
-            title: trip.title ?? '여행',
-            subtitle: "${formatDate(trip.startAt)} - ${formatDate(trip.endAt)}",
-            leading: Button(
-              width: 40,
-              height: 40,
-              icon: Icon(AppIcon.back),
-              contentColor: isDark ? colorScheme.onSurface : AppColors.light,
-              borderRadius: 20,
-              onTap: () => context.go('/home'),
-            ),
-            actions: [
-              Button(
-                icon: Icon(AppIcon.threeDots),
-                contentColor: isDark ? colorScheme.onSurface : AppColors.light,
-                onTap: () => _showBottomSheet(context, trip),
-                width: 40,
-                height: 40,
-                borderRadius: 20,
-              ),
-            ],
-          ),
-          body: child,
-          bottomNavigationBar: BottomNavigation(
-            currentIndex: currentIndex,
-            onTap: (index) => _onNavTap(context, index, tripId),
-          ),
-        );
-      },
+        },
+      ),
     );
   }
 
@@ -136,6 +194,10 @@ class TripShellScaffold extends StatelessWidget {
     ];
 
     if (index < routes.length) {
+      // 채팅 탭으로 이동하면 카운트 초기화
+      if (index == 4) {
+        _chatUnreadBloc.add(const ResetUnreadCount());
+      }
       context.go(routes[index]);
     }
   }

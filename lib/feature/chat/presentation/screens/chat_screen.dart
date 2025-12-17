@@ -7,9 +7,9 @@ import 'package:my_travel_friend/feature/chat/presentation/widgets/message_box.d
 
 import '../../../auth/presentation/viewmodel/auth_profile/auth_profile_bloc.dart';
 import '../../../auth/presentation/viewmodel/auth_profile/auth_profile_state.dart';
-import '../viewmodels/chat_bloc.dart';
-import '../viewmodels/chat_event.dart';
-import '../viewmodels/chat_state.dart';
+import '../viewmodels/chat/chat_bloc.dart';
+import '../viewmodels/chat/chat_event.dart';
+import '../viewmodels/chat/chat_state.dart';
 import '../widgets/chat_date_divider.dart';
 import '../widgets/chat_unread_divider.dart';
 
@@ -81,7 +81,7 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
   void _onScroll() {
     // 위로 스크롤 시 이전 메시지 로드
     if (_scrollController.position.pixels <= 100) {
-      context.read<ChatBloc>().add(const LoadMore());
+      context.read<ChatBloc>().add(LoadMoreChat());
     }
     _updateReadStatus();
   }

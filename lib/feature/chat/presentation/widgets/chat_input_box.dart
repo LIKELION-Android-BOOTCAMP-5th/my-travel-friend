@@ -5,8 +5,8 @@ import 'package:my_travel_friend/core/theme/app_icon.dart';
 import 'package:my_travel_friend/core/widget/text_box.dart';
 
 import '../../../../core/widget/button.dart';
-import '../viewmodels/chat_bloc.dart';
-import '../viewmodels/chat_state.dart';
+import '../viewmodels/chat/chat_bloc.dart';
+import '../viewmodels/chat/chat_state.dart';
 
 // [이재은] 채팅 입력창
 class ChatInputBox extends StatelessWidget {

@@ -1,16 +1,17 @@
 import 'dart:async';
+import 'dart:ui';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 
-import '../../../../core/result/result.dart';
-import '../../domain/entities/chat_entity.dart';
-import '../../domain/usecases/get_chat_usecase.dart';
-import '../../domain/usecases/get_read_status_usecase.dart';
-import '../../domain/usecases/get_trip_crew_usecase.dart';
-import '../../domain/usecases/send_chat_usecase.dart';
-import '../../domain/usecases/subscribe_chat_usecase.dart';
-import '../../domain/usecases/update_read_status_usecase.dart';
+import '../../../../../core/result/result.dart';
+import '../../../domain/entities/chat_entity.dart';
+import '../../../domain/usecases/get_chat_usecase.dart';
+import '../../../domain/usecases/get_read_status_usecase.dart';
+import '../../../domain/usecases/get_trip_crew_usecase.dart';
+import '../../../domain/usecases/send_chat_usecase.dart';
+import '../../../domain/usecases/subscribe_chat_usecase.dart';
+import '../../../domain/usecases/update_read_status_usecase.dart';
 import 'chat_event.dart';
 import 'chat_state.dart';
 
@@ -29,6 +30,9 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
   Timer? _readStatusDebounce;
   static const int _pageLimit = 30;
 
+  // 채팅방 나갈 때 호출한 콜백(Unread count 새로고침용)
+  VoidCallback? onLeaveChat;
+
   ChatBloc(
     this._getChatUseCase,
     this._sendChatUseCase,
@@ -40,7 +44,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     on<EnterChat>(_onEnterChat);
     on<LeaveChat>(_onLeaveChat);
     on<SendChat>(_onSendChat);
-    on<LoadMore>(_onLoadMore);
+    on<LoadMoreChat>(_onLoadMoreChat);
     on<OnNewChatReceive>(_onNewChatReceive);
     on<UpdateReadStatus>(_onUpdateReadStatus);
     on<ClearError>(_onClearError);
@@ -156,6 +160,10 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     _chatSubscription?.cancel();
     _chatSubscription = null;
     await _subscribeChatUseCase.unsubscribe();
+
+    // ChatUnreadBloc에 알림 (콜백 호출)
+    onLeaveChat?.call();
+
     emit(const ChatState());
   }
 
@@ -189,7 +197,10 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
   }
 
   // 이전 메시지 더 불러오기 (위로 스크롤)
-  Future<void> _onLoadMore(LoadMore event, Emitter<ChatState> emit) async {
+  Future<void> _onLoadMoreChat(
+    LoadMoreChat event,
+    Emitter<ChatState> emit,
+  ) async {
     if (state.pageState != ChatPageState.loaded) return;
     if (state.isLoadingMore || !state.hasMore) return;
 
