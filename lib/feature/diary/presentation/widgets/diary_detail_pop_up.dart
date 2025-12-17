@@ -94,7 +94,10 @@ class DiaryDetailPopUp extends StatelessWidget {
 
               // 비용 (null이 아닐 때만 표시)
               if (cost != null) ...[
-                CostTag(cost: cost),
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: CostTag(cost: cost, currency: diary.currency),
+                ),
                 const SizedBox(height: 8),
               ],
             ],

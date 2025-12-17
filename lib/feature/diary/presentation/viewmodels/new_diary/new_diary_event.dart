@@ -2,8 +2,6 @@ import 'dart:io';
 
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-import '../../../../schedule/domain/entities/schedule_entity.dart';
-
 part 'new_diary_event.freezed.dart';
 
 // [이재은] 다이어리 작성 관련 이벤트 (사용자의 행동, 시스템에서 발생하는 일)
@@ -37,6 +35,10 @@ abstract class NewDiaryEvent with _$NewDiaryEvent {
 
   // 금액 변경(소비용)
   const factory NewDiaryEvent.changeCost({required int? cost}) = ChangeCost;
+
+  // 통화 변경(소비용)
+  const factory NewDiaryEvent.changeCurrency({required String currency}) =
+      ChangeCurrency;
 
   // 공개 여부 변경
   const factory NewDiaryEvent.changePublic({required bool isPublic}) =

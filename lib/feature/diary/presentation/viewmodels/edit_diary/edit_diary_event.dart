@@ -44,6 +44,10 @@ abstract class EditDiaryEvent with _$EditDiaryEvent {
   // 금액 변경(소비용)
   const factory EditDiaryEvent.changeCost({required int? cost}) = ChangeCost;
 
+  // 통화 변경 (소비용)
+  const factory EditDiaryEvent.changeCurrency({required String currency}) =
+      ChangeCurrency;
+
   // 공개 여부 변경
   const factory EditDiaryEvent.changePublic({required bool isPublic}) =
       ChangePublic;

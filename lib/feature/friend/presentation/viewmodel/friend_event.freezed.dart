@@ -55,14 +55,15 @@ extension FriendEventPatterns on FriendEvent {
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( GetFriends value)?  getFriends,TResult Function( GetFriendUsers value)?  getFriendUsers,TResult Function( GoTravel value)?  goTravel,TResult Function( DeleteFriend value)?  deleteFriend,TResult Function( KeywordChanged value)?  keywordChanged,TResult Function( SearchToggle value)?  searchToggle,required TResult orElse(),}){
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( GetFriends value)?  getFriends,TResult Function( GetFriendUsers value)?  getFriendUsers,TResult Function( GoTravel value)?  goTravel,TResult Function( DeleteFriend value)?  deleteFriend,TResult Function( CreateFriendRelation value)?  createFriendRelation,TResult Function( KeywordChanged value)?  keywordChanged,TResult Function( SearchToggle value)?  searchToggle,required TResult orElse(),}){
 final _that = this;
 switch (_that) {
 case GetFriends() when getFriends != null:
 return getFriends(_that);case GetFriendUsers() when getFriendUsers != null:
 return getFriendUsers(_that);case GoTravel() when goTravel != null:
 return goTravel(_that);case DeleteFriend() when deleteFriend != null:
-return deleteFriend(_that);case KeywordChanged() when keywordChanged != null:
+return deleteFriend(_that);case CreateFriendRelation() when createFriendRelation != null:
+return createFriendRelation(_that);case KeywordChanged() when keywordChanged != null:
 return keywordChanged(_that);case SearchToggle() when searchToggle != null:
 return searchToggle(_that);case _:
   return orElse();
@@ -82,14 +83,15 @@ return searchToggle(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( GetFriends value)  getFriends,required TResult Function( GetFriendUsers value)  getFriendUsers,required TResult Function( GoTravel value)  goTravel,required TResult Function( DeleteFriend value)  deleteFriend,required TResult Function( KeywordChanged value)  keywordChanged,required TResult Function( SearchToggle value)  searchToggle,}){
+@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( GetFriends value)  getFriends,required TResult Function( GetFriendUsers value)  getFriendUsers,required TResult Function( GoTravel value)  goTravel,required TResult Function( DeleteFriend value)  deleteFriend,required TResult Function( CreateFriendRelation value)  createFriendRelation,required TResult Function( KeywordChanged value)  keywordChanged,required TResult Function( SearchToggle value)  searchToggle,}){
 final _that = this;
 switch (_that) {
 case GetFriends():
 return getFriends(_that);case GetFriendUsers():
 return getFriendUsers(_that);case GoTravel():
 return goTravel(_that);case DeleteFriend():
-return deleteFriend(_that);case KeywordChanged():
+return deleteFriend(_that);case CreateFriendRelation():
+return createFriendRelation(_that);case KeywordChanged():
 return keywordChanged(_that);case SearchToggle():
 return searchToggle(_that);case _:
   throw StateError('Unexpected subclass');
@@ -108,14 +110,15 @@ return searchToggle(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( GetFriends value)?  getFriends,TResult? Function( GetFriendUsers value)?  getFriendUsers,TResult? Function( GoTravel value)?  goTravel,TResult? Function( DeleteFriend value)?  deleteFriend,TResult? Function( KeywordChanged value)?  keywordChanged,TResult? Function( SearchToggle value)?  searchToggle,}){
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( GetFriends value)?  getFriends,TResult? Function( GetFriendUsers value)?  getFriendUsers,TResult? Function( GoTravel value)?  goTravel,TResult? Function( DeleteFriend value)?  deleteFriend,TResult? Function( CreateFriendRelation value)?  createFriendRelation,TResult? Function( KeywordChanged value)?  keywordChanged,TResult? Function( SearchToggle value)?  searchToggle,}){
 final _that = this;
 switch (_that) {
 case GetFriends() when getFriends != null:
 return getFriends(_that);case GetFriendUsers() when getFriendUsers != null:
 return getFriendUsers(_that);case GoTravel() when goTravel != null:
 return goTravel(_that);case DeleteFriend() when deleteFriend != null:
-return deleteFriend(_that);case KeywordChanged() when keywordChanged != null:
+return deleteFriend(_that);case CreateFriendRelation() when createFriendRelation != null:
+return createFriendRelation(_that);case KeywordChanged() when keywordChanged != null:
 return keywordChanged(_that);case SearchToggle() when searchToggle != null:
 return searchToggle(_that);case _:
   return null;
@@ -134,13 +137,14 @@ return searchToggle(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function( int userId)?  getFriends,TResult Function( int myId)?  getFriendUsers,TResult Function( int myUserId,  int friendUserId)?  goTravel,TResult Function( int myUserId,  int? friendUserId)?  deleteFriend,TResult Function( String keyword)?  keywordChanged,TResult Function()?  searchToggle,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function( int userId)?  getFriends,TResult Function( int myId)?  getFriendUsers,TResult Function( int myUserId,  int friendUserId)?  goTravel,TResult Function( int myUserId,  int? friendUserId)?  deleteFriend,TResult Function( int userId1,  int userId2)?  createFriendRelation,TResult Function( String keyword)?  keywordChanged,TResult Function()?  searchToggle,required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case GetFriends() when getFriends != null:
 return getFriends(_that.userId);case GetFriendUsers() when getFriendUsers != null:
 return getFriendUsers(_that.myId);case GoTravel() when goTravel != null:
 return goTravel(_that.myUserId,_that.friendUserId);case DeleteFriend() when deleteFriend != null:
-return deleteFriend(_that.myUserId,_that.friendUserId);case KeywordChanged() when keywordChanged != null:
+return deleteFriend(_that.myUserId,_that.friendUserId);case CreateFriendRelation() when createFriendRelation != null:
+return createFriendRelation(_that.userId1,_that.userId2);case KeywordChanged() when keywordChanged != null:
 return keywordChanged(_that.keyword);case SearchToggle() when searchToggle != null:
 return searchToggle();case _:
   return orElse();
@@ -160,13 +164,14 @@ return searchToggle();case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function( int userId)  getFriends,required TResult Function( int myId)  getFriendUsers,required TResult Function( int myUserId,  int friendUserId)  goTravel,required TResult Function( int myUserId,  int? friendUserId)  deleteFriend,required TResult Function( String keyword)  keywordChanged,required TResult Function()  searchToggle,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function( int userId)  getFriends,required TResult Function( int myId)  getFriendUsers,required TResult Function( int myUserId,  int friendUserId)  goTravel,required TResult Function( int myUserId,  int? friendUserId)  deleteFriend,required TResult Function( int userId1,  int userId2)  createFriendRelation,required TResult Function( String keyword)  keywordChanged,required TResult Function()  searchToggle,}) {final _that = this;
 switch (_that) {
 case GetFriends():
 return getFriends(_that.userId);case GetFriendUsers():
 return getFriendUsers(_that.myId);case GoTravel():
 return goTravel(_that.myUserId,_that.friendUserId);case DeleteFriend():
-return deleteFriend(_that.myUserId,_that.friendUserId);case KeywordChanged():
+return deleteFriend(_that.myUserId,_that.friendUserId);case CreateFriendRelation():
+return createFriendRelation(_that.userId1,_that.userId2);case KeywordChanged():
 return keywordChanged(_that.keyword);case SearchToggle():
 return searchToggle();case _:
   throw StateError('Unexpected subclass');
@@ -185,13 +190,14 @@ return searchToggle();case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function( int userId)?  getFriends,TResult? Function( int myId)?  getFriendUsers,TResult? Function( int myUserId,  int friendUserId)?  goTravel,TResult? Function( int myUserId,  int? friendUserId)?  deleteFriend,TResult? Function( String keyword)?  keywordChanged,TResult? Function()?  searchToggle,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function( int userId)?  getFriends,TResult? Function( int myId)?  getFriendUsers,TResult? Function( int myUserId,  int friendUserId)?  goTravel,TResult? Function( int myUserId,  int? friendUserId)?  deleteFriend,TResult? Function( int userId1,  int userId2)?  createFriendRelation,TResult? Function( String keyword)?  keywordChanged,TResult? Function()?  searchToggle,}) {final _that = this;
 switch (_that) {
 case GetFriends() when getFriends != null:
 return getFriends(_that.userId);case GetFriendUsers() when getFriendUsers != null:
 return getFriendUsers(_that.myId);case GoTravel() when goTravel != null:
 return goTravel(_that.myUserId,_that.friendUserId);case DeleteFriend() when deleteFriend != null:
-return deleteFriend(_that.myUserId,_that.friendUserId);case KeywordChanged() when keywordChanged != null:
+return deleteFriend(_that.myUserId,_that.friendUserId);case CreateFriendRelation() when createFriendRelation != null:
+return createFriendRelation(_that.userId1,_that.userId2);case KeywordChanged() when keywordChanged != null:
 return keywordChanged(_that.keyword);case SearchToggle() when searchToggle != null:
 return searchToggle();case _:
   return null;
@@ -463,6 +469,74 @@ class _$DeleteFriendCopyWithImpl<$Res>
 myUserId: null == myUserId ? _self.myUserId : myUserId // ignore: cast_nullable_to_non_nullable
 as int,friendUserId: freezed == friendUserId ? _self.friendUserId : friendUserId // ignore: cast_nullable_to_non_nullable
 as int?,
+  ));
+}
+
+
+}
+
+/// @nodoc
+
+
+class CreateFriendRelation implements FriendEvent {
+  const CreateFriendRelation({required this.userId1, required this.userId2});
+  
+
+ final  int userId1;
+ final  int userId2;
+
+/// Create a copy of FriendEvent
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$CreateFriendRelationCopyWith<CreateFriendRelation> get copyWith => _$CreateFriendRelationCopyWithImpl<CreateFriendRelation>(this, _$identity);
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is CreateFriendRelation&&(identical(other.userId1, userId1) || other.userId1 == userId1)&&(identical(other.userId2, userId2) || other.userId2 == userId2));
+}
+
+
+@override
+int get hashCode => Object.hash(runtimeType,userId1,userId2);
+
+@override
+String toString() {
+  return 'FriendEvent.createFriendRelation(userId1: $userId1, userId2: $userId2)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class $CreateFriendRelationCopyWith<$Res> implements $FriendEventCopyWith<$Res> {
+  factory $CreateFriendRelationCopyWith(CreateFriendRelation value, $Res Function(CreateFriendRelation) _then) = _$CreateFriendRelationCopyWithImpl;
+@useResult
+$Res call({
+ int userId1, int userId2
+});
+
+
+
+
+}
+/// @nodoc
+class _$CreateFriendRelationCopyWithImpl<$Res>
+    implements $CreateFriendRelationCopyWith<$Res> {
+  _$CreateFriendRelationCopyWithImpl(this._self, this._then);
+
+  final CreateFriendRelation _self;
+  final $Res Function(CreateFriendRelation) _then;
+
+/// Create a copy of FriendEvent
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') $Res call({Object? userId1 = null,Object? userId2 = null,}) {
+  return _then(CreateFriendRelation(
+userId1: null == userId1 ? _self.userId1 : userId1 // ignore: cast_nullable_to_non_nullable
+as int,userId2: null == userId2 ? _self.userId2 : userId2 // ignore: cast_nullable_to_non_nullable
+as int,
   ));
 }
 

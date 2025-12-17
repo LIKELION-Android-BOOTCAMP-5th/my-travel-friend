@@ -554,10 +554,15 @@ class _EditDiaryScreenState extends State<EditDiaryScreen> {
             hintText: '금액을 입력하세요',
             controller: _priceController,
             keyboardType: TextInputType.number,
-            suffix: '원',
-            suffixStyle: AppFont.regularBold.copyWith(
-              color: colorScheme.onSurface,
-            ),
+            suffixDropdownItems: const ['원', '엔', '동', '달러', '유로', '위안'],
+            suffixDropdownValue: state.currency,
+            onSuffixDropdownChanged: (value) {
+              if (value != null) {
+                context.read<EditDiaryBloc>().add(
+                  EditDiaryEvent.changeCurrency(currency: value),
+                );
+              }
+            },
             onChanged: (value) {
               final cost = int.tryParse(value.replaceAll(',', ''));
               context.read<EditDiaryBloc>().add(

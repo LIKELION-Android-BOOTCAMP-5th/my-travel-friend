@@ -26,6 +26,7 @@ abstract class NewDiaryState with _$NewDiaryState {
     String? imgUrl,
     File? localImgFile,
     int? cost,
+    @Default('원') String currency,
     @Default(true) bool isPublic,
     int? scheduleId,
 
@@ -72,6 +73,7 @@ abstract class NewDiaryState with _$NewDiaryState {
       rating: type == 'REVIEW' ? rating.toDouble() : null,
       img: type == 'PHOTO' ? imgUrl : null,
       cost: type == 'MONEY' ? cost : null,
+      currency: type == 'MONEY' ? currency : null,
       isPublic: isPublic,
     );
   }
