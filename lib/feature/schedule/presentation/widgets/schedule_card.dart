@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:my_travel_friend/core/theme/app_colors.dart';
+import 'package:my_travel_friend/core/theme/app_font.dart';
+import 'package:my_travel_friend/core/theme/app_icon.dart';
+import 'package:my_travel_friend/feature/schedule/presentation/widgets/schedule_category_tag.dart';
 
 import '../../../../core/widget/profile_img.dart';
 
@@ -36,12 +40,14 @@ class _ScheduleCardState extends State<ScheduleCard> {
   @override
   Widget build(BuildContext context) {
     final hasMemo = widget.memo != null && widget.memo!.trim().isNotEmpty;
+    final colorScheme = Theme.of(context).colorScheme;
+    final isDark = colorScheme.brightness == Brightness.dark;
 
     return Container(
-      margin: const EdgeInsets.only(bottom: 16),
+      margin: const EdgeInsets.only(bottom: 12),
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: colorScheme.surfaceContainerHighest,
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
@@ -56,61 +62,52 @@ class _ScheduleCardState extends State<ScheduleCard> {
         children: [
           // 태그 + 수정/삭제 버튼
           Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              // 태그
-              Container(
-                padding: const EdgeInsets.symmetric(
-                  vertical: 4,
-                  horizontal: 10,
-                ),
-                decoration: BoxDecoration(
-                  color: const Color(0xFFE6F0FF),
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: Text(
-                  widget.tagName,
-                  style: const TextStyle(
-                    color: Color(0xFF4A73FF),
-                    fontWeight: FontWeight.w600,
+              Row(
+                children: [
+                  // 태그
+                  ScheduleCategoryTag(tagName: widget.tagName),
+
+                  SizedBox(width: 8),
+                  // 제목
+                  Text(
+                    widget.title,
+                    style: AppFont.medium.copyWith(
+                      color: isDark ? AppColors.light : AppColors.dark,
+                    ),
                   ),
-                ),
+                ],
               ),
+              Row(
+                children: [
+                  // 수정 아이콘
+                  IconButton(
+                    icon: const Icon(AppIcon.edit, size: 15),
+                    onPressed: widget.onEdit,
+                  ),
 
-              const Spacer(),
-
-              // 수정 아이콘
-              IconButton(
-                icon: const Icon(Icons.edit, size: 20),
-                onPressed: widget.onEdit,
-              ),
-
-              // 삭제 아이콘
-              IconButton(
-                icon: const Icon(
-                  Icons.delete,
-                  size: 20,
-                  color: Colors.redAccent,
-                ),
-                onPressed: widget.onDelete,
+                  // 삭제 아이콘
+                  IconButton(
+                    icon: const Icon(
+                      AppIcon.delete,
+                      size: 15,
+                      color: AppColors.secondary,
+                    ),
+                    onPressed: widget.onDelete,
+                  ),
+                ],
               ),
             ],
           ),
 
           const SizedBox(height: 4),
 
-          // 제목
-          Text(
-            widget.title,
-            style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w700),
-          ),
-
-          const SizedBox(height: 10),
-
           // 날짜/시간
           Row(
             children: [
-              const Icon(Icons.calendar_today, size: 18),
+              const Icon(AppIcon.calendar, size: 13),
               const SizedBox(width: 8),
               Text(widget.dateTime),
             ],
@@ -119,13 +116,14 @@ class _ScheduleCardState extends State<ScheduleCard> {
           const SizedBox(height: 6),
 
           // 장소
-          Row(
-            children: [
-              const Icon(Icons.location_on_outlined, size: 18),
-              const SizedBox(width: 8),
-              Text(widget.place),
-            ],
-          ),
+          if (widget.place.isNotEmpty)
+            Row(
+              children: [
+                const Icon(AppIcon.mapPin, size: 13),
+                const SizedBox(width: 8),
+                Text(widget.place!),
+              ],
+            ),
 
           const SizedBox(height: 12),
 
@@ -139,7 +137,7 @@ class _ScheduleCardState extends State<ScheduleCard> {
                   horizontal: 12,
                 ),
                 decoration: BoxDecoration(
-                  color: Colors.grey.shade100,
+                  color: colorScheme.surfaceContainerHigh,
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: Row(
@@ -150,9 +148,8 @@ class _ScheduleCardState extends State<ScheduleCard> {
                     ),
                     const Spacer(),
                     Icon(
-                      showMemo
-                          ? Icons.keyboard_arrow_up
-                          : Icons.keyboard_arrow_down,
+                      showMemo ? AppIcon.closeUp : AppIcon.openDown,
+                      size: 14,
                     ),
                   ],
                 ),
@@ -165,21 +162,24 @@ class _ScheduleCardState extends State<ScheduleCard> {
             Container(
               padding: const EdgeInsets.all(12),
               decoration: BoxDecoration(
-                color: Colors.grey.shade100,
+                color: colorScheme.surfaceContainerHigh,
                 borderRadius: BorderRadius.circular(8),
               ),
-              child: Text(widget.memo!, style: const TextStyle(height: 1.4)),
+              child: Text(
+                widget.memo!,
+                style: AppFont.regular.copyWith(
+                  color: isDark ? AppColors.light : AppColors.dark,
+                ),
+              ),
             ),
           ],
-
           const SizedBox(height: 12),
-
           // 참여자 프로필
           Row(
             children: widget.profileImages.map((img) {
               return Padding(
                 padding: const EdgeInsets.only(right: 6),
-                child: ProfileImg(imageUrl: img, radius: 30),
+                child: ProfileImg(imageUrl: img, radius: 20),
               );
             }).toList(),
           ),

@@ -11,6 +11,8 @@ class EmptyScheduleCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    final isDark = colorScheme.brightness == Brightness.dark;
     return Padding(
       padding: const EdgeInsets.only(top: 40),
       child: Align(
@@ -19,7 +21,7 @@ class EmptyScheduleCard extends StatelessWidget {
           width: 300,
           height: 300,
           decoration: BoxDecoration(
-            color: Colors.white,
+            color: colorScheme.surfaceContainerHighest,
             borderRadius: BorderRadius.circular(20),
             boxShadow: [
               BoxShadow(
@@ -53,7 +55,9 @@ class EmptyScheduleCard extends StatelessWidget {
               // 제목
               Text(
                 "일정이 없어요",
-                style: AppFont.big.copyWith(color: AppColors.dark),
+                style: AppFont.big.copyWith(
+                  color: isDark ? AppColors.light : AppColors.dark,
+                ),
                 textAlign: TextAlign.center,
               ),
 
@@ -63,7 +67,9 @@ class EmptyScheduleCard extends StatelessWidget {
               Text(
                 "이 날짜에는 일정이 없어요",
                 style: AppFont.regular.copyWith(
-                  color: AppColors.dark.withOpacity(0.7),
+                  color: isDark
+                      ? AppColors.light.withOpacity(0.7)
+                      : AppColors.dark.withOpacity(0.7),
                 ),
                 textAlign: TextAlign.center,
               ),
@@ -85,7 +91,7 @@ class EmptyScheduleCard extends StatelessWidget {
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      const Icon(Icons.add, color: Colors.white, size: 20),
+                      Icon(AppIcon.plus, color: Colors.white, size: 20),
                       const SizedBox(width: 6),
                       Text(
                         "일정 추가하기",
