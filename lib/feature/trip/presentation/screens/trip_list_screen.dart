@@ -85,7 +85,6 @@ class _TripListScreenState extends State<TripListScreen> {
           iconBgColor: AppColors.primaryLight,
           title: "여행계획 수정하기",
           onTap: () {
-            Navigator.of(context).pop();
             // navigateToEdit 상태를 true로 설정하는 이벤트
             context.read<TripBloc>().add(TripEvent.updateTrip(trip: trip));
           },
@@ -95,7 +94,6 @@ class _TripListScreenState extends State<TripListScreen> {
           iconBgColor: AppColors.secondary,
           title: "여행 포기하기",
           onTap: () {
-            Navigator.of(context).pop();
             _showLeavePopUp(trip, currentUserId);
           },
         ),

@@ -8,6 +8,7 @@ import '../../../../../core/widget/text_box.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_font.dart';
 import '../../../../core/widget/app_bar.dart';
+import '../../../../core/widget/pop_up_box.dart';
 import '../../domain/entities/schedule_entity.dart';
 import '../viewmodels/edit_schedule/edit_schedule_bloc.dart';
 import '../viewmodels/edit_schedule/edit_schedule_event.dart';
@@ -55,7 +56,32 @@ class _EditScheduleScreenState extends State<EditScheduleScreen> {
   Widget build(BuildContext context) {
     return BlocListener<EditScheduleBloc, EditScheduleState>(
       listenWhen: (prev, curr) => prev.actionType != curr.actionType,
-      listener: (context, state) {
+      listener: (context, state) async {
+        if (state.actionType == 'exit_confirm') {
+          final shouldExit = await showDialog<bool>(
+            context: context,
+            barrierDismissible: false,
+            builder: (_) => PopUpBox(
+              title: "수정을 취소할까요?",
+              message: "지금 나가면 수정한 내용이 적용되지 않아요.",
+              leftText: "취소",
+              rightText: "확인",
+              onRight: () => Navigator.of(context).pop(true),
+            ),
+          );
+
+          if (shouldExit == true && context.mounted) {
+            context.read<EditScheduleBloc>().add(
+              const EditScheduleEvent.exitConfirmed(),
+            );
+          }
+
+          context.read<EditScheduleBloc>().add(
+            const EditScheduleEvent.clearMessage(),
+          );
+
+          return; // 🔥 여기서 반드시 종료
+        }
         // 뒤로가기
         if (state.actionType == 'pop') {
           Navigator.of(context).pop(false);
@@ -83,45 +109,22 @@ class _EditScheduleScreenState extends State<EditScheduleScreen> {
       },
       child: BlocBuilder<EditScheduleBloc, EditScheduleState>(
         builder: (context, state) {
-          return Scaffold(
-            appBar: CustomButtonAppBar(
-              title: '일정 수정',
-              leading: Button(
-                icon: const Icon(AppIcon.back),
-                onTap: () {
-                  context.read<EditScheduleBloc>().add(
-                    const EditScheduleEvent.exitRequested(),
-                  );
-                },
-                width: 36,
-                height: 36,
-                backgroundColor: Colors.transparent,
-                contentColor: AppColors.light,
-                borderRadius: 18,
-              ),
-              actions: [
-                Button(
-                  icon: const Icon(AppIcon.search),
-                  onTap: () async {
-                    final result = await context.push<PlaceCandidate>(
-                      '/trip/${state.tripId}/map-search',
-                      extra: {
-                        'lat': state.lat,
-                        'lng': state.lng,
-                        'address': state.address,
-                      },
+          return WillPopScope(
+            onWillPop: () async {
+              context.read<EditScheduleBloc>().add(
+                const EditScheduleEvent.exitRequested(),
+              );
+              return false;
+            },
+            child: Scaffold(
+              appBar: CustomButtonAppBar(
+                title: '일정 수정',
+                leading: Button(
+                  icon: const Icon(AppIcon.back),
+                  onTap: () {
+                    context.read<EditScheduleBloc>().add(
+                      const EditScheduleEvent.exitRequested(),
                     );
-
-                    if (result != null) {
-                      context.read<EditScheduleBloc>().add(
-                        EditScheduleEvent.placeSelected(
-                          place: result.place,
-                          address: result.address,
-                          lat: result.lat,
-                          lng: result.lng,
-                        ),
-                      );
-                    }
                   },
                   width: 36,
                   height: 36,
@@ -129,181 +132,212 @@ class _EditScheduleScreenState extends State<EditScheduleScreen> {
                   contentColor: AppColors.light,
                   borderRadius: 18,
                 ),
-              ],
-            ),
-            body: SafeArea(
-              child: SingleChildScrollView(
-                padding: const EdgeInsets.all(16),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    _sectionTitle('일정 제목'),
-                    const SizedBox(height: 8),
-                    TextBox(
-                      controller: _titleController,
-                      hintText: '예: 성산일출봉 방문',
-                      onChanged: (v) {
+                actions: [
+                  Button(
+                    icon: const Icon(AppIcon.search),
+                    onTap: () async {
+                      final result = await context.push<PlaceCandidate>(
+                        '/trip/${state.tripId}/map-search',
+                        extra: {
+                          'lat': state.lat,
+                          'lng': state.lng,
+                          'address': state.address,
+                        },
+                      );
+
+                      if (result != null) {
                         context.read<EditScheduleBloc>().add(
-                          EditScheduleEvent.titleChanged(v),
-                        );
-                      },
-                    ),
-
-                    const SizedBox(height: 24),
-
-                    _sectionTitle('날짜'),
-                    const SizedBox(height: 8),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: _pickerBox(
-                            context,
-                            text: state.date == null
-                                ? '연도. 월. 일.'
-                                : '${state.date!.year}.${state.date!.month}.${state.date!.day}',
-                            icon: AppIcon.calendar,
-                            onTap: () async {
-                              final date = await showDatePicker(
-                                context: context,
-                                initialDate: state.date ?? DateTime.now(),
-                                firstDate: DateTime(2000),
-                                lastDate: DateTime(2100),
-                              );
-                              if (date != null) {
-                                context.read<EditScheduleBloc>().add(
-                                  EditScheduleEvent.dateSelected(date),
-                                );
-                              }
-                            },
+                          EditScheduleEvent.placeSelected(
+                            place: result.place,
+                            address: result.address,
+                            lat: result.lat,
+                            lng: result.lng,
                           ),
-                        ),
-                        const SizedBox(width: 12),
-                        Expanded(
-                          child: _pickerBox(
-                            context,
-                            text: state.time == null
-                                ? '--:--'
-                                : state.time!.format(context),
-                            icon: AppIcon.clock,
-                            onTap: () async {
-                              final time = await showTimePicker(
-                                context: context,
-                                initialTime: state.time ?? TimeOfDay.now(),
-                              );
-                              if (time != null) {
-                                context.read<EditScheduleBloc>().add(
-                                  EditScheduleEvent.timeSelected(time),
-                                );
-                              }
-                            },
-                          ),
-                        ),
-                      ],
-                    ),
-
-                    const SizedBox(height: 24),
-
-                    _sectionTitle('장소'),
-                    const SizedBox(height: 8),
-                    TextBox(
-                      controller: _placeController,
-                      hintText: '예: 제주 성산읍',
-                      prefixIcon: const Icon(AppIcon.mapPin),
-                      onChanged: (v) {
-                        context.read<EditScheduleBloc>().add(
-                          EditScheduleEvent.placeTextChanged(v),
                         );
-                      },
-                    ),
-
-                    const SizedBox(height: 24),
-
-                    _sectionTitle('메모 (선택)'),
-                    const SizedBox(height: 8),
-                    TextBox(
-                      controller: _memoController,
-                      hintText: '일정에 대한 메모를 작성하세요...',
-                      maxLines: 4,
-                      minLines: 3,
-                      onChanged: (v) {
-                        context.read<EditScheduleBloc>().add(
-                          EditScheduleEvent.descriptionChanged(v),
-                        );
-                      },
-                    ),
-
-                    const SizedBox(height: 24),
-
-                    _sectionTitle('카테고리'),
-                    const SizedBox(height: 8),
-                    Wrap(
-                      spacing: 8,
-                      runSpacing: 8,
-                      children: [
-                        _categoryChip(context, '이동', 1, state),
-                        _categoryChip(context, '먹거리', 2, state),
-                        _categoryChip(context, '관광', 3, state),
-                        _categoryChip(context, '휴식', 4, state),
-                        _categoryChip(context, '숙박', 5, state),
-                        _categoryChip(context, '쇼핑', 6, state),
-                        _categoryChip(context, '액티비티', 7, state),
-                        _categoryChip(context, '기타', 8, state),
-                      ],
-                    ),
-
-                    const SizedBox(height: 24),
-
-                    _sectionTitle('함께하는 크루원'),
-                    const SizedBox(height: 8),
-                    _buildMembersSection(state),
-
-                    if (state.selectedScheduleCrew.isNotEmpty) ...[
+                      }
+                    },
+                    width: 36,
+                    height: 36,
+                    backgroundColor: Colors.transparent,
+                    contentColor: AppColors.light,
+                    borderRadius: 18,
+                  ),
+                ],
+              ),
+              body: SafeArea(
+                child: SingleChildScrollView(
+                  padding: const EdgeInsets.all(16),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      _sectionTitle('일정 제목'),
                       const SizedBox(height: 8),
-                      _selectedMembersSummary(state),
-                    ],
+                      TextBox(
+                        controller: _titleController,
+                        hintText: '예: 성산일출봉 방문',
+                        onChanged: (v) {
+                          context.read<EditScheduleBloc>().add(
+                            EditScheduleEvent.titleChanged(v),
+                          );
+                        },
+                      ),
 
-                    const SizedBox(height: 32),
+                      const SizedBox(height: 24),
 
-                    Row(
-                      children: [
-                        Expanded(
-                          child: Button(
-                            text: '취소',
-                            onTap: () {
-                              context.read<EditScheduleBloc>().add(
-                                const EditScheduleEvent.exitRequested(),
-                              );
-                            },
-                            height: 48,
-                            backgroundColor: AppColors.lightGray,
-                            contentColor: Colors.black,
-                            borderRadius: 12,
-                            width: double.infinity,
+                      _sectionTitle('날짜'),
+                      const SizedBox(height: 8),
+                      Row(
+                        children: [
+                          Expanded(
+                            child: _pickerBox(
+                              context,
+                              text: state.date == null
+                                  ? '연도. 월. 일.'
+                                  : '${state.date!.year}.${state.date!.month}.${state.date!.day}',
+                              icon: AppIcon.calendar,
+                              onTap: () async {
+                                final date = await showDatePicker(
+                                  context: context,
+                                  initialDate: state.date ?? DateTime.now(),
+                                  firstDate: DateTime(2000),
+                                  lastDate: DateTime(2100),
+                                );
+                                if (date != null) {
+                                  context.read<EditScheduleBloc>().add(
+                                    EditScheduleEvent.dateSelected(date),
+                                  );
+                                }
+                              },
+                            ),
                           ),
-                        ),
-                        const SizedBox(width: 12),
-                        Expanded(
-                          child: Button(
-                            text: '수정',
-                            onTap: state.isValid && !state.isSubmitting
-                                ? () {
-                                    context.read<EditScheduleBloc>().add(
-                                      const EditScheduleEvent.submitPressed(),
-                                    );
-                                  }
-                                : null,
-                            height: 48,
-                            backgroundColor: state.isValid
-                                ? AppColors.primaryLight
-                                : AppColors.lightGray,
-                            contentColor: Colors.white,
-                            borderRadius: 12,
-                            width: double.infinity,
+                          const SizedBox(width: 12),
+                          Expanded(
+                            child: _pickerBox(
+                              context,
+                              text: state.time == null
+                                  ? '--:--'
+                                  : state.time!.format(context),
+                              icon: AppIcon.clock,
+                              onTap: () async {
+                                final time = await showTimePicker(
+                                  context: context,
+                                  initialTime: state.time ?? TimeOfDay.now(),
+                                );
+                                if (time != null) {
+                                  context.read<EditScheduleBloc>().add(
+                                    EditScheduleEvent.timeSelected(time),
+                                  );
+                                }
+                              },
+                            ),
                           ),
-                        ),
+                        ],
+                      ),
+
+                      const SizedBox(height: 24),
+
+                      _sectionTitle('장소'),
+                      const SizedBox(height: 8),
+                      TextBox(
+                        controller: _placeController,
+                        hintText: '예: 제주 성산읍',
+                        prefixIcon: const Icon(AppIcon.mapPin),
+                        onChanged: (v) {
+                          context.read<EditScheduleBloc>().add(
+                            EditScheduleEvent.placeTextChanged(v),
+                          );
+                        },
+                      ),
+
+                      const SizedBox(height: 24),
+
+                      _sectionTitle('메모 (선택)'),
+                      const SizedBox(height: 8),
+                      TextBox(
+                        controller: _memoController,
+                        hintText: '일정에 대한 메모를 작성하세요...',
+                        maxLines: 4,
+                        minLines: 3,
+                        onChanged: (v) {
+                          context.read<EditScheduleBloc>().add(
+                            EditScheduleEvent.descriptionChanged(v),
+                          );
+                        },
+                      ),
+
+                      const SizedBox(height: 24),
+
+                      _sectionTitle('카테고리'),
+                      const SizedBox(height: 8),
+                      Wrap(
+                        spacing: 8,
+                        runSpacing: 8,
+                        children: [
+                          _categoryChip(context, '이동', 1, state),
+                          _categoryChip(context, '먹거리', 2, state),
+                          _categoryChip(context, '관광', 3, state),
+                          _categoryChip(context, '휴식', 4, state),
+                          _categoryChip(context, '숙박', 5, state),
+                          _categoryChip(context, '쇼핑', 6, state),
+                          _categoryChip(context, '액티비티', 7, state),
+                          _categoryChip(context, '기타', 8, state),
+                        ],
+                      ),
+
+                      const SizedBox(height: 24),
+
+                      _sectionTitle('함께하는 크루원'),
+                      const SizedBox(height: 8),
+                      _buildMembersSection(state),
+
+                      if (state.selectedScheduleCrew.isNotEmpty) ...[
+                        const SizedBox(height: 8),
+                        _selectedMembersSummary(state),
                       ],
-                    ),
-                  ],
+
+                      const SizedBox(height: 32),
+
+                      Row(
+                        children: [
+                          Expanded(
+                            child: Button(
+                              text: '취소',
+                              onTap: () {
+                                context.read<EditScheduleBloc>().add(
+                                  const EditScheduleEvent.exitRequested(),
+                                );
+                              },
+                              height: 48,
+                              backgroundColor: AppColors.lightGray,
+                              contentColor: Colors.black,
+                              borderRadius: 12,
+                              width: double.infinity,
+                            ),
+                          ),
+                          const SizedBox(width: 12),
+                          Expanded(
+                            child: Button(
+                              text: '수정',
+                              onTap: state.isValid && !state.isSubmitting
+                                  ? () {
+                                      context.read<EditScheduleBloc>().add(
+                                        const EditScheduleEvent.submitPressed(),
+                                      );
+                                    }
+                                  : null,
+                              height: 48,
+                              backgroundColor: state.isValid
+                                  ? AppColors.primaryLight
+                                  : AppColors.lightGray,
+                              contentColor: Colors.white,
+                              borderRadius: 12,
+                              width: double.infinity,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
