@@ -18,7 +18,7 @@ abstract class ScheduleDTO with _$ScheduleDTO {
     @JsonKey(name: 'user') Map<String, dynamic>? userJson,
     required String title,
     String? place,
-    @JsonKey(name: 'adress') String? address,
+    String? address,
     double? lat,
     double? lng,
     required String date,

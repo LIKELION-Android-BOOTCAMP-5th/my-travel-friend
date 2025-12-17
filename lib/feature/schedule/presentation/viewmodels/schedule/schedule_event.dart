@@ -1,6 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-import '../../domain/entities/schedule_entity.dart';
+import '../../../domain/entities/schedule_entity.dart';
 
 part 'schedule_event.freezed.dart';
 
@@ -36,9 +36,14 @@ abstract class ScheduleEvent with _$ScheduleEvent {
   // 스케줄 참여 멤버 가져오기
   const factory ScheduleEvent.fetchScheduleMembers({required int scheduleId}) =
       FetchScheduleMembers;
-
+  //화면 재구성
+  const factory ScheduleEvent.refresh({required int tripId}) = Refresh;
   // 메모 토글
   const factory ScheduleEvent.toggleMemo() = ToggleMemo;
+  //일자별 선택
+  const factory ScheduleEvent.switchToDateMode() = SwitchToDateMode;
+  //카테고리별 선택
+  const factory ScheduleEvent.switchToCategoryMode() = SwitchToCategoryMode;
 
   // 다음 페이지 로드
   const factory ScheduleEvent.loadMore({required int tripId}) = LoadMore;

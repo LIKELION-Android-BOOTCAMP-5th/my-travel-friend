@@ -4,6 +4,7 @@ import 'package:injectable/injectable.dart';
 import 'package:my_travel_friend/core/result/failures.dart';
 import 'package:my_travel_friend/core/result/result.dart';
 import 'package:my_travel_friend/feature/trip/data/dtos/trip_dto.dart';
+import 'package:my_travel_friend/feature/trip/data/dtos/useful_pharse_dto.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../../../../core/service/internal/supabase_storage_service.dart';
@@ -172,16 +173,14 @@ class TripDataSourceImpl implements TripDataSource {
       final offset = (page - 1) * limit;
 
       final res = await _supabaseClient
-          .from('trip_crew')
-          .select('trip(*)')
-          .eq('member_id', userId)
-          .or('trip.title.ilike.%$keyword%,trip.place.ilike.%$keyword%')
-          .order('trip.created_at', ascending: false)
+          .from('trip')
+          .select('*, trip_crew!inner(member_id)')
+          .eq('trip_crew.member_id', userId)
+          .or('title.ilike.%$keyword%,place.ilike.%$keyword%')
+          .order('created_at', ascending: false)
           .range(offset, offset + limit - 1);
 
-      final trips = (res as List)
-          .map((row) => TripDto.fromJson(row['trip']))
-          .toList();
+      final trips = (res as List).map((e) => TripDto.fromJson(e)).toList();
 
       return Result.success(trips);
     } catch (e) {
@@ -221,12 +220,58 @@ class TripDataSourceImpl implements TripDataSource {
   // 아이디로 여행 정보 가져오기
   @override
   Future<TripDto> getTripById(int tripId) async {
-    final response = await _supabaseClient
-        .from('trip')
-        .select()
-        .eq('id', tripId)
-        .single();
+    try {
+      print(' TripDataSource getTripById start');
 
-    return TripDto.fromJson(response);
+      final response = await _supabaseClient
+          .from('trip')
+          .select()
+          .eq('id', tripId)
+          .maybeSingle();
+
+      print(' TripDataSource response = $response');
+
+      if (response == null) {
+        throw Exception('Trip not found. tripId=$tripId');
+      }
+
+      return TripDto.fromJson(response);
+    } catch (e) {
+      print('TripDataSource error: $e');
+      rethrow;
+    }
+  }
+
+  @override
+  Future<Result<List<UsefulPharseDTO>>> getUsefulPhrasesByTrip(
+    int tripId,
+  ) async {
+    try {
+      final tripRes = await _supabaseClient
+          .from('trip')
+          .select('country')
+          .eq('id', tripId)
+          .maybeSingle();
+
+      if (tripRes == null || tripRes['country'] == null) {
+        throw Exception('Trip country not found. tripId=$tripId');
+      }
+
+      final String country = tripRes['country'];
+
+      final phraseRes = await _supabaseClient
+          .from('useful_pharse')
+          .select()
+          .eq('country', country)
+          .order('id', ascending: true);
+
+      final phrases = (phraseRes as List)
+          .map((e) => UsefulPharseDTO.fromJson(e))
+          .toList();
+
+      return Result.success(phrases);
+    } catch (e) {
+      return Result.failure(Failure.serverFailure(message: e.toString()));
+    }
   }
 }

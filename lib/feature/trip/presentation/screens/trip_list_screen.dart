@@ -12,6 +12,7 @@ import 'package:my_travel_friend/feature/trip/presentation/viewmodels/trip/trip_
 import 'package:my_travel_friend/feature/trip/presentation/widgets/empty_travel_card.dart';
 import 'package:my_travel_friend/feature/trip/presentation/widgets/trip_card.dart';
 import 'package:my_travel_friend/feature/trip/presentation/widgets/trip_screen_app_bar.dart';
+
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_icon.dart';
 import '../../../alarm/presentation/viewmodels/alarm_bloc.dart';
@@ -46,7 +47,15 @@ class _TripListScreenState extends State<TripListScreen> {
   }
 
   void _onScroll() {
-    // 무한 스크롤 로직: 스크롤이 끝에서 200픽셀 이내에 도달했을 때
+    final tripState = context.read<TripBloc>().state;
+
+    if (tripState.search && tripState.searchTrips == null) {
+      return;
+    }
+
+    if (tripState.isLoadingMore) {
+      return;
+    }
     if (_scrollController.position.pixels >=
         _scrollController.position.maxScrollExtent - 200) {
       context.read<TripBloc>().add(TripEvent.loadMoreTrips(userId: userId));
@@ -203,8 +212,12 @@ class _TripListScreenState extends State<TripListScreen> {
                 prev.search != curr.search,
             builder: (context, tripState) {
               final isSearching = tripState.search;
-              final trips = isSearching
-                  ? tripState.searchTrips ?? []
+              final hasSearched = tripState.searchTrips != null;
+
+              final trips = !isSearching
+                  ? tripState.trips ?? []
+                  : hasSearched
+                  ? tripState.searchTrips!
                   : tripState.trips ?? [];
 
               return Column(
@@ -218,7 +231,7 @@ class _TripListScreenState extends State<TripListScreen> {
                       onRefresh: () async {
                         tripBloc.add(TripEvent.refreshTrips(userId: userId));
                       },
-                      child: trips.isEmpty
+                      child: trips.isEmpty && (!isSearching || hasSearched)
                           ? _buildEmptyUI(isSearching, context)
                           : _buildTripListView(trips),
                     ),
@@ -258,6 +271,14 @@ class _TripListScreenState extends State<TripListScreen> {
         onChanged: (value) {
           bloc.add(TripEvent.searchKeywordChanged(keyword: value));
         },
+        onSubmitted: (value) {
+          if (value.trim().isEmpty) return;
+
+          bloc.add(
+            TripEvent.searchTrips(userId: userId, keyword: value.trim()),
+          );
+        },
+
         textInputAction: TextInputAction.search,
       ),
     );
@@ -286,7 +307,7 @@ class _TripListScreenState extends State<TripListScreen> {
                 ? trip.coverImg
                 : null,
             onTap: () {
-              context.go('/trip/${trip.id}/diary');
+              context.go('/trip/${trip.id}/trip_home');
             },
             onMenu: () => _showMenu(trip),
           ),

@@ -1,5 +1,6 @@
 import 'package:my_travel_friend/core/result/result.dart';
 import 'package:my_travel_friend/feature/auth/domain/entities/user_entity.dart';
+import 'package:my_travel_friend/feature/schedule/domain/entities/category_entity.dart';
 import 'package:my_travel_friend/feature/schedule/domain/entities/schedule_entity.dart';
 
 abstract class ScheduleRepository {
@@ -26,6 +27,9 @@ abstract class ScheduleRepository {
 
   // 여행 ID로 해당 여행에 참여하는 유저 가져오기
   Future<Result<List<UserEntity>>> getTripMembers(int tripId);
+
+  //카테고리 가져오기
+  Future<Result<List<CategoryEntity>>> getCategory();
 
   // 유저 ID로 해당 유저가 참여하는 스케줄 가져오기
   Future<Result<List<ScheduleEntity>>> getUserSchedule({

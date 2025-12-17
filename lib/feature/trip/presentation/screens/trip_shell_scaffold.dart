@@ -174,7 +174,7 @@ class _TripShellScaffoldState extends State<TripShellScaffold> {
   int _getSelectedIndex(BuildContext context) {
     final path = GoRouterState.of(context).matchedLocation;
 
-    if (path.contains('/home')) return 0;
+    if (path.contains('/trip_home')) return 0;
     if (path.contains('/schedule')) return 1;
     if (path.contains('/checklist')) return 2;
     if (path.contains('/diary')) return 3;
@@ -186,7 +186,7 @@ class _TripShellScaffoldState extends State<TripShellScaffold> {
   // 네비게이션 탭 클릭 처리
   void _onNavTap(BuildContext context, int index, int tripId) {
     final routes = [
-      '/trip/$tripId/home',
+      '/trip/$tripId/trip_home',
       '/trip/$tripId/schedule',
       '/trip/$tripId/checklist',
       '/trip/$tripId/diary',

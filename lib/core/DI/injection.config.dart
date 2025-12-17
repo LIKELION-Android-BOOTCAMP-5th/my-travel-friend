@@ -200,14 +200,22 @@ import '../../feature/schedule/domain/usecases/edit_schedule_usecase.dart'
     as _i29;
 import '../../feature/schedule/domain/usecases/get_all_schedule_usecase.dart'
     as _i600;
+import '../../feature/schedule/domain/usecases/get_category_usecase.dart'
+    as _i379;
 import '../../feature/schedule/domain/usecases/get_schedule_member_usecase.dart'
     as _i415;
 import '../../feature/schedule/domain/usecases/get_trip_member_usecase.dart'
     as _i324;
 import '../../feature/schedule/domain/usecases/get_user_schudule_usecase.dart'
     as _i818;
-import '../../feature/schedule/presentation/viewmodels/schedule_bloc.dart'
-    as _i166;
+import '../../feature/schedule/presentation/viewmodels/create_schedule/create_schedule_blco.dart'
+    as _i725;
+import '../../feature/schedule/presentation/viewmodels/edit_schedule/edit_schedule_bloc.dart'
+    as _i229;
+import '../../feature/schedule/presentation/viewmodels/map_search/map_search_bloc.dart'
+    as _i196;
+import '../../feature/schedule/presentation/viewmodels/schedule/schedule_bloc.dart'
+    as _i865;
 import '../../feature/setting/data/datasources/alarm/alarm_setting_datasource.dart'
     as _i1030;
 import '../../feature/setting/data/datasources/alarm/alarm_setting_datasource_impl.dart'
@@ -271,6 +279,8 @@ import '../../feature/trip/domain/usecases/get_crew_member_count_usecase.dart'
 import '../../feature/trip/domain/usecases/get_my_trip_usecase.dart' as _i521;
 import '../../feature/trip/domain/usecases/get_trip_by_id_usecase.dart'
     as _i277;
+import '../../feature/trip/domain/usecases/get_useful_pharse_usecase.dart'
+    as _i796;
 import '../../feature/trip/domain/usecases/give_up_trip_usecase.dart' as _i317;
 import '../../feature/trip/domain/usecases/search_trip_usecase.dart' as _i437;
 import '../../feature/trip/presentation/viewmodels/create_trip/create_trip_bloc.dart'
@@ -281,6 +291,8 @@ import '../../feature/trip/presentation/viewmodels/trip/trip_bloc.dart'
     as _i616;
 import '../../feature/trip/presentation/viewmodels/trip_detail/trip_detail_bloc.dart'
     as _i1000;
+import '../../feature/trip/presentation/viewmodels/trip_home/trip_home_bloc.dart'
+    as _i575;
 import '../service/internal/deep_link_service.dart' as _i507;
 import '../service/internal/permission_service.dart' as _i213;
 import '../service/internal/push_notification_service.dart' as _i737;
@@ -302,6 +314,7 @@ extension GetItInjectableX on _i174.GetIt {
       () => themeModule.prefs,
       preResolve: true,
     );
+    gh.factory<_i196.MapSearchBloc>(() => _i196.MapSearchBloc());
     gh.factory<_i70.MenuBloc>(() => _i70.MenuBloc());
     gh.lazySingleton<_i892.FirebaseMessaging>(
       () => registerModule.firebaseMessaging,
@@ -459,6 +472,9 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i277.GetTripByIdUseCase>(
       () => _i277.GetTripByIdUseCase(gh<_i161.TripRepository>()),
     );
+    gh.lazySingleton<_i796.GetUsefulPharseUsecase>(
+      () => _i796.GetUsefulPharseUsecase(gh<_i161.TripRepository>()),
+    );
     gh.lazySingleton<_i30.GetMyTodoListUseCase>(
       () => _i30.GetMyTodoListUseCase(gh<_i579.TodoListRepository>()),
     );
@@ -504,6 +520,9 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i600.GetAllScheduleUseCase>(
       () => _i600.GetAllScheduleUseCase(gh<_i456.ScheduleRepository>()),
     );
+    gh.lazySingleton<_i379.GetCategoryUsecase>(
+      () => _i379.GetCategoryUsecase(gh<_i456.ScheduleRepository>()),
+    );
     gh.lazySingleton<_i415.GetScheduleMembersUseCase>(
       () => _i415.GetScheduleMembersUseCase(gh<_i456.ScheduleRepository>()),
     );
@@ -539,6 +558,21 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i153.GoogleAuthDataSource>(),
         gh<_i278.AppleAuthDataSource>(),
         gh<_i1040.SupabaseAuthDataSource>(),
+      ),
+    );
+    gh.factory<_i725.CreateScheduleBloc>(
+      () => _i725.CreateScheduleBloc(
+        gh<_i361.CreateScheduleUseCase>(),
+        gh<_i324.GetTripMembersUseCase>(),
+      ),
+    );
+    gh.factory<_i865.ScheduleBloc>(
+      () => _i865.ScheduleBloc(
+        gh<_i600.GetAllScheduleUseCase>(),
+        gh<_i714.DeleteScheduleUseCase>(),
+        gh<_i415.GetScheduleMembersUseCase>(),
+        gh<_i379.GetCategoryUsecase>(),
+        gh<_i277.GetTripByIdUseCase>(),
       ),
     );
     gh.lazySingleton<_i715.DeleteImgUseCase>(
@@ -618,13 +652,6 @@ extension GetItInjectableX on _i174.GetIt {
       () =>
           _i124.AlarmSettingRepositoryImpl(gh<_i1030.AlarmSettingDataSource>()),
     );
-    gh.factory<_i166.ScheduleBloc>(
-      () => _i166.ScheduleBloc(
-        gh<_i600.GetAllScheduleUseCase>(),
-        gh<_i714.DeleteScheduleUseCase>(),
-        gh<_i415.GetScheduleMembersUseCase>(),
-      ),
-    );
     gh.lazySingleton<_i1051.CreateTodoListUseCase>(
       () => _i1051.CreateTodoListUseCase(gh<_i579.TodoListRepository>()),
     );
@@ -633,6 +660,13 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.lazySingleton<_i57.ToggleTodoListUseCase>(
       () => _i57.ToggleTodoListUseCase(gh<_i579.TodoListRepository>()),
+    );
+    gh.factory<_i229.EditScheduleBloc>(
+      () => _i229.EditScheduleBloc(
+        gh<_i29.UpdateScheduleUseCase>(),
+        gh<_i324.GetTripMembersUseCase>(),
+        gh<_i415.GetScheduleMembersUseCase>(),
+      ),
     );
     gh.lazySingleton<_i823.GetSentRequestUsecase>(
       () => _i823.GetSentRequestUsecase(gh<_i255.FriendRequestRepository>()),
@@ -787,6 +821,15 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i456.WatchAuthStateUseCase>(),
         gh<_i529.GetCurrentUserUseCase>(),
         gh<_i858.SignOutUseCase>(),
+      ),
+    );
+    gh.factory<_i575.TripHomeBloc>(
+      () => _i575.TripHomeBloc(
+        gh<_i277.GetTripByIdUseCase>(),
+        gh<_i324.GetTripMembersUseCase>(),
+        gh<_i600.GetAllScheduleUseCase>(),
+        gh<_i796.GetUsefulPharseUsecase>(),
+        gh<_i151.GetFriendUsersUsecase>(),
       ),
     );
     gh.factory<_i693.AlarmBloc>(
