@@ -65,8 +65,13 @@ class TextBox extends StatefulWidget {
   final List<String>? suffixDropdownItems; // 드롭다운 아이템 목록
   final String? suffixDropdownValue; // 현재 선택된 값
   final ValueChanged<String?>? onSuffixDropdownChanged; // 선택 변경 콜백
-  final Color? dropdownIconColor; // 드롭다운 아이콘 색상
-  final double? dropdownIconSize; // 드롭다운 아이콘 크기
+  final Color? suffixDropdownIconColor; // 드롭다운 아이콘 색상
+  final double? suffixDropdownIconSize; // 드롭다운 아이콘 크기
+  final List<String>? prefixDropdownItems; // 드롭다운 아이템 목록
+  final String? prefixDropdownValue; // 현재 선택된 값
+  final ValueChanged<String?>? onPrefixDropdownChanged; // 선택 변경 콜백
+  final Color? prefixDropdownIconColor; // 드롭다운 아이콘 색상
+  final double? prefixDropdownIconSize; // 드롭다운 아이콘 크기
 
   const TextBox({
     super.key,
@@ -108,12 +113,19 @@ class TextBox extends StatefulWidget {
     this.suffix,
     this.suffixStyle,
 
-    // 드롭다운 기본값
+    // 드롭다운 기본값(화폐단위)
     this.suffixDropdownItems,
     this.suffixDropdownValue,
     this.onSuffixDropdownChanged,
-    this.dropdownIconColor,
-    this.dropdownIconSize = 20,
+    this.suffixDropdownIconColor,
+    this.suffixDropdownIconSize = 20,
+
+    // 드롭다운 기본값(결제수단)
+    this.prefixDropdownItems,
+    this.prefixDropdownValue,
+    this.onPrefixDropdownChanged,
+    this.prefixDropdownIconColor,
+    this.prefixDropdownIconSize = 20,
   });
 
   @override
@@ -135,13 +147,32 @@ class _TextBoxState extends State<TextBox> {
     final hntColor = widget.hintColor ?? colorScheme.onSurfaceVariant;
 
     // 드롭다운이 있는 경우 Row로 감싸서 처리
-    final hasDropdown =
+    final hasPrefixDropdown =
+        widget.prefixDropdownItems != null &&
+        widget.prefixDropdownItems!.isNotEmpty;
+    final hasSuffixDropdown =
         widget.suffixDropdownItems != null &&
         widget.suffixDropdownItems!.isNotEmpty;
 
-    if (hasDropdown) {
+    // 드롭다운이 하나라도 있으면 Row로 감싸서 처리
+    if (hasPrefixDropdown || hasSuffixDropdown) {
       return Row(
         children: [
+          // prefix 드롭다운
+          if (hasPrefixDropdown) ...[
+            _buildDropdownButton(
+              items: widget.prefixDropdownItems!,
+              value: widget.prefixDropdownValue,
+              onChanged: widget.onPrefixDropdownChanged,
+              iconColor: widget.prefixDropdownIconColor,
+              iconSize: widget.prefixDropdownIconSize ?? 20,
+              bgColor: bgColor,
+              txtColor: txtColor,
+              hntColor: hntColor,
+            ),
+            const SizedBox(width: 8),
+          ],
+
           // TextField 영역
           Expanded(
             child: _buildTextField(
@@ -150,16 +181,25 @@ class _TextBoxState extends State<TextBox> {
               unfocusBorder: unfocusBorder,
               txtColor: txtColor,
               hntColor: hntColor,
-              showSuffix: false, // 드롭다운 있으면 suffix 숨김
+              showPrefix: !hasPrefixDropdown,
+              showSuffix: !hasSuffixDropdown,
             ),
           ),
-          const SizedBox(width: 8),
-          // 드롭다운 영역
-          _buildDropdownButton(
-            bgColor: bgColor,
-            txtColor: txtColor,
-            hntColor: hntColor,
-          ),
+
+          // suffix 드롭다운
+          if (hasSuffixDropdown) ...[
+            const SizedBox(width: 8),
+            _buildDropdownButton(
+              items: widget.suffixDropdownItems!,
+              value: widget.suffixDropdownValue,
+              onChanged: widget.onSuffixDropdownChanged,
+              iconColor: widget.suffixDropdownIconColor,
+              iconSize: widget.suffixDropdownIconSize ?? 20,
+              bgColor: bgColor,
+              txtColor: txtColor,
+              hntColor: hntColor,
+            ),
+          ],
         ],
       );
     }
@@ -172,6 +212,7 @@ class _TextBoxState extends State<TextBox> {
       txtColor: txtColor,
       hntColor: hntColor,
       showSuffix: true,
+      showPrefix: true,
     );
   }
 
@@ -183,6 +224,7 @@ class _TextBoxState extends State<TextBox> {
     required Color txtColor,
     required Color hntColor,
     required bool showSuffix,
+    required bool showPrefix,
   }) {
     return TextField(
       controller: widget.controller,
@@ -258,15 +300,26 @@ class _TextBoxState extends State<TextBox> {
     );
   }
 
-  // 드롭다운 버튼 빌드 (별도 Container로 분리)
+  // 드롭다운 버튼 빌드 (prefix/suffix 공용)
   Widget _buildDropdownButton({
+    required List<String> items,
+    required String? value,
+    required ValueChanged<String?>? onChanged,
+    required Color? iconColor,
+    required double iconSize,
     required Color bgColor,
     required Color txtColor,
     required Color hntColor,
   }) {
-    final dropdownIcon = widget.dropdownIconColor ?? hntColor;
+    final dropdownIcon = iconColor ?? hntColor;
+
+    final verticalPadding = widget.contentPadding != null
+        ? (widget.contentPadding as EdgeInsets).vertical
+        : 24.0; // 기본값: 12 * 2
+    final textFieldHeight = 22.0 + verticalPadding;
 
     return Container(
+      height: textFieldHeight,
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
       decoration: BoxDecoration(
         color: bgColor,
@@ -274,20 +327,20 @@ class _TextBoxState extends State<TextBox> {
       ),
       child: DropdownButtonHideUnderline(
         child: DropdownButton<String>(
-          value: widget.suffixDropdownValue,
+          value: value,
           isDense: true,
           icon: Icon(
             Icons.arrow_drop_down,
             color: dropdownIcon,
-            size: widget.dropdownIconSize,
+            size: iconSize,
           ),
           style: TextStyle(color: txtColor, fontSize: 14),
           dropdownColor: bgColor,
           borderRadius: BorderRadius.circular(widget.borderRadius),
-          items: widget.suffixDropdownItems!.map((item) {
+          items: items.map((item) {
             return DropdownMenuItem<String>(value: item, child: Text(item));
           }).toList(),
-          onChanged: widget.enabled ? widget.onSuffixDropdownChanged : null,
+          onChanged: widget.enabled ? onChanged : null,
         ),
       ),
     );

@@ -7,9 +7,9 @@ import 'package:my_travel_friend/feature/chat/presentation/widgets/message_box.d
 
 import '../../../auth/presentation/viewmodel/auth_profile/auth_profile_bloc.dart';
 import '../../../auth/presentation/viewmodel/auth_profile/auth_profile_state.dart';
-import '../viewmodels/chat_bloc.dart';
-import '../viewmodels/chat_event.dart';
-import '../viewmodels/chat_state.dart';
+import '../viewmodels/chat/chat_bloc.dart';
+import '../viewmodels/chat/chat_event.dart';
+import '../viewmodels/chat/chat_state.dart';
 import '../widgets/chat_date_divider.dart';
 import '../widgets/chat_unread_divider.dart';
 
@@ -80,8 +80,9 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
 
   void _onScroll() {
     // 위로 스크롤 시 이전 메시지 로드
-    if (_scrollController.position.pixels <= 100) {
-      context.read<ChatBloc>().add(const LoadMore());
+    if (_scrollController.position.pixels >=
+        _scrollController.position.maxScrollExtent - 100) {
+      context.read<ChatBloc>().add(LoadMoreChat());
     }
     _updateReadStatus();
   }
@@ -118,7 +119,7 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
   void _scrollToBottom() {
     if (_scrollController.hasClients) {
       _scrollController.animateTo(
-        _scrollController.position.maxScrollExtent,
+        0,
         duration: const Duration(milliseconds: 300),
         curve: Curves.easeOut,
       );
@@ -148,13 +149,16 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
 
     final userProfile = user.userInfo;
 
-    return Scaffold(
-      backgroundColor: isDark ? AppColors.navy : AppColors.darkGray,
-      body: Column(
-        children: [
-          Expanded(child: _buildMessageList()),
-          ChatInputBox(controller: _messageController, onSend: _sendChat),
-        ],
+    return GestureDetector(
+      onTap: () => FocusScope.of(context).unfocus(),
+      child: Scaffold(
+        backgroundColor: isDark ? AppColors.navy : AppColors.darkGray,
+        body: Column(
+          children: [
+            Expanded(child: _buildMessageList()),
+            ChatInputBox(controller: _messageController, onSend: _sendChat),
+          ],
+        ),
       ),
     );
   }
@@ -204,37 +208,34 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
         }
 
         // 메시지 목록
-        return Stack(
-          children: [
-            ListView.builder(
-              controller: _scrollController,
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-              itemCount: state.chats.length + (state.isLoadingMore ? 1 : 0),
-              itemBuilder: (context, index) {
-                if (state.isLoadingMore && index == 0) {
-                  return const Center(
-                    child: Padding(
-                      padding: EdgeInsets.all(8.0),
-                      child: CircularProgressIndicator(strokeWidth: 2),
-                    ),
-                  );
-                }
+        return ListView.builder(
+          controller: _scrollController,
+          reverse: true,
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+          itemCount: state.chats.length + (state.isLoadingMore ? 1 : 0),
+          itemBuilder: (context, index) {
+            if (state.isLoadingMore && index == state.chats.length) {
+              return const Center(
+                child: Padding(
+                  padding: EdgeInsets.all(8.0),
+                  child: CircularProgressIndicator(strokeWidth: 2),
+                ),
+              );
+            }
 
-                final chatIndex = state.isLoadingMore ? index - 1 : index;
-                final chat = state.chats[chatIndex];
+            final actualIndex = state.chats.length - 1 - index;
+            final chat = state.chats[actualIndex];
 
-                return Column(
-                  children: [
-                    if (state.shouldShowDateDivider(chatIndex))
-                      ChatDateDivider(dateString: chat.createdAt),
-                    if (state.shouldShowUnreadDivider(chatIndex))
-                      const ChatUnreadDivider(),
-                    MessageBox(chat: chat),
-                  ],
-                );
-              },
-            ),
-          ],
+            return Column(
+              children: [
+                if (state.shouldShowDateDivider(actualIndex))
+                  ChatDateDivider(dateString: chat.createdAt),
+                if (state.shouldShowUnreadDivider(actualIndex))
+                  const ChatUnreadDivider(),
+                MessageBox(chat: chat),
+              ],
+            );
+          },
         );
       },
     );

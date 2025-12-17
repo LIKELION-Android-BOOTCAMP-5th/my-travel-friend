@@ -27,6 +27,7 @@ abstract class NewDiaryState with _$NewDiaryState {
     File? localImgFile,
     int? cost,
     @Default('원') String currency,
+    @Default('현금') String payment,
     @Default(true) bool isPublic,
     int? scheduleId,
 
@@ -74,6 +75,7 @@ abstract class NewDiaryState with _$NewDiaryState {
       img: type == 'PHOTO' ? imgUrl : null,
       cost: type == 'MONEY' ? cost : null,
       currency: type == 'MONEY' ? currency : null,
+      payment: type == 'MONEY' ? payment : null,
       isPublic: isPublic,
     );
   }

@@ -55,14 +55,14 @@ extension ChatEventPatterns on ChatEvent {
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( EnterChat value)?  enterChat,TResult Function( LeaveChat value)?  leaveChat,TResult Function( SendChat value)?  sendChat,TResult Function( LoadMore value)?  loadMore,TResult Function( OnNewChatReceive value)?  onNewChatReceive,TResult Function( UpdateReadStatus value)?  updateReadStatus,TResult Function( MarkScrollCompleted value)?  markScrollCompleted,TResult Function( ClearError value)?  clearError,TResult Function( RefreshCrews value)?  refreshCrews,required TResult orElse(),}){
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( EnterChat value)?  enterChat,TResult Function( LeaveChat value)?  leaveChat,TResult Function( SendChat value)?  sendChat,TResult Function( LoadMoreChat value)?  loadMoreChat,TResult Function( OnNewChatReceive value)?  onNewChatReceive,TResult Function( UpdateReadStatus value)?  updateReadStatus,TResult Function( MarkScrollCompleted value)?  markScrollCompleted,TResult Function( ClearError value)?  clearError,TResult Function( RefreshCrews value)?  refreshCrews,required TResult orElse(),}){
 final _that = this;
 switch (_that) {
 case EnterChat() when enterChat != null:
 return enterChat(_that);case LeaveChat() when leaveChat != null:
 return leaveChat(_that);case SendChat() when sendChat != null:
-return sendChat(_that);case LoadMore() when loadMore != null:
-return loadMore(_that);case OnNewChatReceive() when onNewChatReceive != null:
+return sendChat(_that);case LoadMoreChat() when loadMoreChat != null:
+return loadMoreChat(_that);case OnNewChatReceive() when onNewChatReceive != null:
 return onNewChatReceive(_that);case UpdateReadStatus() when updateReadStatus != null:
 return updateReadStatus(_that);case MarkScrollCompleted() when markScrollCompleted != null:
 return markScrollCompleted(_that);case ClearError() when clearError != null:
@@ -85,14 +85,14 @@ return refreshCrews(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( EnterChat value)  enterChat,required TResult Function( LeaveChat value)  leaveChat,required TResult Function( SendChat value)  sendChat,required TResult Function( LoadMore value)  loadMore,required TResult Function( OnNewChatReceive value)  onNewChatReceive,required TResult Function( UpdateReadStatus value)  updateReadStatus,required TResult Function( MarkScrollCompleted value)  markScrollCompleted,required TResult Function( ClearError value)  clearError,required TResult Function( RefreshCrews value)  refreshCrews,}){
+@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( EnterChat value)  enterChat,required TResult Function( LeaveChat value)  leaveChat,required TResult Function( SendChat value)  sendChat,required TResult Function( LoadMoreChat value)  loadMoreChat,required TResult Function( OnNewChatReceive value)  onNewChatReceive,required TResult Function( UpdateReadStatus value)  updateReadStatus,required TResult Function( MarkScrollCompleted value)  markScrollCompleted,required TResult Function( ClearError value)  clearError,required TResult Function( RefreshCrews value)  refreshCrews,}){
 final _that = this;
 switch (_that) {
 case EnterChat():
 return enterChat(_that);case LeaveChat():
 return leaveChat(_that);case SendChat():
-return sendChat(_that);case LoadMore():
-return loadMore(_that);case OnNewChatReceive():
+return sendChat(_that);case LoadMoreChat():
+return loadMoreChat(_that);case OnNewChatReceive():
 return onNewChatReceive(_that);case UpdateReadStatus():
 return updateReadStatus(_that);case MarkScrollCompleted():
 return markScrollCompleted(_that);case ClearError():
@@ -114,14 +114,14 @@ return refreshCrews(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( EnterChat value)?  enterChat,TResult? Function( LeaveChat value)?  leaveChat,TResult? Function( SendChat value)?  sendChat,TResult? Function( LoadMore value)?  loadMore,TResult? Function( OnNewChatReceive value)?  onNewChatReceive,TResult? Function( UpdateReadStatus value)?  updateReadStatus,TResult? Function( MarkScrollCompleted value)?  markScrollCompleted,TResult? Function( ClearError value)?  clearError,TResult? Function( RefreshCrews value)?  refreshCrews,}){
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( EnterChat value)?  enterChat,TResult? Function( LeaveChat value)?  leaveChat,TResult? Function( SendChat value)?  sendChat,TResult? Function( LoadMoreChat value)?  loadMoreChat,TResult? Function( OnNewChatReceive value)?  onNewChatReceive,TResult? Function( UpdateReadStatus value)?  updateReadStatus,TResult? Function( MarkScrollCompleted value)?  markScrollCompleted,TResult? Function( ClearError value)?  clearError,TResult? Function( RefreshCrews value)?  refreshCrews,}){
 final _that = this;
 switch (_that) {
 case EnterChat() when enterChat != null:
 return enterChat(_that);case LeaveChat() when leaveChat != null:
 return leaveChat(_that);case SendChat() when sendChat != null:
-return sendChat(_that);case LoadMore() when loadMore != null:
-return loadMore(_that);case OnNewChatReceive() when onNewChatReceive != null:
+return sendChat(_that);case LoadMoreChat() when loadMoreChat != null:
+return loadMoreChat(_that);case OnNewChatReceive() when onNewChatReceive != null:
 return onNewChatReceive(_that);case UpdateReadStatus() when updateReadStatus != null:
 return updateReadStatus(_that);case MarkScrollCompleted() when markScrollCompleted != null:
 return markScrollCompleted(_that);case ClearError() when clearError != null:
@@ -143,13 +143,13 @@ return refreshCrews(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function( int tripId,  int userId)?  enterChat,TResult Function()?  leaveChat,TResult Function( String message)?  sendChat,TResult Function()?  loadMore,TResult Function( List<dynamic> chats)?  onNewChatReceive,TResult Function( int lastReadChatId)?  updateReadStatus,TResult Function()?  markScrollCompleted,TResult Function()?  clearError,TResult Function()?  refreshCrews,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function( int tripId,  int userId)?  enterChat,TResult Function()?  leaveChat,TResult Function( String message)?  sendChat,TResult Function()?  loadMoreChat,TResult Function( List<dynamic> chats)?  onNewChatReceive,TResult Function( int lastReadChatId)?  updateReadStatus,TResult Function()?  markScrollCompleted,TResult Function()?  clearError,TResult Function()?  refreshCrews,required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case EnterChat() when enterChat != null:
 return enterChat(_that.tripId,_that.userId);case LeaveChat() when leaveChat != null:
 return leaveChat();case SendChat() when sendChat != null:
-return sendChat(_that.message);case LoadMore() when loadMore != null:
-return loadMore();case OnNewChatReceive() when onNewChatReceive != null:
+return sendChat(_that.message);case LoadMoreChat() when loadMoreChat != null:
+return loadMoreChat();case OnNewChatReceive() when onNewChatReceive != null:
 return onNewChatReceive(_that.chats);case UpdateReadStatus() when updateReadStatus != null:
 return updateReadStatus(_that.lastReadChatId);case MarkScrollCompleted() when markScrollCompleted != null:
 return markScrollCompleted();case ClearError() when clearError != null:
@@ -172,13 +172,13 @@ return refreshCrews();case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function( int tripId,  int userId)  enterChat,required TResult Function()  leaveChat,required TResult Function( String message)  sendChat,required TResult Function()  loadMore,required TResult Function( List<dynamic> chats)  onNewChatReceive,required TResult Function( int lastReadChatId)  updateReadStatus,required TResult Function()  markScrollCompleted,required TResult Function()  clearError,required TResult Function()  refreshCrews,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function( int tripId,  int userId)  enterChat,required TResult Function()  leaveChat,required TResult Function( String message)  sendChat,required TResult Function()  loadMoreChat,required TResult Function( List<dynamic> chats)  onNewChatReceive,required TResult Function( int lastReadChatId)  updateReadStatus,required TResult Function()  markScrollCompleted,required TResult Function()  clearError,required TResult Function()  refreshCrews,}) {final _that = this;
 switch (_that) {
 case EnterChat():
 return enterChat(_that.tripId,_that.userId);case LeaveChat():
 return leaveChat();case SendChat():
-return sendChat(_that.message);case LoadMore():
-return loadMore();case OnNewChatReceive():
+return sendChat(_that.message);case LoadMoreChat():
+return loadMoreChat();case OnNewChatReceive():
 return onNewChatReceive(_that.chats);case UpdateReadStatus():
 return updateReadStatus(_that.lastReadChatId);case MarkScrollCompleted():
 return markScrollCompleted();case ClearError():
@@ -200,13 +200,13 @@ return refreshCrews();case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function( int tripId,  int userId)?  enterChat,TResult? Function()?  leaveChat,TResult? Function( String message)?  sendChat,TResult? Function()?  loadMore,TResult? Function( List<dynamic> chats)?  onNewChatReceive,TResult? Function( int lastReadChatId)?  updateReadStatus,TResult? Function()?  markScrollCompleted,TResult? Function()?  clearError,TResult? Function()?  refreshCrews,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function( int tripId,  int userId)?  enterChat,TResult? Function()?  leaveChat,TResult? Function( String message)?  sendChat,TResult? Function()?  loadMoreChat,TResult? Function( List<dynamic> chats)?  onNewChatReceive,TResult? Function( int lastReadChatId)?  updateReadStatus,TResult? Function()?  markScrollCompleted,TResult? Function()?  clearError,TResult? Function()?  refreshCrews,}) {final _that = this;
 switch (_that) {
 case EnterChat() when enterChat != null:
 return enterChat(_that.tripId,_that.userId);case LeaveChat() when leaveChat != null:
 return leaveChat();case SendChat() when sendChat != null:
-return sendChat(_that.message);case LoadMore() when loadMore != null:
-return loadMore();case OnNewChatReceive() when onNewChatReceive != null:
+return sendChat(_that.message);case LoadMoreChat() when loadMoreChat != null:
+return loadMoreChat();case OnNewChatReceive() when onNewChatReceive != null:
 return onNewChatReceive(_that.chats);case UpdateReadStatus() when updateReadStatus != null:
 return updateReadStatus(_that.lastReadChatId);case MarkScrollCompleted() when markScrollCompleted != null:
 return markScrollCompleted();case ClearError() when clearError != null:
@@ -388,8 +388,8 @@ as String,
 /// @nodoc
 
 
-class LoadMore implements ChatEvent {
-  const LoadMore();
+class LoadMoreChat implements ChatEvent {
+  const LoadMoreChat();
   
 
 
@@ -399,7 +399,7 @@ class LoadMore implements ChatEvent {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is LoadMore);
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is LoadMoreChat);
 }
 
 
@@ -408,7 +408,7 @@ int get hashCode => runtimeType.hashCode;
 
 @override
 String toString() {
-  return 'ChatEvent.loadMore()';
+  return 'ChatEvent.loadMoreChat()';
 }
 
 

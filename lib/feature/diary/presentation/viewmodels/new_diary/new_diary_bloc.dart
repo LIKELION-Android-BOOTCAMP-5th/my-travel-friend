@@ -32,6 +32,7 @@ class NewDiaryBloc extends Bloc<NewDiaryEvent, NewDiaryState> {
     on<RemoveImg>(_onRemoveImg);
     on<ChangeCost>(_onChangeCost);
     on<ChangeCurrency>(_onChangeCurrency);
+    on<ChangePayment>(_onChangePayment);
     on<ChangePublic>(_onChangePublic);
     on<ChooseSchedule>(_onChooseSchedule);
     on<Reset>(_onReset);
@@ -199,6 +200,14 @@ class NewDiaryBloc extends Bloc<NewDiaryEvent, NewDiaryState> {
     Emitter<NewDiaryState> emit,
   ) async {
     emit(state.copyWith(currency: event.currency));
+  }
+
+  // 결제 수단 변경
+  Future<void> _onChangePayment(
+    ChangePayment event,
+    Emitter<NewDiaryState> emit,
+  ) async {
+    emit(state.copyWith(payment: event.payment));
   }
 
   // 공개 여부 변경

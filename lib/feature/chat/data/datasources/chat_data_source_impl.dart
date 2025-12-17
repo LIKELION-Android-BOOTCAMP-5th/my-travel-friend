@@ -22,7 +22,7 @@ class ChatDataSourceImpl implements ChatDataSource {
 
   ChatDataSourceImpl(this._supabaseClient);
 
-  // 채팅 내용 가져오기 (여행아이디로)
+  // 채팅 내용 가져오기 (여행 아이디로)
   @override
   Future<Result<List<ChatDTO>>> getChat({
     required int tripId,
@@ -36,10 +36,14 @@ class ChatDataSourceImpl implements ChatDataSource {
           .from('chat')
           .select('*')
           .eq('trip_id', tripId)
-          .order('created_at', ascending: true)
+          .order('created_at', ascending: false)
           .range(offset, offset + limit - 1);
 
-      final list = (res as List).map((json) => ChatDTO.fromJson(json)).toList();
+      final list = (res as List)
+          .map((json) => ChatDTO.fromJson(json))
+          .toList()
+          .reversed
+          .toList();
 
       return Result.success(list);
     } catch (e) {
@@ -97,14 +101,26 @@ class ChatDataSourceImpl implements ChatDataSource {
     return _chatStreamController!.stream;
   }
 
-  // Realtime 이벤트 처리
+  // Realtime 이벤트 처리 - 새 메시지만 전달
   Future<void> _handleRealtimeEvent(
     PostgresChangePayload payload,
     int tripId,
   ) async {
-    // 변경 발생 시 전체 리스트 다시 조회
-    final res = await getChat(tripId: tripId, page: 0, limit: 50);
-    _chatStreamController?.add(res);
+    try {
+      if (payload.eventType == PostgresChangeEvent.insert) {
+        // 새 메시지만 전달
+        final newRecord = payload.newRecord;
+        if (newRecord.isNotEmpty) {
+          final chat = ChatDTO.fromJson(newRecord);
+          _chatStreamController?.add(Result.success([chat]));
+        }
+      }
+      // update, delete는 필요시 추가
+    } catch (e) {
+      _chatStreamController?.add(
+        Result.failure(Failure.serverFailure(message: e.toString())),
+      );
+    }
   }
 
   // 구독 해제

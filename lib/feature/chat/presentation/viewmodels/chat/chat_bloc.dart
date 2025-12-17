@@ -3,14 +3,14 @@ import 'dart:async';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 
-import '../../../../core/result/result.dart';
-import '../../domain/entities/chat_entity.dart';
-import '../../domain/usecases/get_chat_usecase.dart';
-import '../../domain/usecases/get_read_status_usecase.dart';
-import '../../domain/usecases/get_trip_crew_usecase.dart';
-import '../../domain/usecases/send_chat_usecase.dart';
-import '../../domain/usecases/subscribe_chat_usecase.dart';
-import '../../domain/usecases/update_read_status_usecase.dart';
+import '../../../../../core/result/result.dart';
+import '../../../domain/entities/chat_entity.dart';
+import '../../../domain/usecases/get_chat_usecase.dart';
+import '../../../domain/usecases/get_read_status_usecase.dart';
+import '../../../domain/usecases/get_trip_crew_usecase.dart';
+import '../../../domain/usecases/send_chat_usecase.dart';
+import '../../../domain/usecases/subscribe_chat_usecase.dart';
+import '../../../domain/usecases/update_read_status_usecase.dart';
 import 'chat_event.dart';
 import 'chat_state.dart';
 
@@ -40,7 +40,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     on<EnterChat>(_onEnterChat);
     on<LeaveChat>(_onLeaveChat);
     on<SendChat>(_onSendChat);
-    on<LoadMore>(_onLoadMore);
+    on<LoadMoreChat>(_onLoadMoreChat);
     on<OnNewChatReceive>(_onNewChatReceive);
     on<UpdateReadStatus>(_onUpdateReadStatus);
     on<ClearError>(_onClearError);
@@ -156,6 +156,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     _chatSubscription?.cancel();
     _chatSubscription = null;
     await _subscribeChatUseCase.unsubscribe();
+
     emit(const ChatState());
   }
 
@@ -189,7 +190,10 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
   }
 
   // 이전 메시지 더 불러오기 (위로 스크롤)
-  Future<void> _onLoadMore(LoadMore event, Emitter<ChatState> emit) async {
+  Future<void> _onLoadMoreChat(
+    LoadMoreChat event,
+    Emitter<ChatState> emit,
+  ) async {
     if (state.pageState != ChatPageState.loaded) return;
     if (state.isLoadingMore || !state.hasMore) return;
 
@@ -229,6 +233,19 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
   void _onNewChatReceive(OnNewChatReceive event, Emitter<ChatState> emit) {
     final newChats = event.chats.cast<ChatEntity>();
 
+    if (newChats.isEmpty) return;
+
+    // 기존 채팅에 새 메시지 추가 (중복 제거)
+    final existingIds = state.chats.map((c) => c.id).toSet();
+    final uniqueNewChats = newChats
+        .where((c) => c.id != null && !existingIds.contains(c.id))
+        .toList();
+
+    if (uniqueNewChats.isEmpty) return;
+
+    // 기존 리스트 + 새 메시지 (오래된순 유지)
+    final updatedChats = [...state.chats, ...uniqueNewChats];
+
     // 이전에 불러둔 크루 목록이랑 메세지 보낸 사람 체크 -> 일치하는 userID 없을 경우 크루 목록 갱신
     final unknownUserIds = newChats
         .map((c) => c.userId)
@@ -242,12 +259,12 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
 
     int unreadCount = 0;
     if (state.lastReadChatId != null) {
-      unreadCount = newChats
+      unreadCount = updatedChats
           .where((c) => (c.id ?? 0) > state.lastReadChatId!)
           .length;
     }
 
-    emit(state.copyWith(chats: newChats, unreadCount: unreadCount));
+    emit(state.copyWith(chats: updatedChats, unreadCount: unreadCount));
   }
 
   // 멤버 리스트 갱신

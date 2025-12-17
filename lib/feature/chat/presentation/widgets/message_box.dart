@@ -5,8 +5,8 @@ import 'package:my_travel_friend/core/widget/profile_img.dart';
 
 import '../../../../core/extension/datetime_string_extension.dart';
 import '../../domain/entities/chat_entity.dart';
-import '../viewmodels/chat_bloc.dart';
-import '../viewmodels/chat_state.dart';
+import '../viewmodels/chat/chat_bloc.dart';
+import '../viewmodels/chat/chat_state.dart';
 import 'bubble_with_time.dart';
 
 // [이재은] 채팅 메세지 (members에서 유저 조회)
