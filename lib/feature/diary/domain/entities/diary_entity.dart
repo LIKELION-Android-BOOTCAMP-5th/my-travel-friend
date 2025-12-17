@@ -22,5 +22,6 @@ abstract class DiaryEntity with _$DiaryEntity {
     double? rating,
     String? content,
     int? cost,
+    String? currency,
   }) = _DiaryEntity;
 }

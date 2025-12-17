@@ -568,10 +568,15 @@ class _NewDiaryScreenState extends State<NewDiaryScreen> {
             hintText: '금액을 입력하세요',
             controller: _priceController,
             keyboardType: TextInputType.number,
-            suffix: '원',
-            suffixStyle: AppFont.regularBold.copyWith(
-              color: colorScheme.onSurface,
-            ),
+            suffixDropdownItems: ['원', '엔', '동', '달러', '유로', '위안'],
+            suffixDropdownValue: state.currency,
+            onSuffixDropdownChanged: (value) {
+              if (value != null) {
+                context.read<NewDiaryBloc>().add(
+                  NewDiaryEvent.changeCurrency(currency: value),
+                );
+              }
+            },
             onChanged: (value) {
               final cost = int.tryParse(value.replaceAll(',', ''));
               context.read<NewDiaryBloc>().add(
