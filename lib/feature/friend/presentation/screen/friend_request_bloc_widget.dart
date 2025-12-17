@@ -22,17 +22,40 @@ class FriendRequestBlocWidget extends StatelessWidget {
             curr.actionType == 'request_create',
         listener: (context, state) {
           if (state.pageState == FriendRequestPageState.success) {
-            context.read<FriendRequestBloc>().add(
-              FriendRequestEvent.searchRequestName(
-                myId: requestId,
-                keyword: state.keyword,
-              ),
-            );
+            ScaffoldMessenger.of(
+              context,
+            ).showSnackBar(const SnackBar(content: Text('친구 요청을 보냈어요')));
+          }
+          if (state.pageState == FriendRequestPageState.error) {
+            ScaffoldMessenger.of(
+              context,
+            ).showSnackBar(SnackBar(content: Text(state.message ?? '요청 실패')));
           }
         },
         child: BlocBuilder<FriendRequestBloc, FriendRequestState>(
           builder: (context, state) {
-            return FriendRequestScreen(requestId: requestId);
+            return FriendRequestScreen(
+              requestId: requestId,
+
+              state: state,
+
+              onSearchChanged: (keyword) {
+                context.read<FriendRequestBloc>().add(
+                  FriendRequestEvent.searchRequestName(
+                    myId: requestId,
+                    keyword: keyword,
+                  ),
+                );
+              },
+              onRequestCreate: (targetId) {
+                context.read<FriendRequestBloc>().add(
+                  FriendRequestEvent.requestCreate(
+                    requestId: requestId,
+                    targetId: targetId,
+                  ),
+                );
+              },
+            );
           },
         ),
       ),

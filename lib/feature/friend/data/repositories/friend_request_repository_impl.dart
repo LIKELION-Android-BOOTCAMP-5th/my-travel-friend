@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:injectable/injectable.dart';
 import 'package:my_travel_friend/feature/auth/domain/entities/user_entity.dart';
 
@@ -21,8 +20,6 @@ class FriendRequestRepositoryImpl implements FriendRequestRepository {
 
     return result.when(
       success: (dtoList) {
-        debugPrint('📦 repo dto count = ${dtoList.length}');
-        debugPrint('📦 first dto = ${dtoList.first.toJson()}');
         final entities = dtoList.map((dto) => dto.toEntity()).toList();
         return Result.success(entities);
       },
