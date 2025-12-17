@@ -80,7 +80,8 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
 
   void _onScroll() {
     // 위로 스크롤 시 이전 메시지 로드
-    if (_scrollController.position.pixels <= 100) {
+    if (_scrollController.position.pixels >=
+        _scrollController.position.maxScrollExtent - 100) {
       context.read<ChatBloc>().add(LoadMoreChat());
     }
     _updateReadStatus();
@@ -118,7 +119,7 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
   void _scrollToBottom() {
     if (_scrollController.hasClients) {
       _scrollController.animateTo(
-        _scrollController.position.maxScrollExtent,
+        0,
         duration: const Duration(milliseconds: 300),
         curve: Curves.easeOut,
       );
@@ -204,37 +205,34 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
         }
 
         // 메시지 목록
-        return Stack(
-          children: [
-            ListView.builder(
-              controller: _scrollController,
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-              itemCount: state.chats.length + (state.isLoadingMore ? 1 : 0),
-              itemBuilder: (context, index) {
-                if (state.isLoadingMore && index == 0) {
-                  return const Center(
-                    child: Padding(
-                      padding: EdgeInsets.all(8.0),
-                      child: CircularProgressIndicator(strokeWidth: 2),
-                    ),
-                  );
-                }
+        return ListView.builder(
+          controller: _scrollController,
+          reverse: true,
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+          itemCount: state.chats.length + (state.isLoadingMore ? 1 : 0),
+          itemBuilder: (context, index) {
+            if (state.isLoadingMore && index == state.chats.length) {
+              return const Center(
+                child: Padding(
+                  padding: EdgeInsets.all(8.0),
+                  child: CircularProgressIndicator(strokeWidth: 2),
+                ),
+              );
+            }
 
-                final chatIndex = state.isLoadingMore ? index - 1 : index;
-                final chat = state.chats[chatIndex];
+            final actualIndex = state.chats.length - 1 - index;
+            final chat = state.chats[actualIndex];
 
-                return Column(
-                  children: [
-                    if (state.shouldShowDateDivider(chatIndex))
-                      ChatDateDivider(dateString: chat.createdAt),
-                    if (state.shouldShowUnreadDivider(chatIndex))
-                      const ChatUnreadDivider(),
-                    MessageBox(chat: chat),
-                  ],
-                );
-              },
-            ),
-          ],
+            return Column(
+              children: [
+                if (state.shouldShowDateDivider(actualIndex))
+                  ChatDateDivider(dateString: chat.createdAt),
+                if (state.shouldShowUnreadDivider(actualIndex))
+                  const ChatUnreadDivider(),
+                MessageBox(chat: chat),
+              ],
+            );
+          },
         );
       },
     );
