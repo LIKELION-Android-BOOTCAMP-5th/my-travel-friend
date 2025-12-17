@@ -173,16 +173,14 @@ class TripDataSourceImpl implements TripDataSource {
       final offset = (page - 1) * limit;
 
       final res = await _supabaseClient
-          .from('trip_crew')
-          .select('trip(*)')
-          .eq('member_id', userId)
-          .or('trip.title.ilike.%$keyword%,trip.place.ilike.%$keyword%')
-          .order('trip.created_at', ascending: false)
+          .from('trip')
+          .select('*, trip_crew!inner(member_id)')
+          .eq('trip_crew.member_id', userId)
+          .or('title.ilike.%$keyword%,place.ilike.%$keyword%')
+          .order('created_at', ascending: false)
           .range(offset, offset + limit - 1);
 
-      final trips = (res as List)
-          .map((row) => TripDto.fromJson(row['trip']))
-          .toList();
+      final trips = (res as List).map((e) => TripDto.fromJson(e)).toList();
 
       return Result.success(trips);
     } catch (e) {
