@@ -12,7 +12,6 @@ import 'package:my_travel_friend/feature/trip/presentation/viewmodels/trip/trip_
 import 'package:my_travel_friend/feature/trip/presentation/widgets/empty_travel_card.dart';
 import 'package:my_travel_friend/feature/trip/presentation/widgets/trip_card.dart';
 import 'package:my_travel_friend/feature/trip/presentation/widgets/trip_screen_app_bar.dart';
-
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_icon.dart';
 import '../../../alarm/presentation/viewmodels/alarm_bloc.dart';
