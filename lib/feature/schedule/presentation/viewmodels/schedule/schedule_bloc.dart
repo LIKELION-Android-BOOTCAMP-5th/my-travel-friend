@@ -128,9 +128,15 @@ class ScheduleBloc extends Bloc<ScheduleEvent, ScheduleState> {
   // 날짜 선택
 
   void _onSelectDate(SelectDate event, Emitter<ScheduleState> emit) {
-    final filtered = state.schedules
-        .where((e) => e.date == event.date)
-        .toList();
+    final filtered = state.schedules.where((e) {
+      if (e.date == null) return false;
+
+      final scheduleDate = DateTime.parse(
+        e.date!,
+      ).toIso8601String().substring(0, 10);
+
+      return scheduleDate == event.date;
+    }).toList();
 
     emit(
       state.copyWith(

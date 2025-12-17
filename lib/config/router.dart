@@ -121,11 +121,7 @@ class AppRouter {
       // 앱 홈
       GoRoute(
         path: '/home',
-        builder: (context, state) => BlocProvider(
-          //bloc 제공자
-          create: (context) => GetIt.instance<TripBloc>(),
-          child: const TripBlocWidget(),
-        ),
+        builder: (context, state) => const TripBlocWidget(),
       ),
 
       // Trip 생성 /수정

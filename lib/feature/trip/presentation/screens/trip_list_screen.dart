@@ -30,39 +30,43 @@ class _TripListScreenState extends State<TripListScreen> {
   final ScrollController _scrollController = ScrollController();
   final TextEditingController _searchController = TextEditingController();
   late final int userId;
+
   @override
   void initState() {
     super.initState();
 
-    final bloc = context.read<TripBloc>();
     final authState = context.read<AuthProfileBloc>().state;
-
+    // 초기 userId 설정 (인증 상태를 확인하여)
     if (authState is AuthProfileAuthenticated) {
       userId = authState.userInfo.id!;
+    } else {
+      userId = 0; // 안전한 기본값 설정 (실제 앱에서는 이전에 로딩 오버레이로 막혔을 것)
+    }
 
-      _scrollController.addListener(() {
-        if (_scrollController.position.pixels >=
-            _scrollController.position.maxScrollExtent - 200) {
-          bloc.add(TripEvent.loadMoreTrips(userId: userId));
-        }
-      });
+    _scrollController.addListener(_onScroll);
+  }
+
+  void _onScroll() {
+    // 무한 스크롤 로직: 스크롤이 끝에서 200픽셀 이내에 도달했을 때
+    if (_scrollController.position.pixels >=
+        _scrollController.position.maxScrollExtent - 200) {
+      context.read<TripBloc>().add(TripEvent.loadMoreTrips(userId: userId));
     }
   }
 
   @override
   void dispose() {
+    _scrollController.removeListener(_onScroll);
     _scrollController.dispose();
     _searchController.dispose();
     super.dispose();
   }
 
-  /// TripCard 메뉴 BottomSheet
-  void _showMenu(trip) {
+  //여행 매뉴 보여주기
+  void _showMenu(dynamic trip) {
     final authState = context.read<AuthProfileBloc>().state;
-
     if (authState is! AuthProfileAuthenticated) return;
-
-    final userId = authState.userInfo.id!;
+    final currentUserId = authState.userInfo.id!;
 
     CommonBottomSheet.show(
       context,
@@ -73,6 +77,8 @@ class _TripListScreenState extends State<TripListScreen> {
           iconBgColor: AppColors.primaryLight,
           title: "여행계획 수정하기",
           onTap: () {
+            Navigator.of(context).pop();
+            // navigateToEdit 상태를 true로 설정하는 이벤트
             context.read<TripBloc>().add(TripEvent.updateTrip(trip: trip));
           },
         ),
@@ -81,15 +87,16 @@ class _TripListScreenState extends State<TripListScreen> {
           iconBgColor: AppColors.secondary,
           title: "여행 포기하기",
           onTap: () {
-            _showLeavePopUp(trip, userId);
+            Navigator.of(context).pop();
+            _showLeavePopUp(trip, currentUserId);
           },
         ),
       ],
     );
   }
 
-  /// 여행 포기 PopUp
-  void _showLeavePopUp(trip, int userId) {
+  //여행포기
+  void _showLeavePopUp(dynamic trip, int userId) {
     showDialog(
       context: context,
       barrierDismissible: false,
@@ -98,6 +105,7 @@ class _TripListScreenState extends State<TripListScreen> {
         message: "참여 중인 여행에서 제외됩니다.",
         rightText: "포기하기",
         onRight: () {
+          Navigator.of(context).pop();
           context.read<TripBloc>().add(
             TripEvent.leaveTrip(tripId: trip.id!, userId: userId),
           );
@@ -110,182 +118,186 @@ class _TripListScreenState extends State<TripListScreen> {
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
     final isDark = colorScheme.brightness == Brightness.dark;
+    final TripBloc tripBloc = context.read<TripBloc>();
 
-    /*    final authState = context.watch<AuthProfileBloc>().state;
-
-    if (authState is! AuthProfileAuthenticated) {
-      return const Center(child: Text("로그인이 필요합니다"));
-    }
-
-    final userId = authState.userInfo.id!;*/
-
+    //네비게이션 처리를 위한 MultiBlocListener
     return MultiBlocListener(
       listeners: [
+        // 여행 생성 네비게이션 리스너
         BlocListener<TripBloc, TripState>(
           listenWhen: (prev, curr) =>
               prev.navigateToCreate != curr.navigateToCreate,
           listener: (context, state) async {
             if (state.navigateToCreate) {
-              context.read<TripBloc>().add(const TripEvent.navigationHandled());
-
+              tripBloc.add(const TripEvent.navigationHandled());
+              // GoRouter 푸시 및 결과값 대기
               final result = await context.push(
                 '/trip/create',
                 extra: {"userId": userId},
               );
-
               if (result == true && context.mounted) {
-                context.read<TripBloc>().add(
-                  TripEvent.refreshTrips(userId: userId),
-                );
+                // 생성 성공 시 목록 새로고침
+                tripBloc.add(TripEvent.refreshTrips(userId: userId));
               }
             }
           },
         ),
+        // 여행 수정 네비게이션 리스너
         BlocListener<TripBloc, TripState>(
           listenWhen: (prev, curr) =>
               prev.navigateToEdit != curr.navigateToEdit,
           listener: (context, state) async {
             if (state.navigateToEdit && state.selectedTrip != null) {
-              context.read<TripBloc>().add(const TripEvent.navigationHandled());
-
+              tripBloc.add(const TripEvent.navigationHandled());
+              // GoRouter 푸시 및 결과값 대기
               final result = await context.push(
                 '/trip/edit',
                 extra: {"trip": state.selectedTrip},
               );
-
               if (result == true && context.mounted) {
-                context.read<TripBloc>().add(
-                  TripEvent.refreshTrips(userId: userId),
-                );
+                // 수정 성공 시 목록 새로고침
+                tripBloc.add(TripEvent.refreshTrips(userId: userId));
               }
             }
           },
         ),
       ],
 
-      child: BlocBuilder<AlarmBloc, AlarmState>(
-        buildWhen: (prev, curr) => prev.alarms != curr.alarms,
-        builder: (context, alarmState) {
-          return BlocBuilder<TripBloc, TripState>(
+      child: Scaffold(
+        backgroundColor: isDark ? AppColors.navy : AppColors.darkGray,
+
+        // AppBar: AlarmBloc 상태 변화에만 반응하도록 BlocSelector 사용 (리빌드 범위 최소화)
+        appBar: PreferredSize(
+          preferredSize: const Size.fromHeight(kToolbarHeight),
+          child: BlocSelector<AlarmBloc, AlarmState, bool>(
+            selector: (state) => state.hasUnread,
+            builder: (context, hasUnreadAlarm) {
+              final isSearching = context.watch<TripBloc>().state.search;
+              final TripBloc tripBloc = context.read<TripBloc>();
+
+              return HomeAppBar(
+                hasUnreadAlarm: hasUnreadAlarm,
+                onLogoTap: () {
+                  debugPrint('홈 로고 클릭');
+                },
+                onSearchTap: () {
+                  tripBloc.add(TripEvent.toggleSearch());
+                },
+                searchIcon: isSearching ? AppIcon.close : AppIcon.search,
+                onAlarmTap: () {
+                  context.push('/alarm');
+                },
+                onSettingTap: () {
+                  context.push('/setting');
+                },
+              );
+            },
+          ),
+        ),
+
+        body: SafeArea(
+          //Body: TripBloc의 목록 데이터와 검색 상태에만 반응하는 BlocBuilder (핵심)
+          child: BlocBuilder<TripBloc, TripState>(
+            buildWhen: (prev, curr) =>
+                prev.trips != curr.trips ||
+                prev.searchTrips != curr.searchTrips ||
+                prev.search != curr.search,
             builder: (context, tripState) {
-              final bloc = context.read<TripBloc>();
               final isSearching = tripState.search;
-              final trips = tripState.search
+              final trips = isSearching
                   ? tripState.searchTrips ?? []
                   : tripState.trips ?? [];
 
-              return Scaffold(
-                backgroundColor: isDark ? AppColors.navy : AppColors.darkGray,
+              return Column(
+                children: [
+                  // 검색창 위젯 (isSearching 상태에 따라 표시/숨김)
+                  _buildSearchBar(isSearching, colorScheme, tripBloc),
 
-                appBar: HomeAppBar(
-                  hasUnreadAlarm: alarmState.hasUnread,
-                  onLogoTap: () {
-                    debugPrint("홈 로고 클릭");
-                  },
-                  onSearchTap: () {
-                    bloc.add(TripEvent.toggleSearch());
-                  },
-                  searchIcon: isSearching ? AppIcon.close : AppIcon.search,
-                  onAlarmTap: () {
-                    context.push('/alarm');
-                  },
-                  onSettingTap: () {
-                    context.push('/setting');
-                  },
-                ),
-
-                body: SafeArea(
-                  child: Column(
-                    children: [
-                      if (isSearching)
-                        Padding(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 16,
-                            vertical: 8,
-                          ),
-                          child: TextBox(
-                            unfocusedBorderColor: colorScheme.primary,
-                            controller: _searchController,
-                            hintText: "여행 검색...",
-                            prefixIcon: Icon(AppIcon.search),
-                            onChanged: (value) {
-                              bloc.add(
-                                TripEvent.searchKeywordChanged(keyword: value),
-                              );
-                            },
-                            textInputAction: TextInputAction.search,
-                          ),
-                        ),
-
-                      Expanded(
-                        child: RefreshIndicator(
-                          onRefresh: () async {
-                            bloc.add(TripEvent.refreshTrips(userId: userId));
-                          },
-                          child: trips.isEmpty
-                              ? _buildEmptyUI(isSearching)
-                              : ListView.builder(
-                                  controller: _scrollController,
-                                  physics:
-                                      const AlwaysScrollableScrollPhysics(),
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: 16,
-                                    vertical: 12,
-                                  ),
-                                  itemCount: trips.length,
-                                  itemBuilder: (context, index) {
-                                    final trip = trips[index];
-                                    return Padding(
-                                      padding: const EdgeInsets.only(
-                                        bottom: 14,
-                                      ),
-                                      child: TripCard(
-                                        title: trip.title,
-                                        startDate: formatDate(trip.startAt),
-                                        endDate: formatDate(trip.endAt),
-                                        peopleCount: trip.crewCount,
-                                        backgroundColor:
-                                            trip.coverType == "IMAGE"
-                                            ? null
-                                            : getCoverColor(trip.coverType),
-                                        backgroundImageUrl:
-                                            trip.coverType == "IMAGE"
-                                            ? trip.coverImg
-                                            : null,
-                                        onTap: () {
-                                          context.go(
-                                            '/trip/${trip.id}/trip_home',
-                                          );
-                                        },
-                                        onMenu: () => _showMenu(trip),
-                                      ),
-                                    );
-                                  },
-                                ),
-                        ),
-                      ),
-                    ],
+                  // 여행 목록 또는 Empty UI
+                  Expanded(
+                    child: RefreshIndicator(
+                      onRefresh: () async {
+                        tripBloc.add(TripEvent.refreshTrips(userId: userId));
+                      },
+                      child: trips.isEmpty
+                          ? _buildEmptyUI(isSearching, context)
+                          : _buildTripListView(trips),
+                    ),
                   ),
-                ),
-
-                floatingActionButton: FloatingButton(
-                  icon: const Icon(Icons.add, size: 34, color: AppColors.light),
-                  onPressed: () {
-                    bloc.add(TripEvent.createNewTrip());
-                  },
-                ),
-                floatingActionButtonLocation:
-                    FloatingActionButtonLocation.endFloat,
+                ],
               );
             },
-          );
-        },
+          ),
+        ),
+
+        floatingActionButton: FloatingButton(
+          icon: const Icon(Icons.add, size: 34, color: AppColors.light),
+          onPressed: () {
+            tripBloc.add(TripEvent.createNewTrip());
+          },
+        ),
+        floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       ),
     );
   }
 
+  // 검색창 위젯
+  Widget _buildSearchBar(
+    bool isSearching,
+    ColorScheme colorScheme,
+    TripBloc bloc,
+  ) {
+    if (!isSearching) return const SizedBox.shrink();
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      child: TextBox(
+        unfocusedBorderColor: colorScheme.primary,
+        controller: _searchController,
+        hintText: "여행 검색...",
+        prefixIcon: Icon(AppIcon.search),
+        onChanged: (value) {
+          bloc.add(TripEvent.searchKeywordChanged(keyword: value));
+        },
+        textInputAction: TextInputAction.search,
+      ),
+    );
+  }
+
+  // 여행 목록 ListView 위젯
+  Widget _buildTripListView(List<dynamic> trips) {
+    return ListView.builder(
+      controller: _scrollController,
+      physics: const AlwaysScrollableScrollPhysics(),
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+      itemCount: trips.length,
+      itemBuilder: (context, index) {
+        final trip = trips[index];
+        return Padding(
+          padding: const EdgeInsets.only(bottom: 14),
+          child: TripCard(
+            title: trip.title,
+            startDate: formatDate(trip.startAt),
+            endDate: formatDate(trip.endAt),
+            peopleCount: trip.crewCount,
+            backgroundColor: trip.coverType == "IMAGE"
+                ? null
+                : getCoverColor(trip.coverType),
+            backgroundImageUrl: trip.coverType == "IMAGE"
+                ? trip.coverImg
+                : null,
+            onTap: () {
+              context.go('/trip/${trip.id}/trip_home');
+            },
+            onMenu: () => _showMenu(trip),
+          ),
+        );
+      },
+    );
+  }
+
   /// empty UI
-  Widget _buildEmptyUI(bool isSearching) {
+  Widget _buildEmptyUI(bool isSearching, BuildContext context) {
     return ListView(
       physics: const AlwaysScrollableScrollPhysics(),
       children: [
@@ -322,13 +334,14 @@ class _TripListScreenState extends State<TripListScreen> {
         return AppColors.primaryLight;
     }
   }
-}
 
-String formatDate(String dateStr) {
-  try {
-    final date = DateTime.parse(dateStr);
-    return "${date.year}/${date.month.toString().padLeft(2, '0')}/${date.day.toString().padLeft(2, '0')}";
-  } catch (e) {
-    return dateStr;
+  String formatDate(String dateStr) {
+    try {
+      final date = DateTime.parse(dateStr);
+      // yyyy/mm/dd 형식으로 포맷
+      return "${date.year}/${date.month.toString().padLeft(2, '0')}/${date.day.toString().padLeft(2, '0')}";
+    } catch (e) {
+      return dateStr;
+    }
   }
 }

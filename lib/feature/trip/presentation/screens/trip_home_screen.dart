@@ -588,38 +588,82 @@ class _InviteFriendPopup extends StatelessWidget {
                 const Divider(),
 
                 Expanded(
-                  child: state.friendCandidates.isEmpty
-                      ? const Center(child: Text('친구가 없어요'))
-                      : ListView.separated(
-                          itemCount: state.friendCandidates.length,
-                          separatorBuilder: (_, __) => const Divider(height: 1),
-                          itemBuilder: (context, index) {
-                            final user = state.friendCandidates[index];
-
-                            return ListTile(
-                              leading: CircleAvatar(
-                                backgroundImage:
-                                    (user.profileImg != null &&
-                                        user.profileImg!.trim().isNotEmpty)
-                                    ? NetworkImage(user.profileImg!)
-                                    : null,
-                                child:
-                                    (user.profileImg == null ||
-                                        user.profileImg!.trim().isEmpty)
-                                    ? const Icon(Icons.person)
-                                    : null,
-                              ),
-                              title: Text(user.nickname ?? ''),
-                              trailing: ElevatedButton(
-                                onPressed: () {
-                                  // TODO: 실제 초대 로직 연결 시 InviteFriend 이벤트 사용
-                                  // context.read<TripHomeBloc>().add(TripHomeEvent.inviteFriend(friend: user));
-                                },
-                                child: const Text('초대하기'),
-                              ),
-                            );
-                          },
+                  child: ListView.builder(
+                    itemCount: state.friendCandidates.length,
+                    itemBuilder: (context, index) {
+                      final user = state.friendCandidates[index];
+                      debugPrint(
+                        '👤 invite friend: ${user.nickname}, profileImg = "${user.profileImg}"',
+                      );
+                      return Container(
+                        margin: const EdgeInsets.symmetric(vertical: 8),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 12,
+                          vertical: 10,
                         ),
+                        decoration: BoxDecoration(
+                          color: Colors.grey.shade100,
+                          borderRadius: BorderRadius.circular(16),
+                        ),
+                        child: Row(
+                          children: [
+                            // 프로필 이미지
+                            CircleAvatar(
+                              radius: 24,
+                              backgroundColor: Colors.grey.shade300,
+                              backgroundImage:
+                                  (user.profileImg != null &&
+                                      user.profileImg!.trim().isNotEmpty)
+                                  ? NetworkImage(user.profileImg!)
+                                  : null,
+                              child:
+                                  (user.profileImg == null ||
+                                      user.profileImg!.trim().isEmpty)
+                                  ? const Icon(
+                                      Icons.person,
+                                      color: Colors.white,
+                                    )
+                                  : null,
+                            ),
+
+                            const SizedBox(width: 12),
+
+                            // 이름
+                            Expanded(
+                              child: Text(
+                                user.nickname ?? '',
+                                style: const TextStyle(
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                            ),
+
+                            // 초대 버튼
+                            ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.lightBlue,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(20),
+                                ),
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 16,
+                                  vertical: 8,
+                                ),
+                              ),
+                              onPressed: () {
+                                // TODO: 초대 이벤트
+                              },
+                              child: const Text(
+                                '초대하기',
+                                style: TextStyle(color: Colors.white),
+                              ),
+                            ),
+                          ],
+                        ),
+                      );
+                    },
+                  ),
                 ),
               ],
             ),
