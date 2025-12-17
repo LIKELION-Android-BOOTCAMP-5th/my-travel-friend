@@ -722,6 +722,7 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i285.DeleteFriendUsecase>(),
         gh<_i151.GetFriendUsersUsecase>(),
         gh<_i617.SearchNicknameUsecase>(),
+        gh<_i639.CreateFriendRelationUsecase>(),
       ),
     );
     gh.factory<_i935.EditDiaryBloc>(

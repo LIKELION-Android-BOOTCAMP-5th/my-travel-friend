@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:my_travel_friend/core/widget/button.dart';
 import 'package:my_travel_friend/feature/friend/presentation/viewmodel/friend_request_bloc.dart';
 import 'package:my_travel_friend/feature/friend/presentation/viewmodel/friend_request_state.dart';
 import 'package:my_travel_friend/feature/friend/presentation/widget/empty_card_widget.dart';
@@ -9,16 +8,26 @@ import 'package:my_travel_friend/feature/friend/presentation/widget/empty_card_w
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_icon.dart';
 import '../../../../core/widget/app_bar.dart';
+import '../../../../core/widget/button.dart';
 import '../../../../core/widget/pop_up_box.dart';
 import '../../../../core/widget/text_box.dart';
-import '../viewmodel/friend_request_event.dart';
 import '../widget/request_friend_widget.dart';
 
-/// [엄수빈] 친구 추가 / 친구 요청 화면 (UI 전용)
+/// [엄수빈] 친구 추가 화면
 class FriendRequestScreen extends StatelessWidget {
   final int requestId;
+  final FriendRequestState state;
 
-  const FriendRequestScreen({super.key, required this.requestId});
+  final ValueChanged<String> onSearchChanged;
+  final ValueChanged<int> onRequestCreate;
+
+  const FriendRequestScreen({
+    super.key,
+    required this.requestId,
+    required this.state,
+    required this.onSearchChanged,
+    required this.onRequestCreate,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -26,6 +35,7 @@ class FriendRequestScreen extends StatelessWidget {
     final isDark = cs.brightness == Brightness.dark;
 
     return Scaffold(
+      backgroundColor: isDark ? AppColors.navy : AppColors.darkGray,
       appBar: CustomButtonAppBar(
         title: "친구 추가",
         leading: Button(
@@ -39,41 +49,21 @@ class FriendRequestScreen extends StatelessWidget {
           borderRadius: 20,
         ),
       ),
-      backgroundColor: isDark ? AppColors.navy : AppColors.darkGray,
       body: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: BlocListener<FriendRequestBloc, FriendRequestState>(
-          listenWhen: (prev, curr) =>
-              prev.pageState != curr.pageState &&
-              curr.actionType == 'request_create',
-          listener: (context, state) {
-            // 요청 성공하면 현재 검색어로 다시 검색 => 화면 리로드 효과
-            if (state.pageState == FriendRequestPageState.success) {
-              context.read<FriendRequestBloc>().add(
-                FriendRequestEvent.searchRequestName(
-                  myId: requestId,
-                  keyword: state.keyword, // 지금 검색어 그대로
-                ),
-              );
-            }
-          },
-          child: BlocBuilder<FriendRequestBloc, FriendRequestState>(
-            builder: (context, state) {
-              return CustomScrollView(
-                slivers: [
-                  SliverToBoxAdapter(
-                    child: _NicknameSearchCard(requestId: requestId),
-                  ),
-                  const SliverToBoxAdapter(child: SizedBox(height: 24)),
-                  SliverToBoxAdapter(
-                    child: _SearchResultSection(requestId: requestId),
-                  ),
-                  const SliverToBoxAdapter(child: SizedBox(height: 24)),
-                  // const SliverToBoxAdapter(child: _InviteLinkSection()),
-                ],
-              );
-            },
-          ),
+        child: CustomScrollView(
+          slivers: [
+            SliverToBoxAdapter(
+              child: _NicknameSearchCard(onChanged: onSearchChanged),
+            ),
+            const SliverToBoxAdapter(child: SizedBox(height: 24)),
+            SliverToBoxAdapter(
+              child: _SearchResultSection(
+                state: state,
+                onRequestCreate: onRequestCreate,
+              ),
+            ),
+          ],
         ),
       ),
     );
@@ -81,8 +71,8 @@ class FriendRequestScreen extends StatelessWidget {
 }
 
 class _NicknameSearchCard extends StatelessWidget {
-  final int requestId;
-  const _NicknameSearchCard({super.key, required this.requestId});
+  final ValueChanged<String> onChanged;
+  const _NicknameSearchCard({super.key, required this.onChanged});
 
   @override
   Widget build(BuildContext context) {
@@ -112,14 +102,7 @@ class _NicknameSearchCard extends StatelessWidget {
           TextBox(
             hintText: "닉네임 입력...",
             prefixIcon: Icon(AppIcon.search),
-            onChanged: (value) {
-              context.read<FriendRequestBloc>().add(
-                FriendRequestEvent.searchRequestName(
-                  myId: requestId,
-                  keyword: value,
-                ),
-              );
-            },
+            onChanged: onChanged,
           ),
         ],
       ),
@@ -129,8 +112,13 @@ class _NicknameSearchCard extends StatelessWidget {
 
 /// 검색 섹션
 class _SearchResultSection extends StatelessWidget {
-  final int requestId;
-  const _SearchResultSection({super.key, required this.requestId});
+  final FriendRequestState state;
+  final ValueChanged<int> onRequestCreate;
+  const _SearchResultSection({
+    super.key,
+    required this.state,
+    required this.onRequestCreate,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -187,13 +175,7 @@ class _SearchResultSection extends StatelessWidget {
                     rightText: '추가하기',
                     onLeft: () {},
                     onRight: () {
-                      // 확인 누르면 요청 보내기
-                      context.read<FriendRequestBloc>().add(
-                        FriendRequestEvent.requestCreate(
-                          requestId: requestId,
-                          targetId: userId,
-                        ),
-                      );
+                      onRequestCreate(userId);
                     },
                   ),
                 );
@@ -227,73 +209,6 @@ class _SearchResultSection extends StatelessWidget {
             ],
           ),
           child: content,
-        ),
-      ],
-    );
-  }
-}
-
-/// 친구 초대 링크 공유
-class _InviteLinkSection extends StatelessWidget {
-  const _InviteLinkSection({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    final cs = Theme.of(context).colorScheme;
-
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const Text(
-          "친구 초대 링크 공유",
-          style: TextStyle(fontSize: 13, fontWeight: FontWeight.w500),
-        ),
-        const SizedBox(height: 12),
-        Container(
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-          decoration: BoxDecoration(
-            color: cs.onPrimary,
-            borderRadius: BorderRadius.circular(18),
-            boxShadow: [
-              BoxShadow(
-                blurRadius: 8,
-                offset: const Offset(0, 4),
-                color: Colors.black.withOpacity(0.06),
-              ),
-            ],
-          ),
-          child: Row(
-            children: [
-              const Expanded(
-                child: Text(
-                  "https://mytravel.app/add/user123",
-                  style: TextStyle(
-                    fontSize: 13,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                ),
-              ),
-              const SizedBox(width: 12),
-              GestureDetector(
-                onTap: () {
-                  // TODO: 클립보드 복사 로직 (나중에 추가)
-                },
-                child: Container(
-                  width: 40,
-                  height: 40,
-                  decoration: BoxDecoration(
-                    color: cs.primary,
-                    shape: BoxShape.circle,
-                  ),
-                  child: const Icon(
-                    Icons.copy,
-                    size: 20,
-                    color: AppColors.lessLight,
-                  ),
-                ),
-              ),
-            ],
-          ),
         ),
       ],
     );

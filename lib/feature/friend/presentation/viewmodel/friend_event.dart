@@ -24,6 +24,12 @@ class FriendEvent with _$FriendEvent {
     required int? friendUserId,
   }) = DeleteFriend;
 
+  // 친구 관계 추가
+  const factory FriendEvent.createFriendRelation({
+    required int userId1,
+    required int userId2,
+  }) = CreateFriendRelation;
+
   /// 검색어 변경될 때마다 호출
   const factory FriendEvent.keywordChanged(String keyword) = KeywordChanged;
 
