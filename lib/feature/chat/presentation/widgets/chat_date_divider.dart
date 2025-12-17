@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:my_travel_friend/core/theme/app_colors.dart';
+import 'package:my_travel_friend/core/theme/app_font.dart';
 
 import '../../../../core/extension/datetime_string_extension.dart';
 
@@ -11,23 +13,33 @@ class ChatDateDivider extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).colorScheme.brightness == Brightness.dark;
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 16),
       child: Row(
         children: [
-          Expanded(child: Divider(color: Colors.grey[300], thickness: 1)),
+          Expanded(
+            child: Divider(
+              color: isDark ? AppColors.darkGray : AppColors.lessDark,
+              thickness: 0.3,
+            ),
+          ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16),
             child: Text(
               dateString?.toDateOnly() ?? '',
-              style: TextStyle(
-                fontSize: 12,
-                color: Colors.grey[500],
+              style: AppFont.tiny.copyWith(
+                color: isDark ? AppColors.darkGray : AppColors.lessDark,
                 fontWeight: FontWeight.w500,
               ),
             ),
           ),
-          Expanded(child: Divider(color: Colors.grey[300], thickness: 1)),
+          Expanded(
+            child: Divider(
+              color: isDark ? AppColors.darkGray : AppColors.lessDark,
+              thickness: 0.3,
+            ),
+          ),
         ],
       ),
     );
