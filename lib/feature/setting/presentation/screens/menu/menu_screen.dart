@@ -36,7 +36,7 @@ class MenuScreen extends StatelessWidget {
           icon: Icon(AppIcon.back),
           contentColor: isDark ? colorScheme.onSurface : AppColors.light,
           borderRadius: 20,
-          onTap: () => context.pop(),
+          onTap: () => context.go('/home'),
         ),
       ),
       body: BlocBuilder<MenuBloc, MenuState>(
