@@ -1,7 +1,9 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-import '../../../auth/domain/entities/user_entity.dart';
-import '../../domain/entities/schedule_entity.dart';
+import '../../../../auth/domain/entities/user_entity.dart';
+import '../../../../trip/domain/entities/trip_entity.dart';
+import '../../../domain/entities/category_entity.dart';
+import '../../../domain/entities/schedule_entity.dart';
 
 part 'schedule_state.freezed.dart';
 
@@ -16,7 +18,7 @@ abstract class ScheduleState with _$ScheduleState {
 
     // 카테고리 필터링 결과
     @Default([]) List<ScheduleEntity> categoryFilteredSchedules,
-
+    @Default({}) Map<int, CategoryEntity> categoryMap,
     // 최종 표시할 스케줄
     @Default([]) List<ScheduleEntity> visibleSchedules,
 
@@ -28,9 +30,6 @@ abstract class ScheduleState with _$ScheduleState {
 
     // 현재 선택된 카테고리
     int? selectedCategoryId,
-
-    // 현재 필터링
-    ScheduleFilterType? currentFilter,
 
     // 페이징
     @Default(1) int page,
@@ -48,9 +47,15 @@ abstract class ScheduleState with _$ScheduleState {
 
     // 네비게이션 (작성 화면 이동)
     @Default(false) bool navigateToCreate,
-
+    ScheduleEntity? editingSchedule,
     // 네비게이션 (수정 화면 이동)
     @Default(false) bool navigateToEdit,
+    //카테고리
+    @Default([]) List<CategoryEntity> categories,
+
+    TripEntity? trip,
+
+    @Default(ScheduleFilterType.date) ScheduleFilterType viewMode,
   }) = _ScheduleState;
 }
 

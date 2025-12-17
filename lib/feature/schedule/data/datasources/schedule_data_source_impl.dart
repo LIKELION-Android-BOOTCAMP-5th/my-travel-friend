@@ -2,6 +2,7 @@ import 'package:injectable/injectable.dart';
 import 'package:my_travel_friend/core/result/result.dart';
 import 'package:my_travel_friend/feature/auth/data/models/user_model.dart';
 import 'package:my_travel_friend/feature/schedule/data/datasources/schedule_data_source.dart';
+import 'package:my_travel_friend/feature/schedule/data/dtos/category_dto.dart';
 import 'package:my_travel_friend/feature/schedule/data/dtos/schedule_dto.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -19,12 +20,15 @@ class ScheduleDataSourceImpl implements ScheduleDataSource {
     required int page,
   }) async {
     try {
+      final from = (page - 1) * 10;
+      final to = from + 9;
+
       final res = await supabase
           .from('schedule')
           .select('*')
           .eq('trip_id', tripId)
           .order('date', ascending: true)
-          .range(page * 10, page * 10 + 9); // 10개씩 페이징
+          .range(from, to);
 
       final data = (res as List)
           .map((json) => ScheduleDTO.fromJson(json))
@@ -45,7 +49,17 @@ class ScheduleDataSourceImpl implements ScheduleDataSource {
       // 1) 스케줄 insert
       final res = await supabase
           .from('schedule')
-          .insert(schedule.toJson())
+          .insert({
+            'trip_id': schedule.tripId,
+            'title': schedule.title,
+            'date': schedule.date,
+            'place': schedule.place,
+            'address': schedule.address,
+            'lat': schedule.lat,
+            'lng': schedule.lng,
+            'description': schedule.description,
+            'category_id': schedule.categoryId,
+          })
           .select()
           .single();
 
@@ -58,7 +72,7 @@ class ScheduleDataSourceImpl implements ScheduleDataSource {
             .map((id) => {"schedule_id": scheduleId, "member_id": id})
             .toList();
 
-        await supabase.from('schedul_crew').insert(members);
+        await supabase.from('schedule_crew').insert(members);
       }
 
       return Result.success(newSchedule);
@@ -76,7 +90,17 @@ class ScheduleDataSourceImpl implements ScheduleDataSource {
       // 1) 스케줄 수정
       final res = await supabase
           .from('schedule')
-          .update(schedule.toJson())
+          .update({
+            'trip_id': schedule.tripId,
+            'title': schedule.title,
+            'date': schedule.date,
+            'place': schedule.place,
+            'address': schedule.address,
+            'lat': schedule.lat,
+            'lng': schedule.lng,
+            'description': schedule.description,
+            'category_id': schedule.categoryId,
+          })
           .eq('id', schedule.id!)
           .select()
           .single();
@@ -85,7 +109,7 @@ class ScheduleDataSourceImpl implements ScheduleDataSource {
 
       // 2) 기존 멤버 제거 + 새로운 멤버 저장
       await supabase
-          .from('schedul_crew')
+          .from('schedule_crew')
           .delete()
           .eq('schedule_id', schedule.id!);
 
@@ -94,7 +118,7 @@ class ScheduleDataSourceImpl implements ScheduleDataSource {
             .map((id) => {"schedule_id": schedule.id, "member_id": id})
             .toList();
 
-        await supabase.from('schedul_crew').insert(members);
+        await supabase.from('schedule_crew').insert(members);
       }
 
       return Result.success(updated);
@@ -106,14 +130,15 @@ class ScheduleDataSourceImpl implements ScheduleDataSource {
   @override
   Future<Result<void>> deleteSchedule({required int scheduleId}) async {
     try {
-      // 스케줄 멤버 함께 제거
-      await supabase
-          .from('schedul_crew')
+      final crewRes = await supabase
+          .from('schedule_crew')
           .delete()
           .eq('schedule_id', scheduleId);
 
-      // 스케줄 제거
-      await supabase.from('schedule').delete().eq('id', scheduleId);
+      final scheduleRes = await supabase
+          .from('schedule')
+          .delete()
+          .eq('id', scheduleId);
 
       return Result.success(null);
     } catch (e) {
@@ -127,7 +152,7 @@ class ScheduleDataSourceImpl implements ScheduleDataSource {
   }) async {
     try {
       final res = await supabase
-          .from('schedul_crew')
+          .from('schedule_crew')
           .select('member_id, user:member_id (id, nickname, profile_img)')
           .eq('schedule_id', scheduleId);
 
@@ -159,6 +184,21 @@ class ScheduleDataSourceImpl implements ScheduleDataSource {
     }
   }
 
+  @override
+  Future<Result<List<CategoryDTO>>> getCategory() async {
+    try {
+      final res = await supabase.from('category').select('id,content');
+
+      final data = (res as List)
+          .map((row) => CategoryDTO.fromJson(row))
+          .toList();
+
+      return Result.success(data);
+    } catch (e) {
+      return Result.failure(Failure.serverFailure(message: e.toString()));
+    }
+  }
+
   // [이재은] 여행 ID와 유저 ID로 해당 유저가 참여하는 스케줄 가져오기
   @override
   Future<Result<List<ScheduleDTO>>> getUserSchedule({
@@ -169,9 +209,9 @@ class ScheduleDataSourceImpl implements ScheduleDataSource {
       // schedul_crew를 inner join으로 필터링
       final response = await supabase
           .from('schedule')
-          .select('*, schedul_crew!inner(member_id)')
+          .select('*, schedule_crew!inner(member_id)')
           .eq('trip_id', tripId)
-          .eq('schedul_crew.member_id', userId)
+          .eq('schedule_crew.member_id', userId)
           .order('date', ascending: true);
 
       final schedules = (response as List)

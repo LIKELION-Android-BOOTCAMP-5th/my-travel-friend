@@ -1,4 +1,5 @@
 import 'package:my_travel_friend/feature/auth/data/models/user_model.dart';
+import 'package:my_travel_friend/feature/schedule/data/dtos/category_dto.dart';
 import 'package:my_travel_friend/feature/schedule/data/dtos/schedule_dto.dart';
 
 import '../../../../core/result/result.dart';
@@ -30,6 +31,8 @@ abstract class ScheduleDataSource {
 
   //여행 ID로 해당 여행에 참여 유저 가져오기
   Future<Result<List<UserDTO>>> getTripMembers({required int tripId});
+  //카테고리 가져와서 저장해놓기
+  Future<Result<List<CategoryDTO>>> getCategory();
 
   //[이재은] 여행 ID와 유저 ID로 해당 유저의 해당 여행 중 스케줄 가져오기
   Future<Result<List<ScheduleDTO>>> getUserSchedule({
