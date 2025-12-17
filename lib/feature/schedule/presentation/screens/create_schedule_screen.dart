@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:my_travel_friend/core/theme/app_icon.dart';
-import 'package:my_travel_friend/feature/schedule/presentation/screens/map_search_bloc_widget.dart';
 
 import '../../../../../core/widget/button.dart';
 import '../../../../../core/widget/text_box.dart';
@@ -11,6 +11,7 @@ import '../../../../core/widget/app_bar.dart';
 import '../viewmodels/create_schedule/create_schedule_blco.dart';
 import '../viewmodels/create_schedule/create_schedule_event.dart';
 import '../viewmodels/create_schedule/create_schedule_state.dart';
+import '../viewmodels/map_search/map_search_state.dart';
 
 class CreateScheduleScreen extends StatefulWidget {
   final int tripId;
@@ -32,6 +33,18 @@ class _CreateScheduleScreenState extends State<CreateScheduleScreen> {
   final _placeController = TextEditingController();
 
   @override
+  void initState() {
+    super.initState();
+
+    // ✅ Bloc 초기 상태를 기반으로 controller 초기값 세팅
+    final state = context.read<CreateScheduleBloc>().state;
+
+    _titleController.text = state.title ?? '';
+    _memoController.text = state.description ?? '';
+    _placeController.text = state.place ?? '';
+  }
+
+  @override
   void dispose() {
     _titleController.dispose();
     _memoController.dispose();
@@ -46,10 +59,6 @@ class _CreateScheduleScreenState extends State<CreateScheduleScreen> {
       listener: (context, state) {
         if (state.actionType == 'pop') {
           Navigator.of(context).pop(false);
-        }
-
-        if (_placeController.text != state.place) {
-          _placeController.text = state.place ?? '';
         }
 
         if (state.pageState == CreateSchedulepageState.success) {
@@ -78,16 +87,13 @@ class _CreateScheduleScreenState extends State<CreateScheduleScreen> {
                 Button(
                   icon: const Icon(AppIcon.search),
                   onTap: () async {
-                    final result = await Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (_) => MapSearchBlocWidget(
-                          tripId: widget.tripId,
-                          initialLat: state.lat,
-                          initialLng: state.lng,
-                          initialAddress: state.address,
-                        ),
-                      ),
+                    final result = await context.push<PlaceCandidate>(
+                      '/trip/${widget.tripId}/map-search',
+                      extra: {
+                        'lat': state.lat,
+                        'lng': state.lng,
+                        'address': state.address,
+                      },
                     );
 
                     if (result != null) {
@@ -233,7 +239,7 @@ class _CreateScheduleScreenState extends State<CreateScheduleScreen> {
 
                     const SizedBox(height: 24),
 
-                    _sectionTitle('참여자'),
+                    _sectionTitle('함께하는 크루원'),
                     const SizedBox(height: 8),
                     _buildMembersSection(state),
 

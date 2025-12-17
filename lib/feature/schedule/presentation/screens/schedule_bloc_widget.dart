@@ -36,7 +36,7 @@ class _ScheduleBlocContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<ScheduleBloc, ScheduleState>(
-      listener: (context, state) {
+      listener: (context, state) async {
         // 성공 / 에러 메시지
         if (state.pageState == SchedulepageState.error) {
           ToastPop.show(state.message ?? "오류 발생");
@@ -46,19 +46,34 @@ class _ScheduleBlocContent extends StatelessWidget {
 
         // 화면 이동
         if (state.navigateToCreate) {
-          context.push('/schedule/create/$tripId');
+          final result = await context.push<bool>('/schedule/create/$tripId');
 
           context.read<ScheduleBloc>().add(
             const ScheduleEvent.resetNavigation(),
           );
+
+          if (result == true) {
+            context.read<ScheduleBloc>().add(
+              ScheduleEvent.refresh(tripId: tripId),
+            );
+          }
         }
 
         if (state.navigateToEdit && state.editingSchedule != null) {
-          context.push('/schedule/edit/$tripId', extra: state.editingSchedule);
+          final result = await context.push<bool>(
+            '/schedule/edit/$tripId',
+            extra: state.editingSchedule,
+          );
 
           context.read<ScheduleBloc>().add(
             const ScheduleEvent.resetNavigation(),
           );
+
+          if (result == true) {
+            context.read<ScheduleBloc>().add(
+              ScheduleEvent.refresh(tripId: tripId),
+            );
+          }
         }
       },
       builder: (context, state) {

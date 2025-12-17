@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:my_travel_friend/core/theme/app_icon.dart';
 import 'package:my_travel_friend/core/widget/button.dart';
-import 'package:my_travel_friend/feature/schedule/presentation/screens/map_search_bloc_widget.dart';
 
 import '../../../../../core/widget/text_box.dart';
 import '../../../../core/theme/app_colors.dart';
@@ -12,6 +12,7 @@ import '../../domain/entities/schedule_entity.dart';
 import '../viewmodels/edit_schedule/edit_schedule_bloc.dart';
 import '../viewmodels/edit_schedule/edit_schedule_event.dart';
 import '../viewmodels/edit_schedule/edit_schedule_state.dart';
+import '../viewmodels/map_search/map_search_state.dart';
 
 class EditScheduleScreen extends StatefulWidget {
   final ScheduleEntity schedule;
@@ -102,16 +103,13 @@ class _EditScheduleScreenState extends State<EditScheduleScreen> {
                 Button(
                   icon: const Icon(AppIcon.search),
                   onTap: () async {
-                    final result = await Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (_) => MapSearchBlocWidget(
-                          tripId: state.tripId!,
-                          initialLat: state.lat,
-                          initialLng: state.lng,
-                          initialAddress: state.address,
-                        ),
-                      ),
+                    final result = await context.push<PlaceCandidate>(
+                      '/trip/${state.tripId}/map-search',
+                      extra: {
+                        'lat': state.lat,
+                        'lng': state.lng,
+                        'address': state.address,
+                      },
                     );
 
                     if (result != null) {
@@ -255,7 +253,7 @@ class _EditScheduleScreenState extends State<EditScheduleScreen> {
 
                     const SizedBox(height: 24),
 
-                    _sectionTitle('참여자'),
+                    _sectionTitle('함께하는 크루원'),
                     const SizedBox(height: 8),
                     _buildMembersSection(state),
 
