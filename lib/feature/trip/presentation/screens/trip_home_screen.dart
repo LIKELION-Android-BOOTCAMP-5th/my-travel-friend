@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:my_travel_friend/core/theme/app_colors.dart';
+import 'package:my_travel_friend/core/theme/app_font.dart';
+import 'package:my_travel_friend/core/theme/app_icon.dart';
 
 import '../viewmodels/trip_home/trip_home_bloc.dart';
 import '../viewmodels/trip_home/trip_home_event.dart';
@@ -10,6 +13,9 @@ class TripHomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    final isDark = colorScheme.brightness == Brightness.dark;
+
     return BlocBuilder<TripHomeBloc, TripHomeState>(
       builder: (context, state) {
         if (state.pageState == TripHomePageState.loading) {
@@ -22,52 +28,55 @@ class TripHomeScreen extends StatelessWidget {
 
         return Stack(
           children: [
-            SingleChildScrollView(
-              padding: const EdgeInsets.fromLTRB(16, 16, 16, 24),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  _CrewSummaryCard(),
-                  const SizedBox(height: 12),
-
-                  AnimatedSize(
-                    duration: const Duration(milliseconds: 250),
-                    curve: Curves.easeInOut,
-                    child: ClipRect(
-                      child: Align(
-                        alignment: Alignment.topCenter,
-                        heightFactor: state.isCrewExpanded ? 1.0 : 0.0,
-                        child: const _CrewMemberList(),
-                      ),
-                    ),
-                  ),
-
-                  if (state.isCrewExpanded) const SizedBox(height: 16),
-
-                  _TripCalendar(),
-                  const SizedBox(height: 16),
-
-                  const _ScheduleSection(),
-                  const SizedBox(height: 16),
-
-                  if (state.usefulPhrases.isNotEmpty) ...[
-                    _UsefulPhraseHeader(),
+            Scaffold(
+              backgroundColor: isDark ? AppColors.navy : AppColors.darkGray,
+              body: SingleChildScrollView(
+                padding: const EdgeInsets.fromLTRB(16, 16, 16, 24),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    _CrewSummaryCard(),
                     const SizedBox(height: 12),
+
                     AnimatedSize(
                       duration: const Duration(milliseconds: 250),
                       curve: Curves.easeInOut,
                       child: ClipRect(
                         child: Align(
                           alignment: Alignment.topCenter,
-                          heightFactor: state.isUsefulPhraseExpanded
-                              ? 1.0
-                              : 0.0,
-                          child: const _UsefulPhraseList(),
+                          heightFactor: state.isCrewExpanded ? 1.0 : 0.0,
+                          child: const _CrewMemberList(),
                         ),
                       ),
                     ),
+
+                    if (state.isCrewExpanded) const SizedBox(height: 16),
+
+                    _TripCalendar(),
+                    const SizedBox(height: 16),
+
+                    const _ScheduleSection(),
+                    const SizedBox(height: 16),
+
+                    if (state.usefulPhrases.isNotEmpty) ...[
+                      _UsefulPhraseHeader(),
+                      const SizedBox(height: 12),
+                      AnimatedSize(
+                        duration: const Duration(milliseconds: 250),
+                        curve: Curves.easeInOut,
+                        child: ClipRect(
+                          child: Align(
+                            alignment: Alignment.topCenter,
+                            heightFactor: state.isUsefulPhraseExpanded
+                                ? 1.0
+                                : 0.0,
+                            child: const _UsefulPhraseList(),
+                          ),
+                        ),
+                      ),
+                    ],
                   ],
-                ],
+                ),
               ),
             ),
 
@@ -86,23 +95,31 @@ class _CrewSummaryCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final state = context.watch<TripHomeBloc>().state;
+    final colorScheme = Theme.of(context).colorScheme;
+    final isDark = colorScheme.brightness == Brightness.dark;
 
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
-      decoration: _cardDeco,
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      decoration: _cardDeco(colorScheme),
       child: Row(
         children: [
-          const Icon(Icons.group, color: Colors.blue),
-          const SizedBox(width: 8),
+          Icon(AppIcon.crews, color: colorScheme.primary, size: 15),
+          const SizedBox(width: 12),
           Text(
             '크루 멤버 (${state.crewMembers.length}명)',
-            style: const TextStyle(fontWeight: FontWeight.bold),
+            style: AppFont.regularBold.copyWith(
+              color: isDark ? AppColors.light : AppColors.dark,
+            ),
           ),
           const Spacer(),
 
           // 친구 초대
           IconButton(
-            icon: const Icon(Icons.person_add_alt),
+            icon: Icon(
+              AppIcon.invite,
+              color: isDark ? AppColors.light : AppColors.dark,
+              size: 15,
+            ),
             onPressed: () {
               context.read<TripHomeBloc>().add(
                 const TripHomeEvent.openInvite(),
@@ -113,9 +130,8 @@ class _CrewSummaryCard extends StatelessWidget {
           // 펼치기/접기
           IconButton(
             icon: Icon(
-              state.isCrewExpanded
-                  ? Icons.keyboard_arrow_up
-                  : Icons.keyboard_arrow_down,
+              state.isCrewExpanded ? AppIcon.closeUp : AppIcon.openDown,
+              size: 15,
             ),
             onPressed: () {
               context.read<TripHomeBloc>().add(
@@ -135,10 +151,10 @@ class _CrewMemberList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final members = context.watch<TripHomeBloc>().state.crewMembers;
-
+    final colorScheme = Theme.of(context).colorScheme;
     return Container(
       padding: const EdgeInsets.all(16),
-      decoration: _cardDeco,
+      decoration: _cardDeco(colorScheme),
       child: Column(
         children: members.map((user) {
           return Padding(
@@ -191,6 +207,8 @@ class _TripCalendarState extends State<_TripCalendar> {
   Widget build(BuildContext context) {
     final state = context.watch<TripHomeBloc>().state;
     final pages = state.calendarPages;
+    final colorScheme = Theme.of(context).colorScheme;
+    final isDark = colorScheme.brightness == Brightness.dark;
 
     if (pages.isEmpty) {
       return _emptyCalendar();
@@ -198,11 +216,22 @@ class _TripCalendarState extends State<_TripCalendar> {
 
     return Container(
       padding: const EdgeInsets.all(16),
-      decoration: _cardDeco,
+      decoration: _cardDeco(colorScheme),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text('주간 캘린더', style: TextStyle(fontWeight: FontWeight.bold)),
+          Row(
+            children: [
+              Icon(AppIcon.calendar, color: colorScheme.primary, size: 15),
+              SizedBox(width: 12),
+              Text(
+                '주간 캘린더',
+                style: AppFont.regularBold.copyWith(
+                  color: isDark ? AppColors.light : AppColors.dark,
+                ),
+              ),
+            ],
+          ),
           const SizedBox(height: 12),
 
           SizedBox(
@@ -252,9 +281,10 @@ class _TripCalendarState extends State<_TripCalendar> {
   }
 
   Widget _emptyCalendar() {
+    final colorScheme = Theme.of(context).colorScheme;
     return Container(
       padding: const EdgeInsets.all(16),
-      decoration: _cardDeco,
+      decoration: _cardDeco(colorScheme),
       child: const Text('캘린더 정보를 불러오지 못했습니다'),
     );
   }
@@ -267,6 +297,9 @@ class _DateCell extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    final isDark = colorScheme.brightness == Brightness.dark;
+
     final state = context.watch<TripHomeBloc>().state;
     final selected = state.selectedDate;
 
@@ -288,16 +321,18 @@ class _DateCell extends StatelessWidget {
         (start != null && d.isBefore(start)) || (end != null && d.isAfter(end));
 
     final bgColor = isSelected
-        ? Colors.blue
+        ? colorScheme.primary
         : isDisabled
-        ? Colors.grey.shade300
+        ? isDark
+              ? AppColors.navy
+              : AppColors.darkerGray
         : Colors.transparent;
 
     final textColor = isSelected
-        ? Colors.white
+        ? AppColors.light
         : isDisabled
         ? Colors.grey.shade600
-        : Colors.black;
+        : colorScheme.onSurfaceVariant;
 
     return GestureDetector(
       onTap: isDisabled
@@ -314,7 +349,7 @@ class _DateCell extends StatelessWidget {
           color: bgColor,
           borderRadius: BorderRadius.circular(12),
           border: Border.all(
-            color: isSelected ? Colors.blue : Colors.grey.shade300,
+            color: isSelected ? colorScheme.primary : Colors.grey.shade300,
           ),
         ),
         alignment: Alignment.center,
@@ -367,12 +402,15 @@ class _DateCellNullable extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    final isDark = colorScheme.brightness == Brightness.dark;
+
     if (date == null) {
       return Container(
         width: 42,
         height: 56,
         decoration: BoxDecoration(
-          color: Colors.grey.shade200,
+          color: isDark ? AppColors.navy : AppColors.darkerGray,
           borderRadius: BorderRadius.circular(12),
         ),
       );
@@ -392,6 +430,8 @@ class _ScheduleSection extends StatelessWidget {
   Widget build(BuildContext context) {
     final state = context.watch<TripHomeBloc>().state;
     final selected = state.selectedDate;
+    final colorScheme = Theme.of(context).colorScheme;
+    final isDark = colorScheme.brightness == Brightness.dark;
 
     final title = selected == null
         ? '일정'
@@ -399,15 +439,15 @@ class _ScheduleSection extends StatelessWidget {
 
     return Container(
       padding: const EdgeInsets.all(16),
-      decoration: _cardDeco,
+      decoration: _cardDeco(colorScheme),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(title, style: const TextStyle(fontWeight: FontWeight.bold)),
+          Text(title, style: AppFont.regularBold),
           const SizedBox(height: 12),
 
           if (state.schedulesForSelectedDate.isEmpty)
-            const Center(child: Text('이 날짜에는 일정이 없습니다')),
+            Center(child: Text('이 날짜에는 일정이 없습니다', style: AppFont.regular)),
 
           ...state.schedulesForSelectedDate.map((s) {
             final dt = DateTime.tryParse(s.date ?? '');
@@ -425,10 +465,7 @@ class _ScheduleSection extends StatelessWidget {
                   // ⏰ 시간
                   SizedBox(
                     width: 52,
-                    child: Text(
-                      hhmm,
-                      style: const TextStyle(fontWeight: FontWeight.w500),
-                    ),
+                    child: Text(hhmm, style: AppFont.regular),
                   ),
                   const SizedBox(width: 12),
                   Expanded(
@@ -438,9 +475,8 @@ class _ScheduleSection extends StatelessWidget {
                         // 제목
                         Text(
                           s.title,
-                          style: const TextStyle(
-                            fontWeight: FontWeight.w600,
-                            fontSize: 15,
+                          style: AppFont.regularBold.copyWith(
+                            color: isDark ? AppColors.light : AppColors.dark,
                           ),
                         ),
 
@@ -449,18 +485,17 @@ class _ScheduleSection extends StatelessWidget {
                           const SizedBox(height: 4),
                           Row(
                             children: [
-                              const Icon(
-                                Icons.place,
+                              Icon(
+                                AppIcon.mapPin,
                                 size: 14,
-                                color: Colors.grey,
+                                color: colorScheme.onSurfaceVariant,
                               ),
                               const SizedBox(width: 4),
                               Expanded(
                                 child: Text(
                                   s.place!,
-                                  style: TextStyle(
-                                    fontSize: 13,
-                                    color: Colors.grey.shade600,
+                                  style: AppFont.small.copyWith(
+                                    color: colorScheme.onSurfaceVariant,
                                   ),
                                   maxLines: 1,
                                   overflow: TextOverflow.ellipsis,
@@ -489,18 +524,22 @@ class _UsefulPhraseHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final state = context.watch<TripHomeBloc>().state;
+    final colorScheme = Theme.of(context).colorScheme;
+    final isDark = colorScheme.brightness == Brightness.dark;
 
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
-      decoration: _cardDeco,
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      decoration: _cardDeco(colorScheme),
       child: Row(
         children: [
-          const Icon(Icons.language, color: Colors.blue),
+          Icon(AppIcon.phrase, color: colorScheme.primary, size: 15),
           const SizedBox(width: 8),
-          const Expanded(
+          Expanded(
             child: Text(
               '쓸만한 현지 실생활 표현',
-              style: TextStyle(fontWeight: FontWeight.bold),
+              style: AppFont.regularBold.copyWith(
+                color: isDark ? AppColors.light : AppColors.dark,
+              ),
             ),
           ),
           IconButton(
@@ -527,10 +566,10 @@ class _UsefulPhraseList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final phrases = context.watch<TripHomeBloc>().state.usefulPhrases;
-
+    final colorScheme = Theme.of(context).colorScheme;
     return Container(
       padding: const EdgeInsets.all(16),
-      decoration: _cardDeco,
+      decoration: _cardDeco(colorScheme),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: phrases.map((p) {
@@ -556,16 +595,16 @@ class _InviteFriendPopup extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final state = context.watch<TripHomeBloc>().state;
-
+    final colorScheme = Theme.of(context).colorScheme;
     return Positioned.fill(
       child: Material(
-        color: Colors.black45,
+        color: AppColors.dark,
         child: Center(
           child: Container(
             height: 420,
             margin: const EdgeInsets.symmetric(horizontal: 24),
             padding: const EdgeInsets.all(16),
-            decoration: _cardDeco,
+            decoration: _cardDeco(colorScheme),
             child: Column(
               children: [
                 Row(
@@ -602,28 +641,22 @@ class _InviteFriendPopup extends StatelessWidget {
                           vertical: 10,
                         ),
                         decoration: BoxDecoration(
-                          color: Colors.grey.shade100,
+                          color: colorScheme.surfaceContainerHighest,
                           borderRadius: BorderRadius.circular(16),
                         ),
                         child: Row(
                           children: [
                             // 프로필 이미지
                             CircleAvatar(
-                              radius: 24,
+                              radius: 20,
                               backgroundColor: Colors.grey.shade300,
                               backgroundImage:
                                   (user.profileImg != null &&
                                       user.profileImg!.trim().isNotEmpty)
                                   ? NetworkImage(user.profileImg!)
-                                  : null,
-                              child:
-                                  (user.profileImg == null ||
-                                      user.profileImg!.trim().isEmpty)
-                                  ? const Icon(
-                                      Icons.person,
-                                      color: Colors.white,
-                                    )
-                                  : null,
+                                  : AssetImage(
+                                      'assets/images/profile_hearty.png',
+                                    ),
                             ),
 
                             const SizedBox(width: 12),
@@ -642,7 +675,7 @@ class _InviteFriendPopup extends StatelessWidget {
                             // 초대 버튼
                             ElevatedButton(
                               style: ElevatedButton.styleFrom(
-                                backgroundColor: Colors.lightBlue,
+                                backgroundColor: colorScheme.primary,
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(20),
                                 ),
@@ -654,9 +687,11 @@ class _InviteFriendPopup extends StatelessWidget {
                               onPressed: () {
                                 // TODO: 초대 이벤트
                               },
-                              child: const Text(
+                              child: Text(
                                 '초대하기',
-                                style: TextStyle(color: Colors.white),
+                                style: AppFont.regular.copyWith(
+                                  color: AppColors.light,
+                                ),
                               ),
                             ),
                           ],
@@ -674,14 +709,16 @@ class _InviteFriendPopup extends StatelessWidget {
   }
 }
 
-final _cardDeco = BoxDecoration(
-  color: Colors.white,
-  borderRadius: BorderRadius.circular(16),
-  boxShadow: [
-    BoxShadow(
-      color: Colors.black.withOpacity(0.05),
-      blurRadius: 8,
-      offset: const Offset(0, 4),
-    ),
-  ],
-);
+BoxDecoration _cardDeco(ColorScheme colorScheme) {
+  return BoxDecoration(
+    color: colorScheme.surfaceContainerHighest,
+    borderRadius: BorderRadius.circular(16),
+    boxShadow: [
+      BoxShadow(
+        color: Colors.black.withOpacity(0.05),
+        blurRadius: 8,
+        offset: const Offset(0, 4),
+      ),
+    ],
+  );
+}
