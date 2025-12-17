@@ -127,7 +127,7 @@ class DiaryBox extends StatelessWidget {
                 if (cost != null) ...[
                   Align(
                     alignment: Alignment.centerLeft,
-                    child: CostTag(cost: cost),
+                    child: CostTag(cost: cost, currency: diary.currency),
                   ),
                   const SizedBox(height: 8),
                 ],

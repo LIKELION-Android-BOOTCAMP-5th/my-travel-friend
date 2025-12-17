@@ -74,12 +74,15 @@ class PushNotificationService {
   //로컬 푸시
   void sendLocalPushFromFCM(RemoteMessage message) async {
     final Map<String, dynamic> fcmData = message.data;
-
+    final String alarmType = fcmData['alarm_type']?.toString() ?? 'UNKNOWN';
     final String title = message.notification?.title ?? "새로운 알림";
     final String body = message.notification?.body ?? "알림 내용";
 
     //데이터 파싱
     final String payloadString = jsonEncode(fcmData);
+    if (alarmType == 'TALK_MESSAGE') {
+      return;
+    }
 
     NotificationDetails details = const NotificationDetails(
       iOS: DarwinNotificationDetails(

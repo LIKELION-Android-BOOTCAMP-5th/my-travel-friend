@@ -148,7 +148,7 @@ class TripCard extends StatelessWidget {
                     ),
                     overflow: TextOverflow.ellipsis,
                   ),
-                  const SizedBox(height: 6),
+                  const SizedBox(height: 5),
                   //날짜 표기
                   Row(
                     children: [

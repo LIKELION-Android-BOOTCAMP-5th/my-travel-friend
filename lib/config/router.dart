@@ -115,11 +115,7 @@ class AppRouter {
       // 앱 홈
       GoRoute(
         path: '/home',
-        builder: (context, state) => BlocProvider(
-          //bloc 제공자
-          create: (context) => GetIt.instance<TripBloc>(),
-          child: const TripBlocWidget(),
-        ),
+        builder: (context, state) => const TripBlocWidget(),
       ),
 
       // Trip 생성 /수정
@@ -182,7 +178,7 @@ class AppRouter {
         },
       ),
       GoRoute(
-        path: '/setting/friend/request',
+        path: '/setting/friend/friend-request',
         builder: (context, state) {
           final extra = state.extra as Map<String, dynamic>;
           final requestId = extra['requestId'] as int;

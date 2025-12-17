@@ -14,6 +14,15 @@ import '../theme/app_colors.dart';
 //
 // 3. 글자수 제한 텍스트 필드 (ex: 닉네임)
 // TextBox(controller: 컨트롤러, hintText: '힌트 텍스트 내용', maxLength: 10)
+//
+// 4. suffix 드롭다운 텍스트 필드 (ex: 돈 단위 선택)
+// TextBox(
+//   controller: 컨트롤러,
+//   hintText: '금액 입력',
+//   suffixDropdownItems: ['KRW', 'USD', 'JPY'],
+//   suffixDropdownValue: selectedCurrency,
+//   onSuffixDropdownChanged: (value) => setState(() => selectedCurrency = value),
+// )
 
 class TextBox extends StatefulWidget {
   final TextEditingController? controller;
@@ -53,6 +62,11 @@ class TextBox extends StatefulWidget {
   final TextStyle? suffixStyle;
   final EdgeInsetsGeometry? contentPadding;
   final FocusNode? focusNode;
+  final List<String>? suffixDropdownItems; // 드롭다운 아이템 목록
+  final String? suffixDropdownValue; // 현재 선택된 값
+  final ValueChanged<String?>? onSuffixDropdownChanged; // 선택 변경 콜백
+  final Color? dropdownIconColor; // 드롭다운 아이콘 색상
+  final double? dropdownIconSize; // 드롭다운 아이콘 크기
 
   const TextBox({
     super.key,
@@ -93,6 +107,13 @@ class TextBox extends StatefulWidget {
     this.focusNode,
     this.suffix,
     this.suffixStyle,
+
+    // 드롭다운 기본값
+    this.suffixDropdownItems,
+    this.suffixDropdownValue,
+    this.onSuffixDropdownChanged,
+    this.dropdownIconColor,
+    this.dropdownIconSize = 20,
   });
 
   @override
@@ -113,7 +134,56 @@ class _TextBoxState extends State<TextBox> {
     final txtColor = widget.textColor ?? colorScheme.onSurface;
     final hntColor = widget.hintColor ?? colorScheme.onSurfaceVariant;
 
-    // TextField 위젯 반환
+    // 드롭다운이 있는 경우 Row로 감싸서 처리
+    final hasDropdown =
+        widget.suffixDropdownItems != null &&
+        widget.suffixDropdownItems!.isNotEmpty;
+
+    if (hasDropdown) {
+      return Row(
+        children: [
+          // TextField 영역
+          Expanded(
+            child: _buildTextField(
+              bgColor: bgColor,
+              focusBorder: focusBorder,
+              unfocusBorder: unfocusBorder,
+              txtColor: txtColor,
+              hntColor: hntColor,
+              showSuffix: false, // 드롭다운 있으면 suffix 숨김
+            ),
+          ),
+          const SizedBox(width: 8),
+          // 드롭다운 영역
+          _buildDropdownButton(
+            bgColor: bgColor,
+            txtColor: txtColor,
+            hntColor: hntColor,
+          ),
+        ],
+      );
+    }
+
+    // 드롭다운 없으면 기존 TextField만
+    return _buildTextField(
+      bgColor: bgColor,
+      focusBorder: focusBorder,
+      unfocusBorder: unfocusBorder,
+      txtColor: txtColor,
+      hntColor: hntColor,
+      showSuffix: true,
+    );
+  }
+
+  // TextField 위젯 반환
+  Widget _buildTextField({
+    required Color bgColor,
+    required Color focusBorder,
+    required Color unfocusBorder,
+    required Color txtColor,
+    required Color hntColor,
+    required bool showSuffix,
+  }) {
     return TextField(
       controller: widget.controller,
       focusNode: widget.focusNode,
@@ -183,6 +253,41 @@ class _TextBoxState extends State<TextBox> {
         disabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(widget.borderRadius),
           borderSide: BorderSide.none,
+        ),
+      ),
+    );
+  }
+
+  // 드롭다운 버튼 빌드 (별도 Container로 분리)
+  Widget _buildDropdownButton({
+    required Color bgColor,
+    required Color txtColor,
+    required Color hntColor,
+  }) {
+    final dropdownIcon = widget.dropdownIconColor ?? hntColor;
+
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+      decoration: BoxDecoration(
+        color: bgColor,
+        borderRadius: BorderRadius.circular(widget.borderRadius),
+      ),
+      child: DropdownButtonHideUnderline(
+        child: DropdownButton<String>(
+          value: widget.suffixDropdownValue,
+          isDense: true,
+          icon: Icon(
+            Icons.arrow_drop_down,
+            color: dropdownIcon,
+            size: widget.dropdownIconSize,
+          ),
+          style: TextStyle(color: txtColor, fontSize: 14),
+          dropdownColor: bgColor,
+          borderRadius: BorderRadius.circular(widget.borderRadius),
+          items: widget.suffixDropdownItems!.map((item) {
+            return DropdownMenuItem<String>(value: item, child: Text(item));
+          }).toList(),
+          onChanged: widget.enabled ? widget.onSuffixDropdownChanged : null,
         ),
       ),
     );

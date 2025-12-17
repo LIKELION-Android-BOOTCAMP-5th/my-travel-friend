@@ -32,39 +32,38 @@ class FriendRequestScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final cs = Theme.of(context).colorScheme;
+    final isDark = cs.brightness == Brightness.dark;
 
-    return SafeArea(
-      child: Scaffold(
-        backgroundColor: cs.surface,
-        appBar: CustomButtonAppBar(
-          title: "친구 추가",
-          leading: Button(
-            onTap: () {
-              context.pop();
-            },
-            width: 40,
-            height: 40,
-            icon: Icon(AppIcon.back),
-            contentColor: AppColors.lessLight,
-            borderRadius: 20,
-          ),
+    return Scaffold(
+      backgroundColor: isDark ? AppColors.navy : AppColors.darkGray,
+      appBar: CustomButtonAppBar(
+        title: "친구 추가",
+        leading: Button(
+          onTap: () {
+            context.pop();
+          },
+          width: 40,
+          height: 40,
+          icon: Icon(AppIcon.back),
+          contentColor: AppColors.lessLight,
+          borderRadius: 20,
         ),
-        body: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: CustomScrollView(
-            slivers: [
-              SliverToBoxAdapter(
-                child: _NicknameSearchCard(onChanged: onSearchChanged),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: CustomScrollView(
+          slivers: [
+            SliverToBoxAdapter(
+              child: _NicknameSearchCard(onChanged: onSearchChanged),
+            ),
+            const SliverToBoxAdapter(child: SizedBox(height: 24)),
+            SliverToBoxAdapter(
+              child: _SearchResultSection(
+                state: state,
+                onRequestCreate: onRequestCreate,
               ),
-              const SliverToBoxAdapter(child: SizedBox(height: 24)),
-              SliverToBoxAdapter(
-                child: _SearchResultSection(
-                  state: state,
-                  onRequestCreate: onRequestCreate,
-                ),
-              ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

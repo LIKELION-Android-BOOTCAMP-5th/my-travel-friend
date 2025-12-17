@@ -31,6 +31,7 @@ abstract class EditDiaryState with _$EditDiaryState {
     String? imgUrl, // 기존 이미지 URL (서버에서 로드)
     File? localImgFile, // 새로 선택한 로컬 이미지
     int? cost,
+    @Default('원') String currency,
     @Default(true) bool isPublic,
     int? scheduleId,
 
@@ -78,6 +79,7 @@ abstract class EditDiaryState with _$EditDiaryState {
       rating: type == 'REVIEW' ? rating.toDouble() : null,
       img: type == 'PHOTO' ? imgUrl : null,
       cost: type == 'MONEY' ? cost : null,
+      currency: type == 'MONEY' ? currency : null,
       isPublic: isPublic,
     );
   }
