@@ -149,13 +149,16 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
 
     final userProfile = user.userInfo;
 
-    return Scaffold(
-      backgroundColor: isDark ? AppColors.navy : AppColors.darkGray,
-      body: Column(
-        children: [
-          Expanded(child: _buildMessageList()),
-          ChatInputBox(controller: _messageController, onSend: _sendChat),
-        ],
+    return GestureDetector(
+      onTap: () => FocusScope.of(context).unfocus(),
+      child: Scaffold(
+        backgroundColor: isDark ? AppColors.navy : AppColors.darkGray,
+        body: Column(
+          children: [
+            Expanded(child: _buildMessageList()),
+            ChatInputBox(controller: _messageController, onSend: _sendChat),
+          ],
+        ),
       ),
     );
   }
