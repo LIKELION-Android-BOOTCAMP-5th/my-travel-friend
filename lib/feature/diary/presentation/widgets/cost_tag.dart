@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:my_travel_friend/core/theme/app_colors.dart';
+import 'package:my_travel_friend/feature/diary/presentation/widgets/payment_tag.dart';
 
 import '../../../../core/extension/cost_format_extension.dart';
 import '../../../../core/theme/app_font.dart';
@@ -7,8 +9,9 @@ import '../../../../core/theme/app_font.dart';
 class CostTag extends StatelessWidget {
   final int cost;
   final String? currency;
+  final String? payment;
 
-  const CostTag({super.key, required this.cost, this.currency});
+  const CostTag({super.key, required this.cost, this.currency, this.payment});
 
   @override
   Widget build(BuildContext context) {
@@ -22,13 +25,20 @@ class CostTag extends StatelessWidget {
       ),
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 4.0, horizontal: 8.0),
-        child: Text(
-          _formatCost(),
-          style: AppFont.regular.copyWith(
-            color: isDark
-                ? colorScheme.secondary
-                : colorScheme.onSecondaryContainer,
-          ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            PaymentTag(payment: payment),
+            SizedBox(width: 8),
+            Text(
+              _formatCost(),
+              style: AppFont.regular.copyWith(
+                color: isDark
+                    ? AppColors.light
+                    : colorScheme.onSecondaryContainer,
+              ),
+            ),
+          ],
         ),
       ),
     );

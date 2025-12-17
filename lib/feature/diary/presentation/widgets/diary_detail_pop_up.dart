@@ -96,7 +96,11 @@ class DiaryDetailPopUp extends StatelessWidget {
               if (cost != null) ...[
                 Align(
                   alignment: Alignment.centerLeft,
-                  child: CostTag(cost: cost, currency: diary.currency),
+                  child: CostTag(
+                    cost: cost,
+                    currency: diary.currency,
+                    payment: diary.payment,
+                  ),
                 ),
                 const SizedBox(height: 8),
               ],

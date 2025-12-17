@@ -14,7 +14,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$DiaryEntity {
 
- int? get id; String? get createdAt; int get tripId; int get userId; UserEntity? get user; bool get isPublic; String get type; String? get title; int? get scheduleId; String? get img; double? get rating; String? get content; int? get cost; String? get currency;
+ int? get id; String? get createdAt; int get tripId; int get userId; UserEntity? get user; bool get isPublic; String get type; String? get title; int? get scheduleId; String? get img; double? get rating; String? get content; int? get cost; String? get currency; String? get payment;
 /// Create a copy of DiaryEntity
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -25,16 +25,16 @@ $DiaryEntityCopyWith<DiaryEntity> get copyWith => _$DiaryEntityCopyWithImpl<Diar
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is DiaryEntity&&(identical(other.id, id) || other.id == id)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.tripId, tripId) || other.tripId == tripId)&&(identical(other.userId, userId) || other.userId == userId)&&(identical(other.user, user) || other.user == user)&&(identical(other.isPublic, isPublic) || other.isPublic == isPublic)&&(identical(other.type, type) || other.type == type)&&(identical(other.title, title) || other.title == title)&&(identical(other.scheduleId, scheduleId) || other.scheduleId == scheduleId)&&(identical(other.img, img) || other.img == img)&&(identical(other.rating, rating) || other.rating == rating)&&(identical(other.content, content) || other.content == content)&&(identical(other.cost, cost) || other.cost == cost)&&(identical(other.currency, currency) || other.currency == currency));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is DiaryEntity&&(identical(other.id, id) || other.id == id)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.tripId, tripId) || other.tripId == tripId)&&(identical(other.userId, userId) || other.userId == userId)&&(identical(other.user, user) || other.user == user)&&(identical(other.isPublic, isPublic) || other.isPublic == isPublic)&&(identical(other.type, type) || other.type == type)&&(identical(other.title, title) || other.title == title)&&(identical(other.scheduleId, scheduleId) || other.scheduleId == scheduleId)&&(identical(other.img, img) || other.img == img)&&(identical(other.rating, rating) || other.rating == rating)&&(identical(other.content, content) || other.content == content)&&(identical(other.cost, cost) || other.cost == cost)&&(identical(other.currency, currency) || other.currency == currency)&&(identical(other.payment, payment) || other.payment == payment));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,id,createdAt,tripId,userId,user,isPublic,type,title,scheduleId,img,rating,content,cost,currency);
+int get hashCode => Object.hash(runtimeType,id,createdAt,tripId,userId,user,isPublic,type,title,scheduleId,img,rating,content,cost,currency,payment);
 
 @override
 String toString() {
-  return 'DiaryEntity(id: $id, createdAt: $createdAt, tripId: $tripId, userId: $userId, user: $user, isPublic: $isPublic, type: $type, title: $title, scheduleId: $scheduleId, img: $img, rating: $rating, content: $content, cost: $cost, currency: $currency)';
+  return 'DiaryEntity(id: $id, createdAt: $createdAt, tripId: $tripId, userId: $userId, user: $user, isPublic: $isPublic, type: $type, title: $title, scheduleId: $scheduleId, img: $img, rating: $rating, content: $content, cost: $cost, currency: $currency, payment: $payment)';
 }
 
 
@@ -45,7 +45,7 @@ abstract mixin class $DiaryEntityCopyWith<$Res>  {
   factory $DiaryEntityCopyWith(DiaryEntity value, $Res Function(DiaryEntity) _then) = _$DiaryEntityCopyWithImpl;
 @useResult
 $Res call({
- int? id, String? createdAt, int tripId, int userId, UserEntity? user, bool isPublic, String type, String? title, int? scheduleId, String? img, double? rating, String? content, int? cost, String? currency
+ int? id, String? createdAt, int tripId, int userId, UserEntity? user, bool isPublic, String type, String? title, int? scheduleId, String? img, double? rating, String? content, int? cost, String? currency, String? payment
 });
 
 
@@ -62,7 +62,7 @@ class _$DiaryEntityCopyWithImpl<$Res>
 
 /// Create a copy of DiaryEntity
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = freezed,Object? createdAt = freezed,Object? tripId = null,Object? userId = null,Object? user = freezed,Object? isPublic = null,Object? type = null,Object? title = freezed,Object? scheduleId = freezed,Object? img = freezed,Object? rating = freezed,Object? content = freezed,Object? cost = freezed,Object? currency = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = freezed,Object? createdAt = freezed,Object? tripId = null,Object? userId = null,Object? user = freezed,Object? isPublic = null,Object? type = null,Object? title = freezed,Object? scheduleId = freezed,Object? img = freezed,Object? rating = freezed,Object? content = freezed,Object? cost = freezed,Object? currency = freezed,Object? payment = freezed,}) {
   return _then(_self.copyWith(
 id: freezed == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as int?,createdAt: freezed == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
@@ -78,6 +78,7 @@ as String?,rating: freezed == rating ? _self.rating : rating // ignore: cast_nul
 as double?,content: freezed == content ? _self.content : content // ignore: cast_nullable_to_non_nullable
 as String?,cost: freezed == cost ? _self.cost : cost // ignore: cast_nullable_to_non_nullable
 as int?,currency: freezed == currency ? _self.currency : currency // ignore: cast_nullable_to_non_nullable
+as String?,payment: freezed == payment ? _self.payment : payment // ignore: cast_nullable_to_non_nullable
 as String?,
   ));
 }
@@ -175,10 +176,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int? id,  String? createdAt,  int tripId,  int userId,  UserEntity? user,  bool isPublic,  String type,  String? title,  int? scheduleId,  String? img,  double? rating,  String? content,  int? cost,  String? currency)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int? id,  String? createdAt,  int tripId,  int userId,  UserEntity? user,  bool isPublic,  String type,  String? title,  int? scheduleId,  String? img,  double? rating,  String? content,  int? cost,  String? currency,  String? payment)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _DiaryEntity() when $default != null:
-return $default(_that.id,_that.createdAt,_that.tripId,_that.userId,_that.user,_that.isPublic,_that.type,_that.title,_that.scheduleId,_that.img,_that.rating,_that.content,_that.cost,_that.currency);case _:
+return $default(_that.id,_that.createdAt,_that.tripId,_that.userId,_that.user,_that.isPublic,_that.type,_that.title,_that.scheduleId,_that.img,_that.rating,_that.content,_that.cost,_that.currency,_that.payment);case _:
   return orElse();
 
 }
@@ -196,10 +197,10 @@ return $default(_that.id,_that.createdAt,_that.tripId,_that.userId,_that.user,_t
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int? id,  String? createdAt,  int tripId,  int userId,  UserEntity? user,  bool isPublic,  String type,  String? title,  int? scheduleId,  String? img,  double? rating,  String? content,  int? cost,  String? currency)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int? id,  String? createdAt,  int tripId,  int userId,  UserEntity? user,  bool isPublic,  String type,  String? title,  int? scheduleId,  String? img,  double? rating,  String? content,  int? cost,  String? currency,  String? payment)  $default,) {final _that = this;
 switch (_that) {
 case _DiaryEntity():
-return $default(_that.id,_that.createdAt,_that.tripId,_that.userId,_that.user,_that.isPublic,_that.type,_that.title,_that.scheduleId,_that.img,_that.rating,_that.content,_that.cost,_that.currency);case _:
+return $default(_that.id,_that.createdAt,_that.tripId,_that.userId,_that.user,_that.isPublic,_that.type,_that.title,_that.scheduleId,_that.img,_that.rating,_that.content,_that.cost,_that.currency,_that.payment);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -216,10 +217,10 @@ return $default(_that.id,_that.createdAt,_that.tripId,_that.userId,_that.user,_t
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int? id,  String? createdAt,  int tripId,  int userId,  UserEntity? user,  bool isPublic,  String type,  String? title,  int? scheduleId,  String? img,  double? rating,  String? content,  int? cost,  String? currency)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int? id,  String? createdAt,  int tripId,  int userId,  UserEntity? user,  bool isPublic,  String type,  String? title,  int? scheduleId,  String? img,  double? rating,  String? content,  int? cost,  String? currency,  String? payment)?  $default,) {final _that = this;
 switch (_that) {
 case _DiaryEntity() when $default != null:
-return $default(_that.id,_that.createdAt,_that.tripId,_that.userId,_that.user,_that.isPublic,_that.type,_that.title,_that.scheduleId,_that.img,_that.rating,_that.content,_that.cost,_that.currency);case _:
+return $default(_that.id,_that.createdAt,_that.tripId,_that.userId,_that.user,_that.isPublic,_that.type,_that.title,_that.scheduleId,_that.img,_that.rating,_that.content,_that.cost,_that.currency,_that.payment);case _:
   return null;
 
 }
@@ -231,7 +232,7 @@ return $default(_that.id,_that.createdAt,_that.tripId,_that.userId,_that.user,_t
 
 
 class _DiaryEntity implements DiaryEntity {
-  const _DiaryEntity({this.id, this.createdAt, required this.tripId, required this.userId, this.user, required this.isPublic, required this.type, this.title, this.scheduleId, this.img, this.rating, this.content, this.cost, this.currency});
+  const _DiaryEntity({this.id, this.createdAt, required this.tripId, required this.userId, this.user, required this.isPublic, required this.type, this.title, this.scheduleId, this.img, this.rating, this.content, this.cost, this.currency, this.payment});
   
 
 @override final  int? id;
@@ -248,6 +249,7 @@ class _DiaryEntity implements DiaryEntity {
 @override final  String? content;
 @override final  int? cost;
 @override final  String? currency;
+@override final  String? payment;
 
 /// Create a copy of DiaryEntity
 /// with the given fields replaced by the non-null parameter values.
@@ -259,16 +261,16 @@ _$DiaryEntityCopyWith<_DiaryEntity> get copyWith => __$DiaryEntityCopyWithImpl<_
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _DiaryEntity&&(identical(other.id, id) || other.id == id)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.tripId, tripId) || other.tripId == tripId)&&(identical(other.userId, userId) || other.userId == userId)&&(identical(other.user, user) || other.user == user)&&(identical(other.isPublic, isPublic) || other.isPublic == isPublic)&&(identical(other.type, type) || other.type == type)&&(identical(other.title, title) || other.title == title)&&(identical(other.scheduleId, scheduleId) || other.scheduleId == scheduleId)&&(identical(other.img, img) || other.img == img)&&(identical(other.rating, rating) || other.rating == rating)&&(identical(other.content, content) || other.content == content)&&(identical(other.cost, cost) || other.cost == cost)&&(identical(other.currency, currency) || other.currency == currency));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _DiaryEntity&&(identical(other.id, id) || other.id == id)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.tripId, tripId) || other.tripId == tripId)&&(identical(other.userId, userId) || other.userId == userId)&&(identical(other.user, user) || other.user == user)&&(identical(other.isPublic, isPublic) || other.isPublic == isPublic)&&(identical(other.type, type) || other.type == type)&&(identical(other.title, title) || other.title == title)&&(identical(other.scheduleId, scheduleId) || other.scheduleId == scheduleId)&&(identical(other.img, img) || other.img == img)&&(identical(other.rating, rating) || other.rating == rating)&&(identical(other.content, content) || other.content == content)&&(identical(other.cost, cost) || other.cost == cost)&&(identical(other.currency, currency) || other.currency == currency)&&(identical(other.payment, payment) || other.payment == payment));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,id,createdAt,tripId,userId,user,isPublic,type,title,scheduleId,img,rating,content,cost,currency);
+int get hashCode => Object.hash(runtimeType,id,createdAt,tripId,userId,user,isPublic,type,title,scheduleId,img,rating,content,cost,currency,payment);
 
 @override
 String toString() {
-  return 'DiaryEntity(id: $id, createdAt: $createdAt, tripId: $tripId, userId: $userId, user: $user, isPublic: $isPublic, type: $type, title: $title, scheduleId: $scheduleId, img: $img, rating: $rating, content: $content, cost: $cost, currency: $currency)';
+  return 'DiaryEntity(id: $id, createdAt: $createdAt, tripId: $tripId, userId: $userId, user: $user, isPublic: $isPublic, type: $type, title: $title, scheduleId: $scheduleId, img: $img, rating: $rating, content: $content, cost: $cost, currency: $currency, payment: $payment)';
 }
 
 
@@ -279,7 +281,7 @@ abstract mixin class _$DiaryEntityCopyWith<$Res> implements $DiaryEntityCopyWith
   factory _$DiaryEntityCopyWith(_DiaryEntity value, $Res Function(_DiaryEntity) _then) = __$DiaryEntityCopyWithImpl;
 @override @useResult
 $Res call({
- int? id, String? createdAt, int tripId, int userId, UserEntity? user, bool isPublic, String type, String? title, int? scheduleId, String? img, double? rating, String? content, int? cost, String? currency
+ int? id, String? createdAt, int tripId, int userId, UserEntity? user, bool isPublic, String type, String? title, int? scheduleId, String? img, double? rating, String? content, int? cost, String? currency, String? payment
 });
 
 
@@ -296,7 +298,7 @@ class __$DiaryEntityCopyWithImpl<$Res>
 
 /// Create a copy of DiaryEntity
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = freezed,Object? createdAt = freezed,Object? tripId = null,Object? userId = null,Object? user = freezed,Object? isPublic = null,Object? type = null,Object? title = freezed,Object? scheduleId = freezed,Object? img = freezed,Object? rating = freezed,Object? content = freezed,Object? cost = freezed,Object? currency = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = freezed,Object? createdAt = freezed,Object? tripId = null,Object? userId = null,Object? user = freezed,Object? isPublic = null,Object? type = null,Object? title = freezed,Object? scheduleId = freezed,Object? img = freezed,Object? rating = freezed,Object? content = freezed,Object? cost = freezed,Object? currency = freezed,Object? payment = freezed,}) {
   return _then(_DiaryEntity(
 id: freezed == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as int?,createdAt: freezed == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
@@ -312,6 +314,7 @@ as String?,rating: freezed == rating ? _self.rating : rating // ignore: cast_nul
 as double?,content: freezed == content ? _self.content : content // ignore: cast_nullable_to_non_nullable
 as String?,cost: freezed == cost ? _self.cost : cost // ignore: cast_nullable_to_non_nullable
 as int?,currency: freezed == currency ? _self.currency : currency // ignore: cast_nullable_to_non_nullable
+as String?,payment: freezed == payment ? _self.payment : payment // ignore: cast_nullable_to_non_nullable
 as String?,
   ));
 }

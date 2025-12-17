@@ -30,6 +30,7 @@ class EditDiaryBloc extends Bloc<EditDiaryEvent, EditDiaryState> {
     on<RemoveImg>(_onRemoveImg);
     on<ChangeCost>(_onChangeCost);
     on<ChangeCurrency>(_onChangeCurrency);
+    on<ChangePayment>(_onChangePayment);
     on<ChangePublic>(_onChangePublic);
     on<Reset>(_onReset);
   }
@@ -66,6 +67,7 @@ class EditDiaryBloc extends Bloc<EditDiaryEvent, EditDiaryState> {
         imgUrl: diary.img,
         cost: diary.cost,
         currency: diary.currency ?? '원',
+        payment: diary.payment ?? '현금',
         isPublic: diary.isPublic,
         scheduleId: diary.scheduleId,
       ),
@@ -229,6 +231,14 @@ class EditDiaryBloc extends Bloc<EditDiaryEvent, EditDiaryState> {
     Emitter<EditDiaryState> emit,
   ) async {
     emit(state.copyWith(currency: event.currency));
+  }
+
+  // 결제 수단 변경
+  Future<void> _onChangePayment(
+    ChangePayment event,
+    Emitter<EditDiaryState> emit,
+  ) async {
+    emit(state.copyWith(payment: event.payment));
   }
 
   // 공개 여부 변경
