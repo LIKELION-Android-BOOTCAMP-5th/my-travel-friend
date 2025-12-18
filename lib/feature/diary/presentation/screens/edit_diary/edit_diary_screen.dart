@@ -270,7 +270,7 @@ class _EditDiaryScreenState extends State<EditDiaryScreen> {
   }
 
   // 별점 필드
-  Widget _buildRatingField(context, state) {
+  Widget _buildRatingField(BuildContext context, EditDiaryState state) {
     final colorScheme = Theme.of(context).colorScheme;
     final isDark = colorScheme.brightness == Brightness.dark;
 

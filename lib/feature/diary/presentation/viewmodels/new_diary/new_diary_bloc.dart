@@ -65,6 +65,8 @@ class NewDiaryBloc extends Bloc<NewDiaryEvent, NewDiaryState> {
   ) async {
     print('>>> [1] _onCreateDiary 호출됨!');
     print('>>> type: ${state.type}');
+    print('>>> rating: ${state.rating}'); // ✅ 추가
+    print('>>> canSave: ${state.canSave}');
     emit(state.copyWith(pageState: NewDiaryPageState.loading));
 
     String? uploadedImgUrl = state.imgUrl;

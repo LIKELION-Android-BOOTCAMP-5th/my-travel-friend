@@ -53,9 +53,12 @@ abstract class CreateTripEvent with _$CreateTripEvent {
   // → "만들기" 버튼 클릭 시 호출
   const factory CreateTripEvent.createTrip() = CreateTrip;
 
-  //친구와 함께 여행만들기 할때 필요 할거 같이 일단 넣었음
-  const factory CreateTripEvent.setFriend({required int friendId}) = SetFriend;
+  const factory CreateTripEvent.initialized({
+    required int userId,
+    int? friendId,
+  }) = Initialized;
 
+  const factory CreateTripEvent.setFriend({required int friendId}) = SetFriend;
   //초기화 (상태 리셋)
   const factory CreateTripEvent.reset() = Reset;
 }

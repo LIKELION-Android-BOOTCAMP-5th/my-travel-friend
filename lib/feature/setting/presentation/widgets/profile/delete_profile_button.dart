@@ -58,24 +58,28 @@ class DeleteProfileButton extends StatelessWidget {
                 ],
               ),
               SizedBox(width: 12),
-              Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    "계정 삭제",
-                    style: AppFont.regularBold.copyWith(
-                      color: isDark ? AppColors.light : AppColors.dark,
+              Expanded(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "계정 삭제",
+                      style: AppFont.regularBold.copyWith(
+                        color: isDark ? AppColors.light : AppColors.dark,
+                      ),
                     ),
-                  ),
-                  SizedBox(height: 8),
-                  Text(
-                    "모든 여행 데이터와 정보가 영구적으로 삭제됩니다",
-                    style: AppFont.small.copyWith(
-                      color: colorScheme.onSurfaceVariant,
+                    SizedBox(height: 8),
+                    Text(
+                      "모든 여행 데이터와 정보가 영구적으로 삭제됩니다",
+                      style: AppFont.small.copyWith(
+                        color: colorScheme.onSurfaceVariant,
+                      ),
+                      overflow: TextOverflow.visible,
+                      maxLines: 2,
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ],
           ),

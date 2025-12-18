@@ -193,14 +193,39 @@ class _TripCalendar extends StatefulWidget {
   State<_TripCalendar> createState() => _TripCalendarState();
 }
 
-class _TripCalendarState extends State<_TripCalendar> {
+class _TripCalendarState extends State<_TripCalendar>
+    with TickerProviderStateMixin {
   late final PageController _controller;
+
+  bool _hasSecondRow = false;
+
+  static const double _rowHeight = 56.0;
+  static const double _rowSpacing = 10.0;
+
+  double get _calendarHeight =>
+      _hasSecondRow ? _rowHeight * 2 + _rowSpacing : _rowHeight;
 
   @override
   void initState() {
     super.initState();
-    final page = context.read<TripHomeBloc>().state.currentCalendarPage;
-    _controller = PageController(initialPage: page);
+
+    final state = context.read<TripHomeBloc>().state;
+    _controller = PageController(initialPage: state.currentCalendarPage);
+
+    if (state.calendarPages.isNotEmpty) {
+      _updateRowState(state.calendarPages[state.currentCalendarPage]);
+    }
+  }
+
+  void _updateRowState(List<DateTime?> page) {
+    final secondRow = page.skip(7).take(7);
+    final hasSecond = secondRow.any((d) => d != null);
+
+    if (_hasSecondRow != hasSecond) {
+      setState(() {
+        _hasSecondRow = hasSecond;
+      });
+    }
   }
 
   @override
@@ -220,10 +245,11 @@ class _TripCalendarState extends State<_TripCalendar> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          // 헤더
           Row(
             children: [
               Icon(AppIcon.calendar, color: colorScheme.primary, size: 15),
-              SizedBox(width: 12),
+              const SizedBox(width: 12),
               Text(
                 '주간 캘린더',
                 style: AppFont.regularBold.copyWith(
@@ -234,45 +260,49 @@ class _TripCalendarState extends State<_TripCalendar> {
           ),
           const SizedBox(height: 12),
 
-          SizedBox(
-            height: 132, // 최대 2줄
-            child: PageView.builder(
-              controller: _controller,
-              itemCount: pages.length,
-              onPageChanged: (index) {
-                context.read<TripHomeBloc>().add(
-                  TripHomeEvent.changeCalendarPage(pageIndex: index),
-                );
-              },
-              itemBuilder: (context, pageIndex) {
-                final page = pages[pageIndex];
+          // 캘린더
+          AnimatedSize(
+            duration: const Duration(milliseconds: 250),
+            curve: Curves.easeInOut,
+            child: SizedBox(
+              height: _calendarHeight,
+              child: PageView.builder(
+                controller: _controller,
+                itemCount: pages.length,
+                onPageChanged: (index) {
+                  context.read<TripHomeBloc>().add(
+                    TripHomeEvent.changeCalendarPage(pageIndex: index),
+                  );
+                  _updateRowState(pages[index]);
+                },
+                itemBuilder: (context, pageIndex) {
+                  final page = pages[pageIndex];
 
-                final firstRow = page.take(7).toList();
-                final secondRow = page.skip(7).take(7).toList();
+                  final firstRow = page.take(7).toList();
+                  final secondRow = page.skip(7).take(7).toList();
 
-                final hasSecondRow = secondRow.any((d) => d != null);
-
-                return Column(
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: firstRow
-                          .map((d) => _DateCellNullable(date: d))
-                          .toList(),
-                    ),
-
-                    if (hasSecondRow) ...[
-                      const SizedBox(height: 10),
+                  return Column(
+                    children: [
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: secondRow
+                        children: firstRow
                             .map((d) => _DateCellNullable(date: d))
                             .toList(),
                       ),
+
+                      if (_hasSecondRow) ...[
+                        const SizedBox(height: _rowSpacing),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: secondRow
+                              .map((d) => _DateCellNullable(date: d))
+                              .toList(),
+                        ),
+                      ],
                     ],
-                  ],
-                );
-              },
+                  );
+                },
+              ),
             ),
           ),
         ],
@@ -450,10 +480,12 @@ class _ScheduleSection extends StatelessWidget {
             Center(child: Text('이 날짜에는 일정이 없습니다', style: AppFont.regular)),
 
           ...state.schedulesForSelectedDate.map((s) {
-            final dt = DateTime.tryParse(s.date ?? '');
-            final hhmm = (dt == null)
+            final raw = DateTime.tryParse(s.date ?? '');
+            final local = raw?.toLocal();
+
+            final hhmm = (local == null)
                 ? '--:--'
-                : '${dt.hour.toString().padLeft(2, '0')}:${dt.minute.toString().padLeft(2, '0')}';
+                : '${local.hour.toString().padLeft(2, '0')}:${local.minute.toString().padLeft(2, '0')}';
 
             final hasPlace = s.place != null && s.place!.trim().isNotEmpty;
 
@@ -462,7 +494,6 @@ class _ScheduleSection extends StatelessWidget {
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // ⏰ 시간
                   SizedBox(
                     width: 52,
                     child: Text(hhmm, style: AppFont.regular),

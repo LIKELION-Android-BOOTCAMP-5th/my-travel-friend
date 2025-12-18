@@ -55,7 +55,7 @@ extension CreateTripEventPatterns on CreateTripEvent {
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( ChangeTitle value)?  changeTitle,TResult Function( ChangePlace value)?  changePlace,TResult Function( PlaceAIResult value)?  placeAIResult,TResult Function( ValidateDate value)?  validateDate,TResult Function( DismissSameDayDialog value)?  dismissSameDayDialog,TResult Function( SameDayDetected value)?  sameDayDetected,TResult Function( ChangeStartAt value)?  changeStartAt,TResult Function( ChangeEndAt value)?  changeEndAt,TResult Function( ChangeCoverStyle value)?  changeCoverStyle,TResult Function( ChangeCoverColor value)?  changeCoverColor,TResult Function( SelectCoverImg value)?  selectCoverImg,TResult Function( RemoveCoverImg value)?  removeCoverImg,TResult Function( CreateTrip value)?  createTrip,TResult Function( SetFriend value)?  setFriend,TResult Function( Reset value)?  reset,required TResult orElse(),}){
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( ChangeTitle value)?  changeTitle,TResult Function( ChangePlace value)?  changePlace,TResult Function( PlaceAIResult value)?  placeAIResult,TResult Function( ValidateDate value)?  validateDate,TResult Function( DismissSameDayDialog value)?  dismissSameDayDialog,TResult Function( SameDayDetected value)?  sameDayDetected,TResult Function( ChangeStartAt value)?  changeStartAt,TResult Function( ChangeEndAt value)?  changeEndAt,TResult Function( ChangeCoverStyle value)?  changeCoverStyle,TResult Function( ChangeCoverColor value)?  changeCoverColor,TResult Function( SelectCoverImg value)?  selectCoverImg,TResult Function( RemoveCoverImg value)?  removeCoverImg,TResult Function( CreateTrip value)?  createTrip,TResult Function( Initialized value)?  initialized,TResult Function( SetFriend value)?  setFriend,TResult Function( Reset value)?  reset,required TResult orElse(),}){
 final _that = this;
 switch (_that) {
 case ChangeTitle() when changeTitle != null:
@@ -71,7 +71,8 @@ return changeCoverStyle(_that);case ChangeCoverColor() when changeCoverColor != 
 return changeCoverColor(_that);case SelectCoverImg() when selectCoverImg != null:
 return selectCoverImg(_that);case RemoveCoverImg() when removeCoverImg != null:
 return removeCoverImg(_that);case CreateTrip() when createTrip != null:
-return createTrip(_that);case SetFriend() when setFriend != null:
+return createTrip(_that);case Initialized() when initialized != null:
+return initialized(_that);case SetFriend() when setFriend != null:
 return setFriend(_that);case Reset() when reset != null:
 return reset(_that);case _:
   return orElse();
@@ -91,7 +92,7 @@ return reset(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( ChangeTitle value)  changeTitle,required TResult Function( ChangePlace value)  changePlace,required TResult Function( PlaceAIResult value)  placeAIResult,required TResult Function( ValidateDate value)  validateDate,required TResult Function( DismissSameDayDialog value)  dismissSameDayDialog,required TResult Function( SameDayDetected value)  sameDayDetected,required TResult Function( ChangeStartAt value)  changeStartAt,required TResult Function( ChangeEndAt value)  changeEndAt,required TResult Function( ChangeCoverStyle value)  changeCoverStyle,required TResult Function( ChangeCoverColor value)  changeCoverColor,required TResult Function( SelectCoverImg value)  selectCoverImg,required TResult Function( RemoveCoverImg value)  removeCoverImg,required TResult Function( CreateTrip value)  createTrip,required TResult Function( SetFriend value)  setFriend,required TResult Function( Reset value)  reset,}){
+@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( ChangeTitle value)  changeTitle,required TResult Function( ChangePlace value)  changePlace,required TResult Function( PlaceAIResult value)  placeAIResult,required TResult Function( ValidateDate value)  validateDate,required TResult Function( DismissSameDayDialog value)  dismissSameDayDialog,required TResult Function( SameDayDetected value)  sameDayDetected,required TResult Function( ChangeStartAt value)  changeStartAt,required TResult Function( ChangeEndAt value)  changeEndAt,required TResult Function( ChangeCoverStyle value)  changeCoverStyle,required TResult Function( ChangeCoverColor value)  changeCoverColor,required TResult Function( SelectCoverImg value)  selectCoverImg,required TResult Function( RemoveCoverImg value)  removeCoverImg,required TResult Function( CreateTrip value)  createTrip,required TResult Function( Initialized value)  initialized,required TResult Function( SetFriend value)  setFriend,required TResult Function( Reset value)  reset,}){
 final _that = this;
 switch (_that) {
 case ChangeTitle():
@@ -107,7 +108,8 @@ return changeCoverStyle(_that);case ChangeCoverColor():
 return changeCoverColor(_that);case SelectCoverImg():
 return selectCoverImg(_that);case RemoveCoverImg():
 return removeCoverImg(_that);case CreateTrip():
-return createTrip(_that);case SetFriend():
+return createTrip(_that);case Initialized():
+return initialized(_that);case SetFriend():
 return setFriend(_that);case Reset():
 return reset(_that);case _:
   throw StateError('Unexpected subclass');
@@ -126,7 +128,7 @@ return reset(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( ChangeTitle value)?  changeTitle,TResult? Function( ChangePlace value)?  changePlace,TResult? Function( PlaceAIResult value)?  placeAIResult,TResult? Function( ValidateDate value)?  validateDate,TResult? Function( DismissSameDayDialog value)?  dismissSameDayDialog,TResult? Function( SameDayDetected value)?  sameDayDetected,TResult? Function( ChangeStartAt value)?  changeStartAt,TResult? Function( ChangeEndAt value)?  changeEndAt,TResult? Function( ChangeCoverStyle value)?  changeCoverStyle,TResult? Function( ChangeCoverColor value)?  changeCoverColor,TResult? Function( SelectCoverImg value)?  selectCoverImg,TResult? Function( RemoveCoverImg value)?  removeCoverImg,TResult? Function( CreateTrip value)?  createTrip,TResult? Function( SetFriend value)?  setFriend,TResult? Function( Reset value)?  reset,}){
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( ChangeTitle value)?  changeTitle,TResult? Function( ChangePlace value)?  changePlace,TResult? Function( PlaceAIResult value)?  placeAIResult,TResult? Function( ValidateDate value)?  validateDate,TResult? Function( DismissSameDayDialog value)?  dismissSameDayDialog,TResult? Function( SameDayDetected value)?  sameDayDetected,TResult? Function( ChangeStartAt value)?  changeStartAt,TResult? Function( ChangeEndAt value)?  changeEndAt,TResult? Function( ChangeCoverStyle value)?  changeCoverStyle,TResult? Function( ChangeCoverColor value)?  changeCoverColor,TResult? Function( SelectCoverImg value)?  selectCoverImg,TResult? Function( RemoveCoverImg value)?  removeCoverImg,TResult? Function( CreateTrip value)?  createTrip,TResult? Function( Initialized value)?  initialized,TResult? Function( SetFriend value)?  setFriend,TResult? Function( Reset value)?  reset,}){
 final _that = this;
 switch (_that) {
 case ChangeTitle() when changeTitle != null:
@@ -142,7 +144,8 @@ return changeCoverStyle(_that);case ChangeCoverColor() when changeCoverColor != 
 return changeCoverColor(_that);case SelectCoverImg() when selectCoverImg != null:
 return selectCoverImg(_that);case RemoveCoverImg() when removeCoverImg != null:
 return removeCoverImg(_that);case CreateTrip() when createTrip != null:
-return createTrip(_that);case SetFriend() when setFriend != null:
+return createTrip(_that);case Initialized() when initialized != null:
+return initialized(_that);case SetFriend() when setFriend != null:
 return setFriend(_that);case Reset() when reset != null:
 return reset(_that);case _:
   return null;
@@ -161,7 +164,7 @@ return reset(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function( String title)?  changeTitle,TResult Function( String place)?  changePlace,TResult Function( String country)?  placeAIResult,TResult Function()?  validateDate,TResult Function()?  dismissSameDayDialog,TResult Function()?  sameDayDetected,TResult Function( String startAt)?  changeStartAt,TResult Function( String endAt)?  changeEndAt,TResult Function( String style)?  changeCoverStyle,TResult Function( String color)?  changeCoverColor,TResult Function( File file)?  selectCoverImg,TResult Function()?  removeCoverImg,TResult Function()?  createTrip,TResult Function( int friendId)?  setFriend,TResult Function()?  reset,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function( String title)?  changeTitle,TResult Function( String place)?  changePlace,TResult Function( String country)?  placeAIResult,TResult Function()?  validateDate,TResult Function()?  dismissSameDayDialog,TResult Function()?  sameDayDetected,TResult Function( String startAt)?  changeStartAt,TResult Function( String endAt)?  changeEndAt,TResult Function( String style)?  changeCoverStyle,TResult Function( String color)?  changeCoverColor,TResult Function( File file)?  selectCoverImg,TResult Function()?  removeCoverImg,TResult Function()?  createTrip,TResult Function( int userId,  int? friendId)?  initialized,TResult Function( int friendId)?  setFriend,TResult Function()?  reset,required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case ChangeTitle() when changeTitle != null:
 return changeTitle(_that.title);case ChangePlace() when changePlace != null:
@@ -176,7 +179,8 @@ return changeCoverStyle(_that.style);case ChangeCoverColor() when changeCoverCol
 return changeCoverColor(_that.color);case SelectCoverImg() when selectCoverImg != null:
 return selectCoverImg(_that.file);case RemoveCoverImg() when removeCoverImg != null:
 return removeCoverImg();case CreateTrip() when createTrip != null:
-return createTrip();case SetFriend() when setFriend != null:
+return createTrip();case Initialized() when initialized != null:
+return initialized(_that.userId,_that.friendId);case SetFriend() when setFriend != null:
 return setFriend(_that.friendId);case Reset() when reset != null:
 return reset();case _:
   return orElse();
@@ -196,7 +200,7 @@ return reset();case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function( String title)  changeTitle,required TResult Function( String place)  changePlace,required TResult Function( String country)  placeAIResult,required TResult Function()  validateDate,required TResult Function()  dismissSameDayDialog,required TResult Function()  sameDayDetected,required TResult Function( String startAt)  changeStartAt,required TResult Function( String endAt)  changeEndAt,required TResult Function( String style)  changeCoverStyle,required TResult Function( String color)  changeCoverColor,required TResult Function( File file)  selectCoverImg,required TResult Function()  removeCoverImg,required TResult Function()  createTrip,required TResult Function( int friendId)  setFriend,required TResult Function()  reset,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function( String title)  changeTitle,required TResult Function( String place)  changePlace,required TResult Function( String country)  placeAIResult,required TResult Function()  validateDate,required TResult Function()  dismissSameDayDialog,required TResult Function()  sameDayDetected,required TResult Function( String startAt)  changeStartAt,required TResult Function( String endAt)  changeEndAt,required TResult Function( String style)  changeCoverStyle,required TResult Function( String color)  changeCoverColor,required TResult Function( File file)  selectCoverImg,required TResult Function()  removeCoverImg,required TResult Function()  createTrip,required TResult Function( int userId,  int? friendId)  initialized,required TResult Function( int friendId)  setFriend,required TResult Function()  reset,}) {final _that = this;
 switch (_that) {
 case ChangeTitle():
 return changeTitle(_that.title);case ChangePlace():
@@ -211,7 +215,8 @@ return changeCoverStyle(_that.style);case ChangeCoverColor():
 return changeCoverColor(_that.color);case SelectCoverImg():
 return selectCoverImg(_that.file);case RemoveCoverImg():
 return removeCoverImg();case CreateTrip():
-return createTrip();case SetFriend():
+return createTrip();case Initialized():
+return initialized(_that.userId,_that.friendId);case SetFriend():
 return setFriend(_that.friendId);case Reset():
 return reset();case _:
   throw StateError('Unexpected subclass');
@@ -230,7 +235,7 @@ return reset();case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function( String title)?  changeTitle,TResult? Function( String place)?  changePlace,TResult? Function( String country)?  placeAIResult,TResult? Function()?  validateDate,TResult? Function()?  dismissSameDayDialog,TResult? Function()?  sameDayDetected,TResult? Function( String startAt)?  changeStartAt,TResult? Function( String endAt)?  changeEndAt,TResult? Function( String style)?  changeCoverStyle,TResult? Function( String color)?  changeCoverColor,TResult? Function( File file)?  selectCoverImg,TResult? Function()?  removeCoverImg,TResult? Function()?  createTrip,TResult? Function( int friendId)?  setFriend,TResult? Function()?  reset,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function( String title)?  changeTitle,TResult? Function( String place)?  changePlace,TResult? Function( String country)?  placeAIResult,TResult? Function()?  validateDate,TResult? Function()?  dismissSameDayDialog,TResult? Function()?  sameDayDetected,TResult? Function( String startAt)?  changeStartAt,TResult? Function( String endAt)?  changeEndAt,TResult? Function( String style)?  changeCoverStyle,TResult? Function( String color)?  changeCoverColor,TResult? Function( File file)?  selectCoverImg,TResult? Function()?  removeCoverImg,TResult? Function()?  createTrip,TResult? Function( int userId,  int? friendId)?  initialized,TResult? Function( int friendId)?  setFriend,TResult? Function()?  reset,}) {final _that = this;
 switch (_that) {
 case ChangeTitle() when changeTitle != null:
 return changeTitle(_that.title);case ChangePlace() when changePlace != null:
@@ -245,7 +250,8 @@ return changeCoverStyle(_that.style);case ChangeCoverColor() when changeCoverCol
 return changeCoverColor(_that.color);case SelectCoverImg() when selectCoverImg != null:
 return selectCoverImg(_that.file);case RemoveCoverImg() when removeCoverImg != null:
 return removeCoverImg();case CreateTrip() when createTrip != null:
-return createTrip();case SetFriend() when setFriend != null:
+return createTrip();case Initialized() when initialized != null:
+return initialized(_that.userId,_that.friendId);case SetFriend() when setFriend != null:
 return setFriend(_that.friendId);case Reset() when reset != null:
 return reset();case _:
   return null;
@@ -942,6 +948,74 @@ String toString() {
 
 
 
+
+/// @nodoc
+
+
+class Initialized implements CreateTripEvent {
+  const Initialized({required this.userId, this.friendId});
+  
+
+ final  int userId;
+ final  int? friendId;
+
+/// Create a copy of CreateTripEvent
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$InitializedCopyWith<Initialized> get copyWith => _$InitializedCopyWithImpl<Initialized>(this, _$identity);
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is Initialized&&(identical(other.userId, userId) || other.userId == userId)&&(identical(other.friendId, friendId) || other.friendId == friendId));
+}
+
+
+@override
+int get hashCode => Object.hash(runtimeType,userId,friendId);
+
+@override
+String toString() {
+  return 'CreateTripEvent.initialized(userId: $userId, friendId: $friendId)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class $InitializedCopyWith<$Res> implements $CreateTripEventCopyWith<$Res> {
+  factory $InitializedCopyWith(Initialized value, $Res Function(Initialized) _then) = _$InitializedCopyWithImpl;
+@useResult
+$Res call({
+ int userId, int? friendId
+});
+
+
+
+
+}
+/// @nodoc
+class _$InitializedCopyWithImpl<$Res>
+    implements $InitializedCopyWith<$Res> {
+  _$InitializedCopyWithImpl(this._self, this._then);
+
+  final Initialized _self;
+  final $Res Function(Initialized) _then;
+
+/// Create a copy of CreateTripEvent
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') $Res call({Object? userId = null,Object? friendId = freezed,}) {
+  return _then(Initialized(
+userId: null == userId ? _self.userId : userId // ignore: cast_nullable_to_non_nullable
+as int,friendId: freezed == friendId ? _self.friendId : friendId // ignore: cast_nullable_to_non_nullable
+as int?,
+  ));
+}
+
+
+}
 
 /// @nodoc
 
