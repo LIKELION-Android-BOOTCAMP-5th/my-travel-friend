@@ -213,10 +213,10 @@ class TripBloc extends Bloc<TripEvent, TripState> {
       success: (crewCount) async {
         if (crewCount > 1) {
           // 2명 이상 → 나만 trip_crew에서 제거
-          await _giveUpTripUseCase(event.userId, event.tripId);
+          await _giveUpTripUseCase(event.tripId, event.userId);
         } else {
           // 마지막 사용자 → trip_crew 전체 삭제
-          await _giveUpTripUseCase(event.userId, event.tripId);
+          await _giveUpTripUseCase(event.tripId, event.userId);
 
           final trip = state.trips?.firstWhere(
             (t) => t.id == event.tripId,
