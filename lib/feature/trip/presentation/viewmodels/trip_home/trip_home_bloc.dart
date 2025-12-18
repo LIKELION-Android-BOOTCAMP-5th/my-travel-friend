@@ -211,9 +211,19 @@ class TripHomeBloc extends Bloc<TripHomeEvent, TripHomeState> {
     emit(state.copyWith(isInviteMode: true, message: null));
 
     final result = await _getFriendUsersUsecase(myId);
+
     result.when(
       success: (friends) {
-        emit(state.copyWith(friendCandidates: friends));
+        final crewIds = state.crewMembers
+            .map((u) => u.id)
+            .whereType<int>()
+            .toSet();
+
+        final filteredFriends = friends
+            .where((f) => !crewIds.contains(f.id))
+            .toList();
+
+        emit(state.copyWith(friendCandidates: filteredFriends));
       },
       failure: (f) {
         emit(state.copyWith(message: f.message));
