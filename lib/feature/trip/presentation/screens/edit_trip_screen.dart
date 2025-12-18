@@ -17,6 +17,7 @@ import '../../../../core/theme/app_font.dart';
 import '../../../../core/theme/app_icon.dart';
 import '../../../../core/widget/app_bar.dart';
 import '../../../../core/widget/button.dart';
+import '../../../../core/widget/pop_up_box.dart';
 
 class EditTripScreen extends StatefulWidget {
   final TripEntity trip;
@@ -28,21 +29,26 @@ class EditTripScreen extends StatefulWidget {
 }
 
 class _EditTripScreenState extends State<EditTripScreen> {
-  final _titleController = TextEditingController();
-  final _placeController = TextEditingController();
-  bool _initialized = false;
+  late final TextEditingController _titleController;
+  late final TextEditingController _placeController;
 
   String _two(int n) => n.toString().padLeft(2, "0");
 
   @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    if (!_initialized) {
-      final state = context.read<EditTripBloc>().state;
-      _titleController.text = state.title;
-      _placeController.text = state.place;
-      _initialized = true;
-    }
+  void initState() {
+    super.initState();
+
+    final state = context.read<EditTripBloc>().state;
+
+    _titleController = TextEditingController(text: state.title);
+    _placeController = TextEditingController(text: state.place);
+  }
+
+  @override
+  void dispose() {
+    _titleController.dispose();
+    _placeController.dispose();
+    super.dispose();
   }
 
   @override
@@ -66,49 +72,67 @@ class _EditTripScreenState extends State<EditTripScreen> {
         }
       },
       builder: (context, state) {
-        return Scaffold(
-          backgroundColor: isDark ? AppColors.navy : AppColors.darkGray,
-          appBar: CustomButtonAppBar(
-            leading: Button(
-              width: 40,
-              height: 40,
-              icon: Icon(AppIcon.back),
-              contentColor: isDark ? colorScheme.onSurface : AppColors.light,
-              borderRadius: 20,
-              onTap: () => context.pop(),
-            ),
-            title: "여행 계획 수정하기",
-            actions: [
-              Button(
+        return PopScope(
+          canPop: false,
+          onPopInvokedWithResult: (didPop, result) async {
+            if (didPop) return;
+
+            final shouldExit = await _showExitConfirmDialog(context);
+            if (shouldExit && context.mounted) {
+              Navigator.of(context).pop(result);
+            }
+          },
+          child: Scaffold(
+            backgroundColor: isDark ? AppColors.navy : AppColors.darkGray,
+            appBar: CustomButtonAppBar(
+              leading: Button(
                 width: 40,
                 height: 40,
-                icon:
-                    state.isUploading ||
-                        state.pageState == EditTripPageState.loading
-                    ? SizedBox(
-                        width: 20,
-                        height: 20,
-                        child: CircularProgressIndicator(
-                          strokeWidth: 2,
-                          color: state.isValid
-                              ? Colors.white
-                              : Colors.white.withOpacity(0.4),
-                        ),
-                      )
-                    : AppIcon.save,
+                icon: Icon(AppIcon.back),
                 contentColor: isDark ? colorScheme.onSurface : AppColors.light,
                 borderRadius: 20,
-                onTap: state.isValid
-                    ? () => context.read<EditTripBloc>().add(
-                        const EditTripEvent.saveTrip(),
-                      )
-                    : null,
+                onTap: () async {
+                  final shouldExit = await _showExitConfirmDialog(context);
+                  if (shouldExit && context.mounted) {
+                    context.pop();
+                  }
+                },
               ),
-            ],
+              title: "여행 계획 수정하기",
+              actions: [
+                Button(
+                  width: 40,
+                  height: 40,
+                  icon:
+                      state.isUploading ||
+                          state.pageState == EditTripPageState.loading
+                      ? SizedBox(
+                          width: 20,
+                          height: 20,
+                          child: CircularProgressIndicator(
+                            strokeWidth: 2,
+                            color: state.isValid
+                                ? Colors.white
+                                : Colors.white.withOpacity(0.4),
+                          ),
+                        )
+                      : AppIcon.save,
+                  contentColor: isDark
+                      ? colorScheme.onSurface
+                      : AppColors.light,
+                  borderRadius: 20,
+                  onTap: state.isValid
+                      ? () => context.read<EditTripBloc>().add(
+                          const EditTripEvent.saveTrip(),
+                        )
+                      : null,
+                ),
+              ],
+            ),
+            body: state.pageState == EditTripPageState.loading
+                ? const Center(child: CircularProgressIndicator())
+                : _editForm(context, state),
           ),
-          body: state.pageState == EditTripPageState.loading
-              ? const Center(child: CircularProgressIndicator())
-              : _editForm(context, state),
         );
       },
     );
@@ -162,16 +186,19 @@ class _EditTripScreenState extends State<EditTripScreen> {
                           label: "시작일",
                           value: formatDate(state.startAt),
                           onTap: () async {
+                            final bloc = context.read<EditTripBloc>();
+
                             final picked = await showDatePicker(
                               context: context,
                               initialDate: DateTime.parse(state.startAt),
                               firstDate: DateTime(2000),
                               lastDate: DateTime(2100),
                             );
+
                             if (picked != null) {
                               final formatted =
                                   "${picked.year}-${_two(picked.month)}-${_two(picked.day)}";
-                              context.read<EditTripBloc>().add(
+                              bloc.add(
                                 EditTripEvent.changeStartAt(startAt: formatted),
                               );
                             }
@@ -184,16 +211,19 @@ class _EditTripScreenState extends State<EditTripScreen> {
                           label: "종료일",
                           value: formatDate(state.endAt),
                           onTap: () async {
+                            final bloc = context.read<EditTripBloc>();
+
                             final picked = await showDatePicker(
                               context: context,
                               initialDate: DateTime.parse(state.endAt),
                               firstDate: DateTime.parse(state.startAt),
                               lastDate: DateTime(2100),
                             );
+
                             if (picked != null) {
                               final formatted =
                                   "${picked.year}-${_two(picked.month)}-${_two(picked.day)}";
-                              context.read<EditTripBloc>().add(
+                              bloc.add(
                                 EditTripEvent.changeEndAt(endAt: formatted),
                               );
                             }
@@ -442,12 +472,12 @@ class _EditTripScreenState extends State<EditTripScreen> {
           iconBgColor: AppColors.primaryLight,
           title: "카메라",
           onTap: () async {
+            final bloc = context.read<EditTripBloc>(); // await 이전
             final picker = ImagePicker();
+
             final picked = await picker.pickImage(source: ImageSource.camera);
             if (picked != null) {
-              context.read<EditTripBloc>().add(
-                EditTripEvent.selectCoverImg(file: File(picked.path)),
-              );
+              bloc.add(EditTripEvent.selectCoverImg(file: File(picked.path)));
             }
           },
         ),
@@ -456,12 +486,12 @@ class _EditTripScreenState extends State<EditTripScreen> {
           iconBgColor: AppColors.secondary,
           title: "앨범에서 선택",
           onTap: () async {
+            final bloc = context.read<EditTripBloc>(); // await 이전
             final picker = ImagePicker();
+
             final picked = await picker.pickImage(source: ImageSource.gallery);
             if (picked != null) {
-              context.read<EditTripBloc>().add(
-                EditTripEvent.selectCoverImg(file: File(picked.path)),
-              );
+              bloc.add(EditTripEvent.selectCoverImg(file: File(picked.path)));
             }
           },
         ),
@@ -511,4 +541,26 @@ String formatDate(String dateStr) {
   } catch (_) {
     return dateStr;
   }
+}
+
+Future<bool> _showExitConfirmDialog(BuildContext context) async {
+  final result = await showDialog<bool>(
+    context: context,
+    barrierDismissible: false,
+    builder: (_) => PopUpBox(
+      title: "여행 수정을 취소할까요?",
+      message: "지금 나가면 수정 중인 내용이 적용 되지 않아요.",
+      leftText: "취소",
+      rightText: "확인",
+      onLeft: () {
+        // 취소 → 그냥 다이얼로그 닫힘
+      },
+      onRight: () {
+        // 확인 → true 반환
+        Navigator.of(context).pop(true);
+      },
+    ),
+  );
+
+  return result == true;
 }

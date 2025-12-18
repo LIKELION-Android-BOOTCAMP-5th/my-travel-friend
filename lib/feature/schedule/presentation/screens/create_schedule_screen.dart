@@ -8,7 +8,8 @@ import '../../../../../core/widget/text_box.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_font.dart';
 import '../../../../core/widget/app_bar.dart';
-import '../viewmodels/create_schedule/create_schedule_blco.dart';
+import '../../../../core/widget/pop_up_box.dart';
+import '../viewmodels/create_schedule/create_schedule_bloc.dart';
 import '../viewmodels/create_schedule/create_schedule_event.dart';
 import '../viewmodels/create_schedule/create_schedule_state.dart';
 import '../viewmodels/map_search/map_search_state.dart';
@@ -55,10 +56,37 @@ class _CreateScheduleScreenState extends State<CreateScheduleScreen> {
   @override
   Widget build(BuildContext context) {
     return BlocListener<CreateScheduleBloc, CreateScheduleState>(
-      listenWhen: (prev, curr) => prev.actionType != curr.actionType,
-      listener: (context, state) {
+      listenWhen: (prev, curr) =>
+          prev.actionType != curr.actionType || prev.message != curr.message,
+      listener: (context, state) async {
         if (state.actionType == 'pop') {
           Navigator.of(context).pop(false);
+        }
+
+        if (state.actionType == 'exit_confirm') {
+          final result = await showDialog<bool>(
+            context: context,
+            barrierDismissible: false,
+            builder: (_) => PopUpBox(
+              title: '일정 생성을 취소할까요?',
+              message: '지금 나가면 작성 중인 내용이 저장되지 않아요.',
+              leftText: '취소',
+              rightText: '확인',
+              onRight: () {
+                Navigator.of(context).pop(true);
+              },
+            ),
+          );
+
+          if (result == true && context.mounted) {
+            context.read<CreateScheduleBloc>().add(
+              const CreateScheduleEvent.exitConfirmed(),
+            );
+          }
+
+          context.read<CreateScheduleBloc>().add(
+            const CreateScheduleEvent.clearMessage(),
+          );
         }
 
         if (state.pageState == CreateSchedulepageState.success) {
@@ -69,48 +97,25 @@ class _CreateScheduleScreenState extends State<CreateScheduleScreen> {
         builder: (context, state) {
           final colorScheme = Theme.of(context).colorScheme;
           final isDark = colorScheme.brightness == Brightness.dark;
-          return Scaffold(
-            backgroundColor: isDark ? AppColors.navy : AppColors.darkGray,
-            appBar: CustomButtonAppBar(
-              title: '일정 추가',
-              leading: Button(
-                icon: const Icon(AppIcon.back),
-                onTap: () {
-                  context.read<CreateScheduleBloc>().add(
-                    const CreateScheduleEvent.exitRequested(),
-                  );
-                },
-                width: 36,
-                height: 36,
-                backgroundColor: Colors.transparent,
-                contentColor: AppColors.light,
-                borderRadius: 18,
-              ),
-              actions: [
-                Button(
-                  icon: const Icon(AppIcon.search),
-                  onTap: () async {
-                    final result = await context.push<PlaceCandidate>(
-                      '/trip/${widget.tripId}/map-search',
-                      extra: {
-                        'lat': state.lat,
-                        'lng': state.lng,
-                        'address': state.address,
-                      },
+          return PopScope(
+            canPop: false,
+            onPopInvokedWithResult: (didPop, _) {
+              if (didPop) return;
+
+              context.read<CreateScheduleBloc>().add(
+                const CreateScheduleEvent.exitRequested(),
+              );
+            },
+            child: Scaffold(
+              backgroundColor: isDark ? AppColors.navy : AppColors.darkGray,
+              appBar: CustomButtonAppBar(
+                title: '일정 추가',
+                leading: Button(
+                  icon: const Icon(AppIcon.back),
+                  onTap: () {
+                    context.read<CreateScheduleBloc>().add(
+                      const CreateScheduleEvent.exitRequested(),
                     );
-
-                    if (result != null) {
-                      context.read<CreateScheduleBloc>().add(
-                        CreateScheduleEvent.placeSelected(
-                          place: result.place,
-                          address: result.address,
-                          lat: result.lat,
-                          lng: result.lng,
-                        ),
-                      );
-
-                      _placeController.text = result.place;
-                    }
                   },
                   width: 36,
                   height: 36,
@@ -118,193 +123,229 @@ class _CreateScheduleScreenState extends State<CreateScheduleScreen> {
                   contentColor: AppColors.light,
                   borderRadius: 18,
                 ),
-              ],
-            ),
-            body: SingleChildScrollView(
-              padding: const EdgeInsets.all(8.0),
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: colorScheme.surfaceContainerHighest,
-                    borderRadius: BorderRadius.all(Radius.circular(16.0)),
+                actions: [
+                  Button(
+                    icon: const Icon(AppIcon.search),
+                    onTap: () async {
+                      final result = await context.push<PlaceCandidate>(
+                        '/trip/${widget.tripId}/map-search',
+                        extra: {
+                          'lat': state.lat,
+                          'lng': state.lng,
+                          'address': state.address,
+                        },
+                      );
+
+                      if (result != null) {
+                        context.read<CreateScheduleBloc>().add(
+                          CreateScheduleEvent.placeSelected(
+                            place: result.place,
+                            address: result.address,
+                            lat: result.lat,
+                            lng: result.lng,
+                          ),
+                        );
+
+                        _placeController.text = result.place;
+                      }
+                    },
+                    width: 36,
+                    height: 36,
+                    backgroundColor: Colors.transparent,
+                    contentColor: AppColors.light,
+                    borderRadius: 18,
                   ),
-                  child: Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        _sectionTitle('일정 제목'),
-                        const SizedBox(height: 8),
-                        TextBox(
-                          controller: _titleController,
-                          hintText: '예: 성산일출봉 방문',
-                          onChanged: (v) {
-                            context.read<CreateScheduleBloc>().add(
-                              CreateScheduleEvent.titleChanged(v),
-                            );
-                          },
-                        ),
-
-                        const SizedBox(height: 24),
-
-                        _sectionTitle('날짜'),
-                        const SizedBox(height: 8),
-                        Row(
-                          children: [
-                            Expanded(
-                              child: _pickerBox(
-                                context,
-                                text: state.date == null
-                                    ? '연도. 월. 일.'
-                                    : '${state.date!.year}.${state.date!.month}.${state.date!.day}',
-                                icon: AppIcon.calendar,
-                                onTap: () async {
-                                  final date = await showDatePicker(
-                                    context: context,
-                                    initialDate: state.date ?? DateTime.now(),
-                                    firstDate: DateTime(2000),
-                                    lastDate: DateTime(2100),
-                                  );
-                                  if (date != null) {
-                                    context.read<CreateScheduleBloc>().add(
-                                      CreateScheduleEvent.dateSelected(date),
-                                    );
-                                  }
-                                },
-                              ),
-                            ),
-                            const SizedBox(width: 12),
-                            Expanded(
-                              child: _pickerBox(
-                                context,
-                                text: state.time == null
-                                    ? '--:--'
-                                    : state.time!.format(context),
-                                icon: AppIcon.clock,
-                                onTap: () async {
-                                  final time = await showTimePicker(
-                                    context: context,
-                                    initialTime: state.time ?? TimeOfDay.now(),
-                                  );
-                                  if (time != null) {
-                                    context.read<CreateScheduleBloc>().add(
-                                      CreateScheduleEvent.timeSelected(time),
-                                    );
-                                  }
-                                },
-                              ),
-                            ),
-                          ],
-                        ),
-
-                        const SizedBox(height: 24),
-
-                        _sectionTitle('장소'),
-                        const SizedBox(height: 8),
-                        TextBox(
-                          controller: _placeController,
-                          hintText: '예: 제주 성산읍',
-                          prefixIcon: const Icon(AppIcon.mapPin),
-                          onChanged: (v) {
-                            context.read<CreateScheduleBloc>().add(
-                              CreateScheduleEvent.placeTextChanged(v),
-                            );
-                          },
-                        ),
-
-                        const SizedBox(height: 24),
-
-                        _sectionTitle('메모 (선택)'),
-                        const SizedBox(height: 8),
-                        TextBox(
-                          controller: _memoController,
-                          hintText: '일정에 대한 메모를 작성하세요...',
-                          maxLines: 4,
-                          minLines: 3,
-                          onChanged: (v) {
-                            context.read<CreateScheduleBloc>().add(
-                              CreateScheduleEvent.descriptionChanged(v),
-                            );
-                          },
-                        ),
-
-                        const SizedBox(height: 24),
-
-                        _sectionTitle('카테고리'),
-                        const SizedBox(height: 8),
-                        Wrap(
-                          spacing: 8,
-                          runSpacing: 8,
-                          children: [
-                            _categoryChip(context, '이동', 1, state),
-                            _categoryChip(context, '먹거리', 2, state),
-                            _categoryChip(context, '관광', 3, state),
-                            _categoryChip(context, '휴식', 4, state),
-                            _categoryChip(context, '숙박', 5, state),
-                            _categoryChip(context, '쇼핑', 6, state),
-                            _categoryChip(context, '액티비티', 7, state),
-                            _categoryChip(context, '기타', 8, state),
-                          ],
-                        ),
-
-                        const SizedBox(height: 24),
-
-                        _sectionTitle('함께하는 크루원'),
-                        const SizedBox(height: 8),
-                        _buildMembersSection(state),
-
-                        if (state.selectedScheduleCrew.isNotEmpty) ...[
+                ],
+              ),
+              body: SingleChildScrollView(
+                padding: const EdgeInsets.all(8.0),
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: colorScheme.surfaceContainerHighest,
+                      borderRadius: BorderRadius.all(Radius.circular(16.0)),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          _sectionTitle('일정 제목'),
                           const SizedBox(height: 8),
-                          _selectedMembersSummary(state),
-                        ],
+                          TextBox(
+                            controller: _titleController,
+                            hintText: '예: 성산일출봉 방문',
+                            onChanged: (v) {
+                              context.read<CreateScheduleBloc>().add(
+                                CreateScheduleEvent.titleChanged(v),
+                              );
+                            },
+                          ),
 
-                        const SizedBox(height: 32),
+                          const SizedBox(height: 24),
 
-                        Row(
-                          children: [
-                            Expanded(
-                              child: Button(
-                                text: '취소',
-                                onTap: () {
-                                  context.read<CreateScheduleBloc>().add(
-                                    const CreateScheduleEvent.exitRequested(),
-                                  );
-                                },
-                                width: double.infinity,
-                                height: 48,
-                                backgroundColor: isDark
-                                    ? AppColors.navy
-                                    : AppColors.lightGray,
-                                contentColor: isDark
-                                    ? AppColors.light
-                                    : AppColors.dark,
-                                borderRadius: 12,
+                          _sectionTitle('날짜'),
+                          const SizedBox(height: 8),
+                          Row(
+                            children: [
+                              Expanded(
+                                child: _pickerBox(
+                                  context,
+                                  text: state.date == null
+                                      ? '연도. 월. 일.'
+                                      : '${state.date!.year}.${state.date!.month}.${state.date!.day}',
+                                  icon: AppIcon.calendar,
+                                  onTap: () async {
+                                    final date = await showDatePicker(
+                                      context: context,
+                                      initialDate:
+                                          state.date ?? state.tripStartDate!,
+                                      firstDate: state.tripStartDate!,
+                                      lastDate: state.tripEndDate!,
+                                    );
+
+                                    if (date != null) {
+                                      context.read<CreateScheduleBloc>().add(
+                                        CreateScheduleEvent.dateSelected(date),
+                                      );
+                                    }
+                                  },
+                                ),
                               ),
-                            ),
-                            const SizedBox(width: 12),
-                            Expanded(
-                              child: Button(
-                                text: '저장',
-                                onTap: state.isValid
-                                    ? () {
-                                        context.read<CreateScheduleBloc>().add(
-                                          const CreateScheduleEvent.submitPressed(),
-                                        );
-                                      }
-                                    : null,
-                                width: double.infinity,
-                                height: 48,
-                                backgroundColor: state.isValid
-                                    ? AppColors.primaryLight
-                                    : AppColors.dark.withOpacity(0.2),
-                                contentColor: AppColors.light,
-                                borderRadius: 12,
+                              const SizedBox(width: 12),
+                              Expanded(
+                                child: _pickerBox(
+                                  context,
+                                  text: state.time == null
+                                      ? '--:--'
+                                      : state.time!.format(context),
+                                  icon: AppIcon.clock,
+                                  onTap: () async {
+                                    final time = await showTimePicker(
+                                      context: context,
+                                      initialTime:
+                                          state.time ?? TimeOfDay.now(),
+                                    );
+                                    if (time != null) {
+                                      context.read<CreateScheduleBloc>().add(
+                                        CreateScheduleEvent.timeSelected(time),
+                                      );
+                                    }
+                                  },
+                                ),
                               ),
-                            ),
+                            ],
+                          ),
+
+                          const SizedBox(height: 24),
+
+                          _sectionTitle('장소'),
+                          const SizedBox(height: 8),
+                          TextBox(
+                            controller: _placeController,
+                            hintText: '예: 제주 성산읍',
+                            prefixIcon: const Icon(AppIcon.mapPin),
+                            onChanged: (v) {
+                              context.read<CreateScheduleBloc>().add(
+                                CreateScheduleEvent.placeTextChanged(v),
+                              );
+                            },
+                          ),
+
+                          const SizedBox(height: 24),
+
+                          _sectionTitle('메모 (선택)'),
+                          const SizedBox(height: 8),
+                          TextBox(
+                            controller: _memoController,
+                            hintText: '일정에 대한 메모를 작성하세요...',
+                            maxLines: 4,
+                            minLines: 3,
+                            onChanged: (v) {
+                              context.read<CreateScheduleBloc>().add(
+                                CreateScheduleEvent.descriptionChanged(v),
+                              );
+                            },
+                          ),
+
+                          const SizedBox(height: 24),
+
+                          _sectionTitle('카테고리'),
+                          const SizedBox(height: 8),
+                          Wrap(
+                            spacing: 8,
+                            runSpacing: 8,
+                            children: [
+                              _categoryChip(context, '이동', 1, state),
+                              _categoryChip(context, '먹거리', 2, state),
+                              _categoryChip(context, '관광', 3, state),
+                              _categoryChip(context, '휴식', 4, state),
+                              _categoryChip(context, '숙박', 5, state),
+                              _categoryChip(context, '쇼핑', 6, state),
+                              _categoryChip(context, '액티비티', 7, state),
+                              _categoryChip(context, '기타', 8, state),
+                            ],
+                          ),
+
+                          const SizedBox(height: 24),
+
+                          _sectionTitle('함께하는 크루원'),
+                          const SizedBox(height: 8),
+                          _buildMembersSection(state),
+
+                          if (state.selectedScheduleCrew.isNotEmpty) ...[
+                            const SizedBox(height: 8),
+                            _selectedMembersSummary(state),
                           ],
-                        ),
-                      ],
+
+                          const SizedBox(height: 32),
+
+                          Row(
+                            children: [
+                              Expanded(
+                                child: Button(
+                                  text: '취소',
+                                  onTap: () {
+                                    context.read<CreateScheduleBloc>().add(
+                                      const CreateScheduleEvent.exitRequested(),
+                                    );
+                                  },
+                                  width: double.infinity,
+                                  height: 48,
+                                  backgroundColor: isDark
+                                      ? AppColors.navy
+                                      : AppColors.lightGray,
+                                  contentColor: isDark
+                                      ? AppColors.light
+                                      : AppColors.dark,
+                                  borderRadius: 12,
+                                ),
+                              ),
+                              const SizedBox(width: 12),
+                              Expanded(
+                                child: Button(
+                                  text: '저장',
+                                  onTap: state.isValid
+                                      ? () {
+                                          context.read<CreateScheduleBloc>().add(
+                                            const CreateScheduleEvent.submitPressed(),
+                                          );
+                                        }
+                                      : null,
+                                  width: double.infinity,
+                                  height: 48,
+                                  backgroundColor: state.isValid
+                                      ? AppColors.primaryLight
+                                      : AppColors.dark.withOpacity(0.2),
+                                  contentColor: AppColors.light,
+                                  borderRadius: 12,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),

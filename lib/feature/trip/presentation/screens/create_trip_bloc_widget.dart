@@ -18,13 +18,9 @@ class CreateTripBlocWidget extends StatelessWidget {
       create: (_) {
         final bloc = sl<CreateTripBloc>();
 
-        // userId를 state에 기본 설정
-        bloc.emit(bloc.state.copyWith(userId: userId));
-
-        // friendId가 있으면 자동 설정
-        if (friendId != null) {
-          bloc.add(CreateTripEvent.setFriend(friendId: friendId!));
-        }
+        bloc.add(
+          CreateTripEvent.initialized(userId: userId, friendId: friendId),
+        );
 
         return bloc;
       },
