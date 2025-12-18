@@ -111,7 +111,7 @@ class _TripListScreenState extends State<TripListScreen> {
         message: "참여 중인 여행에서 제외됩니다.",
         rightText: "포기하기",
         onRight: () {
-          Navigator.of(context).pop();
+          context.pop();
           context.read<TripBloc>().add(
             TripEvent.leaveTrip(tripId: trip.id!, userId: userId),
           );
