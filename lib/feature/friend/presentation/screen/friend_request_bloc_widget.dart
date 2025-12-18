@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:my_travel_friend/core/widget/toast_pop.dart';
 import 'package:my_travel_friend/feature/friend/presentation/viewmodel/friend_request_bloc.dart';
 import 'package:my_travel_friend/feature/friend/presentation/viewmodel/friend_request_event.dart';
 import 'package:my_travel_friend/feature/friend/presentation/viewmodel/friend_request_state.dart';
@@ -22,14 +23,10 @@ class FriendRequestBlocWidget extends StatelessWidget {
             curr.actionType == 'request_create',
         listener: (context, state) {
           if (state.pageState == FriendRequestPageState.success) {
-            ScaffoldMessenger.of(
-              context,
-            ).showSnackBar(const SnackBar(content: Text('친구 요청을 보냈어요')));
+            ToastPop.show('친구 요청을 보냈어요');
           }
           if (state.pageState == FriendRequestPageState.error) {
-            ScaffoldMessenger.of(
-              context,
-            ).showSnackBar(SnackBar(content: Text(state.message ?? '요청 실패')));
+            ToastPop.show('요청 실패');
           }
         },
         child: BlocBuilder<FriendRequestBloc, FriendRequestState>(

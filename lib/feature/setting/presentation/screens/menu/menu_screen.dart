@@ -211,7 +211,16 @@ class MenuScreen extends StatelessWidget {
                     height: 0.5,
                     color: colorScheme.outlineVariant.withOpacity(0.3),
                   ),
-                  MenuBox(state: state, title: "내가 받은 여행 초대", onTap: () {}),
+                  MenuBox(
+                    state: state,
+                    title: "내가 받은 여행 초대",
+                    onTap: () {
+                      context.push(
+                        '/setting/recevice_trip',
+                        extra: {'myId': userProfile.id},
+                      );
+                    },
+                  ),
                 ],
               ),
             ),
