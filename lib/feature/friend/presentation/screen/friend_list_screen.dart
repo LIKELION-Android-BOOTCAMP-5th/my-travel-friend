@@ -149,7 +149,6 @@ class FriendListScreen extends StatelessWidget {
                               onMoreGoTravel: () {
                                 showDialog(
                                   context: context,
-                                  barrierDismissible: false,
                                   builder: (_) {
                                     return PopUpBox(
                                       title: '함께 여행가기',
