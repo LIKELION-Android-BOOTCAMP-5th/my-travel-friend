@@ -7,6 +7,8 @@ import 'package:my_travel_friend/core/theme/app_icon.dart';
 import '../viewmodels/trip_home/trip_home_bloc.dart';
 import '../viewmodels/trip_home/trip_home_event.dart';
 import '../viewmodels/trip_home/trip_home_state.dart';
+import '../viewmodels/trip_request/trip_request_bloc.dart';
+import '../viewmodels/trip_request/trip_request_event.dart';
 
 class TripHomeScreen extends StatelessWidget {
   const TripHomeScreen({super.key});
@@ -716,8 +718,23 @@ class _InviteFriendPopup extends StatelessWidget {
                                 ),
                               ),
                               onPressed: () {
-                                // TODO: 초대 이벤트
+                                final tripState = context
+                                    .read<TripHomeBloc>()
+                                    .state;
+
+                                context.read<TripRequestBloc>().add(
+                                  TripRequestEvent.createTripRequest(
+                                    requestId: tripState.myId!,
+                                    targetId: user.id!,
+                                    tripId: tripState.tripId!,
+                                  ),
+                                );
+
+                                context.read<TripHomeBloc>().add(
+                                  const TripHomeEvent.closeInvite(),
+                                );
                               },
+
                               child: Text(
                                 '초대하기',
                                 style: AppFont.regular.copyWith(

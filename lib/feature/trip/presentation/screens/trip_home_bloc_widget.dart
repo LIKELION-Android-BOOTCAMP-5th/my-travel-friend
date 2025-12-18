@@ -6,6 +6,7 @@ import '../../../auth/presentation/viewmodel/auth_profile/auth_profile_bloc.dart
 import '../../../auth/presentation/viewmodel/auth_profile/auth_profile_state.dart';
 import '../viewmodels/trip_home/trip_home_bloc.dart';
 import '../viewmodels/trip_home/trip_home_event.dart';
+import '../viewmodels/trip_request/trip_request_bloc.dart';
 import 'trip_home_screen.dart';
 
 class TripHomeBlocWidget extends StatelessWidget {
@@ -23,12 +24,18 @@ class TripHomeBlocWidget extends StatelessWidget {
 
     final myId = authState.userInfo.id!;
 
-    return BlocProvider(
-      create: (_) {
-        final bloc = sl<TripHomeBloc>();
-        bloc.add(TripHomeEvent.loadTripHome(tripId: tripId, myId: myId));
-        return bloc;
-      },
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider<TripHomeBloc>(
+          create: (_) {
+            final bloc = sl<TripHomeBloc>();
+            bloc.add(TripHomeEvent.loadTripHome(tripId: tripId, myId: myId));
+            return bloc;
+          },
+        ),
+
+        BlocProvider<TripRequestBloc>(create: (_) => sl<TripRequestBloc>()),
+      ],
       child: const TripHomeScreen(),
     );
   }
