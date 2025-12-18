@@ -16,9 +16,6 @@ class PaymentTag extends StatelessWidget {
 
     final isCard = payment == '카드';
 
-    print('>>> PaymentTag payment: "$payment"'); // 추가
-    print('>>> isCard: ${payment == '카드'}'); // 추가
-
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 4.0, horizontal: 8.0),
       child: Icon(
