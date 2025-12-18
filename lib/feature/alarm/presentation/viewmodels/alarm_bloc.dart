@@ -308,7 +308,7 @@ class AlarmBloc extends Bloc<AlarmEvent, AlarmState> {
     return switch (type) {
       // 설정 쪽 - 친구, 여행 초대
       // 여행 초대 알림 -> 설정 - 여행 초대
-      'TRIP_REQUEST' => const AlarmNavigationTo('여행 초대 주소'),
+      'TRIP_REQUEST' => const AlarmNavigationTo('/setting/recevice_trip'),
       // 친구 요청 알림 -> 설정 - 친구 요청
       'FRIEND_REQUEST' => const AlarmNavigationTo('/setting/friend_recevice'),
       // 친구 수락 알림 -> 설정 - 친구 목록

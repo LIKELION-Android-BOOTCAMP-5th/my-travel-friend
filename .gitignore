@@ -48,3 +48,9 @@ assets/config/.env
 *.env
 
 pubspec.lock
+
+
+android/key.properties
+android/keystore/
+*.jks
+*.keystore
