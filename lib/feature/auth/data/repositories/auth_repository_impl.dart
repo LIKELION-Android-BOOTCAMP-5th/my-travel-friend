@@ -167,4 +167,9 @@ class AuthRepositoryImpl implements AuthRepository {
     // TODO: implement updateFCMToken
     throw UnimplementedError();
   }
+
+  @override
+  Future<Result<void>> deleteUser() async {
+    return await supabaseAuthDataSource.deleteUser();
+  }
 }
