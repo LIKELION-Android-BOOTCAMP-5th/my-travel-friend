@@ -197,10 +197,12 @@ class _CreateScheduleScreenState extends State<CreateScheduleScreen> {
                                   onTap: () async {
                                     final date = await showDatePicker(
                                       context: context,
-                                      initialDate: state.date ?? DateTime.now(),
-                                      firstDate: DateTime(2000),
-                                      lastDate: DateTime(2100),
+                                      initialDate:
+                                          state.date ?? state.tripStartDate!,
+                                      firstDate: state.tripStartDate!,
+                                      lastDate: state.tripEndDate!,
                                     );
+
                                     if (date != null) {
                                       context.read<CreateScheduleBloc>().add(
                                         CreateScheduleEvent.dateSelected(date),

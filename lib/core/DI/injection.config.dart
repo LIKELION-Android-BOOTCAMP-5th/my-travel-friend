@@ -560,12 +560,6 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i1040.SupabaseAuthDataSource>(),
       ),
     );
-    gh.factory<_i725.CreateScheduleBloc>(
-      () => _i725.CreateScheduleBloc(
-        gh<_i361.CreateScheduleUseCase>(),
-        gh<_i324.GetTripMembersUseCase>(),
-      ),
-    );
     gh.factory<_i865.ScheduleBloc>(
       () => _i865.ScheduleBloc(
         gh<_i600.GetAllScheduleUseCase>(),
@@ -666,6 +660,7 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i29.UpdateScheduleUseCase>(),
         gh<_i324.GetTripMembersUseCase>(),
         gh<_i415.GetScheduleMembersUseCase>(),
+        gh<_i277.GetTripByIdUseCase>(),
       ),
     );
     gh.lazySingleton<_i823.GetSentRequestUsecase>(
@@ -699,6 +694,13 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.lazySingleton<_i420.SocialSignInUseCase>(
       () => _i420.SocialSignInUseCase(gh<_i488.AuthRepository>()),
+    );
+    gh.factory<_i725.CreateScheduleBloc>(
+      () => _i725.CreateScheduleBloc(
+        gh<_i361.CreateScheduleUseCase>(),
+        gh<_i324.GetTripMembersUseCase>(),
+        gh<_i277.GetTripByIdUseCase>(),
+      ),
     );
     gh.lazySingleton<_i1062.GetRequestProfileUsecase>(
       () =>

@@ -7,6 +7,7 @@ import 'package:my_travel_friend/core/extension/failure_extension.dart';
 import 'package:my_travel_friend/core/result/result.dart';
 import 'package:my_travel_friend/feature/schedule/domain/usecases/get_schedule_member_usecase.dart';
 
+import '../../../../trip/domain/usecases/get_trip_by_id_usecase.dart';
 import '../../../domain/entities/schedule_entity.dart';
 import '../../../domain/usecases/edit_schedule_usecase.dart';
 import '../../../domain/usecases/get_trip_member_usecase.dart';
@@ -18,11 +19,13 @@ class EditScheduleBloc extends Bloc<EditScheduleEvent, EditScheduleState> {
   final UpdateScheduleUseCase _updateScheduleUseCase;
   final GetTripMembersUseCase _getTripMembersUseCase;
   final GetScheduleMembersUseCase _getScheduleMembersUseCase;
+  final GetTripByIdUseCase _getTripByIdUseCase;
 
   EditScheduleBloc(
     this._updateScheduleUseCase,
     this._getTripMembersUseCase,
     this._getScheduleMembersUseCase,
+    this._getTripByIdUseCase,
   ) : super(const EditScheduleState()) {
     on<Initialized>(_onInitialized);
     on<TitleChanged>(_onTitleChanged);
@@ -64,10 +67,13 @@ class EditScheduleBloc extends Bloc<EditScheduleEvent, EditScheduleState> {
   // 초기화
   // ===============================
 
-  void _onInitialized(Initialized event, Emitter<EditScheduleState> emit) {
+  Future<void> _onInitialized(
+    Initialized event,
+    Emitter<EditScheduleState> emit,
+  ) async {
     final s = event.schedule;
 
-    final parsedDateTime = DateTime.parse(s.date);
+    final parsedDateTime = DateTime.parse(s.date).toLocal();
     final date = DateTime(
       parsedDateTime.year,
       parsedDateTime.month,
@@ -97,6 +103,32 @@ class EditScheduleBloc extends Bloc<EditScheduleEvent, EditScheduleState> {
         pageState: EditSchedulePageState.loaded,
       ),
     );
+
+    /// 🔥 여기 추가
+    final tripResult = await _getTripByIdUseCase(s.tripId);
+
+    tripResult.when(
+      success: (trip) {
+        emit(
+          state.copyWith(
+            tripStartDate: DateTime.parse(trip.startAt).toLocal(),
+            tripEndDate: DateTime.parse(trip.endAt).toLocal(),
+            pageState: EditSchedulePageState.loaded,
+          ),
+        );
+      },
+      failure: (e) {
+        emit(
+          state.copyWith(
+            pageState: EditSchedulePageState.error,
+            message: e.message,
+            errorType: e.errorType,
+          ),
+        );
+        return;
+      },
+    );
+
     add(const EditScheduleEvent.loadScheduleMembers());
 
     add(const EditScheduleEvent.loadTripMembers());

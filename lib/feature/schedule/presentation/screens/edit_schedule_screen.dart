@@ -207,12 +207,20 @@ class _EditScheduleScreenState extends State<EditScheduleScreen> {
                                       : '${state.date!.year}.${state.date!.month}.${state.date!.day}',
                                   icon: AppIcon.calendar,
                                   onTap: () async {
+                                    if (state.tripStartDate == null ||
+                                        state.tripEndDate == null) {
+                                      return;
+                                    }
+
                                     final date = await showDatePicker(
                                       context: context,
-                                      initialDate: state.date ?? DateTime.now(),
-                                      firstDate: DateTime(2000),
-                                      lastDate: DateTime(2100),
+
+                                      initialDate:
+                                          state.date ?? state.tripStartDate!,
+                                      firstDate: state.tripStartDate!,
+                                      lastDate: state.tripEndDate!,
                                     );
+
                                     if (date != null) {
                                       context.read<EditScheduleBloc>().add(
                                         EditScheduleEvent.dateSelected(date),
@@ -221,6 +229,7 @@ class _EditScheduleScreenState extends State<EditScheduleScreen> {
                                   },
                                 ),
                               ),
+
                               const SizedBox(width: 12),
                               Expanded(
                                 child: _pickerBox(

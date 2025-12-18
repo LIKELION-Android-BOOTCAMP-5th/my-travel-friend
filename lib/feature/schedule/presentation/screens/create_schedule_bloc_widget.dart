@@ -29,7 +29,7 @@ class CreateScheduleBlocWidget extends StatelessWidget {
 
         bloc.emit(bloc.state.copyWith(tripId: tripId));
 
-        bloc.add(const CreateScheduleEvent.loadTripMembers());
+        bloc.add(CreateScheduleEvent.initialized(tripId: tripId));
 
         return bloc;
       },
