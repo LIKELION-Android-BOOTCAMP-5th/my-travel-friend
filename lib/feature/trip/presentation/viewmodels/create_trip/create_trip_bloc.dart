@@ -38,6 +38,7 @@ class CreateTripBloc extends Bloc<CreateTripEvent, CreateTripState> {
     on<SetFriend>(_onSetFriend);
     on<CreateTrip>(_onCreateTrip);
     on<Reset>(_onReset);
+    on<Initialized>(_onInitialized);
   }
 
   // 여행 제목 변경
