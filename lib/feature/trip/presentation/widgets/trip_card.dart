@@ -18,6 +18,7 @@ class TripCard extends StatelessWidget {
   final String? backgroundImageUrl;
   final VoidCallback? onTap;
   final VoidCallback? onMenu;
+  final bool showMenu; //[엄수빈] 메뉴 활성 여부
 
   const TripCard({
     super.key,
@@ -29,6 +30,7 @@ class TripCard extends StatelessWidget {
     this.backgroundImageUrl,
     this.onTap,
     this.onMenu,
+    this.showMenu = true, // [엄수빈] 항상 메뉴 보여주기
   });
 
   //색 하나 넣어으면 그색으로 그라데이션 넣어주기
@@ -162,26 +164,27 @@ class TripCard extends StatelessWidget {
             ),
 
             // 여행 바텀시트 꺼내는 메뉴
-            Positioned(
-              bottom: 12,
-              right: 12,
-              child: GestureDetector(
-                onTap: onMenu,
-                child: Container(
-                  width: 36,
-                  height: 36,
-                  decoration: BoxDecoration(
-                    color: AppColors.light.withOpacity(0.2),
-                    shape: BoxShape.circle,
-                  ),
-                  child: const Icon(
-                    AppIcon.threeDots,
-                    color: AppColors.light,
-                    size: 20,
+            if (showMenu) // [엄수빈] 메뉴 비활성화
+              Positioned(
+                bottom: 12,
+                right: 12,
+                child: GestureDetector(
+                  onTap: onMenu,
+                  child: Container(
+                    width: 36,
+                    height: 36,
+                    decoration: BoxDecoration(
+                      color: AppColors.light.withOpacity(0.2),
+                      shape: BoxShape.circle,
+                    ),
+                    child: const Icon(
+                      AppIcon.threeDots,
+                      color: AppColors.light,
+                      size: 20,
+                    ),
                   ),
                 ),
               ),
-            ),
           ],
         ),
       ),
