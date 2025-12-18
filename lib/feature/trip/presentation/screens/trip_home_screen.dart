@@ -4,6 +4,7 @@ import 'package:my_travel_friend/core/theme/app_colors.dart';
 import 'package:my_travel_friend/core/theme/app_font.dart';
 import 'package:my_travel_friend/core/theme/app_icon.dart';
 
+import '../../../../core/widget/toast_pop.dart';
 import '../viewmodels/trip_home/trip_home_bloc.dart';
 import '../viewmodels/trip_home/trip_home_event.dart';
 import '../viewmodels/trip_home/trip_home_state.dart';
@@ -664,9 +665,6 @@ class _InviteFriendPopup extends StatelessWidget {
                     itemCount: state.friendCandidates.length,
                     itemBuilder: (context, index) {
                       final user = state.friendCandidates[index];
-                      debugPrint(
-                        '👤 invite friend: ${user.nickname}, profileImg = "${user.profileImg}"',
-                      );
                       return Container(
                         margin: const EdgeInsets.symmetric(vertical: 8),
                         padding: const EdgeInsets.symmetric(
@@ -733,6 +731,7 @@ class _InviteFriendPopup extends StatelessWidget {
                                 context.read<TripHomeBloc>().add(
                                   const TripHomeEvent.closeInvite(),
                                 );
+                                ToastPop.show('여행에 초대했습니다');
                               },
 
                               child: Text(
