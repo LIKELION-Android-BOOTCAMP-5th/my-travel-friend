@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:my_travel_friend/feature/auth/presentation/viewmodel/auth_profile/auth_profile_bloc.dart';
+import 'package:my_travel_friend/feature/auth/presentation/viewmodel/auth_profile/auth_profile_event.dart';
 import 'package:my_travel_friend/feature/setting/presentation/viewmodels/profile/profile_bloc.dart';
 
 import '../../../../../core/theme/app_colors.dart';
@@ -15,11 +17,12 @@ class DeleteProfileButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
     final isDark = colorScheme.brightness == Brightness.dark;
-    final profileBloc = context.read<ProfileBloc>();
+    //final profileBloc = context.read<ProfileBloc>();
+    final authProfileBloc = BlocProvider.of<AuthProfileBloc>(context);
 
     return GestureDetector(
       onTap: () {
-        _showDeletePopUp(context, profileBloc);
+        _showDeletePopUp(context, authProfileBloc);
       },
       child: Container(
         decoration: BoxDecoration(
@@ -82,7 +85,7 @@ class DeleteProfileButton extends StatelessWidget {
   }
 
   // 삭제 확인 팝업
-  void _showDeletePopUp(BuildContext context, ProfileBloc profileBloc) {
+  void _showDeletePopUp(BuildContext context, AuthProfileBloc authProfileBloc) {
     final colorScheme = Theme.of(context).colorScheme;
 
     showDialog(
@@ -97,7 +100,7 @@ class DeleteProfileButton extends StatelessWidget {
         rightButtonColor: colorScheme.secondary,
         rightTextColor: colorScheme.onSecondary,
         onRight: () {
-          // profileBloc.add(ProfileEvent.deleteUser());
+          authProfileBloc.add(AuthProfileEvent.deleteUser());
         },
       ),
     );
