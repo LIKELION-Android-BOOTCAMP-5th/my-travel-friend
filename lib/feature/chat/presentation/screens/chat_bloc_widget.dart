@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
+import 'package:my_travel_friend/feature/chat/presentation/viewmodels/chat/chat_state.dart';
 
 import '../../../auth/presentation/viewmodel/auth_profile/auth_profile_bloc.dart';
 import '../../../auth/presentation/viewmodel/auth_profile/auth_profile_state.dart';
-import '../viewmodels/chat_bloc.dart';
-import '../viewmodels/chat_event.dart';
+import '../viewmodels/chat/chat_bloc.dart';
+import '../viewmodels/chat/chat_event.dart';
+import '../viewmodels/chat_unread/chat_unread_bloc.dart';
+import '../viewmodels/chat_unread/chat_unread_event.dart';
 import 'chat_screen.dart';
 
 // [이재은] 채팅 BlocWidget
@@ -31,6 +34,9 @@ class _ChatBlocWidgetState extends State<ChatBlocWidget> {
     if (authState is AuthProfileAuthenticated) {
       final userId = authState.userInfo.id!;
       _chatBloc.add(EnterChat(tripId: widget.tripId, userId: userId));
+
+      // 채팅방 진입 시 배지 초기화
+      context.read<ChatUnreadBloc>().add(const ResetUnreadCount());
     }
   }
 
@@ -51,7 +57,15 @@ class _ChatBlocWidgetState extends State<ChatBlocWidget> {
 
     return BlocProvider.value(
       value: _chatBloc,
-      child: ChatScreen(tripId: widget.tripId),
+      child: BlocListener<ChatBloc, ChatState>(
+        listenWhen: (prev, curr) =>
+            prev.pageState != curr.pageState &&
+            curr.pageState == ChatPageState.initial,
+        listener: (context, state) {
+          context.read<ChatUnreadBloc>().add(const RefreshUnreadCount());
+        },
+        child: ChatScreen(tripId: widget.tripId),
+      ),
     );
   }
 }

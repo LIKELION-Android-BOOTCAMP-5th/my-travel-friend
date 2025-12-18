@@ -77,45 +77,62 @@ class TripBloc extends Bloc<TripEvent, TripState> {
     LoadMoreTrips event,
     Emitter<TripState> emit,
   ) async {
+    // 이미 로딩 중이면 차단
+    if (state.isLoadingMore) return;
+
     final nextPage = state.currentPage + 1;
 
-    // **검색모드일 경우 → 검색 요청으로 이어짐**
-    if (state.search && (state.userSearch?.isNotEmpty ?? false)) {
+    emit(state.copyWith(isLoadingMore: true));
+
+    // ✅ 검색 결과 pagination
+    if (state.searchTrips != null) {
       final result = await _searchTripUsecase(
         event.userId,
-        state.userSearch!,
+        state.userSearch ?? '',
         nextPage,
       );
+
       result.when(
         success: (data) {
           if (data.isNotEmpty) {
             emit(
               state.copyWith(
-                searchTrips: [...state.searchTrips ?? [], ...data],
+                searchTrips: [...state.searchTrips!, ...data],
                 currentPage: nextPage,
+                isLoadingMore: false,
               ),
             );
+          } else {
+            emit(state.copyWith(isLoadingMore: false));
           }
         },
-        failure: (_) {},
+        failure: (_) {
+          emit(state.copyWith(isLoadingMore: false));
+        },
       );
       return;
     }
 
-    // **일반 상태 무한스크롤**
+    // ✅ 일반 여행 리스트 pagination
     final result = await _getMyTripUsecase(event.userId, nextPage);
+
     result.when(
       success: (data) {
         if (data.isNotEmpty) {
           emit(
             state.copyWith(
-              trips: [...state.trips ?? [], ...data], // 기존 + 추가
+              trips: [...state.trips!, ...data],
               currentPage: nextPage,
+              isLoadingMore: false,
             ),
           );
+        } else {
+          emit(state.copyWith(isLoadingMore: false));
         }
       },
-      failure: (_) {},
+      failure: (_) {
+        emit(state.copyWith(isLoadingMore: false));
+      },
     );
   }
 
@@ -135,19 +152,26 @@ class TripBloc extends Bloc<TripEvent, TripState> {
     emit(
       state.copyWith(
         pageState: TripPageState.loading,
-        currentPage: 1, // 검색은 무조건 1페이지부터
+        currentPage: 1,
+        searchTrips: [],
       ),
     );
 
     final result = await _searchTripUsecase(event.userId, event.keyword, 1);
+
     result.when(
-      success: (data) => emit(
-        state.copyWith(
-          searchTrips: data, // 검색결과를 별도 리스트로 저장
-          pageState: TripPageState.loaded,
-        ),
-      ),
-      failure: (_) => emit(state.copyWith(pageState: TripPageState.error)),
+      success: (data) {
+        emit(
+          state.copyWith(
+            searchTrips: data,
+            pageState: TripPageState.loaded,
+            currentPage: 1,
+          ),
+        );
+      },
+      failure: (_) {
+        emit(state.copyWith(pageState: TripPageState.error));
+      },
     );
   }
 
@@ -156,8 +180,8 @@ class TripBloc extends Bloc<TripEvent, TripState> {
     emit(
       state.copyWith(
         search: !state.search,
-        searchTrips: null,
         userSearch: '',
+        searchTrips: null,
         currentPage: 1,
       ),
     );

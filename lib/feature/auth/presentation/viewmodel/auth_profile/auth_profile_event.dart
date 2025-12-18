@@ -31,5 +31,7 @@ abstract class AuthProfileEvent with _$AuthProfileEvent {
 
   const factory AuthProfileEvent.signOut() = SignOut;
 
+  const factory AuthProfileEvent.deleteUser() = DeleteUser;
+
   const factory AuthProfileEvent.error({required String message}) = Error;
 }

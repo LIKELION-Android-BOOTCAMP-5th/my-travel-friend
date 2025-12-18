@@ -22,5 +22,6 @@ abstract class SupabaseAuthDataSource {
   Future<Result<UserDTO>> getCurrentUser(String uuid);
   Future<Result<String>> updateFCMToken(String uuid);
   Future<Result<void>> deleteFCMToken(String uuid);
+  Future<Result<void>> deleteUser();
   void initializeAuthListener();
 }

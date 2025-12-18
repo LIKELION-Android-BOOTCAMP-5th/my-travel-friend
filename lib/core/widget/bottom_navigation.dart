@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:my_travel_friend/core/theme/app_font.dart';
 
 import '../theme/app_icon.dart';
 
@@ -8,11 +9,13 @@ import '../theme/app_icon.dart';
 class BottomNavigation extends StatelessWidget {
   final int currentIndex;
   final Function(int) onTap;
+  final int chatUnreadCount;
 
   const BottomNavigation({
     super.key,
     required this.currentIndex,
     required this.onTap,
+    this.chatUnreadCount = 0,
   });
 
   @override
@@ -33,17 +36,60 @@ class BottomNavigation extends StatelessWidget {
         ),
         backgroundColor: colorScheme.surfaceContainerHighest,
         type: BottomNavigationBarType.fixed,
-        items: const [
-          BottomNavigationBarItem(icon: Icon(AppIcon.home), label: '여행 홈'),
-          BottomNavigationBarItem(icon: Icon(AppIcon.calendar), label: '스케줄'),
-          BottomNavigationBarItem(
+        items: [
+          const BottomNavigationBarItem(
+            icon: Icon(AppIcon.home),
+            label: '여행 홈',
+          ),
+          const BottomNavigationBarItem(
+            icon: Icon(AppIcon.calendar),
+            label: '스케줄',
+          ),
+          const BottomNavigationBarItem(
             icon: Icon(AppIcon.checklist),
             label: '체크리스트',
           ),
-          BottomNavigationBarItem(icon: Icon(AppIcon.diary), label: '다이어리'),
-          BottomNavigationBarItem(icon: Icon(AppIcon.talk), label: '톡톡'),
+          const BottomNavigationBarItem(
+            icon: Icon(AppIcon.diary),
+            label: '다이어리',
+          ),
+          BottomNavigationBarItem(
+            icon: _buildChatIcon(colorScheme),
+            label: '톡톡',
+          ),
         ],
       ),
+    );
+  }
+
+  // 채팅 아이콘 + 배지
+  Widget _buildChatIcon(ColorScheme colorScheme) {
+    return Stack(
+      clipBehavior: Clip.none,
+      children: [
+        const Icon(AppIcon.talk),
+        if (chatUnreadCount > 0)
+          Positioned(
+            right: -6,
+            top: -4,
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 1),
+              decoration: BoxDecoration(
+                color: colorScheme.error,
+                borderRadius: BorderRadius.circular(10),
+              ),
+              constraints: const BoxConstraints(minWidth: 16, minHeight: 16),
+              child: Text(
+                chatUnreadCount > 99 ? '99+' : '$chatUnreadCount',
+                style: AppFont.small.copyWith(
+                  color: colorScheme.secondary,
+                  fontWeight: FontWeight.w600,
+                ),
+                textAlign: TextAlign.center,
+              ),
+            ),
+          ),
+      ],
     );
   }
 }

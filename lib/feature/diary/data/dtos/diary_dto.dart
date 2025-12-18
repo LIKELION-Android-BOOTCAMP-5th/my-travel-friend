@@ -28,6 +28,7 @@ abstract class DiaryDTO with _$DiaryDTO {
     String? content,
     int? cost,
     String? currency,
+    String? payment,
   }) = _DiaryDTO;
 
   factory DiaryDTO.fromJson(Map<String, dynamic> json) =>
@@ -48,6 +49,7 @@ abstract class DiaryDTO with _$DiaryDTO {
       content: entity.content,
       cost: entity.cost,
       currency: entity.currency,
+      payment: entity.payment,
     );
   }
 
@@ -72,6 +74,7 @@ abstract class DiaryDTO with _$DiaryDTO {
       content: content,
       cost: cost,
       currency: currency,
+      payment: payment,
     );
   }
 }

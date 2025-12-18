@@ -6,6 +6,8 @@ import 'package:my_travel_friend/feature/schedule/data/dtos/schedule_dto.dart';
 import 'package:my_travel_friend/feature/schedule/domain/entities/schedule_entity.dart';
 import 'package:my_travel_friend/feature/schedule/domain/repositories/schedule_repository.dart';
 
+import '../../domain/entities/category_entity.dart';
+
 @LazySingleton(as: ScheduleRepository)
 class ScheduleRepositoryImpl implements ScheduleRepository {
   final ScheduleDataSource _dataSource;
@@ -99,6 +101,17 @@ class ScheduleRepositoryImpl implements ScheduleRepository {
       tripId: tripId,
       userId: userId,
     );
+
+    return res.when(
+      success: (data) =>
+          Result.success(data.map((dto) => dto.toEntity()).toList()),
+      failure: (failure) => Result.failure(failure),
+    );
+  }
+
+  @override
+  Future<Result<List<CategoryEntity>>> getCategory() async {
+    final res = await _dataSource.getCategory();
 
     return res.when(
       success: (data) =>

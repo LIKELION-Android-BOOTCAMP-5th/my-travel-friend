@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$ScheduleDTO {
 
- int? get id;@JsonKey(name: 'created_at') String? get createdAt;@JsonKey(name: 'trip_id') int get tripId;@JsonKey(name: 'user') Map<String, dynamic>? get userJson; String get title; String? get place;@JsonKey(name: 'adress') String? get address; double? get lat; double? get lng; String get date; String? get description;@JsonKey(name: 'category_id') int get categoryId;
+ int? get id;@JsonKey(name: 'created_at') String? get createdAt;@JsonKey(name: 'trip_id') int get tripId;@JsonKey(name: 'user') Map<String, dynamic>? get userJson; String get title; String? get place; String? get address; double? get lat; double? get lng; String get date; String? get description;@JsonKey(name: 'category_id') int get categoryId;
 /// Create a copy of ScheduleDTO
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -48,7 +48,7 @@ abstract mixin class $ScheduleDTOCopyWith<$Res>  {
   factory $ScheduleDTOCopyWith(ScheduleDTO value, $Res Function(ScheduleDTO) _then) = _$ScheduleDTOCopyWithImpl;
 @useResult
 $Res call({
- int? id,@JsonKey(name: 'created_at') String? createdAt,@JsonKey(name: 'trip_id') int tripId,@JsonKey(name: 'user') Map<String, dynamic>? userJson, String title, String? place,@JsonKey(name: 'adress') String? address, double? lat, double? lng, String date, String? description,@JsonKey(name: 'category_id') int categoryId
+ int? id,@JsonKey(name: 'created_at') String? createdAt,@JsonKey(name: 'trip_id') int tripId,@JsonKey(name: 'user') Map<String, dynamic>? userJson, String title, String? place, String? address, double? lat, double? lng, String date, String? description,@JsonKey(name: 'category_id') int categoryId
 });
 
 
@@ -164,7 +164,7 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int? id, @JsonKey(name: 'created_at')  String? createdAt, @JsonKey(name: 'trip_id')  int tripId, @JsonKey(name: 'user')  Map<String, dynamic>? userJson,  String title,  String? place, @JsonKey(name: 'adress')  String? address,  double? lat,  double? lng,  String date,  String? description, @JsonKey(name: 'category_id')  int categoryId)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int? id, @JsonKey(name: 'created_at')  String? createdAt, @JsonKey(name: 'trip_id')  int tripId, @JsonKey(name: 'user')  Map<String, dynamic>? userJson,  String title,  String? place,  String? address,  double? lat,  double? lng,  String date,  String? description, @JsonKey(name: 'category_id')  int categoryId)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _ScheduleDTO() when $default != null:
 return $default(_that.id,_that.createdAt,_that.tripId,_that.userJson,_that.title,_that.place,_that.address,_that.lat,_that.lng,_that.date,_that.description,_that.categoryId);case _:
@@ -185,7 +185,7 @@ return $default(_that.id,_that.createdAt,_that.tripId,_that.userJson,_that.title
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int? id, @JsonKey(name: 'created_at')  String? createdAt, @JsonKey(name: 'trip_id')  int tripId, @JsonKey(name: 'user')  Map<String, dynamic>? userJson,  String title,  String? place, @JsonKey(name: 'adress')  String? address,  double? lat,  double? lng,  String date,  String? description, @JsonKey(name: 'category_id')  int categoryId)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int? id, @JsonKey(name: 'created_at')  String? createdAt, @JsonKey(name: 'trip_id')  int tripId, @JsonKey(name: 'user')  Map<String, dynamic>? userJson,  String title,  String? place,  String? address,  double? lat,  double? lng,  String date,  String? description, @JsonKey(name: 'category_id')  int categoryId)  $default,) {final _that = this;
 switch (_that) {
 case _ScheduleDTO():
 return $default(_that.id,_that.createdAt,_that.tripId,_that.userJson,_that.title,_that.place,_that.address,_that.lat,_that.lng,_that.date,_that.description,_that.categoryId);case _:
@@ -205,7 +205,7 @@ return $default(_that.id,_that.createdAt,_that.tripId,_that.userJson,_that.title
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int? id, @JsonKey(name: 'created_at')  String? createdAt, @JsonKey(name: 'trip_id')  int tripId, @JsonKey(name: 'user')  Map<String, dynamic>? userJson,  String title,  String? place, @JsonKey(name: 'adress')  String? address,  double? lat,  double? lng,  String date,  String? description, @JsonKey(name: 'category_id')  int categoryId)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int? id, @JsonKey(name: 'created_at')  String? createdAt, @JsonKey(name: 'trip_id')  int tripId, @JsonKey(name: 'user')  Map<String, dynamic>? userJson,  String title,  String? place,  String? address,  double? lat,  double? lng,  String date,  String? description, @JsonKey(name: 'category_id')  int categoryId)?  $default,) {final _that = this;
 switch (_that) {
 case _ScheduleDTO() when $default != null:
 return $default(_that.id,_that.createdAt,_that.tripId,_that.userJson,_that.title,_that.place,_that.address,_that.lat,_that.lng,_that.date,_that.description,_that.categoryId);case _:
@@ -220,7 +220,7 @@ return $default(_that.id,_that.createdAt,_that.tripId,_that.userJson,_that.title
 @JsonSerializable()
 
 class _ScheduleDTO extends ScheduleDTO {
-  const _ScheduleDTO({this.id, @JsonKey(name: 'created_at') this.createdAt, @JsonKey(name: 'trip_id') required this.tripId, @JsonKey(name: 'user') final  Map<String, dynamic>? userJson, required this.title, this.place, @JsonKey(name: 'adress') this.address, this.lat, this.lng, required this.date, this.description, @JsonKey(name: 'category_id') required this.categoryId}): _userJson = userJson,super._();
+  const _ScheduleDTO({this.id, @JsonKey(name: 'created_at') this.createdAt, @JsonKey(name: 'trip_id') required this.tripId, @JsonKey(name: 'user') final  Map<String, dynamic>? userJson, required this.title, this.place, this.address, this.lat, this.lng, required this.date, this.description, @JsonKey(name: 'category_id') required this.categoryId}): _userJson = userJson,super._();
   factory _ScheduleDTO.fromJson(Map<String, dynamic> json) => _$ScheduleDTOFromJson(json);
 
 @override final  int? id;
@@ -237,7 +237,7 @@ class _ScheduleDTO extends ScheduleDTO {
 
 @override final  String title;
 @override final  String? place;
-@override@JsonKey(name: 'adress') final  String? address;
+@override final  String? address;
 @override final  double? lat;
 @override final  double? lng;
 @override final  String date;
@@ -277,7 +277,7 @@ abstract mixin class _$ScheduleDTOCopyWith<$Res> implements $ScheduleDTOCopyWith
   factory _$ScheduleDTOCopyWith(_ScheduleDTO value, $Res Function(_ScheduleDTO) _then) = __$ScheduleDTOCopyWithImpl;
 @override @useResult
 $Res call({
- int? id,@JsonKey(name: 'created_at') String? createdAt,@JsonKey(name: 'trip_id') int tripId,@JsonKey(name: 'user') Map<String, dynamic>? userJson, String title, String? place,@JsonKey(name: 'adress') String? address, double? lat, double? lng, String date, String? description,@JsonKey(name: 'category_id') int categoryId
+ int? id,@JsonKey(name: 'created_at') String? createdAt,@JsonKey(name: 'trip_id') int tripId,@JsonKey(name: 'user') Map<String, dynamic>? userJson, String title, String? place, String? address, double? lat, double? lng, String date, String? description,@JsonKey(name: 'category_id') int categoryId
 });
 
 

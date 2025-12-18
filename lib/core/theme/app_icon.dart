@@ -179,4 +179,10 @@ class AppIcon {
 
   // 개인
   static const user = FontAwesomeIcons.solidUser;
+
+  // 신용카드
+  static const creditCard = FontAwesomeIcons.creditCard;
+
+  // 현금
+  static const cash = FontAwesomeIcons.coins;
 }

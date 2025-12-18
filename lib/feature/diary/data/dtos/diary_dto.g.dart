@@ -21,6 +21,7 @@ _DiaryDTO _$DiaryDTOFromJson(Map<String, dynamic> json) => _DiaryDTO(
   content: json['content'] as String?,
   cost: (json['cost'] as num?)?.toInt(),
   currency: json['currency'] as String?,
+  payment: json['payment'] as String?,
 );
 
 Map<String, dynamic> _$DiaryDTOToJson(_DiaryDTO instance) => <String, dynamic>{
@@ -38,4 +39,5 @@ Map<String, dynamic> _$DiaryDTOToJson(_DiaryDTO instance) => <String, dynamic>{
   'content': instance.content,
   'cost': instance.cost,
   'currency': instance.currency,
+  'payment': instance.payment,
 };

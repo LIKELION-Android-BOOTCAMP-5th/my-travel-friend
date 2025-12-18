@@ -7,12 +7,13 @@ import 'package:my_travel_friend/feature/auth/presentation/viewmodel/auth/auth_b
 import 'package:my_travel_friend/feature/auth/presentation/viewmodel/auth_profile/auth_profile_bloc.dart';
 import 'package:my_travel_friend/feature/auth/presentation/viewmodel/auth_profile/auth_profile_state.dart';
 import 'package:my_travel_friend/feature/friend/presentation/viewmodel/friend_request_bloc.dart';
+import 'package:my_travel_friend/feature/schedule/presentation/screens/schedule_bloc_widget.dart';
 import 'package:my_travel_friend/feature/setting/presentation/screens/menu/menu_bloc_widget.dart';
 import 'package:my_travel_friend/feature/setting/presentation/screens/permission/permission_bloc_widget.dart';
 import 'package:my_travel_friend/feature/trip/presentation/screens/create_trip_bloc_widget.dart';
 import 'package:my_travel_friend/feature/trip/presentation/screens/trip_bloc_widget.dart';
+import 'package:my_travel_friend/feature/trip/presentation/screens/trip_home_bloc_widget.dart';
 import 'package:my_travel_friend/feature/trip/presentation/viewmodels/create_trip/create_trip_bloc.dart';
-import 'package:my_travel_friend/feature/trip/presentation/viewmodels/trip/trip_bloc.dart';
 import 'package:my_travel_friend/splash.dart';
 
 import '../feature/alarm/presentation/screens/alarm_bloc_widget.dart';
@@ -27,6 +28,10 @@ import '../feature/diary/presentation/viewmodels/new_diary/new_diary_bloc.dart';
 import '../feature/friend/presentation/screen/friend_bloc_widget.dart';
 import '../feature/friend/presentation/screen/friend_request_bloc_widget.dart';
 import '../feature/friend/presentation/screen/recevice_list_bloc_widget.dart';
+import '../feature/schedule/domain/entities/schedule_entity.dart';
+import '../feature/schedule/presentation/screens/create_schedule_bloc_widget.dart';
+import '../feature/schedule/presentation/screens/edit_schedule_bloc_widget.dart';
+import '../feature/schedule/presentation/screens/map_search_bloc_widget.dart';
 import '../feature/setting/presentation/screens/alarm/alarm_setting_bloc_widget.dart';
 import '../feature/setting/presentation/screens/profile/profile_bloc_widget.dart';
 import '../feature/setting/presentation/screens/theme/theme_bloc_widget.dart';
@@ -220,17 +225,19 @@ class AppRouter {
             path: '/trip/:tripId/trip_home',
             builder: (context, state) {
               final tripId = int.parse(state.pathParameters['tripId']!);
-              return Center(child: Text('Trip $tripId Home'));
+              return TripHomeBlocWidget(tripId: tripId);
             },
           ),
+
           // [1] 여행 스케줄
           GoRoute(
             path: '/trip/:tripId/schedule',
             builder: (context, state) {
               final tripId = int.parse(state.pathParameters['tripId']!);
-              return Center(child: Text('Trip $tripId Schedule'));
+              return ScheduleBlocWidget(tripId: tripId);
             },
           ),
+
           // [2] 여행 체크리스트
           GoRoute(
             path: '/trip/:tripId/checklist',
@@ -279,6 +286,37 @@ class AppRouter {
           final extra = state.extra as Map<String, dynamic>;
           final diary = extra['diary'] as DiaryEntity;
           return EditDiaryBlocWidget(diary: diary);
+        },
+      ),
+      GoRoute(
+        path: '/schedule/create/:tripId',
+        builder: (context, state) {
+          final tripId = int.parse(state.pathParameters['tripId']!);
+
+          return CreateScheduleBlocWidget(tripId: tripId);
+        },
+      ),
+      GoRoute(
+        path: '/schedule/edit/:tripId',
+        builder: (context, state) {
+          final tripId = int.parse(state.pathParameters['tripId']!);
+          final schedule = state.extra as ScheduleEntity;
+          return EditScheduleBlocWidget(schedule: schedule, tripId: tripId);
+        },
+      ),
+      GoRoute(
+        path: '/trip/:tripId/map-search',
+        builder: (context, state) {
+          final tripId = int.parse(state.pathParameters['tripId']!);
+
+          final extra = state.extra as Map<String, dynamic>?;
+
+          return MapSearchBlocWidget(
+            tripId: tripId,
+            initialLat: extra?['lat'],
+            initialLng: extra?['lng'],
+            initialAddress: extra?['address'],
+          );
         },
       ),
     ],
