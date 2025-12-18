@@ -9,7 +9,7 @@ import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_font.dart';
 import '../../../../core/widget/app_bar.dart';
 import '../../../../core/widget/pop_up_box.dart';
-import '../viewmodels/create_schedule/create_schedule_blco.dart';
+import '../viewmodels/create_schedule/create_schedule_bloc.dart';
 import '../viewmodels/create_schedule/create_schedule_event.dart';
 import '../viewmodels/create_schedule/create_schedule_state.dart';
 import '../viewmodels/map_search/map_search_state.dart';
@@ -97,12 +97,14 @@ class _CreateScheduleScreenState extends State<CreateScheduleScreen> {
         builder: (context, state) {
           final colorScheme = Theme.of(context).colorScheme;
           final isDark = colorScheme.brightness == Brightness.dark;
-          return WillPopScope(
-            onWillPop: () async {
+          return PopScope(
+            canPop: false,
+            onPopInvokedWithResult: (didPop, _) {
+              if (didPop) return;
+
               context.read<CreateScheduleBloc>().add(
                 const CreateScheduleEvent.exitRequested(),
               );
-              return false;
             },
             child: Scaffold(
               backgroundColor: isDark ? AppColors.navy : AppColors.darkGray,

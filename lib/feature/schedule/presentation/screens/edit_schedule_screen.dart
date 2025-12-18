@@ -111,12 +111,14 @@ class _EditScheduleScreenState extends State<EditScheduleScreen> {
         builder: (context, state) {
           final colorScheme = Theme.of(context).colorScheme;
           final isDark = colorScheme.brightness == Brightness.dark;
-          return WillPopScope(
-            onWillPop: () async {
+          return PopScope(
+            canPop: false, // ⛔ 자동 pop 막기
+            onPopInvokedWithResult: (didPop, _) {
+              if (didPop) return;
+
               context.read<EditScheduleBloc>().add(
                 const EditScheduleEvent.exitRequested(),
               );
-              return false;
             },
             child: Scaffold(
               backgroundColor: isDark ? AppColors.navy : AppColors.darkGray,

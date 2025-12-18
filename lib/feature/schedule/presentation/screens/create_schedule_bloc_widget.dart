@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../../core/DI/injection.dart';
 import '../../../auth/presentation/viewmodel/auth_profile/auth_profile_bloc.dart';
 import '../../../auth/presentation/viewmodel/auth_profile/auth_profile_state.dart';
-import '../viewmodels/create_schedule/create_schedule_blco.dart';
+import '../viewmodels/create_schedule/create_schedule_bloc.dart';
 import '../viewmodels/create_schedule/create_schedule_event.dart';
 import 'create_schedule_screen.dart';
 

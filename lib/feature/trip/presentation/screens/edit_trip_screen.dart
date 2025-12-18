@@ -29,21 +29,26 @@ class EditTripScreen extends StatefulWidget {
 }
 
 class _EditTripScreenState extends State<EditTripScreen> {
-  final _titleController = TextEditingController();
-  final _placeController = TextEditingController();
-  bool _initialized = false;
+  late final TextEditingController _titleController;
+  late final TextEditingController _placeController;
 
   String _two(int n) => n.toString().padLeft(2, "0");
 
   @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    if (!_initialized) {
-      final state = context.read<EditTripBloc>().state;
-      _titleController.text = state.title;
-      _placeController.text = state.place;
-      _initialized = true;
-    }
+  void initState() {
+    super.initState();
+
+    final state = context.read<EditTripBloc>().state;
+
+    _titleController = TextEditingController(text: state.title);
+    _placeController = TextEditingController(text: state.place);
+  }
+
+  @override
+  void dispose() {
+    _titleController.dispose();
+    _placeController.dispose();
+    super.dispose();
   }
 
   @override
@@ -67,10 +72,15 @@ class _EditTripScreenState extends State<EditTripScreen> {
         }
       },
       builder: (context, state) {
-        return WillPopScope(
-          onWillPop: () async {
+        return PopScope(
+          canPop: false,
+          onPopInvokedWithResult: (didPop, result) async {
+            if (didPop) return;
+
             final shouldExit = await _showExitConfirmDialog(context);
-            return shouldExit; // true면 pop, false면 stay
+            if (shouldExit && context.mounted) {
+              Navigator.of(context).pop(result);
+            }
           },
           child: Scaffold(
             backgroundColor: isDark ? AppColors.navy : AppColors.darkGray,
@@ -176,16 +186,19 @@ class _EditTripScreenState extends State<EditTripScreen> {
                           label: "시작일",
                           value: formatDate(state.startAt),
                           onTap: () async {
+                            final bloc = context.read<EditTripBloc>();
+
                             final picked = await showDatePicker(
                               context: context,
                               initialDate: DateTime.parse(state.startAt),
                               firstDate: DateTime(2000),
                               lastDate: DateTime(2100),
                             );
+
                             if (picked != null) {
                               final formatted =
                                   "${picked.year}-${_two(picked.month)}-${_two(picked.day)}";
-                              context.read<EditTripBloc>().add(
+                              bloc.add(
                                 EditTripEvent.changeStartAt(startAt: formatted),
                               );
                             }
@@ -198,16 +211,19 @@ class _EditTripScreenState extends State<EditTripScreen> {
                           label: "종료일",
                           value: formatDate(state.endAt),
                           onTap: () async {
+                            final bloc = context.read<EditTripBloc>();
+
                             final picked = await showDatePicker(
                               context: context,
                               initialDate: DateTime.parse(state.endAt),
                               firstDate: DateTime.parse(state.startAt),
                               lastDate: DateTime(2100),
                             );
+
                             if (picked != null) {
                               final formatted =
                                   "${picked.year}-${_two(picked.month)}-${_two(picked.day)}";
-                              context.read<EditTripBloc>().add(
+                              bloc.add(
                                 EditTripEvent.changeEndAt(endAt: formatted),
                               );
                             }
@@ -456,12 +472,12 @@ class _EditTripScreenState extends State<EditTripScreen> {
           iconBgColor: AppColors.primaryLight,
           title: "카메라",
           onTap: () async {
+            final bloc = context.read<EditTripBloc>(); // await 이전
             final picker = ImagePicker();
+
             final picked = await picker.pickImage(source: ImageSource.camera);
             if (picked != null) {
-              context.read<EditTripBloc>().add(
-                EditTripEvent.selectCoverImg(file: File(picked.path)),
-              );
+              bloc.add(EditTripEvent.selectCoverImg(file: File(picked.path)));
             }
           },
         ),
@@ -470,12 +486,12 @@ class _EditTripScreenState extends State<EditTripScreen> {
           iconBgColor: AppColors.secondary,
           title: "앨범에서 선택",
           onTap: () async {
+            final bloc = context.read<EditTripBloc>(); // await 이전
             final picker = ImagePicker();
+
             final picked = await picker.pickImage(source: ImageSource.gallery);
             if (picked != null) {
-              context.read<EditTripBloc>().add(
-                EditTripEvent.selectCoverImg(file: File(picked.path)),
-              );
+              bloc.add(EditTripEvent.selectCoverImg(file: File(picked.path)));
             }
           },
         ),

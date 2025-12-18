@@ -18,19 +18,39 @@ import '../../../../core/widget/app_bar.dart';
 import '../../../../core/widget/button.dart';
 import '../../../../core/widget/pop_up_box.dart';
 
-class CreateTripScreen extends StatelessWidget {
+class CreateTripScreen extends StatefulWidget {
   final int userId;
   final int? friendId;
 
-  CreateTripScreen({super.key, required this.userId, this.friendId});
+  const CreateTripScreen({super.key, required this.userId, this.friendId});
 
-  final _titleController = TextEditingController();
-  final _placeController = TextEditingController();
+  @override
+  State<CreateTripScreen> createState() => _CreateTripScreenState();
+}
+
+class _CreateTripScreenState extends State<CreateTripScreen> {
+  late final TextEditingController _titleController;
+  late final TextEditingController _placeController;
+
+  @override
+  void initState() {
+    super.initState();
+    _titleController = TextEditingController();
+    _placeController = TextEditingController();
+  }
+
+  @override
+  void dispose() {
+    _titleController.dispose();
+    _placeController.dispose();
+    super.dispose();
+  }
 
   String _two(int num) => num.toString().padLeft(2, "0");
 
   @override
   Widget build(BuildContext context) {
+    final bloc = context.read<CreateTripBloc>();
     final colorScheme = Theme.of(context).colorScheme;
     final isDark = colorScheme.brightness == Brightness.dark;
 
@@ -52,10 +72,15 @@ class CreateTripScreen extends StatelessWidget {
         }
       },
       builder: (context, state) {
-        return WillPopScope(
-          onWillPop: () async {
+        return PopScope(
+          canPop: false,
+          onPopInvokedWithResult: (didPop, result) async {
+            if (didPop) return;
+
             final shouldExit = await _showExitConfirmDialog(context);
-            return shouldExit; // true면 pop, false면 stay
+            if (shouldExit && context.mounted) {
+              Navigator.of(context).pop(result);
+            }
           },
           child: Scaffold(
             backgroundColor: isDark ? AppColors.navy : AppColors.darkGray,
@@ -125,7 +150,7 @@ class CreateTripScreen extends StatelessWidget {
                             controller: _titleController,
                             hintText: "예: 제주도 힐링 여행",
                             onChanged: (text) {
-                              context.read<CreateTripBloc>().add(
+                              bloc.add(
                                 CreateTripEvent.changeTitle(title: text),
                               );
                             },
@@ -141,7 +166,7 @@ class CreateTripScreen extends StatelessWidget {
                               color: Colors.grey,
                             ),
                             onChanged: (text) {
-                              context.read<CreateTripBloc>().add(
+                              bloc.add(
                                 CreateTripEvent.changePlace(place: text),
                               );
                             },
@@ -157,6 +182,8 @@ class CreateTripScreen extends StatelessWidget {
                                   value: state.startAt,
                                   // 시작일 선택
                                   onTap: () async {
+                                    final bloc = context.read<CreateTripBloc>();
+
                                     final DateTime? picked =
                                         await showDatePicker(
                                           context: context,
@@ -168,7 +195,7 @@ class CreateTripScreen extends StatelessWidget {
                                     if (picked != null) {
                                       final formatted =
                                           "${picked.year}-${_two(picked.month)}-${_two(picked.day)}";
-                                      context.read<CreateTripBloc>().add(
+                                      bloc.add(
                                         CreateTripEvent.changeStartAt(
                                           startAt: formatted,
                                         ),
@@ -184,13 +211,15 @@ class CreateTripScreen extends StatelessWidget {
                                   value: state.endAt,
                                   // 종료일 선택
                                   onTap: () async {
+                                    final bloc = context
+                                        .read<CreateTripBloc>(); // 캐싱
                                     final startDate = state.startAt.isNotEmpty
                                         ? DateTime.parse(state.startAt)
                                         : DateTime.now();
 
                                     final DateTime? picked =
                                         await showDatePicker(
-                                          context: context,
+                                          context: context, // await 전에 호출됨 → OK
                                           initialDate: startDate,
                                           firstDate: startDate,
                                           lastDate: DateTime(2100),
@@ -199,7 +228,7 @@ class CreateTripScreen extends StatelessWidget {
                                     if (picked != null) {
                                       final formatted =
                                           "${picked.year}-${_two(picked.month)}-${_two(picked.day)}";
-                                      context.read<CreateTripBloc>().add(
+                                      bloc.add(
                                         CreateTripEvent.changeEndAt(
                                           endAt: formatted,
                                         ),
@@ -501,13 +530,14 @@ void _showImagePickerBottomSheet(BuildContext context) {
         icon: const Icon(Icons.camera_alt),
         iconBgColor: AppColors.primaryLight,
         title: "사진 촬영",
+
         onTap: () async {
+          final bloc = context.read<CreateTripBloc>(); // await 이전
           final picker = ImagePicker();
+
           final picked = await picker.pickImage(source: ImageSource.camera);
           if (picked != null) {
-            context.read<CreateTripBloc>().add(
-              CreateTripEvent.selectCoverImg(file: File(picked.path)),
-            );
+            bloc.add(CreateTripEvent.selectCoverImg(file: File(picked.path)));
           }
         },
       ),
@@ -516,12 +546,12 @@ void _showImagePickerBottomSheet(BuildContext context) {
         iconBgColor: AppColors.secondary,
         title: "앨범에서 선택",
         onTap: () async {
+          final bloc = context.read<CreateTripBloc>(); // await 이전
           final picker = ImagePicker();
+
           final picked = await picker.pickImage(source: ImageSource.gallery);
           if (picked != null) {
-            context.read<CreateTripBloc>().add(
-              CreateTripEvent.selectCoverImg(file: File(picked.path)),
-            );
+            bloc.add(CreateTripEvent.selectCoverImg(file: File(picked.path)));
           }
         },
       ),

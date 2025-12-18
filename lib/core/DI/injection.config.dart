@@ -209,7 +209,7 @@ import '../../feature/schedule/domain/usecases/get_trip_member_usecase.dart'
     as _i324;
 import '../../feature/schedule/domain/usecases/get_user_schudule_usecase.dart'
     as _i818;
-import '../../feature/schedule/presentation/viewmodels/create_schedule/create_schedule_blco.dart'
+import '../../feature/schedule/presentation/viewmodels/create_schedule/create_schedule_bloc.dart'
     as _i725;
 import '../../feature/schedule/presentation/viewmodels/edit_schedule/edit_schedule_bloc.dart'
     as _i229;
