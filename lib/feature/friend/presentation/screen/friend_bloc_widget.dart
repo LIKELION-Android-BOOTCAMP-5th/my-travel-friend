@@ -91,10 +91,16 @@ class _FriendBlocConsumer extends StatelessWidget {
               showDialog(
                 context: context,
                 barrierDismissible: true,
-                builder: (_) => TripInvitePopUp(
-                  myUserId: myId,
-                  targetUserId: friendId,
-                  targetNickname: friendNickname,
+                builder: (_) => MultiBlocProvider(
+                  providers: [
+                    BlocProvider.value(value: context.read<TripBloc>()),
+                    BlocProvider.value(value: context.read<TripRequestBloc>()),
+                  ],
+                  child: TripInvitePopUp(
+                    myUserId: myId,
+                    targetUserId: friendId,
+                    targetNickname: friendNickname,
+                  ),
                 ),
               );
             },
