@@ -300,7 +300,7 @@ class _EditScheduleScreenState extends State<EditScheduleScreen> {
 
                           _sectionTitle('함께하는 크루원'),
                           const SizedBox(height: 8),
-                          _buildMembersSection(state),
+                          _buildMembersSection(context, state),
 
                           if (state.selectedScheduleCrew.isNotEmpty) ...[
                             const SizedBox(height: 8),
@@ -449,7 +449,7 @@ class _EditScheduleScreenState extends State<EditScheduleScreen> {
 /// 참여자 UI
 /// ===============================
 
-Widget _buildMembersSection(EditScheduleState state) {
+Widget _buildMembersSection(BuildContext context, EditScheduleState state) {
   if (state.tripMembers.isEmpty) {
     return const Text('참여자가 없습니다.', style: TextStyle(color: Colors.grey));
   }
@@ -463,7 +463,15 @@ Widget _buildMembersSection(EditScheduleState state) {
       );
 
       return GestureDetector(
-        onTap: () {},
+        onTap: () {
+          final bloc = context.read<EditScheduleBloc>();
+
+          if (isSelected) {
+            bloc.add(EditScheduleEvent.crewRemoved(member.id!));
+          } else {
+            bloc.add(EditScheduleEvent.crewAdded(member));
+          }
+        },
         child: Container(
           width: 96,
           padding: const EdgeInsets.all(10),
