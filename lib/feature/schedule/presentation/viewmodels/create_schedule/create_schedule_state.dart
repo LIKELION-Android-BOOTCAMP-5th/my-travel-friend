@@ -38,6 +38,9 @@ abstract class CreateScheduleState with _$CreateScheduleState {
     @Default([]) List<UserEntity> tripMembers,
     // 참여자
     @Default([]) List<UserEntity> selectedScheduleCrew,
+
+    DateTime? tripStartDate,
+    DateTime? tripEndDate,
   }) = _CreateScheduleState;
 }
 

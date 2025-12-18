@@ -42,7 +42,8 @@ abstract class EditScheduleState with _$EditScheduleState {
 
     // UI 상태
     @Default(EditSchedulePageState.init) EditSchedulePageState pageState,
-
+    DateTime? tripStartDate,
+    DateTime? tripEndDate,
     // 메시지
     String? message,
     String? errorType,

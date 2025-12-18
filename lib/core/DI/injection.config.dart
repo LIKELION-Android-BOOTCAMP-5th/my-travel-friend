@@ -209,7 +209,7 @@ import '../../feature/schedule/domain/usecases/get_trip_member_usecase.dart'
     as _i324;
 import '../../feature/schedule/domain/usecases/get_user_schudule_usecase.dart'
     as _i818;
-import '../../feature/schedule/presentation/viewmodels/create_schedule/create_schedule_blco.dart'
+import '../../feature/schedule/presentation/viewmodels/create_schedule/create_schedule_bloc.dart'
     as _i725;
 import '../../feature/schedule/presentation/viewmodels/edit_schedule/edit_schedule_bloc.dart'
     as _i229;
@@ -561,12 +561,6 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i1040.SupabaseAuthDataSource>(),
       ),
     );
-    gh.factory<_i725.CreateScheduleBloc>(
-      () => _i725.CreateScheduleBloc(
-        gh<_i361.CreateScheduleUseCase>(),
-        gh<_i324.GetTripMembersUseCase>(),
-      ),
-    );
     gh.factory<_i865.ScheduleBloc>(
       () => _i865.ScheduleBloc(
         gh<_i600.GetAllScheduleUseCase>(),
@@ -667,6 +661,7 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i29.UpdateScheduleUseCase>(),
         gh<_i324.GetTripMembersUseCase>(),
         gh<_i415.GetScheduleMembersUseCase>(),
+        gh<_i277.GetTripByIdUseCase>(),
       ),
     );
     gh.lazySingleton<_i823.GetSentRequestUsecase>(
@@ -703,6 +698,13 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.lazySingleton<_i420.SocialSignInUseCase>(
       () => _i420.SocialSignInUseCase(gh<_i488.AuthRepository>()),
+    );
+    gh.factory<_i725.CreateScheduleBloc>(
+      () => _i725.CreateScheduleBloc(
+        gh<_i361.CreateScheduleUseCase>(),
+        gh<_i324.GetTripMembersUseCase>(),
+        gh<_i277.GetTripByIdUseCase>(),
+      ),
     );
     gh.lazySingleton<_i1062.GetRequestProfileUsecase>(
       () =>

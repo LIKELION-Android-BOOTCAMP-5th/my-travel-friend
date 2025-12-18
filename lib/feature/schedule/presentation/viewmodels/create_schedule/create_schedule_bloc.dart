@@ -6,6 +6,7 @@ import 'package:injectable/injectable.dart';
 import 'package:my_travel_friend/core/extension/failure_extension.dart';
 import 'package:my_travel_friend/core/result/result.dart';
 
+import '../../../../trip/domain/usecases/get_trip_by_id_usecase.dart';
 import '../../../domain/entities/schedule_entity.dart';
 import '../../../domain/usecases/create_schedule_usecase.dart';
 import '../../../domain/usecases/get_trip_member_usecase.dart';
@@ -17,9 +18,14 @@ class CreateScheduleBloc
     extends Bloc<CreateScheduleEvent, CreateScheduleState> {
   final CreateScheduleUseCase _createScheduleUseCase;
   final GetTripMembersUseCase _getTripMembersUseCase;
+  final GetTripByIdUseCase _getTripByIdUseCase;
 
-  CreateScheduleBloc(this._createScheduleUseCase, this._getTripMembersUseCase)
-    : super(CreateScheduleState()) {
+  CreateScheduleBloc(
+    this._createScheduleUseCase,
+    this._getTripMembersUseCase,
+    this._getTripByIdUseCase,
+  ) : super(CreateScheduleState()) {
+    on<Initialized>(_onInitialized);
     on<TitleChanged>(_onTitleChanged);
     on<DescriptionChanged>(_onDescriptionChanged);
     on<DateSelected>(_onDateSelected);
@@ -35,6 +41,34 @@ class CreateScheduleBloc
     on<ExitRequested>(_onExitRequested);
     on<ExitConfirmed>(_onExitConfirmed);
     on<ClearMessage>(_onClearMessage);
+  }
+
+  Future<void> _onInitialized(
+    Initialized event,
+    Emitter<CreateScheduleState> emit,
+  ) async {
+    // 1️⃣ tripId 세팅
+    emit(state.copyWith(tripId: event.tripId));
+
+    // 2️⃣ 여행 정보 가져오기
+    final result = await _getTripByIdUseCase(event.tripId);
+
+    result.when(
+      success: (trip) {
+        emit(
+          state.copyWith(
+            tripStartDate: DateTime.parse(trip.startAt).toLocal(),
+            tripEndDate: DateTime.parse(trip.endAt).toLocal(),
+          ),
+        );
+      },
+      failure: (_) {
+        // 실패 시에도 화면은 유지
+      },
+    );
+
+    // 3️⃣ 크루 불러오기
+    add(const LoadTripMembers());
   }
 
   //  공통 유틸
