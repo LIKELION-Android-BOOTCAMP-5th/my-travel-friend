@@ -32,6 +32,7 @@ import '../feature/schedule/domain/entities/schedule_entity.dart';
 import '../feature/schedule/presentation/screens/create_schedule_bloc_widget.dart';
 import '../feature/schedule/presentation/screens/edit_schedule_bloc_widget.dart';
 import '../feature/schedule/presentation/screens/map_search_bloc_widget.dart';
+import '../feature/friend/presentation/screen/recevice_trip_bloc_widget.dart';
 import '../feature/setting/presentation/screens/alarm/alarm_setting_bloc_widget.dart';
 import '../feature/setting/presentation/screens/profile/profile_bloc_widget.dart';
 import '../feature/setting/presentation/screens/theme/theme_bloc_widget.dart';
@@ -202,6 +203,16 @@ class AppRouter {
             create: (context) => GetIt.instance<FriendRequestBloc>(),
             child: ReceviceListBlocWidget(userId: userId),
           );
+        },
+      ),
+      GoRoute(
+        path: '/setting/recevice_trip',
+        builder: (context, state) {
+          final authState = context.read<AuthProfileBloc>().state;
+          final userId = (authState is AuthProfileAuthenticated)
+              ? authState.userInfo.id!
+              : 0;
+          return ReceviceTripBlocWidget(myId: userId);
         },
       ),
       // Trip ShellRoute
