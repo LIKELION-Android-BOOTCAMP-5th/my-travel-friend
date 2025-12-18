@@ -74,8 +74,10 @@ class FriendListScreen extends StatelessWidget {
 
             // 친구 추가
             Button(
-              onTap: () =>
-                  context.push('/friend/request', extra: {'requestId': userId}),
+              onTap: () => context.push(
+                '/setting/friend/friend-request',
+                extra: {'requestId': userId},
+              ),
               width: 40,
               height: 40,
               contentColor: AppColors.lessLight,
