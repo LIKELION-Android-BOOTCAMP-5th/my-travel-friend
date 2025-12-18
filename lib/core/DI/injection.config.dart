@@ -51,6 +51,7 @@ import '../../feature/auth/data/repositories/auth_repository_impl.dart'
     as _i263;
 import '../../feature/auth/domain/repositories/auth_repository.dart' as _i488;
 import '../../feature/auth/domain/usecases/cancel_oauth_usecase.dart' as _i739;
+import '../../feature/auth/domain/usecases/delete_user_usecase.dart' as _i78;
 import '../../feature/auth/domain/usecases/get_current_user_usecase.dart'
     as _i529;
 import '../../feature/auth/domain/usecases/sign_out_usecase.dart' as _i858;
@@ -686,6 +687,9 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i715.DeleteImgUseCase>(),
       ),
     );
+    gh.lazySingleton<_i78.DeleteUserUseCase>(
+      () => _i78.DeleteUserUseCase(gh<_i488.AuthRepository>()),
+    );
     gh.lazySingleton<_i529.GetCurrentUserUseCase>(
       () => _i529.GetCurrentUserUseCase(gh<_i488.AuthRepository>()),
     );
@@ -805,6 +809,14 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i25.WatchAlarmsUseCase>(
       () => _i25.WatchAlarmsUseCase(gh<_i831.AlarmRepository>()),
     );
+    gh.singleton<_i387.AuthProfileBloc>(
+      () => _i387.AuthProfileBloc(
+        gh<_i456.WatchAuthStateUseCase>(),
+        gh<_i529.GetCurrentUserUseCase>(),
+        gh<_i858.SignOutUseCase>(),
+        gh<_i78.DeleteUserUseCase>(),
+      ),
+    );
     gh.lazySingleton<_i420.GetMyAlarmSettingUseCase>(
       () => _i420.GetMyAlarmSettingUseCase(gh<_i212.AlarmSettingRepository>()),
     );
@@ -816,13 +828,6 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i420.SocialSignInUseCase>(),
         gh<_i858.SignOutUseCase>(),
         gh<_i739.CancelOauthUseCase>(),
-      ),
-    );
-    gh.singleton<_i387.AuthProfileBloc>(
-      () => _i387.AuthProfileBloc(
-        gh<_i456.WatchAuthStateUseCase>(),
-        gh<_i529.GetCurrentUserUseCase>(),
-        gh<_i858.SignOutUseCase>(),
       ),
     );
     gh.factory<_i575.TripHomeBloc>(
