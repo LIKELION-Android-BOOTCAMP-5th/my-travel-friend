@@ -34,7 +34,7 @@ class ScheduleTapButton extends StatelessWidget {
           color: isSelected
               ? colorScheme.primary
               : colorScheme.surfaceContainerHighest,
-          borderRadius: BorderRadius.circular(height / 2), // 🔥 pill 느낌
+          borderRadius: BorderRadius.circular(12.0),
         ),
         child: Text(
           label,

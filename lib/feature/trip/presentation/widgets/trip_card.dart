@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../../core/theme/app_colors.dart';
+import '../../../../core/theme/app_font.dart';
 import '../../../../core/theme/app_icon.dart';
 
 //신강현
@@ -105,9 +106,9 @@ class TripCard extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       const Icon(
-                        Icons.location_on,
+                        AppIcon.mapPin,
                         color: AppColors.light,
-                        size: 40,
+                        size: 30,
                       ),
                       Container(
                         padding: const EdgeInsets.symmetric(
@@ -121,15 +122,14 @@ class TripCard extends StatelessWidget {
                         child: Row(
                           children: [
                             const Icon(
-                              Icons.people,
-                              size: 23,
+                              AppIcon.crews,
+                              size: 17,
                               color: AppColors.light,
                             ),
                             const SizedBox(width: 4),
                             Text(
                               "$peopleCount",
-                              style: const TextStyle(
-                                fontSize: 17,
+                              style: AppFont.small.copyWith(
                                 color: AppColors.light,
                               ),
                             ),
@@ -138,29 +138,22 @@ class TripCard extends StatelessWidget {
                       ),
                     ],
                   ),
+                  SizedBox(height: 16),
                   //여행 제목
                   Text(
                     title,
-                    style: const TextStyle(
-                      fontSize: 30,
-                      color: AppColors.light,
-                      fontWeight: FontWeight.bold,
-                    ),
+                    style: AppFont.hugeBold.copyWith(color: AppColors.light),
                     overflow: TextOverflow.ellipsis,
                   ),
-                  const SizedBox(height: 5),
+                  const SizedBox(height: 8),
                   //날짜 표기
                   Row(
                     children: [
-                      Icon(
-                        Icons.calendar_today,
-                        size: 14,
-                        color: AppColors.light,
-                      ),
+                      Icon(AppIcon.calendar, size: 14, color: AppColors.light),
                       const SizedBox(width: 6),
                       Text(
                         "$startDate - $endDate",
-                        style: TextStyle(color: AppColors.light, fontSize: 13),
+                        style: AppFont.tiny.copyWith(color: AppColors.light),
                       ),
                     ],
                   ),

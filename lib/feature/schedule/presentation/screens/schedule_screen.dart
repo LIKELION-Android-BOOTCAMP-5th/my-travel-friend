@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:my_travel_friend/core/theme/app_colors.dart';
 import 'package:my_travel_friend/feature/schedule/presentation/viewmodels/schedule/schedule_state.dart';
 import 'package:my_travel_friend/feature/schedule/presentation/widgets/schedule_card.dart';
 import 'package:my_travel_friend/feature/schedule/presentation/widgets/schedule_tap_button.dart';
@@ -39,7 +40,10 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    final isDark = colorScheme.brightness == Brightness.dark;
     return Scaffold(
+      backgroundColor: isDark ? AppColors.navy : AppColors.darkGray,
       floatingActionButton: FloatingButton(
         icon: const Icon(AppIcon.plus),
         onPressed: () {
@@ -57,143 +61,156 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
 
           final isDateTab = state.viewMode == ScheduleFilterType.date;
 
-          return Column(
-            children: [
-              // 1) 상단 모드 탭 (일자별 / 카테고리별)
-              Row(
-                children: [
-                  Expanded(
-                    child: ScheduleTapButton(
-                      label: "일자별",
-                      isSelected: isDateTab,
-                      onTap: () =>
-                          bloc.add(const ScheduleEvent.switchToDateMode()),
-                      height: 50,
-                      horizontalPadding: 22,
-                    ),
-                  ),
-                  const SizedBox(width: 8),
-                  Expanded(
-                    child: ScheduleTapButton(
-                      label: "카테고리별",
-                      isSelected: !isDateTab,
-                      onTap: () =>
-                          bloc.add(const ScheduleEvent.switchToCategoryMode()),
-                      height: 50,
-                      horizontalPadding: 22,
-                    ),
-                  ),
-                ],
-              ),
-
-              const SizedBox(height: 12),
-
-              // 2) 하위 탭 (전체 / 날짜 목록 / 카테고리 목록)
-              SizedBox(
-                height: 50,
-
-                child: ListView(
-                  scrollDirection: Axis.horizontal,
-                  children: [
-                    const SizedBox(width: 12),
-
-                    ScheduleTapButton(
-                      label: "전체",
-                      isSelected:
-                          state.selectedDate == null &&
-                          state.selectedCategoryId == null,
-                      onTap: () => bloc.add(const ScheduleEvent.clearFilter()),
-                      height: 44,
-                      horizontalPadding: 22,
-                    ),
-
-                    const SizedBox(width: 12),
-
-                    if (state.viewMode == ScheduleFilterType.date &&
-                        state.trip != null)
-                      ...buildTripDates(state.trip!).map(
-                        (date) => Padding(
-                          padding: const EdgeInsets.only(right: 12),
-                          child: ScheduleTapButton(
-                            label: formatDateLabel(date), // 2월 10일
-                            isSelected: state.selectedDate == date,
-                            onTap: () =>
-                                bloc.add(ScheduleEvent.selectDate(date: date)),
-                            height: 44,
-                            horizontalPadding: 20,
-                          ),
+          return Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              children: [
+                // 1) 상단 모드 탭 (일자별 / 카테고리별)
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: ScheduleTapButton(
+                          label: "일자별",
+                          isSelected: isDateTab,
+                          onTap: () =>
+                              bloc.add(const ScheduleEvent.switchToDateMode()),
+                          height: 50,
+                          horizontalPadding: 22,
                         ),
                       ),
-
-                    if (state.viewMode == ScheduleFilterType.category)
-                      ...state.categories.map(
-                        (category) => Padding(
-                          padding: const EdgeInsets.only(right: 12),
-                          child: ScheduleTapButton(
-                            label: category.content,
-                            isSelected: state.selectedCategoryId == category.id,
-                            onTap: () => bloc.add(
-                              ScheduleEvent.selectCategory(
-                                categoryId: category.id,
-                              ),
-                            ),
-                            height: 44,
-                            horizontalPadding: 20,
+                      const SizedBox(width: 8),
+                      Expanded(
+                        child: ScheduleTapButton(
+                          label: "카테고리별",
+                          isSelected: !isDateTab,
+                          onTap: () => bloc.add(
+                            const ScheduleEvent.switchToCategoryMode(),
                           ),
+                          height: 50,
+                          horizontalPadding: 22,
                         ),
                       ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
 
-              const SizedBox(height: 12),
+                const SizedBox(height: 8),
 
-              // 3) 본문 내용
-              Expanded(
-                child: state.visibleSchedules.isEmpty
-                    ? Center(
-                        child: EmptyScheduleCard(
-                          onAdd: () =>
-                              bloc.add(const ScheduleEvent.navigateToCreate()),
-                        ),
-                      )
-                    : ListView.builder(
-                        controller: _scroll,
-                        padding: const EdgeInsets.only(bottom: 80),
-                        itemCount: state.visibleSchedules.length,
-                        itemBuilder: (context, index) {
-                          final s = state.visibleSchedules[index];
-                          final members = state.scheduleMembersMap[s.id] ?? [];
+                // 2) 하위 탭 (전체 / 날짜 목록 / 카테고리 목록)
+                SizedBox(
+                  height: 50,
 
-                          final profileImages = members
-                              .map((u) => u.profileImg)
-                              .whereType<String>()
-                              .where((img) => img.isNotEmpty && img != 'null')
-                              .toList();
-                          final category = state.categoryMap[s.categoryId];
-                          return Padding(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 12,
-                              vertical: 8,
-                            ),
-                            child: ScheduleCard(
-                              title: s.title,
-                              dateTime: formatScheduleDateTime(s.date),
-                              place: s.place ?? "",
-                              tagName: category!.content,
-                              profileImages: profileImages,
-                              memo: s.description,
-                              onEdit: () => bloc.add(
-                                ScheduleEvent.navigateToEdit(schedule: s),
-                              ),
-                              onDelete: () =>
-                                  bloc.add(ScheduleEvent.deleteSchedule(s.id!)),
-                            ),
-                          );
-                        },
+                  child: ListView(
+                    scrollDirection: Axis.horizontal,
+                    children: [
+                      const SizedBox(width: 8),
+
+                      ScheduleTapButton(
+                        label: "전체",
+                        isSelected:
+                            state.selectedDate == null &&
+                            state.selectedCategoryId == null,
+                        onTap: () =>
+                            bloc.add(const ScheduleEvent.clearFilter()),
+                        height: 32,
+                        horizontalPadding: 20,
                       ),
-              ),
-            ],
+
+                      const SizedBox(width: 8),
+
+                      if (state.viewMode == ScheduleFilterType.date &&
+                          state.trip != null)
+                        ...buildTripDates(state.trip!).map(
+                          (date) => Padding(
+                            padding: const EdgeInsets.only(right: 12),
+                            child: ScheduleTapButton(
+                              label: formatDateLabel(date), // 2월 10일
+                              isSelected: state.selectedDate == date,
+                              onTap: () => bloc.add(
+                                ScheduleEvent.selectDate(date: date),
+                              ),
+                              height: 32,
+                              horizontalPadding: 20,
+                            ),
+                          ),
+                        ),
+
+                      if (state.viewMode == ScheduleFilterType.category)
+                        ...state.categories.map(
+                          (category) => Padding(
+                            padding: const EdgeInsets.only(right: 12),
+                            child: ScheduleTapButton(
+                              label: category.content,
+                              isSelected:
+                                  state.selectedCategoryId == category.id,
+                              onTap: () => bloc.add(
+                                ScheduleEvent.selectCategory(
+                                  categoryId: category.id,
+                                ),
+                              ),
+                              height: 32,
+                              horizontalPadding: 20,
+                            ),
+                          ),
+                        ),
+                    ],
+                  ),
+                ),
+
+                const SizedBox(height: 12),
+
+                // 3) 본문 내용
+                Expanded(
+                  child: state.visibleSchedules.isEmpty
+                      ? Center(
+                          child: EmptyScheduleCard(
+                            onAdd: () => bloc.add(
+                              const ScheduleEvent.navigateToCreate(),
+                            ),
+                          ),
+                        )
+                      : ListView.builder(
+                          controller: _scroll,
+                          padding: const EdgeInsets.only(bottom: 80),
+                          itemCount: state.visibleSchedules.length,
+                          itemBuilder: (context, index) {
+                            final s = state.visibleSchedules[index];
+                            final members =
+                                state.scheduleMembersMap[s.id] ?? [];
+
+                            final profileImages = members
+                                .map((u) => u.profileImg)
+                                .whereType<String>()
+                                .where((img) => img.isNotEmpty && img != 'null')
+                                .toList();
+                            final category = state.categoryMap[s.categoryId];
+                            return Padding(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 12,
+                                vertical: 8,
+                              ),
+                              child: ScheduleCard(
+                                title: s.title,
+                                dateTime: formatScheduleDateTime(s.date),
+                                place: s.place ?? "",
+                                tagName: category!.content,
+                                profileImages: profileImages,
+                                memo: s.description,
+                                onEdit: () => bloc.add(
+                                  ScheduleEvent.navigateToEdit(schedule: s),
+                                ),
+                                onDelete: () => bloc.add(
+                                  ScheduleEvent.deleteSchedule(s.id!),
+                                ),
+                              ),
+                            );
+                          },
+                        ),
+                ),
+              ],
+            ),
           );
         },
       ),

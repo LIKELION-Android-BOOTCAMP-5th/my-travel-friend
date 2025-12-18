@@ -77,7 +77,10 @@ import '../../feature/chat/domain/usecases/subscribe_chat_usecase.dart'
     as _i284;
 import '../../feature/chat/domain/usecases/update_read_status_usecase.dart'
     as _i383;
-import '../../feature/chat/presentation/viewmodels/chat_bloc.dart' as _i663;
+import '../../feature/chat/presentation/viewmodels/chat/chat_bloc.dart'
+    as _i565;
+import '../../feature/chat/presentation/viewmodels/chat_unread/chat_unread_bloc.dart'
+    as _i103;
 import '../../feature/checklist/data/datasources/checklist_data_source.dart'
     as _i877;
 import '../../feature/checklist/data/datasources/checklist_data_source_impl.dart'
@@ -743,6 +746,12 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i699.DeleteDiaryUseCase>(),
       ),
     );
+    gh.factory<_i103.ChatUnreadBloc>(
+      () => _i103.ChatUnreadBloc(
+        gh<_i562.GetUnreadCountUseCase>(),
+        gh<_i284.SubscribeChatUseCase>(),
+      ),
+    );
     gh.factory<_i885.NewDiaryBloc>(
       () => _i885.NewDiaryBloc(
         gh<_i27.CreateDiaryUseCase>(),
@@ -766,8 +775,8 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i55.DeleteDiaryImgUseCase>(),
       ),
     );
-    gh.factory<_i663.ChatBloc>(
-      () => _i663.ChatBloc(
+    gh.factory<_i565.ChatBloc>(
+      () => _i565.ChatBloc(
         gh<_i91.GetChatUseCase>(),
         gh<_i239.SendChatUseCase>(),
         gh<_i284.SubscribeChatUseCase>(),

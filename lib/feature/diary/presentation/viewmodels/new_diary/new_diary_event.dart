@@ -40,6 +40,10 @@ abstract class NewDiaryEvent with _$NewDiaryEvent {
   const factory NewDiaryEvent.changeCurrency({required String currency}) =
       ChangeCurrency;
 
+  // 결제 수단 변경(소비용)
+  const factory NewDiaryEvent.changePayment({required String payment}) =
+      ChangePayment;
+
   // 공개 여부 변경
   const factory NewDiaryEvent.changePublic({required bool isPublic}) =
       ChangePublic;

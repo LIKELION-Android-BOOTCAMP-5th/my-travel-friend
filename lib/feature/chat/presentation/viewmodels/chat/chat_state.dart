@@ -1,7 +1,7 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-import '../../../auth/domain/entities/user_entity.dart';
-import '../../domain/entities/chat_entity.dart';
+import '../../../../auth/domain/entities/user_entity.dart';
+import '../../../domain/entities/chat_entity.dart';
 
 part 'chat_state.freezed.dart';
 

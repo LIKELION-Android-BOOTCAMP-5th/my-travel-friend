@@ -19,7 +19,7 @@ abstract class ChatEvent with _$ChatEvent {
   const factory ChatEvent.sendChat({required String message}) = SendChat;
 
   // 이전 메시지 더 불러오기 (위로 스크롤)
-  const factory ChatEvent.loadMore() = LoadMore;
+  const factory ChatEvent.loadMoreChat() = LoadMoreChat;
 
   // 새 메시지 수신 (실시간)
   const factory ChatEvent.onNewChatReceive({required List<dynamic> chats}) =
