@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 import 'package:my_travel_friend/core/result/result.dart';
+import 'package:my_travel_friend/feature/auth/domain/usecases/delete_user_usecase.dart';
 import 'package:my_travel_friend/feature/auth/domain/usecases/get_current_user_usecase.dart';
 import 'package:my_travel_friend/feature/auth/domain/usecases/sign_out_usecase.dart';
 import 'package:my_travel_friend/feature/auth/presentation/viewmodel/auth_profile/auth_profile_event.dart';
@@ -16,6 +17,7 @@ class AuthProfileBloc extends Bloc<AuthProfileEvent, AuthProfileState> {
   final WatchAuthStateUseCase _watchAuthStateUseCase; // 스트림 구독
   final GetCurrentUserUseCase _getCurrentUserUseCase; // 유저 DB 정보 로딩
   final SignOutUseCase _signOutUseCase; //로그아웃시
+  final DeleteUserUseCase _deleteUserUseCase; //회원 탈퇴시
   // 스트림 구독 관리
   late final StreamSubscription _authStateSubscription;
 
@@ -23,6 +25,8 @@ class AuthProfileBloc extends Bloc<AuthProfileEvent, AuthProfileState> {
     this._watchAuthStateUseCase,
     this._getCurrentUserUseCase,
     this._signOutUseCase,
+    this._deleteUserUseCase,
+
     // this._fcmService,
   ) : super(const AuthProfileState.initial()) {
     // 이벤트 핸들러 등록
@@ -31,6 +35,7 @@ class AuthProfileBloc extends Bloc<AuthProfileEvent, AuthProfileState> {
     on<UserRefreshed>(_onUserRefreshed);
     on<UpdateUserInfo>(_onUpdateUserInfo);
     on<SignOut>(_onSignOut);
+    on<DeleteUser>(_onDeleteUser);
     on<Error>(_onError);
 
     //Bloc 생성과 동시에 usecase 스트림 구독 시작
@@ -152,6 +157,18 @@ class AuthProfileBloc extends Bloc<AuthProfileEvent, AuthProfileState> {
           userInfo: event.userInfo, // 새로운 유저 정보로 교체
         ),
       );
+    }
+  }
+
+  Future<void> _onDeleteUser(
+    DeleteUser event,
+    Emitter<AuthProfileState> emit,
+  ) async {
+    // 현재 상태가 인증된 상태일 때만
+    if (state is AuthProfileAuthenticated) {
+      final currentState = state as AuthProfileAuthenticated;
+      final result = await _deleteUserUseCase();
+      print(result);
     }
   }
 

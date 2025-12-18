@@ -306,4 +306,24 @@ class SupabaseAuthDataSourceImpl implements SupabaseAuthDataSource {
   @override
   Stream<Result<UserDTO?>> get userProfileStream =>
       _userStreamController.stream;
+
+  @override
+  Future<Result<void>> deleteUser() async {
+    final response = await _supabaseClient.functions.invoke(
+      'delete-user',
+      method: HttpMethod.post,
+    );
+
+    if (response.status != 200) {
+      return Result.failure(
+        Failure.serverFailure(
+          message: "탈퇴중 오류 발생 error: ${response.data['error']}",
+        ),
+      );
+    }
+
+    await _supabaseClient.auth.signOut();
+
+    return Result.success(null);
+  }
 }
