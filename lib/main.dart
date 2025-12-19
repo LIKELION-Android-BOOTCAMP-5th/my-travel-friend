@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -69,14 +71,24 @@ Future<void> _requestPermissions() async {
   final pushService = GetIt.instance<PushNotificationService>();
   await pushService.requestPermission();
 
-  // 카메라 권한
-  await Permission.camera.request();
+  // 순차적으로 요청 (동시 요청 X)
+  final cameraStatus = await Permission.camera.status;
+  if (!cameraStatus.isGranted) {
+    await Permission.camera.request();
+  }
 
-  // 앨범/갤러리 권한
-  await Permission.photos.request();
+  final photosStatus = await Permission.photos.status;
+  if (!photosStatus.isGranted) {
+    await Permission.photos.request();
+  }
 
-  // 저장 권한 (Android)
-  await Permission.storage.request();
+  // Android만
+  if (Platform.isAndroid) {
+    final storageStatus = await Permission.storage.status;
+    if (!storageStatus.isGranted) {
+      await Permission.storage.request();
+    }
+  }
 }
 
 class MyApp extends StatelessWidget {
