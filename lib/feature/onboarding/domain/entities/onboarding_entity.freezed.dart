@@ -14,7 +14,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$OnboardingEntity {
 
- int get id; String get title; String get description; String get imagePath;
+ int get id; String get title; String get description; String get imagePath; bool get isActive; int get index;
 /// Create a copy of OnboardingEntity
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -25,16 +25,16 @@ $OnboardingEntityCopyWith<OnboardingEntity> get copyWith => _$OnboardingEntityCo
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is OnboardingEntity&&(identical(other.id, id) || other.id == id)&&(identical(other.title, title) || other.title == title)&&(identical(other.description, description) || other.description == description)&&(identical(other.imagePath, imagePath) || other.imagePath == imagePath));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is OnboardingEntity&&(identical(other.id, id) || other.id == id)&&(identical(other.title, title) || other.title == title)&&(identical(other.description, description) || other.description == description)&&(identical(other.imagePath, imagePath) || other.imagePath == imagePath)&&(identical(other.isActive, isActive) || other.isActive == isActive)&&(identical(other.index, index) || other.index == index));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,id,title,description,imagePath);
+int get hashCode => Object.hash(runtimeType,id,title,description,imagePath,isActive,index);
 
 @override
 String toString() {
-  return 'OnboardingEntity(id: $id, title: $title, description: $description, imagePath: $imagePath)';
+  return 'OnboardingEntity(id: $id, title: $title, description: $description, imagePath: $imagePath, isActive: $isActive, index: $index)';
 }
 
 
@@ -45,7 +45,7 @@ abstract mixin class $OnboardingEntityCopyWith<$Res>  {
   factory $OnboardingEntityCopyWith(OnboardingEntity value, $Res Function(OnboardingEntity) _then) = _$OnboardingEntityCopyWithImpl;
 @useResult
 $Res call({
- int id, String title, String description, String imagePath
+ int id, String title, String description, String imagePath, bool isActive, int index
 });
 
 
@@ -62,13 +62,15 @@ class _$OnboardingEntityCopyWithImpl<$Res>
 
 /// Create a copy of OnboardingEntity
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? title = null,Object? description = null,Object? imagePath = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? title = null,Object? description = null,Object? imagePath = null,Object? isActive = null,Object? index = null,}) {
   return _then(_self.copyWith(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as int,title: null == title ? _self.title : title // ignore: cast_nullable_to_non_nullable
 as String,description: null == description ? _self.description : description // ignore: cast_nullable_to_non_nullable
 as String,imagePath: null == imagePath ? _self.imagePath : imagePath // ignore: cast_nullable_to_non_nullable
-as String,
+as String,isActive: null == isActive ? _self.isActive : isActive // ignore: cast_nullable_to_non_nullable
+as bool,index: null == index ? _self.index : index // ignore: cast_nullable_to_non_nullable
+as int,
   ));
 }
 
@@ -153,10 +155,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int id,  String title,  String description,  String imagePath)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int id,  String title,  String description,  String imagePath,  bool isActive,  int index)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _OnboardingEntity() when $default != null:
-return $default(_that.id,_that.title,_that.description,_that.imagePath);case _:
+return $default(_that.id,_that.title,_that.description,_that.imagePath,_that.isActive,_that.index);case _:
   return orElse();
 
 }
@@ -174,10 +176,10 @@ return $default(_that.id,_that.title,_that.description,_that.imagePath);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int id,  String title,  String description,  String imagePath)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int id,  String title,  String description,  String imagePath,  bool isActive,  int index)  $default,) {final _that = this;
 switch (_that) {
 case _OnboardingEntity():
-return $default(_that.id,_that.title,_that.description,_that.imagePath);case _:
+return $default(_that.id,_that.title,_that.description,_that.imagePath,_that.isActive,_that.index);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -194,10 +196,10 @@ return $default(_that.id,_that.title,_that.description,_that.imagePath);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int id,  String title,  String description,  String imagePath)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int id,  String title,  String description,  String imagePath,  bool isActive,  int index)?  $default,) {final _that = this;
 switch (_that) {
 case _OnboardingEntity() when $default != null:
-return $default(_that.id,_that.title,_that.description,_that.imagePath);case _:
+return $default(_that.id,_that.title,_that.description,_that.imagePath,_that.isActive,_that.index);case _:
   return null;
 
 }
@@ -209,13 +211,15 @@ return $default(_that.id,_that.title,_that.description,_that.imagePath);case _:
 
 
 class _OnboardingEntity implements OnboardingEntity {
-  const _OnboardingEntity({required this.id, required this.title, required this.description, required this.imagePath});
+  const _OnboardingEntity({required this.id, required this.title, required this.description, required this.imagePath, required this.isActive, required this.index});
   
 
 @override final  int id;
 @override final  String title;
 @override final  String description;
 @override final  String imagePath;
+@override final  bool isActive;
+@override final  int index;
 
 /// Create a copy of OnboardingEntity
 /// with the given fields replaced by the non-null parameter values.
@@ -227,16 +231,16 @@ _$OnboardingEntityCopyWith<_OnboardingEntity> get copyWith => __$OnboardingEntit
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _OnboardingEntity&&(identical(other.id, id) || other.id == id)&&(identical(other.title, title) || other.title == title)&&(identical(other.description, description) || other.description == description)&&(identical(other.imagePath, imagePath) || other.imagePath == imagePath));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _OnboardingEntity&&(identical(other.id, id) || other.id == id)&&(identical(other.title, title) || other.title == title)&&(identical(other.description, description) || other.description == description)&&(identical(other.imagePath, imagePath) || other.imagePath == imagePath)&&(identical(other.isActive, isActive) || other.isActive == isActive)&&(identical(other.index, index) || other.index == index));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,id,title,description,imagePath);
+int get hashCode => Object.hash(runtimeType,id,title,description,imagePath,isActive,index);
 
 @override
 String toString() {
-  return 'OnboardingEntity(id: $id, title: $title, description: $description, imagePath: $imagePath)';
+  return 'OnboardingEntity(id: $id, title: $title, description: $description, imagePath: $imagePath, isActive: $isActive, index: $index)';
 }
 
 
@@ -247,7 +251,7 @@ abstract mixin class _$OnboardingEntityCopyWith<$Res> implements $OnboardingEnti
   factory _$OnboardingEntityCopyWith(_OnboardingEntity value, $Res Function(_OnboardingEntity) _then) = __$OnboardingEntityCopyWithImpl;
 @override @useResult
 $Res call({
- int id, String title, String description, String imagePath
+ int id, String title, String description, String imagePath, bool isActive, int index
 });
 
 
@@ -264,13 +268,15 @@ class __$OnboardingEntityCopyWithImpl<$Res>
 
 /// Create a copy of OnboardingEntity
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? title = null,Object? description = null,Object? imagePath = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? title = null,Object? description = null,Object? imagePath = null,Object? isActive = null,Object? index = null,}) {
   return _then(_OnboardingEntity(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as int,title: null == title ? _self.title : title // ignore: cast_nullable_to_non_nullable
 as String,description: null == description ? _self.description : description // ignore: cast_nullable_to_non_nullable
 as String,imagePath: null == imagePath ? _self.imagePath : imagePath // ignore: cast_nullable_to_non_nullable
-as String,
+as String,isActive: null == isActive ? _self.isActive : isActive // ignore: cast_nullable_to_non_nullable
+as bool,index: null == index ? _self.index : index // ignore: cast_nullable_to_non_nullable
+as int,
   ));
 }
 

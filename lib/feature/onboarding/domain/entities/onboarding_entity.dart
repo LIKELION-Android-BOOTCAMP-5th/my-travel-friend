@@ -10,5 +10,7 @@ abstract class OnboardingEntity with _$OnboardingEntity {
     required String title,
     required String description,
     required String imagePath,
+    required bool isActive,
+    required int index,
   }) = _OnboardingEntity;
 }
