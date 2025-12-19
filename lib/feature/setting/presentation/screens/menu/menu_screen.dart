@@ -4,11 +4,13 @@ import 'package:go_router/go_router.dart';
 import 'package:my_travel_friend/core/theme/app_colors.dart';
 import 'package:my_travel_friend/core/theme/app_font.dart';
 import 'package:my_travel_friend/core/widget/app_bar.dart';
+import 'package:my_travel_friend/core/widget/toast_pop.dart';
 import 'package:my_travel_friend/feature/setting/presentation/widgets/menu/menu_box.dart';
 
 import '../../../../../core/theme/app_icon.dart';
 import '../../../../../core/util/launcher.dart';
 import '../../../../../core/widget/button.dart';
+import '../../../../../core/widget/pop_up_box.dart';
 import '../../../../auth/domain/entities/user_entity.dart';
 import '../../../../auth/presentation/viewmodel/auth_profile/auth_profile_bloc.dart';
 import '../../../../auth/presentation/viewmodel/auth_profile/auth_profile_event.dart';
@@ -36,7 +38,7 @@ class MenuScreen extends StatelessWidget {
           icon: Icon(AppIcon.back),
           contentColor: isDark ? colorScheme.onSurface : AppColors.light,
           borderRadius: 20,
-          onTap: () => context.go('/home'),
+          onTap: () => context.push('/home'),
         ),
       ),
       body: BlocBuilder<MenuBloc, MenuState>(
@@ -346,11 +348,28 @@ class MenuScreen extends StatelessWidget {
                   MenuBox(
                     state: state,
                     title: "로그아웃",
-                    onTap: () {
-                      BlocProvider.of<AuthProfileBloc>(
-                        context,
-                      ).add(const AuthProfileEvent.signOut());
-                    },
+                    onTap: () => showDialog(
+                      context: context,
+                      builder: (_) => PopUpBox(
+                        icon: AppIcon.alert,
+                        iconColor: Theme.of(context).colorScheme.primary,
+                        title: '로그아웃',
+                        message: '현재 계정에서 로그아웃하시겠어요?',
+                        leftText: '취소',
+                        rightText: '로그아웃',
+                        rightButtonColor: Theme.of(context).colorScheme.primary,
+                        rightTextColor: AppColors.light,
+                        onLeft: () {
+                          // 취소 - 아무것도 안 함 (PopUpBox 내부에서 pop 처리함)
+                        },
+                        onRight: () {
+                          BlocProvider.of<AuthProfileBloc>(
+                            context,
+                          ).add(const AuthProfileEvent.signOut());
+                          ToastPop.show("로그아웃 성공! 다음에 만나요 🛬");
+                        },
+                      ),
+                    ),
                   ),
                 ],
               ),
