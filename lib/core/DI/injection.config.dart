@@ -185,6 +185,22 @@ import '../../feature/friend/domain/usecases/search_request_name_usecase.dart'
 import '../../feature/friend/presentation/viewmodel/friend_bloc.dart' as _i186;
 import '../../feature/friend/presentation/viewmodel/friend_request_bloc.dart'
     as _i69;
+import '../../feature/onboarding/data/datasources/onboarding_data_source.dart'
+    as _i23;
+import '../../feature/onboarding/data/datasources/onboarding_data_source_impl.dart'
+    as _i123;
+import '../../feature/onboarding/data/repositories/onboarding_repository_impl.dart'
+    as _i1035;
+import '../../feature/onboarding/domain/repositories/onboarding_repository.dart'
+    as _i808;
+import '../../feature/onboarding/domain/usecases/check_onboarding_completed_usecase.dart'
+    as _i322;
+import '../../feature/onboarding/domain/usecases/complete_onboarding_usecase.dart'
+    as _i471;
+import '../../feature/onboarding/domain/usecases/get_onboarding_pages_usecase.dart'
+    as _i196;
+import '../../feature/onboarding/domain/usecases/reset_onboarding_usecase.dart'
+    as _i137;
 import '../../feature/schedule/data/datasources/schedule_data_source.dart'
     as _i334;
 import '../../feature/schedule/data/datasources/schedule_data_source_impl.dart'
@@ -376,6 +392,15 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i668.UpdateThemeUseCase>(
       () => _i668.UpdateThemeUseCase(gh<_i1026.ThemeService>()),
     );
+    gh.lazySingleton<_i23.OnboardingDataSource>(
+      () => _i123.OnboardingDataSourceImpl(
+        gh<_i460.SharedPreferences>(),
+        gh<_i454.SupabaseClient>(),
+      ),
+    );
+    gh.lazySingleton<_i808.OnboardingRepository>(
+      () => _i1035.OnboardingRepositoryImpl(gh<_i23.OnboardingDataSource>()),
+    );
     gh.lazySingleton<_i1051.SupabaseStorageService>(
       () => _i1051.SupabaseStorageService(gh<_i454.SupabaseClient>()),
     );
@@ -530,6 +555,20 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.lazySingleton<_i181.ChecklistRepository>(
       () => _i418.ChecklistRepositoryImpl(gh<_i877.ChecklistDataSource>()),
+    );
+    gh.lazySingleton<_i322.CheckOnboardingCompletedUseCase>(
+      () => _i322.CheckOnboardingCompletedUseCase(
+        gh<_i808.OnboardingRepository>(),
+      ),
+    );
+    gh.lazySingleton<_i471.CompleteOnboardingUseCase>(
+      () => _i471.CompleteOnboardingUseCase(gh<_i808.OnboardingRepository>()),
+    );
+    gh.lazySingleton<_i196.GetOnboardingPagesUseCase>(
+      () => _i196.GetOnboardingPagesUseCase(gh<_i808.OnboardingRepository>()),
+    );
+    gh.lazySingleton<_i137.ResetOnboardingUseCase>(
+      () => _i137.ResetOnboardingUseCase(gh<_i808.OnboardingRepository>()),
     );
     gh.lazySingleton<_i361.CreateScheduleUseCase>(
       () => _i361.CreateScheduleUseCase(gh<_i456.ScheduleRepository>()),
