@@ -47,6 +47,14 @@ abstract class ListsEvent with _$ListsEvent {
     required int id,
     required bool isChecked,
   }) = ToggleTodoList;
+
+  //AI 로직
+  const factory ListsEvent.requestAiRecommendation() = RequestAiRecommendation;
+
+  const factory ListsEvent.addFromAi({required String content}) = AddFromAi;
+
+  // 팝업닫을때 AI 항목 리셋
+  const factory ListsEvent.resetAiRecommendation() = ResetAiRecommendation;
 }
 
 // 탭 구분 enum

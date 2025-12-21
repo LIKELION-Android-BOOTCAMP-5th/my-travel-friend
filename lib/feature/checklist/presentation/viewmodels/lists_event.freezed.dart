@@ -55,7 +55,7 @@ extension ListsEventPatterns on ListsEvent {
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( Load value)?  load,TResult Function( ChangeTab value)?  changeTab,TResult Function( ChangeContent value)?  changeContent,TResult Function( CreateChecklist value)?  createChecklist,TResult Function( DeleteChecklist value)?  deleteChecklist,TResult Function( ToggleChecklist value)?  toggleChecklist,TResult Function( CreateTodoList value)?  createTodoList,TResult Function( DeleteTodoList value)?  deleteTodoList,TResult Function( ToggleTodoList value)?  toggleTodoList,required TResult orElse(),}){
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( Load value)?  load,TResult Function( ChangeTab value)?  changeTab,TResult Function( ChangeContent value)?  changeContent,TResult Function( CreateChecklist value)?  createChecklist,TResult Function( DeleteChecklist value)?  deleteChecklist,TResult Function( ToggleChecklist value)?  toggleChecklist,TResult Function( CreateTodoList value)?  createTodoList,TResult Function( DeleteTodoList value)?  deleteTodoList,TResult Function( ToggleTodoList value)?  toggleTodoList,TResult Function( RequestAiRecommendation value)?  requestAiRecommendation,TResult Function( AddFromAi value)?  addFromAi,TResult Function( ResetAiRecommendation value)?  resetAiRecommendation,required TResult orElse(),}){
 final _that = this;
 switch (_that) {
 case Load() when load != null:
@@ -67,7 +67,10 @@ return deleteChecklist(_that);case ToggleChecklist() when toggleChecklist != nul
 return toggleChecklist(_that);case CreateTodoList() when createTodoList != null:
 return createTodoList(_that);case DeleteTodoList() when deleteTodoList != null:
 return deleteTodoList(_that);case ToggleTodoList() when toggleTodoList != null:
-return toggleTodoList(_that);case _:
+return toggleTodoList(_that);case RequestAiRecommendation() when requestAiRecommendation != null:
+return requestAiRecommendation(_that);case AddFromAi() when addFromAi != null:
+return addFromAi(_that);case ResetAiRecommendation() when resetAiRecommendation != null:
+return resetAiRecommendation(_that);case _:
   return orElse();
 
 }
@@ -85,7 +88,7 @@ return toggleTodoList(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( Load value)  load,required TResult Function( ChangeTab value)  changeTab,required TResult Function( ChangeContent value)  changeContent,required TResult Function( CreateChecklist value)  createChecklist,required TResult Function( DeleteChecklist value)  deleteChecklist,required TResult Function( ToggleChecklist value)  toggleChecklist,required TResult Function( CreateTodoList value)  createTodoList,required TResult Function( DeleteTodoList value)  deleteTodoList,required TResult Function( ToggleTodoList value)  toggleTodoList,}){
+@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( Load value)  load,required TResult Function( ChangeTab value)  changeTab,required TResult Function( ChangeContent value)  changeContent,required TResult Function( CreateChecklist value)  createChecklist,required TResult Function( DeleteChecklist value)  deleteChecklist,required TResult Function( ToggleChecklist value)  toggleChecklist,required TResult Function( CreateTodoList value)  createTodoList,required TResult Function( DeleteTodoList value)  deleteTodoList,required TResult Function( ToggleTodoList value)  toggleTodoList,required TResult Function( RequestAiRecommendation value)  requestAiRecommendation,required TResult Function( AddFromAi value)  addFromAi,required TResult Function( ResetAiRecommendation value)  resetAiRecommendation,}){
 final _that = this;
 switch (_that) {
 case Load():
@@ -97,7 +100,10 @@ return deleteChecklist(_that);case ToggleChecklist():
 return toggleChecklist(_that);case CreateTodoList():
 return createTodoList(_that);case DeleteTodoList():
 return deleteTodoList(_that);case ToggleTodoList():
-return toggleTodoList(_that);case _:
+return toggleTodoList(_that);case RequestAiRecommendation():
+return requestAiRecommendation(_that);case AddFromAi():
+return addFromAi(_that);case ResetAiRecommendation():
+return resetAiRecommendation(_that);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -114,7 +120,7 @@ return toggleTodoList(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( Load value)?  load,TResult? Function( ChangeTab value)?  changeTab,TResult? Function( ChangeContent value)?  changeContent,TResult? Function( CreateChecklist value)?  createChecklist,TResult? Function( DeleteChecklist value)?  deleteChecklist,TResult? Function( ToggleChecklist value)?  toggleChecklist,TResult? Function( CreateTodoList value)?  createTodoList,TResult? Function( DeleteTodoList value)?  deleteTodoList,TResult? Function( ToggleTodoList value)?  toggleTodoList,}){
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( Load value)?  load,TResult? Function( ChangeTab value)?  changeTab,TResult? Function( ChangeContent value)?  changeContent,TResult? Function( CreateChecklist value)?  createChecklist,TResult? Function( DeleteChecklist value)?  deleteChecklist,TResult? Function( ToggleChecklist value)?  toggleChecklist,TResult? Function( CreateTodoList value)?  createTodoList,TResult? Function( DeleteTodoList value)?  deleteTodoList,TResult? Function( ToggleTodoList value)?  toggleTodoList,TResult? Function( RequestAiRecommendation value)?  requestAiRecommendation,TResult? Function( AddFromAi value)?  addFromAi,TResult? Function( ResetAiRecommendation value)?  resetAiRecommendation,}){
 final _that = this;
 switch (_that) {
 case Load() when load != null:
@@ -126,7 +132,10 @@ return deleteChecklist(_that);case ToggleChecklist() when toggleChecklist != nul
 return toggleChecklist(_that);case CreateTodoList() when createTodoList != null:
 return createTodoList(_that);case DeleteTodoList() when deleteTodoList != null:
 return deleteTodoList(_that);case ToggleTodoList() when toggleTodoList != null:
-return toggleTodoList(_that);case _:
+return toggleTodoList(_that);case RequestAiRecommendation() when requestAiRecommendation != null:
+return requestAiRecommendation(_that);case AddFromAi() when addFromAi != null:
+return addFromAi(_that);case ResetAiRecommendation() when resetAiRecommendation != null:
+return resetAiRecommendation(_that);case _:
   return null;
 
 }
@@ -143,7 +152,7 @@ return toggleTodoList(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function( int tripId,  int userId)?  load,TResult Function( ListsTab tab)?  changeTab,TResult Function( String content)?  changeContent,TResult Function( String content)?  createChecklist,TResult Function( int id)?  deleteChecklist,TResult Function( int id,  bool isChecked)?  toggleChecklist,TResult Function( String content)?  createTodoList,TResult Function( int id)?  deleteTodoList,TResult Function( int id,  bool isChecked)?  toggleTodoList,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function( int tripId,  int userId)?  load,TResult Function( ListsTab tab)?  changeTab,TResult Function( String content)?  changeContent,TResult Function( String content)?  createChecklist,TResult Function( int id)?  deleteChecklist,TResult Function( int id,  bool isChecked)?  toggleChecklist,TResult Function( String content)?  createTodoList,TResult Function( int id)?  deleteTodoList,TResult Function( int id,  bool isChecked)?  toggleTodoList,TResult Function()?  requestAiRecommendation,TResult Function( String content)?  addFromAi,TResult Function()?  resetAiRecommendation,required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case Load() when load != null:
 return load(_that.tripId,_that.userId);case ChangeTab() when changeTab != null:
@@ -154,7 +163,10 @@ return deleteChecklist(_that.id);case ToggleChecklist() when toggleChecklist != 
 return toggleChecklist(_that.id,_that.isChecked);case CreateTodoList() when createTodoList != null:
 return createTodoList(_that.content);case DeleteTodoList() when deleteTodoList != null:
 return deleteTodoList(_that.id);case ToggleTodoList() when toggleTodoList != null:
-return toggleTodoList(_that.id,_that.isChecked);case _:
+return toggleTodoList(_that.id,_that.isChecked);case RequestAiRecommendation() when requestAiRecommendation != null:
+return requestAiRecommendation();case AddFromAi() when addFromAi != null:
+return addFromAi(_that.content);case ResetAiRecommendation() when resetAiRecommendation != null:
+return resetAiRecommendation();case _:
   return orElse();
 
 }
@@ -172,7 +184,7 @@ return toggleTodoList(_that.id,_that.isChecked);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function( int tripId,  int userId)  load,required TResult Function( ListsTab tab)  changeTab,required TResult Function( String content)  changeContent,required TResult Function( String content)  createChecklist,required TResult Function( int id)  deleteChecklist,required TResult Function( int id,  bool isChecked)  toggleChecklist,required TResult Function( String content)  createTodoList,required TResult Function( int id)  deleteTodoList,required TResult Function( int id,  bool isChecked)  toggleTodoList,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function( int tripId,  int userId)  load,required TResult Function( ListsTab tab)  changeTab,required TResult Function( String content)  changeContent,required TResult Function( String content)  createChecklist,required TResult Function( int id)  deleteChecklist,required TResult Function( int id,  bool isChecked)  toggleChecklist,required TResult Function( String content)  createTodoList,required TResult Function( int id)  deleteTodoList,required TResult Function( int id,  bool isChecked)  toggleTodoList,required TResult Function()  requestAiRecommendation,required TResult Function( String content)  addFromAi,required TResult Function()  resetAiRecommendation,}) {final _that = this;
 switch (_that) {
 case Load():
 return load(_that.tripId,_that.userId);case ChangeTab():
@@ -183,7 +195,10 @@ return deleteChecklist(_that.id);case ToggleChecklist():
 return toggleChecklist(_that.id,_that.isChecked);case CreateTodoList():
 return createTodoList(_that.content);case DeleteTodoList():
 return deleteTodoList(_that.id);case ToggleTodoList():
-return toggleTodoList(_that.id,_that.isChecked);case _:
+return toggleTodoList(_that.id,_that.isChecked);case RequestAiRecommendation():
+return requestAiRecommendation();case AddFromAi():
+return addFromAi(_that.content);case ResetAiRecommendation():
+return resetAiRecommendation();case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -200,7 +215,7 @@ return toggleTodoList(_that.id,_that.isChecked);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function( int tripId,  int userId)?  load,TResult? Function( ListsTab tab)?  changeTab,TResult? Function( String content)?  changeContent,TResult? Function( String content)?  createChecklist,TResult? Function( int id)?  deleteChecklist,TResult? Function( int id,  bool isChecked)?  toggleChecklist,TResult? Function( String content)?  createTodoList,TResult? Function( int id)?  deleteTodoList,TResult? Function( int id,  bool isChecked)?  toggleTodoList,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function( int tripId,  int userId)?  load,TResult? Function( ListsTab tab)?  changeTab,TResult? Function( String content)?  changeContent,TResult? Function( String content)?  createChecklist,TResult? Function( int id)?  deleteChecklist,TResult? Function( int id,  bool isChecked)?  toggleChecklist,TResult? Function( String content)?  createTodoList,TResult? Function( int id)?  deleteTodoList,TResult? Function( int id,  bool isChecked)?  toggleTodoList,TResult? Function()?  requestAiRecommendation,TResult? Function( String content)?  addFromAi,TResult? Function()?  resetAiRecommendation,}) {final _that = this;
 switch (_that) {
 case Load() when load != null:
 return load(_that.tripId,_that.userId);case ChangeTab() when changeTab != null:
@@ -211,7 +226,10 @@ return deleteChecklist(_that.id);case ToggleChecklist() when toggleChecklist != 
 return toggleChecklist(_that.id,_that.isChecked);case CreateTodoList() when createTodoList != null:
 return createTodoList(_that.content);case DeleteTodoList() when deleteTodoList != null:
 return deleteTodoList(_that.id);case ToggleTodoList() when toggleTodoList != null:
-return toggleTodoList(_that.id,_that.isChecked);case _:
+return toggleTodoList(_that.id,_that.isChecked);case RequestAiRecommendation() when requestAiRecommendation != null:
+return requestAiRecommendation();case AddFromAi() when addFromAi != null:
+return addFromAi(_that.content);case ResetAiRecommendation() when resetAiRecommendation != null:
+return resetAiRecommendation();case _:
   return null;
 
 }
@@ -818,5 +836,135 @@ as bool,
 
 
 }
+
+/// @nodoc
+
+
+class RequestAiRecommendation extends ListsEvent {
+  const RequestAiRecommendation(): super._();
+  
+
+
+
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is RequestAiRecommendation);
+}
+
+
+@override
+int get hashCode => runtimeType.hashCode;
+
+@override
+String toString() {
+  return 'ListsEvent.requestAiRecommendation()';
+}
+
+
+}
+
+
+
+
+/// @nodoc
+
+
+class AddFromAi extends ListsEvent {
+  const AddFromAi({required this.content}): super._();
+  
+
+ final  String content;
+
+/// Create a copy of ListsEvent
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$AddFromAiCopyWith<AddFromAi> get copyWith => _$AddFromAiCopyWithImpl<AddFromAi>(this, _$identity);
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is AddFromAi&&(identical(other.content, content) || other.content == content));
+}
+
+
+@override
+int get hashCode => Object.hash(runtimeType,content);
+
+@override
+String toString() {
+  return 'ListsEvent.addFromAi(content: $content)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class $AddFromAiCopyWith<$Res> implements $ListsEventCopyWith<$Res> {
+  factory $AddFromAiCopyWith(AddFromAi value, $Res Function(AddFromAi) _then) = _$AddFromAiCopyWithImpl;
+@useResult
+$Res call({
+ String content
+});
+
+
+
+
+}
+/// @nodoc
+class _$AddFromAiCopyWithImpl<$Res>
+    implements $AddFromAiCopyWith<$Res> {
+  _$AddFromAiCopyWithImpl(this._self, this._then);
+
+  final AddFromAi _self;
+  final $Res Function(AddFromAi) _then;
+
+/// Create a copy of ListsEvent
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') $Res call({Object? content = null,}) {
+  return _then(AddFromAi(
+content: null == content ? _self.content : content // ignore: cast_nullable_to_non_nullable
+as String,
+  ));
+}
+
+
+}
+
+/// @nodoc
+
+
+class ResetAiRecommendation extends ListsEvent {
+  const ResetAiRecommendation(): super._();
+  
+
+
+
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ResetAiRecommendation);
+}
+
+
+@override
+int get hashCode => runtimeType.hashCode;
+
+@override
+String toString() {
+  return 'ListsEvent.resetAiRecommendation()';
+}
+
+
+}
+
+
+
 
 // dart format on
