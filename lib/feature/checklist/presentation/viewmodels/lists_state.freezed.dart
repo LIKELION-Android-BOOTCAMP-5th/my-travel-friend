@@ -22,7 +22,7 @@ mixin _$ListsState {
  String get newItemContent;// 메시지
  String? get message;// 페이지 상태
  ListsPageState get pageState; bool get isLoading;// 개별 토글 상태 관리 (수정됨)
- Set<int> get togglingChecklistIds; Set<int> get togglingTodoIds;
+ Set<int> get togglingChecklistIds; Set<int> get togglingTodoIds; bool get isAiLoading; bool get isAiOpened; List<String> get aiRecommendations;
 /// Create a copy of ListsState
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -33,16 +33,16 @@ $ListsStateCopyWith<ListsState> get copyWith => _$ListsStateCopyWithImpl<ListsSt
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is ListsState&&(identical(other.tripId, tripId) || other.tripId == tripId)&&(identical(other.userId, userId) || other.userId == userId)&&(identical(other.currentTab, currentTab) || other.currentTab == currentTab)&&const DeepCollectionEquality().equals(other.checklists, checklists)&&const DeepCollectionEquality().equals(other.todolists, todolists)&&(identical(other.newItemContent, newItemContent) || other.newItemContent == newItemContent)&&(identical(other.message, message) || other.message == message)&&(identical(other.pageState, pageState) || other.pageState == pageState)&&(identical(other.isLoading, isLoading) || other.isLoading == isLoading)&&const DeepCollectionEquality().equals(other.togglingChecklistIds, togglingChecklistIds)&&const DeepCollectionEquality().equals(other.togglingTodoIds, togglingTodoIds));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ListsState&&(identical(other.tripId, tripId) || other.tripId == tripId)&&(identical(other.userId, userId) || other.userId == userId)&&(identical(other.currentTab, currentTab) || other.currentTab == currentTab)&&const DeepCollectionEquality().equals(other.checklists, checklists)&&const DeepCollectionEquality().equals(other.todolists, todolists)&&(identical(other.newItemContent, newItemContent) || other.newItemContent == newItemContent)&&(identical(other.message, message) || other.message == message)&&(identical(other.pageState, pageState) || other.pageState == pageState)&&(identical(other.isLoading, isLoading) || other.isLoading == isLoading)&&const DeepCollectionEquality().equals(other.togglingChecklistIds, togglingChecklistIds)&&const DeepCollectionEquality().equals(other.togglingTodoIds, togglingTodoIds)&&(identical(other.isAiLoading, isAiLoading) || other.isAiLoading == isAiLoading)&&(identical(other.isAiOpened, isAiOpened) || other.isAiOpened == isAiOpened)&&const DeepCollectionEquality().equals(other.aiRecommendations, aiRecommendations));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,tripId,userId,currentTab,const DeepCollectionEquality().hash(checklists),const DeepCollectionEquality().hash(todolists),newItemContent,message,pageState,isLoading,const DeepCollectionEquality().hash(togglingChecklistIds),const DeepCollectionEquality().hash(togglingTodoIds));
+int get hashCode => Object.hash(runtimeType,tripId,userId,currentTab,const DeepCollectionEquality().hash(checklists),const DeepCollectionEquality().hash(todolists),newItemContent,message,pageState,isLoading,const DeepCollectionEquality().hash(togglingChecklistIds),const DeepCollectionEquality().hash(togglingTodoIds),isAiLoading,isAiOpened,const DeepCollectionEquality().hash(aiRecommendations));
 
 @override
 String toString() {
-  return 'ListsState(tripId: $tripId, userId: $userId, currentTab: $currentTab, checklists: $checklists, todolists: $todolists, newItemContent: $newItemContent, message: $message, pageState: $pageState, isLoading: $isLoading, togglingChecklistIds: $togglingChecklistIds, togglingTodoIds: $togglingTodoIds)';
+  return 'ListsState(tripId: $tripId, userId: $userId, currentTab: $currentTab, checklists: $checklists, todolists: $todolists, newItemContent: $newItemContent, message: $message, pageState: $pageState, isLoading: $isLoading, togglingChecklistIds: $togglingChecklistIds, togglingTodoIds: $togglingTodoIds, isAiLoading: $isAiLoading, isAiOpened: $isAiOpened, aiRecommendations: $aiRecommendations)';
 }
 
 
@@ -53,7 +53,7 @@ abstract mixin class $ListsStateCopyWith<$Res>  {
   factory $ListsStateCopyWith(ListsState value, $Res Function(ListsState) _then) = _$ListsStateCopyWithImpl;
 @useResult
 $Res call({
- int tripId, int userId, ListsTab currentTab, List<ChecklistEntity> checklists, List<TodoListEntity> todolists, String newItemContent, String? message, ListsPageState pageState, bool isLoading, Set<int> togglingChecklistIds, Set<int> togglingTodoIds
+ int tripId, int userId, ListsTab currentTab, List<ChecklistEntity> checklists, List<TodoListEntity> todolists, String newItemContent, String? message, ListsPageState pageState, bool isLoading, Set<int> togglingChecklistIds, Set<int> togglingTodoIds, bool isAiLoading, bool isAiOpened, List<String> aiRecommendations
 });
 
 
@@ -70,7 +70,7 @@ class _$ListsStateCopyWithImpl<$Res>
 
 /// Create a copy of ListsState
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? tripId = null,Object? userId = null,Object? currentTab = null,Object? checklists = null,Object? todolists = null,Object? newItemContent = null,Object? message = freezed,Object? pageState = null,Object? isLoading = null,Object? togglingChecklistIds = null,Object? togglingTodoIds = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? tripId = null,Object? userId = null,Object? currentTab = null,Object? checklists = null,Object? todolists = null,Object? newItemContent = null,Object? message = freezed,Object? pageState = null,Object? isLoading = null,Object? togglingChecklistIds = null,Object? togglingTodoIds = null,Object? isAiLoading = null,Object? isAiOpened = null,Object? aiRecommendations = null,}) {
   return _then(_self.copyWith(
 tripId: null == tripId ? _self.tripId : tripId // ignore: cast_nullable_to_non_nullable
 as int,userId: null == userId ? _self.userId : userId // ignore: cast_nullable_to_non_nullable
@@ -83,7 +83,10 @@ as String?,pageState: null == pageState ? _self.pageState : pageState // ignore:
 as ListsPageState,isLoading: null == isLoading ? _self.isLoading : isLoading // ignore: cast_nullable_to_non_nullable
 as bool,togglingChecklistIds: null == togglingChecklistIds ? _self.togglingChecklistIds : togglingChecklistIds // ignore: cast_nullable_to_non_nullable
 as Set<int>,togglingTodoIds: null == togglingTodoIds ? _self.togglingTodoIds : togglingTodoIds // ignore: cast_nullable_to_non_nullable
-as Set<int>,
+as Set<int>,isAiLoading: null == isAiLoading ? _self.isAiLoading : isAiLoading // ignore: cast_nullable_to_non_nullable
+as bool,isAiOpened: null == isAiOpened ? _self.isAiOpened : isAiOpened // ignore: cast_nullable_to_non_nullable
+as bool,aiRecommendations: null == aiRecommendations ? _self.aiRecommendations : aiRecommendations // ignore: cast_nullable_to_non_nullable
+as List<String>,
   ));
 }
 
@@ -168,10 +171,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int tripId,  int userId,  ListsTab currentTab,  List<ChecklistEntity> checklists,  List<TodoListEntity> todolists,  String newItemContent,  String? message,  ListsPageState pageState,  bool isLoading,  Set<int> togglingChecklistIds,  Set<int> togglingTodoIds)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int tripId,  int userId,  ListsTab currentTab,  List<ChecklistEntity> checklists,  List<TodoListEntity> todolists,  String newItemContent,  String? message,  ListsPageState pageState,  bool isLoading,  Set<int> togglingChecklistIds,  Set<int> togglingTodoIds,  bool isAiLoading,  bool isAiOpened,  List<String> aiRecommendations)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _ListsState() when $default != null:
-return $default(_that.tripId,_that.userId,_that.currentTab,_that.checklists,_that.todolists,_that.newItemContent,_that.message,_that.pageState,_that.isLoading,_that.togglingChecklistIds,_that.togglingTodoIds);case _:
+return $default(_that.tripId,_that.userId,_that.currentTab,_that.checklists,_that.todolists,_that.newItemContent,_that.message,_that.pageState,_that.isLoading,_that.togglingChecklistIds,_that.togglingTodoIds,_that.isAiLoading,_that.isAiOpened,_that.aiRecommendations);case _:
   return orElse();
 
 }
@@ -189,10 +192,10 @@ return $default(_that.tripId,_that.userId,_that.currentTab,_that.checklists,_tha
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int tripId,  int userId,  ListsTab currentTab,  List<ChecklistEntity> checklists,  List<TodoListEntity> todolists,  String newItemContent,  String? message,  ListsPageState pageState,  bool isLoading,  Set<int> togglingChecklistIds,  Set<int> togglingTodoIds)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int tripId,  int userId,  ListsTab currentTab,  List<ChecklistEntity> checklists,  List<TodoListEntity> todolists,  String newItemContent,  String? message,  ListsPageState pageState,  bool isLoading,  Set<int> togglingChecklistIds,  Set<int> togglingTodoIds,  bool isAiLoading,  bool isAiOpened,  List<String> aiRecommendations)  $default,) {final _that = this;
 switch (_that) {
 case _ListsState():
-return $default(_that.tripId,_that.userId,_that.currentTab,_that.checklists,_that.todolists,_that.newItemContent,_that.message,_that.pageState,_that.isLoading,_that.togglingChecklistIds,_that.togglingTodoIds);case _:
+return $default(_that.tripId,_that.userId,_that.currentTab,_that.checklists,_that.todolists,_that.newItemContent,_that.message,_that.pageState,_that.isLoading,_that.togglingChecklistIds,_that.togglingTodoIds,_that.isAiLoading,_that.isAiOpened,_that.aiRecommendations);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -209,10 +212,10 @@ return $default(_that.tripId,_that.userId,_that.currentTab,_that.checklists,_tha
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int tripId,  int userId,  ListsTab currentTab,  List<ChecklistEntity> checklists,  List<TodoListEntity> todolists,  String newItemContent,  String? message,  ListsPageState pageState,  bool isLoading,  Set<int> togglingChecklistIds,  Set<int> togglingTodoIds)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int tripId,  int userId,  ListsTab currentTab,  List<ChecklistEntity> checklists,  List<TodoListEntity> todolists,  String newItemContent,  String? message,  ListsPageState pageState,  bool isLoading,  Set<int> togglingChecklistIds,  Set<int> togglingTodoIds,  bool isAiLoading,  bool isAiOpened,  List<String> aiRecommendations)?  $default,) {final _that = this;
 switch (_that) {
 case _ListsState() when $default != null:
-return $default(_that.tripId,_that.userId,_that.currentTab,_that.checklists,_that.todolists,_that.newItemContent,_that.message,_that.pageState,_that.isLoading,_that.togglingChecklistIds,_that.togglingTodoIds);case _:
+return $default(_that.tripId,_that.userId,_that.currentTab,_that.checklists,_that.todolists,_that.newItemContent,_that.message,_that.pageState,_that.isLoading,_that.togglingChecklistIds,_that.togglingTodoIds,_that.isAiLoading,_that.isAiOpened,_that.aiRecommendations);case _:
   return null;
 
 }
@@ -224,7 +227,7 @@ return $default(_that.tripId,_that.userId,_that.currentTab,_that.checklists,_tha
 
 
 class _ListsState extends ListsState {
-  const _ListsState({this.tripId = 0, this.userId = 0, this.currentTab = ListsTab.checklist, final  List<ChecklistEntity> checklists = const [], final  List<TodoListEntity> todolists = const [], this.newItemContent = '', this.message, this.pageState = ListsPageState.initial, this.isLoading = false, final  Set<int> togglingChecklistIds = const {}, final  Set<int> togglingTodoIds = const {}}): _checklists = checklists,_todolists = todolists,_togglingChecklistIds = togglingChecklistIds,_togglingTodoIds = togglingTodoIds,super._();
+  const _ListsState({this.tripId = 0, this.userId = 0, this.currentTab = ListsTab.checklist, final  List<ChecklistEntity> checklists = const [], final  List<TodoListEntity> todolists = const [], this.newItemContent = '', this.message, this.pageState = ListsPageState.initial, this.isLoading = false, final  Set<int> togglingChecklistIds = const {}, final  Set<int> togglingTodoIds = const {}, this.isAiLoading = false, this.isAiOpened = false, final  List<String> aiRecommendations = const []}): _checklists = checklists,_todolists = todolists,_togglingChecklistIds = togglingChecklistIds,_togglingTodoIds = togglingTodoIds,_aiRecommendations = aiRecommendations,super._();
   
 
 // 정보 조회
@@ -273,6 +276,15 @@ class _ListsState extends ListsState {
   return EqualUnmodifiableSetView(_togglingTodoIds);
 }
 
+@override@JsonKey() final  bool isAiLoading;
+@override@JsonKey() final  bool isAiOpened;
+ final  List<String> _aiRecommendations;
+@override@JsonKey() List<String> get aiRecommendations {
+  if (_aiRecommendations is EqualUnmodifiableListView) return _aiRecommendations;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableListView(_aiRecommendations);
+}
+
 
 /// Create a copy of ListsState
 /// with the given fields replaced by the non-null parameter values.
@@ -284,16 +296,16 @@ _$ListsStateCopyWith<_ListsState> get copyWith => __$ListsStateCopyWithImpl<_Lis
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ListsState&&(identical(other.tripId, tripId) || other.tripId == tripId)&&(identical(other.userId, userId) || other.userId == userId)&&(identical(other.currentTab, currentTab) || other.currentTab == currentTab)&&const DeepCollectionEquality().equals(other._checklists, _checklists)&&const DeepCollectionEquality().equals(other._todolists, _todolists)&&(identical(other.newItemContent, newItemContent) || other.newItemContent == newItemContent)&&(identical(other.message, message) || other.message == message)&&(identical(other.pageState, pageState) || other.pageState == pageState)&&(identical(other.isLoading, isLoading) || other.isLoading == isLoading)&&const DeepCollectionEquality().equals(other._togglingChecklistIds, _togglingChecklistIds)&&const DeepCollectionEquality().equals(other._togglingTodoIds, _togglingTodoIds));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ListsState&&(identical(other.tripId, tripId) || other.tripId == tripId)&&(identical(other.userId, userId) || other.userId == userId)&&(identical(other.currentTab, currentTab) || other.currentTab == currentTab)&&const DeepCollectionEquality().equals(other._checklists, _checklists)&&const DeepCollectionEquality().equals(other._todolists, _todolists)&&(identical(other.newItemContent, newItemContent) || other.newItemContent == newItemContent)&&(identical(other.message, message) || other.message == message)&&(identical(other.pageState, pageState) || other.pageState == pageState)&&(identical(other.isLoading, isLoading) || other.isLoading == isLoading)&&const DeepCollectionEquality().equals(other._togglingChecklistIds, _togglingChecklistIds)&&const DeepCollectionEquality().equals(other._togglingTodoIds, _togglingTodoIds)&&(identical(other.isAiLoading, isAiLoading) || other.isAiLoading == isAiLoading)&&(identical(other.isAiOpened, isAiOpened) || other.isAiOpened == isAiOpened)&&const DeepCollectionEquality().equals(other._aiRecommendations, _aiRecommendations));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,tripId,userId,currentTab,const DeepCollectionEquality().hash(_checklists),const DeepCollectionEquality().hash(_todolists),newItemContent,message,pageState,isLoading,const DeepCollectionEquality().hash(_togglingChecklistIds),const DeepCollectionEquality().hash(_togglingTodoIds));
+int get hashCode => Object.hash(runtimeType,tripId,userId,currentTab,const DeepCollectionEquality().hash(_checklists),const DeepCollectionEquality().hash(_todolists),newItemContent,message,pageState,isLoading,const DeepCollectionEquality().hash(_togglingChecklistIds),const DeepCollectionEquality().hash(_togglingTodoIds),isAiLoading,isAiOpened,const DeepCollectionEquality().hash(_aiRecommendations));
 
 @override
 String toString() {
-  return 'ListsState(tripId: $tripId, userId: $userId, currentTab: $currentTab, checklists: $checklists, todolists: $todolists, newItemContent: $newItemContent, message: $message, pageState: $pageState, isLoading: $isLoading, togglingChecklistIds: $togglingChecklistIds, togglingTodoIds: $togglingTodoIds)';
+  return 'ListsState(tripId: $tripId, userId: $userId, currentTab: $currentTab, checklists: $checklists, todolists: $todolists, newItemContent: $newItemContent, message: $message, pageState: $pageState, isLoading: $isLoading, togglingChecklistIds: $togglingChecklistIds, togglingTodoIds: $togglingTodoIds, isAiLoading: $isAiLoading, isAiOpened: $isAiOpened, aiRecommendations: $aiRecommendations)';
 }
 
 
@@ -304,7 +316,7 @@ abstract mixin class _$ListsStateCopyWith<$Res> implements $ListsStateCopyWith<$
   factory _$ListsStateCopyWith(_ListsState value, $Res Function(_ListsState) _then) = __$ListsStateCopyWithImpl;
 @override @useResult
 $Res call({
- int tripId, int userId, ListsTab currentTab, List<ChecklistEntity> checklists, List<TodoListEntity> todolists, String newItemContent, String? message, ListsPageState pageState, bool isLoading, Set<int> togglingChecklistIds, Set<int> togglingTodoIds
+ int tripId, int userId, ListsTab currentTab, List<ChecklistEntity> checklists, List<TodoListEntity> todolists, String newItemContent, String? message, ListsPageState pageState, bool isLoading, Set<int> togglingChecklistIds, Set<int> togglingTodoIds, bool isAiLoading, bool isAiOpened, List<String> aiRecommendations
 });
 
 
@@ -321,7 +333,7 @@ class __$ListsStateCopyWithImpl<$Res>
 
 /// Create a copy of ListsState
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? tripId = null,Object? userId = null,Object? currentTab = null,Object? checklists = null,Object? todolists = null,Object? newItemContent = null,Object? message = freezed,Object? pageState = null,Object? isLoading = null,Object? togglingChecklistIds = null,Object? togglingTodoIds = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? tripId = null,Object? userId = null,Object? currentTab = null,Object? checklists = null,Object? todolists = null,Object? newItemContent = null,Object? message = freezed,Object? pageState = null,Object? isLoading = null,Object? togglingChecklistIds = null,Object? togglingTodoIds = null,Object? isAiLoading = null,Object? isAiOpened = null,Object? aiRecommendations = null,}) {
   return _then(_ListsState(
 tripId: null == tripId ? _self.tripId : tripId // ignore: cast_nullable_to_non_nullable
 as int,userId: null == userId ? _self.userId : userId // ignore: cast_nullable_to_non_nullable
@@ -334,7 +346,10 @@ as String?,pageState: null == pageState ? _self.pageState : pageState // ignore:
 as ListsPageState,isLoading: null == isLoading ? _self.isLoading : isLoading // ignore: cast_nullable_to_non_nullable
 as bool,togglingChecklistIds: null == togglingChecklistIds ? _self._togglingChecklistIds : togglingChecklistIds // ignore: cast_nullable_to_non_nullable
 as Set<int>,togglingTodoIds: null == togglingTodoIds ? _self._togglingTodoIds : togglingTodoIds // ignore: cast_nullable_to_non_nullable
-as Set<int>,
+as Set<int>,isAiLoading: null == isAiLoading ? _self.isAiLoading : isAiLoading // ignore: cast_nullable_to_non_nullable
+as bool,isAiOpened: null == isAiOpened ? _self.isAiOpened : isAiOpened // ignore: cast_nullable_to_non_nullable
+as bool,aiRecommendations: null == aiRecommendations ? _self._aiRecommendations : aiRecommendations // ignore: cast_nullable_to_non_nullable
+as List<String>,
   ));
 }
 
