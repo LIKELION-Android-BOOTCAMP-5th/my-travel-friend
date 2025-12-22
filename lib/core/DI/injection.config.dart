@@ -201,6 +201,8 @@ import '../../feature/onboarding/domain/usecases/get_onboarding_pages_usecase.da
     as _i196;
 import '../../feature/onboarding/domain/usecases/reset_onboarding_usecase.dart'
     as _i137;
+import '../../feature/onboarding/presentation/viewmodels/onboarding_bloc.dart'
+    as _i135;
 import '../../feature/schedule/data/datasources/schedule_data_source.dart'
     as _i334;
 import '../../feature/schedule/data/datasources/schedule_data_source_impl.dart'
@@ -596,6 +598,12 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.lazySingleton<_i945.CheckNicknameDuplicateUseCase>(
       () => _i945.CheckNicknameDuplicateUseCase(gh<_i565.ProfileRepository>()),
+    );
+    gh.factory<_i135.OnboardingBloc>(
+      () => _i135.OnboardingBloc(
+        gh<_i196.GetOnboardingPagesUseCase>(),
+        gh<_i471.CompleteOnboardingUseCase>(),
+      ),
     );
     gh.lazySingleton<_i91.GetChatUseCase>(
       () => _i91.GetChatUseCase(gh<_i167.ChatRepository>()),
