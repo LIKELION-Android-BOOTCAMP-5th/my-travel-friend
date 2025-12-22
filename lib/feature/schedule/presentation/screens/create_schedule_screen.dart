@@ -9,6 +9,7 @@ import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_font.dart';
 import '../../../../core/widget/app_bar.dart';
 import '../../../../core/widget/pop_up_box.dart';
+import '../coachmarks/create_schedule_coach_mark.dart';
 import '../viewmodels/create_schedule/create_schedule_bloc.dart';
 import '../viewmodels/create_schedule/create_schedule_event.dart';
 import '../viewmodels/create_schedule/create_schedule_state.dart';
@@ -33,9 +34,13 @@ class _CreateScheduleScreenState extends State<CreateScheduleScreen> {
   final _memoController = TextEditingController();
   final _placeController = TextEditingController();
 
+  late final CreateScheduleCoachMark _coachMark;
+
   @override
   void initState() {
     super.initState();
+
+    _coachMark = CreateScheduleCoachMark();
 
     // ✅ Bloc 초기 상태를 기반으로 controller 초기값 세팅
     final state = context.read<CreateScheduleBloc>().state;
@@ -43,6 +48,14 @@ class _CreateScheduleScreenState extends State<CreateScheduleScreen> {
     _titleController.text = state.title ?? '';
     _memoController.text = state.description ?? '';
     _placeController.text = state.place ?? '';
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Future.delayed(const Duration(milliseconds: 300), () {
+        if (mounted) {
+          _coachMark.show(context);
+        }
+      });
+    });
   }
 
   @override
@@ -125,6 +138,7 @@ class _CreateScheduleScreenState extends State<CreateScheduleScreen> {
                 ),
                 actions: [
                   Button(
+                    key: _coachMark.searchButtonKey,
                     icon: const Icon(AppIcon.search),
                     onTap: () async {
                       final result = await context.push<PlaceCandidate>(
@@ -174,6 +188,7 @@ class _CreateScheduleScreenState extends State<CreateScheduleScreen> {
                           _sectionTitle('일정 제목'),
                           const SizedBox(height: 8),
                           TextBox(
+                            key: _coachMark.titleKey,
                             controller: _titleController,
                             hintText: '예: 성산일출봉 방문',
                             onChanged: (v) {
@@ -188,6 +203,7 @@ class _CreateScheduleScreenState extends State<CreateScheduleScreen> {
                           _sectionTitle('날짜'),
                           const SizedBox(height: 8),
                           Row(
+                            key: _coachMark.dateTimeKey,
                             children: [
                               Expanded(
                                 child: _pickerBox(
@@ -243,6 +259,7 @@ class _CreateScheduleScreenState extends State<CreateScheduleScreen> {
                           _sectionTitle('장소'),
                           const SizedBox(height: 8),
                           TextBox(
+                            key: _coachMark.placeKey,
                             controller: _placeController,
                             hintText: '예: 제주 성산읍',
                             prefixIcon: const Icon(AppIcon.mapPin),
@@ -274,6 +291,7 @@ class _CreateScheduleScreenState extends State<CreateScheduleScreen> {
                           _sectionTitle('카테고리'),
                           const SizedBox(height: 8),
                           Wrap(
+                            key: _coachMark.categoryKey,
                             spacing: 8,
                             runSpacing: 8,
                             children: [
@@ -292,7 +310,10 @@ class _CreateScheduleScreenState extends State<CreateScheduleScreen> {
 
                           _sectionTitle('함께하는 크루원'),
                           const SizedBox(height: 8),
-                          _buildMembersSection(state),
+                          Container(
+                            key: _coachMark.memberKey,
+                            child: _buildMembersSection(state),
+                          ),
 
                           if (state.selectedScheduleCrew.isNotEmpty) ...[
                             const SizedBox(height: 8),
@@ -325,6 +346,7 @@ class _CreateScheduleScreenState extends State<CreateScheduleScreen> {
                               const SizedBox(width: 12),
                               Expanded(
                                 child: Button(
+                                  key: _coachMark.saveButtonKey,
                                   text: '저장',
                                   onTap: state.isValid
                                       ? () {
