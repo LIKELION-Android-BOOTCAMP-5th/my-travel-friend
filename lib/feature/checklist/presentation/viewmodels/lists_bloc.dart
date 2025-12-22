@@ -340,7 +340,7 @@ class ListsBloc extends Bloc<ListsEvent, ListsState> {
     String? place;
 
     try {
-      // 1️⃣ 여행 정보 조회
+      //여행 정보 조회
       final tripResult = await _getTripByIdUseCase(state.tripId);
 
       tripResult.when(
@@ -359,14 +359,14 @@ class ListsBloc extends Bloc<ListsEvent, ListsState> {
         return;
       }
 
-      // 2️⃣ 프롬프트 생성
+      //  프롬프트 생성
       final prompt = _buildAiPrompt(
         tab: state.currentTab,
         country: country!,
         place: place!,
       );
 
-      // 3️⃣ Gemini 호출
+      // Gemini 호출
       final response = await _model.generateContent([Content.text(prompt)]);
 
       final raw = response.text ?? '';
@@ -377,7 +377,7 @@ class ListsBloc extends Bloc<ListsEvent, ListsState> {
           .where((e) => e.isNotEmpty)
           .toList();
 
-      // 4️⃣ 기존 항목 제거
+      // 기존 항목 제거
       final existing = state.currentTab == ListsTab.checklist
           ? state.checklists.map((e) => e.content).toSet()
           : state.todolists.map((e) => e.content).toSet();
@@ -396,38 +396,43 @@ class ListsBloc extends Bloc<ListsEvent, ListsState> {
     }
   }
 
-  //AI 용 프롬포트
+  //AI용 프롬포트
   String _buildAiPrompt({
     required ListsTab tab,
-    required String country,
+    String? country,
     required String place,
   }) {
+    final safePlace = place.trim();
+
+    // country가 있을 때 / 없을 때 문장 분기
+    final travelSentence = (country != null && country.trim().isNotEmpty)
+        ? '곧 ${country.trim()}의 $safePlace로 여행을 간다.'
+        : '곧 $safePlace로 여행을 간다.';
+
     if (tab == ListsTab.checklist) {
       return '''
 나는 한국인이다.
-곧 $country의 $place로 여행을 간다.
+$travelSentence
 
-이 여행을 위해 챙기면 좋은 "물품"만 알려줘.
+이 여행을 위해 챙기면 좋은 "물품" 5~7개만 알려줘.
 
- 반드시 지켜야 할 규칙:
-- 설명 문장 쓰지 말 것
-- 제목 쓰지 말 것
+규칙:
+- 설명/제목 없이
+- 한 줄에 하나
 - ':' 포함 문장 쓰지 말 것
-- 한 줄에 하나의 항목만
 - 기호(*, -, 숫자) 없이 단어 형태로
 ''';
     } else {
       return '''
 나는 한국인이다.
-곧 $country의 $place로 여행을 간다.
+$travelSentence
 
-이 여행을 위해 미리 해야 할 "할 일"만 알려줘.
+이 여행을 위해 미리 해야 할 "할 일" 5~7개만 알려줘.
 
-반드시 지켜야 할 규칙:
-- 설명 문장 쓰지 말 것
-- 제목 쓰지 말 것
+규칙:
+- 설명/제목 없이
+- 한 줄에 하나
 - ':' 포함 문장 쓰지 말 것
-- 한 줄에 하나의 할 일만
 - 기호(*, -, 숫자) 없이 짧은 문장으로
 ''';
     }
