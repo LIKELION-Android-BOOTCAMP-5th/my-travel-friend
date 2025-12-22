@@ -7,6 +7,12 @@ import '../theme/app_icon.dart';
 // -> 추후 라우팅 필요
 
 class BottomNavigation extends StatelessWidget {
+  final GlobalKey? homeKey;
+  final GlobalKey? scheduleKey;
+  final GlobalKey? checklistKey;
+  final GlobalKey? diaryKey;
+  final GlobalKey? talkKey;
+
   final int currentIndex;
   final Function(int) onTap;
   final int chatUnreadCount;
@@ -16,6 +22,11 @@ class BottomNavigation extends StatelessWidget {
     required this.currentIndex,
     required this.onTap,
     this.chatUnreadCount = 0,
+    this.homeKey,
+    this.scheduleKey,
+    this.checklistKey,
+    this.diaryKey,
+    this.talkKey,
   });
 
   @override
@@ -37,24 +48,24 @@ class BottomNavigation extends StatelessWidget {
         backgroundColor: colorScheme.surfaceContainerHighest,
         type: BottomNavigationBarType.fixed,
         items: [
-          const BottomNavigationBarItem(
-            icon: Icon(AppIcon.home),
+          BottomNavigationBarItem(
+            icon: Icon(AppIcon.home, key: homeKey),
             label: '여행 홈',
           ),
-          const BottomNavigationBarItem(
-            icon: Icon(AppIcon.calendar),
+          BottomNavigationBarItem(
+            icon: Icon(AppIcon.calendar, key: scheduleKey),
             label: '스케줄',
           ),
-          const BottomNavigationBarItem(
-            icon: Icon(AppIcon.checklist),
+          BottomNavigationBarItem(
+            icon: Icon(AppIcon.checklist, key: checklistKey),
             label: '체크리스트',
           ),
-          const BottomNavigationBarItem(
-            icon: Icon(AppIcon.diary),
+          BottomNavigationBarItem(
+            icon: Icon(AppIcon.diary, key: diaryKey),
             label: '다이어리',
           ),
           BottomNavigationBarItem(
-            icon: _buildChatIcon(colorScheme),
+            icon: _buildChatIcon(colorScheme, talkKey!),
             label: '톡톡',
           ),
         ],
@@ -63,11 +74,12 @@ class BottomNavigation extends StatelessWidget {
   }
 
   // 채팅 아이콘 + 배지
-  Widget _buildChatIcon(ColorScheme colorScheme) {
+  Widget _buildChatIcon(ColorScheme colorScheme, GlobalKey key) {
     return Stack(
+      key: key,
       clipBehavior: Clip.none,
       children: [
-        const Icon(AppIcon.talk),
+        Icon(AppIcon.talk),
         if (chatUnreadCount > 0)
           Positioned(
             right: -6,

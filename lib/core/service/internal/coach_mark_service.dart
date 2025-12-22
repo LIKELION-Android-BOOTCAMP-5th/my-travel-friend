@@ -13,6 +13,7 @@ class CoachMarkService {
 
   // SharedPreferences 키
   static const String _tripListKey = 'coach_mark_trip_list';
+  static const String _tripTabsKey = 'coach_mark_trip_tabs';
   static const String _tripHomeKey = 'coach_mark_trip_home';
   static const String _scheduleKey = 'coach_mark_schedule';
   static const String _diaryKey = 'coach_mark_diary';
@@ -24,6 +25,8 @@ class CoachMarkService {
 
   bool shouldShowTripListCoachMark() =>
       !(_prefs.getBool(_tripListKey) ?? false);
+  bool shouldShowTripTabsCoachMark() =>
+      !(_prefs.getBool(_tripTabsKey) ?? false);
   bool shouldShowTripHomeCoachMark() =>
       !(_prefs.getBool(_tripHomeKey) ?? false);
   bool shouldShowScheduleCoachMark() =>
@@ -36,6 +39,10 @@ class CoachMarkService {
 
   Future<void> completeTripListCoachMark() async {
     await _prefs.setBool(_tripListKey, true);
+  }
+
+  Future<void> completeTripTabsCoachMark() async {
+    await _prefs.setBool(_tripTabsKey, true);
   }
 
   Future<void> completeTripHomeCoachMark() async {

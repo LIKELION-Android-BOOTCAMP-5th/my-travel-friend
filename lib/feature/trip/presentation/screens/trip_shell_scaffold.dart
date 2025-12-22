@@ -18,6 +18,7 @@ import '../../../chat/presentation/viewmodels/chat_unread/chat_unread_bloc.dart'
 import '../../../chat/presentation/viewmodels/chat_unread/chat_unread_event.dart';
 import '../../../chat/presentation/viewmodels/chat_unread/chat_unread_state.dart';
 import '../../domain/entities/trip_entity.dart';
+import '../coachmarks/trip_shell_coach_mark.dart';
 import '../viewmodels/trip_detail/trip_detail_bloc.dart';
 import '../viewmodels/trip_detail/trip_detail_event.dart';
 import '../viewmodels/trip_detail/trip_detail_state.dart';
@@ -33,12 +34,16 @@ class TripShellScaffold extends StatefulWidget {
 }
 
 class _TripShellScaffoldState extends State<TripShellScaffold> {
+  late final TripShellCoachMark _coachMark;
+  bool _coachMarkShown = false;
+
   late final ChatUnreadBloc _chatUnreadBloc;
 
   @override
   void initState() {
     super.initState();
     _chatUnreadBloc = GetIt.instance<ChatUnreadBloc>();
+    _coachMark = TripShellCoachMark();
   }
 
   @override
@@ -46,6 +51,17 @@ class _TripShellScaffoldState extends State<TripShellScaffold> {
     _chatUnreadBloc.add(const StopUnreadSubscription());
     _chatUnreadBloc.close();
     super.dispose();
+  }
+
+  void _showCoachMarkIfNeeded() {
+    if (_coachMarkShown) return;
+    _coachMarkShown = true;
+
+    Future.delayed(const Duration(milliseconds: 800), () {
+      if (mounted) {
+        _coachMark.show(context);
+      }
+    });
   }
 
   @override
@@ -77,6 +93,7 @@ class _TripShellScaffoldState extends State<TripShellScaffold> {
                 ),
               );
             }
+            _showCoachMarkIfNeeded();
           }
         },
         builder: (context, state) {
@@ -161,6 +178,11 @@ class _TripShellScaffoldState extends State<TripShellScaffold> {
                   currentIndex: currentIndex,
                   onTap: (index) => _onNavTap(context, index, tripId),
                   chatUnreadCount: showBadge ? unreadState.unreadCount : 0,
+                  homeKey: _coachMark.homeTabKey,
+                  scheduleKey: _coachMark.scheduleTabKey,
+                  checklistKey: _coachMark.checklistTabKey,
+                  diaryKey: _coachMark.diaryTabKey,
+                  talkKey: _coachMark.talkTabKey,
                 ),
               );
             },
