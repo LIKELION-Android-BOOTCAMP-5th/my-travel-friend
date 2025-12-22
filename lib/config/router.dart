@@ -28,11 +28,12 @@ import '../feature/diary/presentation/viewmodels/new_diary/new_diary_bloc.dart';
 import '../feature/friend/presentation/screen/friend_bloc_widget.dart';
 import '../feature/friend/presentation/screen/friend_request_bloc_widget.dart';
 import '../feature/friend/presentation/screen/recevice_list_bloc_widget.dart';
+import '../feature/friend/presentation/screen/recevice_trip_bloc_widget.dart';
+import '../feature/onboarding/presentation/screens/onboarding_bloc_widget.dart';
 import '../feature/schedule/domain/entities/schedule_entity.dart';
 import '../feature/schedule/presentation/screens/create_schedule_bloc_widget.dart';
 import '../feature/schedule/presentation/screens/edit_schedule_bloc_widget.dart';
 import '../feature/schedule/presentation/screens/map_search_bloc_widget.dart';
-import '../feature/friend/presentation/screen/recevice_trip_bloc_widget.dart';
 import '../feature/setting/presentation/screens/alarm/alarm_setting_bloc_widget.dart';
 import '../feature/setting/presentation/screens/profile/profile_bloc_widget.dart';
 import '../feature/setting/presentation/screens/theme/theme_bloc_widget.dart';
@@ -108,6 +109,12 @@ class AppRouter {
         builder: (context, state) => const SplashScreen(),
       ),
       GoRoute(path: '/', builder: (context, state) => TripBlocWidget()),
+
+      // 온보딩 화면 (새로 추가)
+      GoRoute(
+        path: '/onboarding',
+        builder: (context, state) => const OnboardingBlocWidget(),
+      ),
 
       GoRoute(
         path: '/login',

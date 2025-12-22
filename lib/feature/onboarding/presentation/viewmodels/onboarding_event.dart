@@ -15,7 +15,7 @@ abstract class OnboardingEvent with _$OnboardingEvent {
   const factory OnboardingEvent.prevPage() = PrevPage;
 
   // 특정 페이지로 이동
-  const factory OnboardingEvent.goTopage({required int pageIndex}) = GoToPage;
+  const factory OnboardingEvent.goToPage({required int pageIndex}) = GoToPage;
 
   // 건너뛰기
   const factory OnboardingEvent.skip() = Skip;
