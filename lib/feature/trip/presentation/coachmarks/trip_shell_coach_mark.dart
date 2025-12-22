@@ -4,6 +4,7 @@ import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
 
 import '../../../../core/service/internal/coach_mark_service.dart';
 
+// [이재은] 네비게이션 코치마크
 class TripShellCoachMark {
   final CoachMarkService _coachMarkService;
 
@@ -18,10 +19,10 @@ class TripShellCoachMark {
     : _coachMarkService =
           coachMarkService ?? GetIt.instance<CoachMarkService>();
 
-  /// 코치마크 표시 여부 (TripHome 코치마크와 별개)
+  // 코치마크 표시 여부 (TripHome 코치마크와 별개)
   bool get shouldShow => _coachMarkService.shouldShowTripHomeCoachMark();
 
-  /// 코치마크 표시
+  // 코치마크 표시
   void show(BuildContext context) {
     if (!shouldShow) return;
 

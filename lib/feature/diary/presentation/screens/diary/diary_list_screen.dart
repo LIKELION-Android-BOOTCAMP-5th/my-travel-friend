@@ -8,6 +8,7 @@ import '../../../../../core/theme/app_font.dart';
 import '../../../../../core/theme/app_icon.dart';
 import '../../../../../core/widget/floating_button.dart';
 import '../../../domain/entities/diary_entity.dart';
+import '../../coachmarks/diary_coach_mark.dart';
 import '../../viewmodels/diary/diary_bloc.dart';
 import '../../viewmodels/diary/diary_event.dart';
 import '../../viewmodels/diary/diary_state.dart';
@@ -38,6 +39,8 @@ class _DiaryListScreenState extends State<DiaryListScreen> {
   // 무한 스크롤을 위한 컨트롤러
   late ScrollController _scrollController;
 
+  late final DiaryCoachMark _coachMark;
+
   static const List<String?> _filterTypes = [
     null,
     'MEMO',
@@ -52,6 +55,16 @@ class _DiaryListScreenState extends State<DiaryListScreen> {
     super.initState();
     _scrollController = ScrollController();
     _scrollController.addListener(_onScroll);
+
+    _coachMark = DiaryCoachMark();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Future.delayed(const Duration(milliseconds: 300), () {
+        if (mounted) {
+          _coachMark.show(context);
+        }
+      });
+    });
   }
 
   @override
@@ -114,6 +127,7 @@ class _DiaryListScreenState extends State<DiaryListScreen> {
           ),
         ),
         floatingActionButton: FloatingButton(
+          key: _coachMark.fabKey,
           icon: Icon(AppIcon.plus, color: AppColors.light),
           backgroundColor: AppColors.secondary,
           onPressed: () {
@@ -179,6 +193,7 @@ class _DiaryListScreenState extends State<DiaryListScreen> {
             // 공유 다이어리 탭
             Expanded(
               child: PublicTab(
+                key: _coachMark.sharedTabKey,
                 label: '공유 다이어리',
                 isSelected: !state.isMyDiaries,
                 onTap: () {
@@ -192,6 +207,7 @@ class _DiaryListScreenState extends State<DiaryListScreen> {
             // 내 다이어리 탭
             Expanded(
               child: PublicTab(
+                key: _coachMark.myTabKey,
                 label: '내 다이어리',
                 isSelected: state.isMyDiaries,
                 onTap: () {
@@ -216,6 +232,7 @@ class _DiaryListScreenState extends State<DiaryListScreen> {
       buildWhen: (prev, curr) => prev.currentFilter != curr.currentFilter,
       builder: (context, state) {
         return SingleChildScrollView(
+          key: _coachMark.filterKey,
           scrollDirection: Axis.horizontal,
           child: Row(
             children: List.generate(_filterTypes.length, (index) {
@@ -263,6 +280,7 @@ class _DiaryListScreenState extends State<DiaryListScreen> {
         }
 
         return RefreshIndicator(
+          key: _coachMark.listKey,
           onRefresh: () async {
             context.read<DiaryBloc>().add(const DiaryEvent.refresh());
           },
@@ -305,6 +323,7 @@ class _DiaryListScreenState extends State<DiaryListScreen> {
     final colorScheme = Theme.of(context).colorScheme;
 
     return Center(
+      key: _coachMark.listKey,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [

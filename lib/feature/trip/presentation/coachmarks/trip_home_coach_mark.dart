@@ -3,6 +3,7 @@ import 'package:get_it/get_it.dart';
 import 'package:my_travel_friend/core/service/internal/coach_mark_service.dart';
 import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
 
+// [이재은] 여행홈 코치마크
 class TripHomeCoachMark {
   final CoachMarkService _coachMarkService;
 

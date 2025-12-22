@@ -4,23 +4,23 @@ import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
 
 import '../../../../core/service/internal/coach_mark_service.dart';
 
-// [이재은] 체크리스트 화면 코치마크
-class ChecklistCoachMark {
+// [이재은] 다이어리 화면 코치마크
+class DiaryCoachMark {
   final CoachMarkService _coachMarkService;
 
   // GlobalKey들
-  final GlobalKey checklistTabKey = GlobalKey();
-  final GlobalKey todoTabKey = GlobalKey();
-  final GlobalKey progressKey = GlobalKey();
+  final GlobalKey sharedTabKey = GlobalKey();
+  final GlobalKey myTabKey = GlobalKey();
+  final GlobalKey filterKey = GlobalKey();
   final GlobalKey listKey = GlobalKey();
   final GlobalKey fabKey = GlobalKey();
 
-  ChecklistCoachMark({CoachMarkService? coachMarkService})
+  DiaryCoachMark({CoachMarkService? coachMarkService})
     : _coachMarkService =
           coachMarkService ?? GetIt.instance<CoachMarkService>();
 
   // 코치마크 표시 여부
-  bool get shouldShow => _coachMarkService.shouldShowChecklistCoachMark();
+  bool get shouldShow => _coachMarkService.shouldShowDiaryCoachMark();
 
   // 코치마크 표시
   void show(BuildContext context) {
@@ -28,65 +28,65 @@ class ChecklistCoachMark {
 
     final targets = <TargetFocus>[];
 
-    // 챙길 것
-    if (checklistTabKey.currentContext != null) {
+    // 1. 공유 다이어리 탭
+    if (sharedTabKey.currentContext != null) {
       targets.add(
         _coachMarkService.createTarget(
-          key: checklistTabKey,
-          title: '챙길 것',
-          description: '여행에 필요한 짐을 체크하세요.\n추가할 것은 없는지 AI에게 물어볼 수도 있어요',
+          key: sharedTabKey,
+          title: '공유 다이어리',
+          description: '크루 전체가 작성한 다이어리를 확인하세요.\n함께 여행의 추억을 공유해요.',
           align: ContentAlign.bottom,
           alignSkip: Alignment.topRight,
         ),
       );
     }
 
-    // 해야 할 것
-    if (todoTabKey.currentContext != null) {
+    // 2. 내 다이어리 탭
+    if (myTabKey.currentContext != null) {
       targets.add(
         _coachMarkService.createTarget(
-          key: todoTabKey,
-          title: '해야 할 것',
-          description: '여행 전 해야 할 일을 관리하세요.\n환전, 예약 확인 등을 체크할 수 있어요.',
+          key: myTabKey,
+          title: '내 다이어리',
+          description: '내가 작성한 다이어리만 모아볼 수 있어요\n비공개한 비밀다이어리는 여기서 볼 수 있어요',
           align: ContentAlign.bottom,
           alignSkip: Alignment.topRight,
         ),
       );
     }
 
-    // 진행률
-    if (progressKey.currentContext != null) {
+    // 3. 필터
+    if (filterKey.currentContext != null) {
       targets.add(
         _coachMarkService.createTarget(
-          key: progressKey,
-          title: '진행률',
-          description: '얼마나 준비했는지 한 눈에 확인하세요.',
+          key: filterKey,
+          title: '카테고리 필터',
+          description: '메모, 리뷰, 사진, 소비 등\n원하는 유형만 골라서 볼 수 있어요.',
           align: ContentAlign.bottom,
           alignSkip: Alignment.topRight,
         ),
       );
     }
 
-    // 리스트
+    // 4. 리스트
     if (listKey.currentContext != null) {
       targets.add(
         _coachMarkService.createTarget(
           key: listKey,
-          title: '체크리스트',
-          description: '항목을 탭하면 체크할 수 있어요.\n언제든지 삭제하고 다시 추가할 수 있어요',
+          title: '다이어리 목록',
+          description: '다이어리를 탭하면 상세 내용을 볼 수 있어요.',
           align: ContentAlign.top,
           alignSkip: Alignment.topRight,
         ),
       );
     }
 
-    // FAB
+    // 5. FAB
     if (fabKey.currentContext != null) {
       targets.add(
         _coachMarkService.createTarget(
           key: fabKey,
-          title: '항목 추가',
-          description: '새로운 항목을 추가하세요.',
+          title: '다이어리 작성하기',
+          description: '새로운 다이어리를 작성하세요.\n메모, 리뷰, 사진, 소비 내역을 남길 수 있어요.',
           align: ContentAlign.top,
           shape: ShapeLightFocus.Circle,
           alignSkip: Alignment.topRight,
@@ -99,8 +99,8 @@ class ChecklistCoachMark {
     _coachMarkService.showCoachMark(
       context: context,
       targets: targets,
-      onFinish: () => _coachMarkService.completeChecklistCoachMark(),
-      onSkip: () => _coachMarkService.completeChecklistCoachMark(),
+      onFinish: () => _coachMarkService.completeDiaryCoachMark(),
+      onSkip: () => _coachMarkService.completeDiaryCoachMark(),
     );
   }
 }
