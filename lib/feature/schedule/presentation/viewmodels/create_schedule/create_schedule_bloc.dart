@@ -6,6 +6,7 @@ import 'package:injectable/injectable.dart';
 import 'package:my_travel_friend/core/extension/failure_extension.dart';
 import 'package:my_travel_friend/core/result/result.dart';
 
+import '../../../../auth/domain/entities/user_entity.dart';
 import '../../../../trip/domain/usecases/get_trip_by_id_usecase.dart';
 import '../../../domain/entities/schedule_entity.dart';
 import '../../../domain/usecases/create_schedule_usecase.dart';
@@ -48,7 +49,7 @@ class CreateScheduleBloc
     Emitter<CreateScheduleState> emit,
   ) async {
     // 1️⃣ tripId 세팅
-    emit(state.copyWith(tripId: event.tripId));
+    emit(state.copyWith(tripId: event.tripId, userId: event.userId));
 
     // 2️⃣ 여행 정보 가져오기
     final result = await _getTripByIdUseCase(event.tripId);
@@ -218,10 +219,23 @@ class CreateScheduleBloc
 
     result.when(
       success: (members) {
+        UserEntity? me;
+        try {
+          me = members.firstWhere((m) => m.id == state.userId);
+        } catch (_) {
+          me = null;
+        }
+
         emit(
           state.copyWith(
             tripMembers: members,
+
+            selectedScheduleCrew: me != null ? [me] : [],
+
             pageState: CreateSchedulepageState.loaded,
+            isValid: _validate(
+              state.copyWith(selectedScheduleCrew: me != null ? [me] : []),
+            ),
           ),
         );
       },

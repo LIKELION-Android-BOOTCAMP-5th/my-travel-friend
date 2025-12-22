@@ -21,7 +21,7 @@ abstract class CreateScheduleState with _$CreateScheduleState {
     double? lat,
     double? lng,
     bool? isPlaceSelected,
-
+    int? userId,
     //  메모
     String? description,
     @Default(false) bool isValid,

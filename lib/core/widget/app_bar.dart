@@ -79,7 +79,7 @@ class CustomButtonAppBar extends StatelessWidget
             /// 오른쪽 액션 버튼들
             ...actions.map(
               (btn) =>
-                  Padding(padding: const EdgeInsets.only(left: 6), child: btn),
+                  Padding(padding: const EdgeInsets.only(left: 10), child: btn),
             ),
           ],
         ),
