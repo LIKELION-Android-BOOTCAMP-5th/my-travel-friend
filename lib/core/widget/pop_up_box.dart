@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 import '../theme/app_colors.dart';
 import '../theme/app_font.dart';
@@ -14,7 +15,7 @@ class PopUpBox extends StatelessWidget {
   final VoidCallback? onRight; // 오른쪽 버튼 콜백
 
   final bool showIcon;
-  final Color iconColor;
+  final Color? iconColor;
   final IconData icon;
 
   final Color leftButtonColor;
@@ -33,7 +34,7 @@ class PopUpBox extends StatelessWidget {
 
     // 아이콘 관련
     this.showIcon = true,
-    this.iconColor = const Color(0xfff27b7b),
+    this.iconColor,
     this.icon = Icons.abc,
 
     // 버튼 색상 관련
@@ -45,13 +46,13 @@ class PopUpBox extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final colorScheme = Theme.of(context).colorScheme;
-    final isDark = colorScheme.brightness == Brightness.dark;
+    final cs = Theme.of(context).colorScheme;
+    final isDark = cs.brightness == Brightness.dark;
     return Center(
       child: ConstrainedBox(
         constraints: const BoxConstraints(maxWidth: 340, minWidth: 260),
         child: Material(
-          color: colorScheme.surfaceContainerHighest, //배경 컬러
+          color: cs.surfaceContainerHighest, //배경 컬러
           elevation: 12,
           borderRadius: BorderRadius.circular(20),
           child: Padding(
@@ -65,11 +66,13 @@ class PopUpBox extends StatelessWidget {
                     height: 80,
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
-                      color: iconColor.withOpacity(0.15), //아이콘 배경
+                      color: iconColor != null
+                          ? iconColor?.withValues(alpha: 0.15)
+                          : cs.secondary.withValues(alpha: 0.15), //아이콘 배경
                     ),
                     child: Icon(
                       icon,
-                      color: iconColor, //아이콘 컬러
+                      color: iconColor ?? cs.secondary, //아이콘 컬러
                       size: 48,
                     ),
                   ),
@@ -79,7 +82,7 @@ class PopUpBox extends StatelessWidget {
                 /// 제목
                 Text(
                   title,
-                  style: AppFont.medium.copyWith(color: colorScheme.onSurface),
+                  style: AppFont.regularBold.copyWith(color: cs.onSurface),
                   textAlign: TextAlign.center,
                 ),
 
@@ -88,7 +91,7 @@ class PopUpBox extends StatelessWidget {
                 /// 내용
                 Text(
                   message,
-                  style: AppFont.regular.copyWith(color: colorScheme.onSurface),
+                  style: AppFont.regular.copyWith(color: cs.onSurface),
                   textAlign: TextAlign.center,
                 ),
 
@@ -102,7 +105,7 @@ class PopUpBox extends StatelessWidget {
                         height: 44,
                         child: TextButton(
                           onPressed: () {
-                            Navigator.of(context).pop();
+                            context.pop();
                             onLeft?.call();
                           },
                           style: TextButton.styleFrom(
@@ -116,7 +119,7 @@ class PopUpBox extends StatelessWidget {
                           child: Text(
                             leftText,
                             style: AppFont.regular.copyWith(
-                              color: isDark ? AppColors.light : AppColors.dark,
+                              color: cs.onInverseSurface,
                             ),
                           ),
                         ),

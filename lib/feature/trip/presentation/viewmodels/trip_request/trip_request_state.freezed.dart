@@ -16,7 +16,9 @@ mixin _$TripRequestState {
 
  List<TripRequestEntity> get tripRequests;// 받은 초대 목록
  List<TripEntity> get invitedTrips;//id로 조회한 여행들
- String? get message; String? get errorType; String? get actionType; TripRequestPageState get pageState;
+// 이미 초대한 targetId 목록
+ Set<int> get pendingTargetIds;/// 이 trip의 크루 유저 id 목록
+ Set<int> get crewUserIds; String? get message; String? get errorType; String? get actionType; TripRequestPageState get pageState;
 /// Create a copy of TripRequestState
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -27,16 +29,16 @@ $TripRequestStateCopyWith<TripRequestState> get copyWith => _$TripRequestStateCo
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is TripRequestState&&const DeepCollectionEquality().equals(other.tripRequests, tripRequests)&&const DeepCollectionEquality().equals(other.invitedTrips, invitedTrips)&&(identical(other.message, message) || other.message == message)&&(identical(other.errorType, errorType) || other.errorType == errorType)&&(identical(other.actionType, actionType) || other.actionType == actionType)&&(identical(other.pageState, pageState) || other.pageState == pageState));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is TripRequestState&&const DeepCollectionEquality().equals(other.tripRequests, tripRequests)&&const DeepCollectionEquality().equals(other.invitedTrips, invitedTrips)&&const DeepCollectionEquality().equals(other.pendingTargetIds, pendingTargetIds)&&const DeepCollectionEquality().equals(other.crewUserIds, crewUserIds)&&(identical(other.message, message) || other.message == message)&&(identical(other.errorType, errorType) || other.errorType == errorType)&&(identical(other.actionType, actionType) || other.actionType == actionType)&&(identical(other.pageState, pageState) || other.pageState == pageState));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(tripRequests),const DeepCollectionEquality().hash(invitedTrips),message,errorType,actionType,pageState);
+int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(tripRequests),const DeepCollectionEquality().hash(invitedTrips),const DeepCollectionEquality().hash(pendingTargetIds),const DeepCollectionEquality().hash(crewUserIds),message,errorType,actionType,pageState);
 
 @override
 String toString() {
-  return 'TripRequestState(tripRequests: $tripRequests, invitedTrips: $invitedTrips, message: $message, errorType: $errorType, actionType: $actionType, pageState: $pageState)';
+  return 'TripRequestState(tripRequests: $tripRequests, invitedTrips: $invitedTrips, pendingTargetIds: $pendingTargetIds, crewUserIds: $crewUserIds, message: $message, errorType: $errorType, actionType: $actionType, pageState: $pageState)';
 }
 
 
@@ -47,7 +49,7 @@ abstract mixin class $TripRequestStateCopyWith<$Res>  {
   factory $TripRequestStateCopyWith(TripRequestState value, $Res Function(TripRequestState) _then) = _$TripRequestStateCopyWithImpl;
 @useResult
 $Res call({
- List<TripRequestEntity> tripRequests, List<TripEntity> invitedTrips, String? message, String? errorType, String? actionType, TripRequestPageState pageState
+ List<TripRequestEntity> tripRequests, List<TripEntity> invitedTrips, Set<int> pendingTargetIds, Set<int> crewUserIds, String? message, String? errorType, String? actionType, TripRequestPageState pageState
 });
 
 
@@ -64,11 +66,13 @@ class _$TripRequestStateCopyWithImpl<$Res>
 
 /// Create a copy of TripRequestState
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? tripRequests = null,Object? invitedTrips = null,Object? message = freezed,Object? errorType = freezed,Object? actionType = freezed,Object? pageState = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? tripRequests = null,Object? invitedTrips = null,Object? pendingTargetIds = null,Object? crewUserIds = null,Object? message = freezed,Object? errorType = freezed,Object? actionType = freezed,Object? pageState = null,}) {
   return _then(_self.copyWith(
 tripRequests: null == tripRequests ? _self.tripRequests : tripRequests // ignore: cast_nullable_to_non_nullable
 as List<TripRequestEntity>,invitedTrips: null == invitedTrips ? _self.invitedTrips : invitedTrips // ignore: cast_nullable_to_non_nullable
-as List<TripEntity>,message: freezed == message ? _self.message : message // ignore: cast_nullable_to_non_nullable
+as List<TripEntity>,pendingTargetIds: null == pendingTargetIds ? _self.pendingTargetIds : pendingTargetIds // ignore: cast_nullable_to_non_nullable
+as Set<int>,crewUserIds: null == crewUserIds ? _self.crewUserIds : crewUserIds // ignore: cast_nullable_to_non_nullable
+as Set<int>,message: freezed == message ? _self.message : message // ignore: cast_nullable_to_non_nullable
 as String?,errorType: freezed == errorType ? _self.errorType : errorType // ignore: cast_nullable_to_non_nullable
 as String?,actionType: freezed == actionType ? _self.actionType : actionType // ignore: cast_nullable_to_non_nullable
 as String?,pageState: null == pageState ? _self.pageState : pageState // ignore: cast_nullable_to_non_nullable
@@ -157,10 +161,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( List<TripRequestEntity> tripRequests,  List<TripEntity> invitedTrips,  String? message,  String? errorType,  String? actionType,  TripRequestPageState pageState)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( List<TripRequestEntity> tripRequests,  List<TripEntity> invitedTrips,  Set<int> pendingTargetIds,  Set<int> crewUserIds,  String? message,  String? errorType,  String? actionType,  TripRequestPageState pageState)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _TripRequestState() when $default != null:
-return $default(_that.tripRequests,_that.invitedTrips,_that.message,_that.errorType,_that.actionType,_that.pageState);case _:
+return $default(_that.tripRequests,_that.invitedTrips,_that.pendingTargetIds,_that.crewUserIds,_that.message,_that.errorType,_that.actionType,_that.pageState);case _:
   return orElse();
 
 }
@@ -178,10 +182,10 @@ return $default(_that.tripRequests,_that.invitedTrips,_that.message,_that.errorT
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( List<TripRequestEntity> tripRequests,  List<TripEntity> invitedTrips,  String? message,  String? errorType,  String? actionType,  TripRequestPageState pageState)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( List<TripRequestEntity> tripRequests,  List<TripEntity> invitedTrips,  Set<int> pendingTargetIds,  Set<int> crewUserIds,  String? message,  String? errorType,  String? actionType,  TripRequestPageState pageState)  $default,) {final _that = this;
 switch (_that) {
 case _TripRequestState():
-return $default(_that.tripRequests,_that.invitedTrips,_that.message,_that.errorType,_that.actionType,_that.pageState);case _:
+return $default(_that.tripRequests,_that.invitedTrips,_that.pendingTargetIds,_that.crewUserIds,_that.message,_that.errorType,_that.actionType,_that.pageState);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -198,10 +202,10 @@ return $default(_that.tripRequests,_that.invitedTrips,_that.message,_that.errorT
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( List<TripRequestEntity> tripRequests,  List<TripEntity> invitedTrips,  String? message,  String? errorType,  String? actionType,  TripRequestPageState pageState)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( List<TripRequestEntity> tripRequests,  List<TripEntity> invitedTrips,  Set<int> pendingTargetIds,  Set<int> crewUserIds,  String? message,  String? errorType,  String? actionType,  TripRequestPageState pageState)?  $default,) {final _that = this;
 switch (_that) {
 case _TripRequestState() when $default != null:
-return $default(_that.tripRequests,_that.invitedTrips,_that.message,_that.errorType,_that.actionType,_that.pageState);case _:
+return $default(_that.tripRequests,_that.invitedTrips,_that.pendingTargetIds,_that.crewUserIds,_that.message,_that.errorType,_that.actionType,_that.pageState);case _:
   return null;
 
 }
@@ -213,7 +217,7 @@ return $default(_that.tripRequests,_that.invitedTrips,_that.message,_that.errorT
 
 
 class _TripRequestState implements TripRequestState {
-  const _TripRequestState({final  List<TripRequestEntity> tripRequests = const [], final  List<TripEntity> invitedTrips = const [], this.message, this.errorType, this.actionType, this.pageState = TripRequestPageState.init}): _tripRequests = tripRequests,_invitedTrips = invitedTrips;
+  const _TripRequestState({final  List<TripRequestEntity> tripRequests = const [], final  List<TripEntity> invitedTrips = const [], final  Set<int> pendingTargetIds = const <int>{}, final  Set<int> crewUserIds = const <int>{}, this.message, this.errorType, this.actionType, this.pageState = TripRequestPageState.init}): _tripRequests = tripRequests,_invitedTrips = invitedTrips,_pendingTargetIds = pendingTargetIds,_crewUserIds = crewUserIds;
   
 
  final  List<TripRequestEntity> _tripRequests;
@@ -233,6 +237,25 @@ class _TripRequestState implements TripRequestState {
 }
 
 //id로 조회한 여행들
+// 이미 초대한 targetId 목록
+ final  Set<int> _pendingTargetIds;
+//id로 조회한 여행들
+// 이미 초대한 targetId 목록
+@override@JsonKey() Set<int> get pendingTargetIds {
+  if (_pendingTargetIds is EqualUnmodifiableSetView) return _pendingTargetIds;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableSetView(_pendingTargetIds);
+}
+
+/// 이 trip의 크루 유저 id 목록
+ final  Set<int> _crewUserIds;
+/// 이 trip의 크루 유저 id 목록
+@override@JsonKey() Set<int> get crewUserIds {
+  if (_crewUserIds is EqualUnmodifiableSetView) return _crewUserIds;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableSetView(_crewUserIds);
+}
+
 @override final  String? message;
 @override final  String? errorType;
 @override final  String? actionType;
@@ -248,16 +271,16 @@ _$TripRequestStateCopyWith<_TripRequestState> get copyWith => __$TripRequestStat
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _TripRequestState&&const DeepCollectionEquality().equals(other._tripRequests, _tripRequests)&&const DeepCollectionEquality().equals(other._invitedTrips, _invitedTrips)&&(identical(other.message, message) || other.message == message)&&(identical(other.errorType, errorType) || other.errorType == errorType)&&(identical(other.actionType, actionType) || other.actionType == actionType)&&(identical(other.pageState, pageState) || other.pageState == pageState));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _TripRequestState&&const DeepCollectionEquality().equals(other._tripRequests, _tripRequests)&&const DeepCollectionEquality().equals(other._invitedTrips, _invitedTrips)&&const DeepCollectionEquality().equals(other._pendingTargetIds, _pendingTargetIds)&&const DeepCollectionEquality().equals(other._crewUserIds, _crewUserIds)&&(identical(other.message, message) || other.message == message)&&(identical(other.errorType, errorType) || other.errorType == errorType)&&(identical(other.actionType, actionType) || other.actionType == actionType)&&(identical(other.pageState, pageState) || other.pageState == pageState));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(_tripRequests),const DeepCollectionEquality().hash(_invitedTrips),message,errorType,actionType,pageState);
+int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(_tripRequests),const DeepCollectionEquality().hash(_invitedTrips),const DeepCollectionEquality().hash(_pendingTargetIds),const DeepCollectionEquality().hash(_crewUserIds),message,errorType,actionType,pageState);
 
 @override
 String toString() {
-  return 'TripRequestState(tripRequests: $tripRequests, invitedTrips: $invitedTrips, message: $message, errorType: $errorType, actionType: $actionType, pageState: $pageState)';
+  return 'TripRequestState(tripRequests: $tripRequests, invitedTrips: $invitedTrips, pendingTargetIds: $pendingTargetIds, crewUserIds: $crewUserIds, message: $message, errorType: $errorType, actionType: $actionType, pageState: $pageState)';
 }
 
 
@@ -268,7 +291,7 @@ abstract mixin class _$TripRequestStateCopyWith<$Res> implements $TripRequestSta
   factory _$TripRequestStateCopyWith(_TripRequestState value, $Res Function(_TripRequestState) _then) = __$TripRequestStateCopyWithImpl;
 @override @useResult
 $Res call({
- List<TripRequestEntity> tripRequests, List<TripEntity> invitedTrips, String? message, String? errorType, String? actionType, TripRequestPageState pageState
+ List<TripRequestEntity> tripRequests, List<TripEntity> invitedTrips, Set<int> pendingTargetIds, Set<int> crewUserIds, String? message, String? errorType, String? actionType, TripRequestPageState pageState
 });
 
 
@@ -285,11 +308,13 @@ class __$TripRequestStateCopyWithImpl<$Res>
 
 /// Create a copy of TripRequestState
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? tripRequests = null,Object? invitedTrips = null,Object? message = freezed,Object? errorType = freezed,Object? actionType = freezed,Object? pageState = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? tripRequests = null,Object? invitedTrips = null,Object? pendingTargetIds = null,Object? crewUserIds = null,Object? message = freezed,Object? errorType = freezed,Object? actionType = freezed,Object? pageState = null,}) {
   return _then(_TripRequestState(
 tripRequests: null == tripRequests ? _self._tripRequests : tripRequests // ignore: cast_nullable_to_non_nullable
 as List<TripRequestEntity>,invitedTrips: null == invitedTrips ? _self._invitedTrips : invitedTrips // ignore: cast_nullable_to_non_nullable
-as List<TripEntity>,message: freezed == message ? _self.message : message // ignore: cast_nullable_to_non_nullable
+as List<TripEntity>,pendingTargetIds: null == pendingTargetIds ? _self._pendingTargetIds : pendingTargetIds // ignore: cast_nullable_to_non_nullable
+as Set<int>,crewUserIds: null == crewUserIds ? _self._crewUserIds : crewUserIds // ignore: cast_nullable_to_non_nullable
+as Set<int>,message: freezed == message ? _self.message : message // ignore: cast_nullable_to_non_nullable
 as String?,errorType: freezed == errorType ? _self.errorType : errorType // ignore: cast_nullable_to_non_nullable
 as String?,actionType: freezed == actionType ? _self.actionType : actionType // ignore: cast_nullable_to_non_nullable
 as String?,pageState: null == pageState ? _self.pageState : pageState // ignore: cast_nullable_to_non_nullable

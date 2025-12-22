@@ -10,6 +10,8 @@ import '../../../domain/entities/trip_entity.dart';
 import '../../../domain/usecases/accept_trip_request_usecase.dart';
 import '../../../domain/usecases/create_trip_request_usecase.dart';
 import '../../../domain/usecases/delete_trip_request_usecase.dart';
+import '../../../domain/usecases/get_trip_crew_usecase.dart';
+import '../../../domain/usecases/get_trip_invite_pending_usecase.dart';
 import 'trip_request_event.dart';
 import 'trip_request_state.dart';
 
@@ -21,6 +23,8 @@ class TripRequestBloc extends Bloc<TripRequestEvent, TripRequestState> {
   final AddTripUsecase _addTripUsecase;
   final GetTripRequestUsecase _getTripRequestUsecase;
   final GetTripByIdUseCase _getTripByIdUseCase;
+  final GetTripInvitePendingUsecase _getTripInvitePendingUsecase;
+  final GetTripCrewUsecase _getTripCrewUsecase;
 
   TripRequestBloc(
     this._createUsecase,
@@ -29,11 +33,14 @@ class TripRequestBloc extends Bloc<TripRequestEvent, TripRequestState> {
     this._addTripUsecase,
     this._getTripRequestUsecase,
     this._getTripByIdUseCase,
+    this._getTripInvitePendingUsecase,
+    this._getTripCrewUsecase,
   ) : super(const TripRequestState()) {
     on<CreateTripRequest>(_onCreateTripRequest);
     on<AcceptTripRequest>(_onAcceptTripRequest);
     on<DeleteTripRequest>(_onDeleteTripRequest);
     on<GetTripRequest>(_onGetTripRequest);
+    on<GetInviteExcludes>(_onGetInviteExcludes);
   }
 
   // 조회
@@ -102,11 +109,13 @@ class TripRequestBloc extends Bloc<TripRequestEvent, TripRequestState> {
       event.targetId,
       event.tripId,
     );
+    final updatedPending = {...state.pendingTargetIds, event.targetId};
 
     result.when(
       success: (_) {
         emit(
           state.copyWith(
+            pendingTargetIds: updatedPending,
             pageState: TripRequestPageState.success,
             message: '여행 초대를 보냈어요',
             actionType: 'create',
@@ -138,7 +147,7 @@ class TripRequestBloc extends Bloc<TripRequestEvent, TripRequestState> {
     await acceptRes.when(
       success: (_) async {
         // trip_crew insert
-        final addRes = await _addTripUsecase(event.myUserId, event.tripId);
+        final addRes = await _addTripUsecase(event.tripId, event.myUserId);
 
         addRes.when(
           success: (_) {
@@ -228,6 +237,63 @@ class TripRequestBloc extends Bloc<TripRequestEvent, TripRequestState> {
           ),
         );
       },
+    );
+  }
+
+  // 이미 리스트
+  Future<void> _onGetInviteExcludes(
+    GetInviteExcludes event,
+    Emitter<TripRequestState> emit,
+  ) async {
+    emit(state.copyWith(pageState: TripRequestPageState.loading));
+
+    debugPrint('📌 [GetInviteExcludes] tripId=${event.tripId}');
+
+    final pendingRes = await _getTripInvitePendingUsecase(event.tripId);
+    final crewRes = await _getTripCrewUsecase(event.tripId);
+
+    pendingRes.when(
+      success: (pendingList) {
+        crewRes.when(
+          success: (crewList) {
+            final pendingTargetIds = pendingList
+                .map((e) => e.targetId)
+                .whereType<int>()
+                .toSet();
+            final crewUserIds = crewList
+                .map((e) => e.memberId)
+                .whereType<int>()
+                .toSet();
+
+            debugPrint(
+              '✅ pendingTargetIds=${pendingTargetIds.length} $pendingTargetIds',
+            );
+            debugPrint('✅ crewUserIds=${crewUserIds.length} $crewUserIds');
+
+            emit(
+              state.copyWith(
+                pendingTargetIds: pendingTargetIds,
+                crewUserIds: crewUserIds,
+                pageState: TripRequestPageState.loaded,
+              ),
+            );
+          },
+          failure: (f) => emit(
+            state.copyWith(
+              pageState: TripRequestPageState.error,
+              message: f.message,
+              actionType: 'get_invite_excludes',
+            ),
+          ),
+        );
+      },
+      failure: (f) => emit(
+        state.copyWith(
+          pageState: TripRequestPageState.error,
+          message: f.message,
+          actionType: 'get_invite_excludes',
+        ),
+      ),
     );
   }
 }

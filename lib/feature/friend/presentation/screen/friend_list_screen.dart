@@ -155,7 +155,7 @@ class FriendListScreen extends StatelessWidget {
                                     return PopUpBox(
                                       title: '함께 여행가기',
                                       message:
-                                          '${user.nickname}님과 함게 여행을 떠나보세요',
+                                          '${user.nickname}님과 \n함께 여행을 떠나보세요',
                                       leftText: '새로운 여행 계획',
                                       rightText: '내 여행에 초대',
                                       icon: AppIcon.airplane,

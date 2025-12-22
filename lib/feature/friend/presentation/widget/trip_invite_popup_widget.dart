@@ -7,6 +7,7 @@ import '../../../trip/domain/entities/trip_entity.dart';
 import '../../../trip/presentation/viewmodels/trip/trip_bloc.dart';
 import '../../../trip/presentation/viewmodels/trip_request/trip_request_bloc.dart';
 import '../../../trip/presentation/viewmodels/trip_request/trip_request_event.dart';
+import '../../../trip/presentation/viewmodels/trip_request/trip_request_state.dart'; // ✅ 추가
 
 class TripInvitePopUp extends StatelessWidget {
   final int myUserId;
@@ -31,6 +32,7 @@ class TripInvitePopUp extends StatelessWidget {
   Widget build(BuildContext context) {
     final cs = Theme.of(context).colorScheme;
     final tripState = context.watch<TripBloc>().state;
+    final trState = context.watch<TripRequestBloc>().state; // ✅ 추가
 
     final trips = (tripState.trips ?? <TripEntity>[]);
 
@@ -92,7 +94,20 @@ class TripInvitePopUp extends StatelessWidget {
                             final isSelected = (trip.id == selectedId);
 
                             return GestureDetector(
-                              onTap: () => _selectedTripId.value = trip.id,
+                              onTap: () {
+                                final id = trip.id;
+                                if (id == null) return;
+
+                                // ✅ 선택한 trip 저장
+                                _selectedTripId.value = id;
+
+                                // ✅ 여기서 excludes 로딩 (pending + crew)
+                                context.read<TripRequestBloc>().add(
+                                  TripRequestEvent.getInviteExcludes(
+                                    tripId: id,
+                                  ),
+                                );
+                              },
                               child: AnimatedContainer(
                                 duration: const Duration(milliseconds: 120),
                                 padding: const EdgeInsets.symmetric(
@@ -102,7 +117,6 @@ class TripInvitePopUp extends StatelessWidget {
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(18),
 
-                                  //이미지 아니면 색
                                   image:
                                       trip.coverType == "IMAGE" &&
                                           trip.coverImg != null
@@ -138,7 +152,6 @@ class TripInvitePopUp extends StatelessWidget {
                                           ),
                                         ),
                                       ),
-
                                     Column(
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
@@ -193,13 +206,87 @@ class TripInvitePopUp extends StatelessWidget {
                     ),
             ),
 
-            const SizedBox(height: 16),
+            const SizedBox(height: 12),
+
+            // 선택된 trip 기준으로 "이미 초대/이미 크루" 안내 문구
+            ValueListenableBuilder<int?>(
+              valueListenable: _selectedTripId,
+              builder: (context, selectedId, _) {
+                if (selectedId == null) return const SizedBox.shrink();
+
+                final isPending = trState.pendingTargetIds.contains(
+                  targetUserId,
+                );
+                final isCrew = trState.crewUserIds.contains(targetUserId);
+
+                // excludes가 아직 로딩 중이면 안내 안 띄움(헷갈리니까)
+                if (trState.pageState == TripRequestPageState.loading &&
+                    trState.actionType == 'get_invite_excludes') {
+                  return Padding(
+                    padding: const EdgeInsets.only(bottom: 8),
+                    child: Row(
+                      children: [
+                        SizedBox(
+                          width: 14,
+                          height: 14,
+                          child: CircularProgressIndicator(
+                            strokeWidth: 2,
+                            color: cs.primary,
+                          ),
+                        ),
+                        const SizedBox(width: 8),
+                        Text(
+                          '초대 가능 여부 확인 중...',
+                          style: Theme.of(context).textTheme.bodySmall
+                              ?.copyWith(color: cs.onSurfaceVariant),
+                        ),
+                      ],
+                    ),
+                  );
+                }
+
+                if (!isPending && !isCrew) return const SizedBox.shrink();
+
+                return Padding(
+                  padding: const EdgeInsets.only(bottom: 8),
+                  child: Row(
+                    children: [
+                      Icon(AppIcon.alert, size: 16, color: cs.error),
+                      const SizedBox(width: 6),
+                      Expanded(
+                        child: Text(
+                          isCrew ? '이미 이 여행의 크루원이에요' : '이미 초대가 진행 중이에요',
+                          style: Theme.of(
+                            context,
+                          ).textTheme.bodySmall?.copyWith(color: cs.error),
+                        ),
+                      ),
+                    ],
+                  ),
+                );
+              },
+            ),
+
+            const SizedBox(height: 8),
 
             // 하단 버튼
             ValueListenableBuilder<int?>(
               valueListenable: _selectedTripId,
               builder: (context, selectedId, _) {
-                final enabled = selectedId != null;
+                final hasTripSelected = selectedId != null;
+
+                final isPending = trState.pendingTargetIds.contains(
+                  targetUserId,
+                );
+                final isCrew = trState.crewUserIds.contains(targetUserId);
+                final blocked = hasTripSelected && (isPending || isCrew);
+
+                final checking =
+                    hasTripSelected &&
+                    trState.pageState == TripRequestPageState.loading &&
+                    trState.actionType == 'get_invite_excludes';
+
+                final enabled = hasTripSelected && !blocked && !checking;
 
                 return Row(
                   children: [
@@ -228,7 +315,6 @@ class TripInvitePopUp extends StatelessWidget {
                         child: TextButton(
                           onPressed: enabled
                               ? () {
-                                  // TripRequest 생성 이벤트 보내기
                                   context.read<TripRequestBloc>().add(
                                     TripRequestEvent.createTripRequest(
                                       requestId: myUserId,
@@ -248,7 +334,11 @@ class TripInvitePopUp extends StatelessWidget {
                             ),
                           ),
                           child: Text(
-                            '초대하기',
+                            checking
+                                ? '확인중...'
+                                : blocked
+                                ? (isCrew ? '이미 크루' : '초대 진행중')
+                                : '초대하기',
                             style: TextStyle(
                               color: enabled ? AppColors.lessLight : cs.outline,
                             ),

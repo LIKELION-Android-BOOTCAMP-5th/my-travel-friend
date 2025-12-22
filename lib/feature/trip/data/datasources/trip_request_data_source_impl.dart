@@ -12,7 +12,6 @@ class TripRequestDataSourceImpl implements TripRequestDataSource {
   TripRequestDataSourceImpl(this._supabaseClient);
 
   static const String _table = 'trip_request';
-  static const String _trip = 'trip_crew';
 
   //요청 목록 가져오기
   @override
@@ -92,16 +91,22 @@ class TripRequestDataSourceImpl implements TripRequestDataSource {
     }
   }
 
-  // trip
+  // 이미 보낸 요청
   @override
-  Future<Result<void>> addTrip(int myId, int tripId) async {
+  Future<Result<List<TripRequestDto>>> getPendingInvites(int tripId) async {
     try {
-      await _supabaseClient.from(_trip).insert({
-        'member_id': myId,
-        'trip_id': tripId,
-      });
+      final res = await _supabaseClient
+          .from(_table)
+          .select()
+          .eq('trip_id', tripId)
+          .isFilter('answered_at', null)
+          .order('created_at', ascending: false);
 
-      return const Result.success(null);
+      final list = (res as List)
+          .map((e) => TripRequestDto.fromJson(e as Map<String, dynamic>))
+          .toList();
+
+      return Result.success(list);
     } catch (e) {
       return Result.failure(Failure.serverFailure(message: e.toString()));
     }

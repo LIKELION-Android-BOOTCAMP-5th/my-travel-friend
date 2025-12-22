@@ -1,15 +1,15 @@
 import 'package:injectable/injectable.dart';
 
 import '../../../../core/result/result.dart';
-import '../repositories/trip_request_repository.dart';
+import '../repositories/trip_crew_repository.dart';
 
 @LazySingleton()
 class AddTripUsecase {
-  final TripRequestRepository _repo;
+  final TripCrewRepository _repo;
 
   AddTripUsecase(this._repo);
 
-  Future<Result<void>> call(int myId, int tripId) {
-    return _repo.addTrip(myId, tripId);
+  Future<Result<void>> call(int tripId, int memberId) {
+    return _repo.addTrip(tripId, memberId);
   }
 }

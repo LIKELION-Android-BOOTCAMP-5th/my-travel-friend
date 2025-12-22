@@ -27,21 +27,6 @@ class TripRequestRepositoryImpl implements TripRequestRepository {
     );
   }
 
-  //trip
-  @override
-  Future<Result<void>> addTrip(int myId, int tripId) async {
-    final result = await _dataSource.addTrip(myId, tripId);
-
-    return result.when(
-      success: (_) {
-        return Result.success(null);
-      },
-      failure: (failure) {
-        return Result.failure(failure);
-      },
-    );
-  }
-
   /// 여행 초대하기
   @override
   Future<Result<TripRequestEntity>> createTripRequest(
@@ -84,6 +69,18 @@ class TripRequestRepositoryImpl implements TripRequestRepository {
     return result.when(
       success: (_) => const Result.success(null),
       failure: (failure) => Result.failure(failure),
+    );
+  }
+
+  //이미 리스트
+  @override
+  Future<Result<List<TripRequestEntity>>> getPendingInvites(int tripId) async {
+    final result = await _dataSource.getPendingInvites(tripId);
+
+    return result.when(
+      success: (dtoList) =>
+          Result.success(dtoList.map((e) => e.toEntity()).toList()),
+      failure: (f) => Result.failure(f),
     );
   }
 }

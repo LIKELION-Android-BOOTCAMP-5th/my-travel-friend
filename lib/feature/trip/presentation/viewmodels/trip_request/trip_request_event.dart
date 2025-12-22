@@ -34,4 +34,8 @@ class TripRequestEvent with _$TripRequestEvent {
 
   const factory TripRequestEvent.getTripsByIds({required List<int> tripIds}) =
       GetTripsByIds;
+
+  // 초대 제외 리스트 (이미 리스트)
+  const factory TripRequestEvent.getInviteExcludes({required int tripId}) =
+      GetInviteExcludes;
 }

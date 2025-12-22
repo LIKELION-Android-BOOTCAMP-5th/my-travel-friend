@@ -55,14 +55,14 @@ extension OnboardingEventPatterns on OnboardingEvent {
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( Initialize value)?  initialize,TResult Function( NextPage value)?  nextPage,TResult Function( PrevPage value)?  prevPage,TResult Function( GoToPage value)?  goTopage,TResult Function( Skip value)?  skip,TResult Function( Complete value)?  complete,required TResult orElse(),}){
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( Initialize value)?  initialize,TResult Function( NextPage value)?  nextPage,TResult Function( PrevPage value)?  prevPage,TResult Function( GoToPage value)?  goToPage,TResult Function( Skip value)?  skip,TResult Function( Complete value)?  complete,required TResult orElse(),}){
 final _that = this;
 switch (_that) {
 case Initialize() when initialize != null:
 return initialize(_that);case NextPage() when nextPage != null:
 return nextPage(_that);case PrevPage() when prevPage != null:
-return prevPage(_that);case GoToPage() when goTopage != null:
-return goTopage(_that);case Skip() when skip != null:
+return prevPage(_that);case GoToPage() when goToPage != null:
+return goToPage(_that);case Skip() when skip != null:
 return skip(_that);case Complete() when complete != null:
 return complete(_that);case _:
   return orElse();
@@ -82,14 +82,14 @@ return complete(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( Initialize value)  initialize,required TResult Function( NextPage value)  nextPage,required TResult Function( PrevPage value)  prevPage,required TResult Function( GoToPage value)  goTopage,required TResult Function( Skip value)  skip,required TResult Function( Complete value)  complete,}){
+@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( Initialize value)  initialize,required TResult Function( NextPage value)  nextPage,required TResult Function( PrevPage value)  prevPage,required TResult Function( GoToPage value)  goToPage,required TResult Function( Skip value)  skip,required TResult Function( Complete value)  complete,}){
 final _that = this;
 switch (_that) {
 case Initialize():
 return initialize(_that);case NextPage():
 return nextPage(_that);case PrevPage():
 return prevPage(_that);case GoToPage():
-return goTopage(_that);case Skip():
+return goToPage(_that);case Skip():
 return skip(_that);case Complete():
 return complete(_that);case _:
   throw StateError('Unexpected subclass');
@@ -108,14 +108,14 @@ return complete(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( Initialize value)?  initialize,TResult? Function( NextPage value)?  nextPage,TResult? Function( PrevPage value)?  prevPage,TResult? Function( GoToPage value)?  goTopage,TResult? Function( Skip value)?  skip,TResult? Function( Complete value)?  complete,}){
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( Initialize value)?  initialize,TResult? Function( NextPage value)?  nextPage,TResult? Function( PrevPage value)?  prevPage,TResult? Function( GoToPage value)?  goToPage,TResult? Function( Skip value)?  skip,TResult? Function( Complete value)?  complete,}){
 final _that = this;
 switch (_that) {
 case Initialize() when initialize != null:
 return initialize(_that);case NextPage() when nextPage != null:
 return nextPage(_that);case PrevPage() when prevPage != null:
-return prevPage(_that);case GoToPage() when goTopage != null:
-return goTopage(_that);case Skip() when skip != null:
+return prevPage(_that);case GoToPage() when goToPage != null:
+return goToPage(_that);case Skip() when skip != null:
 return skip(_that);case Complete() when complete != null:
 return complete(_that);case _:
   return null;
@@ -134,13 +134,13 @@ return complete(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  initialize,TResult Function()?  nextPage,TResult Function()?  prevPage,TResult Function( int pageIndex)?  goTopage,TResult Function()?  skip,TResult Function()?  complete,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  initialize,TResult Function()?  nextPage,TResult Function()?  prevPage,TResult Function( int pageIndex)?  goToPage,TResult Function()?  skip,TResult Function()?  complete,required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case Initialize() when initialize != null:
 return initialize();case NextPage() when nextPage != null:
 return nextPage();case PrevPage() when prevPage != null:
-return prevPage();case GoToPage() when goTopage != null:
-return goTopage(_that.pageIndex);case Skip() when skip != null:
+return prevPage();case GoToPage() when goToPage != null:
+return goToPage(_that.pageIndex);case Skip() when skip != null:
 return skip();case Complete() when complete != null:
 return complete();case _:
   return orElse();
@@ -160,13 +160,13 @@ return complete();case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  initialize,required TResult Function()  nextPage,required TResult Function()  prevPage,required TResult Function( int pageIndex)  goTopage,required TResult Function()  skip,required TResult Function()  complete,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  initialize,required TResult Function()  nextPage,required TResult Function()  prevPage,required TResult Function( int pageIndex)  goToPage,required TResult Function()  skip,required TResult Function()  complete,}) {final _that = this;
 switch (_that) {
 case Initialize():
 return initialize();case NextPage():
 return nextPage();case PrevPage():
 return prevPage();case GoToPage():
-return goTopage(_that.pageIndex);case Skip():
+return goToPage(_that.pageIndex);case Skip():
 return skip();case Complete():
 return complete();case _:
   throw StateError('Unexpected subclass');
@@ -185,13 +185,13 @@ return complete();case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  initialize,TResult? Function()?  nextPage,TResult? Function()?  prevPage,TResult? Function( int pageIndex)?  goTopage,TResult? Function()?  skip,TResult? Function()?  complete,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  initialize,TResult? Function()?  nextPage,TResult? Function()?  prevPage,TResult? Function( int pageIndex)?  goToPage,TResult? Function()?  skip,TResult? Function()?  complete,}) {final _that = this;
 switch (_that) {
 case Initialize() when initialize != null:
 return initialize();case NextPage() when nextPage != null:
 return nextPage();case PrevPage() when prevPage != null:
-return prevPage();case GoToPage() when goTopage != null:
-return goTopage(_that.pageIndex);case Skip() when skip != null:
+return prevPage();case GoToPage() when goToPage != null:
+return goToPage(_that.pageIndex);case Skip() when skip != null:
 return skip();case Complete() when complete != null:
 return complete();case _:
   return null;
@@ -325,7 +325,7 @@ int get hashCode => Object.hash(runtimeType,pageIndex);
 
 @override
 String toString() {
-  return 'OnboardingEvent.goTopage(pageIndex: $pageIndex)';
+  return 'OnboardingEvent.goToPage(pageIndex: $pageIndex)';
 }
 
 
