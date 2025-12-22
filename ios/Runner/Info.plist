@@ -72,5 +72,9 @@
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
 	</array>
+	<key>io.flutter.embedded_views_preview</key>
+    <true/>
+    <key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+    <string>지도 기능을 위해 위치 권한이 필요합니다.</string>
 </dict>
 </plist>

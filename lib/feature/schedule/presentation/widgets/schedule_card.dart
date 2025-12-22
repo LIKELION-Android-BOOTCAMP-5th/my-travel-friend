@@ -62,33 +62,44 @@ class _ScheduleCardState extends State<ScheduleCard> {
         children: [
           // 태그 + 수정/삭제 버튼
           Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Row(
-                children: [
-                  // 태그
-                  ScheduleCategoryTag(tagName: widget.tagName),
+              // 왼쪽: 태그 + 제목
+              Expanded(
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // 태그
+                    ScheduleCategoryTag(tagName: widget.tagName),
 
-                  SizedBox(width: 8),
-                  // 제목
-                  Text(
-                    widget.title,
-                    style: AppFont.medium.copyWith(
-                      color: isDark ? AppColors.light : AppColors.dark,
+                    const SizedBox(width: 8),
+
+                    // 제목
+                    Expanded(
+                      child: Text(
+                        widget.title,
+                        style: AppFont.medium.copyWith(
+                          color: isDark ? AppColors.light : AppColors.dark,
+                        ),
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                        softWrap: true,
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
+
+              const SizedBox(width: 8),
+
+              // 오른쪽: 아이콘 (절대 안 밀림)
               Row(
+                mainAxisSize: MainAxisSize.min,
                 children: [
-                  // 수정 아이콘
                   IconButton(
                     icon: const Icon(AppIcon.edit, size: 15),
                     onPressed: widget.onEdit,
                   ),
-
-                  // 삭제 아이콘
                   IconButton(
                     icon: const Icon(
                       AppIcon.delete,
@@ -121,7 +132,11 @@ class _ScheduleCardState extends State<ScheduleCard> {
               children: [
                 const Icon(AppIcon.mapPin, size: 13),
                 const SizedBox(width: 8),
-                Text(widget.place!),
+                Text(
+                  widget.place!,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                ),
               ],
             ),
 
