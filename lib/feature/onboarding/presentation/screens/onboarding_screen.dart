@@ -52,7 +52,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
           );
         }
         if (state.shouldNavigateToLogin) {
-          context.go('/login');
+          context.go('/home');
         }
       },
       builder: (context, state) {
@@ -157,7 +157,6 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
           );
         },
         errorBuilder: (context, error, stackTrace) {
-          print('❌ 이미지 로드 실패: $imagePath, 에러: $error');
           return Container(
             color: Colors.white,
             child: const Center(
