@@ -6,6 +6,7 @@ import '../../../../core/theme/app_font.dart';
 import '../../../../core/theme/app_icon.dart';
 import '../../../../core/widget/button.dart';
 import '../../../../core/widget/text_box.dart';
+import '../../../../core/widget/toast_pop.dart';
 import '../viewmodels/lists_bloc.dart';
 import '../viewmodels/lists_event.dart';
 import '../viewmodels/lists_state.dart';
@@ -80,7 +81,12 @@ class _AddItemPopUpState extends State<AddItemPopUp> {
                         ),
                       ),
                       IconButton(
-                        onPressed: () => Navigator.pop(context),
+                        onPressed: () {
+                          widget.bloc.add(
+                            const ListsEvent.resetAiRecommendation(),
+                          );
+                          Navigator.pop(context);
+                        },
                         icon: Icon(
                           AppIcon.close,
                           color: colorScheme.onSurfaceVariant,
@@ -165,10 +171,7 @@ class _AddItemPopUpState extends State<AddItemPopUp> {
                                   widget.bloc.add(
                                     ListsEvent.addFromAi(content: item),
                                   );
-                                  Navigator.pop(context);
-                                  widget.bloc.add(
-                                    const ListsEvent.resetAiRecommendation(),
-                                  );
+                                  ToastPop.show('항목이 추가되었습니다.');
                                 },
                               );
                             }).toList(),
