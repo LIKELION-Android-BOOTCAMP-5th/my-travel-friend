@@ -8,6 +8,7 @@ import 'package:my_travel_friend/feature/schedule/presentation/widgets/schedule_
 import '../../../../core/theme/app_icon.dart';
 import '../../../../core/widget/floating_button.dart';
 import '../../../trip/domain/entities/trip_entity.dart';
+import '../coachmarks/schedule_coach_mark.dart';
 import '../viewmodels/schedule/schedule_bloc.dart';
 import '../viewmodels/schedule/schedule_event.dart';
 import '../widgets/empty_schedule_care.dart';
@@ -24,9 +25,13 @@ class ScheduleScreen extends StatefulWidget {
 class _ScheduleScreenState extends State<ScheduleScreen> {
   final ScrollController _scroll = ScrollController();
 
+  late final ScheduleCoachMark _coachMark;
+
   @override
   void initState() {
     super.initState();
+
+    _coachMark = ScheduleCoachMark();
 
     // 무한스크롤
     _scroll.addListener(() {
@@ -35,6 +40,14 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
           ScheduleEvent.loadMore(tripId: widget.tripId),
         );
       }
+    });
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Future.delayed(const Duration(milliseconds: 500), () {
+        if (mounted) {
+          _coachMark.show(context);
+        }
+      });
     });
   }
 
@@ -45,6 +58,7 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
     return Scaffold(
       backgroundColor: isDark ? AppColors.navy : AppColors.darkGray,
       floatingActionButton: FloatingButton(
+        key: _coachMark.fabKey,
         icon: const Icon(AppIcon.plus),
         onPressed: () {
           context.read<ScheduleBloc>().add(
@@ -72,6 +86,7 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                     children: [
                       Expanded(
                         child: ScheduleTapButton(
+                          key: _coachMark.dateTabKey,
                           label: "일자별",
                           isSelected: isDateTab,
                           onTap: () =>
@@ -83,6 +98,7 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                       const SizedBox(width: 8),
                       Expanded(
                         child: ScheduleTapButton(
+                          key: _coachMark.categoryTabKey,
                           label: "카테고리별",
                           isSelected: !isDateTab,
                           onTap: () => bloc.add(
@@ -100,6 +116,7 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
 
                 // 2) 하위 탭 (전체 / 날짜 목록 / 카테고리 목록)
                 SizedBox(
+                  key: _coachMark.filterKey,
                   height: 50,
 
                   child: ListView(
@@ -163,6 +180,7 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
 
                 // 3) 본문 내용
                 Expanded(
+                  key: _coachMark.listKey,
                   child: state.visibleSchedules.isEmpty
                       ? Center(
                           child: EmptyScheduleCard(

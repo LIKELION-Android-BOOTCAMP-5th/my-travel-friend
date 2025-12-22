@@ -16,6 +16,7 @@ class CoachMarkService {
   static const String _tripTabsKey = 'coach_mark_trip_tabs';
   static const String _tripHomeKey = 'coach_mark_trip_home';
   static const String _scheduleKey = 'coach_mark_schedule';
+  static const String _createScheduleKey = 'coach_mark_create_schedule';
   static const String _diaryKey = 'coach_mark_diary';
   static const String _checklistKey = 'coach_mark_checklist';
 
@@ -31,6 +32,8 @@ class CoachMarkService {
       !(_prefs.getBool(_tripHomeKey) ?? false);
   bool shouldShowScheduleCoachMark() =>
       !(_prefs.getBool(_scheduleKey) ?? false);
+  bool shouldShowCreateScheduleCoachMark() =>
+      !(_prefs.getBool(_createScheduleKey) ?? false);
   bool shouldShowDiaryCoachMark() => !(_prefs.getBool(_diaryKey) ?? false);
   bool shouldShowChecklistCoachMark() =>
       !(_prefs.getBool(_checklistKey) ?? false);
@@ -53,6 +56,10 @@ class CoachMarkService {
     await _prefs.setBool(_scheduleKey, true);
   }
 
+  Future<void> completeCreateScheduleCoachMark() async {
+    await _prefs.setBool(_createScheduleKey, true);
+  }
+
   Future<void> completeDiaryCoachMark() async {
     await _prefs.setBool(_diaryKey, true);
   }
@@ -66,6 +73,7 @@ class CoachMarkService {
     await _prefs.remove(_tripListKey);
     await _prefs.remove(_tripHomeKey);
     await _prefs.remove(_scheduleKey);
+    await _prefs.remove(_createScheduleKey);
     await _prefs.remove(_diaryKey);
     await _prefs.remove(_checklistKey);
   }
