@@ -17,6 +17,7 @@ import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_icon.dart';
 import '../../../alarm/presentation/viewmodels/alarm_bloc.dart';
 import '../../../alarm/presentation/viewmodels/alarm_state.dart';
+import '../coachmarks/trip_list_coach_mark.dart';
 import '../viewmodels/trip/trip_bloc.dart';
 
 class TripListScreen extends StatefulWidget {
@@ -31,19 +32,31 @@ class _TripListScreenState extends State<TripListScreen> {
   final TextEditingController _searchController = TextEditingController();
   late final int userId;
 
+  late final TripListCoachMark _coachMark;
+
   @override
   void initState() {
     super.initState();
+
+    _coachMark = TripListCoachMark();
 
     final authState = context.read<AuthProfileBloc>().state;
     // 초기 userId 설정 (인증 상태를 확인하여)
     if (authState is AuthProfileAuthenticated) {
       userId = authState.userInfo.id!;
     } else {
-      userId = 0; // 안전한 기본값 설정 (실제 앱에서는 이전에 로딩 오버레이로 막혔을 것)
+      userId = 0; // 안전한 기본값 설정 (실제 앱에서는 이전에  로딩 오버레이로 막혔을 것)
     }
 
     _scrollController.addListener(_onScroll);
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Future.delayed(const Duration(milliseconds: 500), () {
+        if (mounted) {
+          _coachMark.show(context);
+        }
+      });
+    });
   }
 
   void _onScroll() {
@@ -185,13 +198,16 @@ class _TripListScreenState extends State<TripListScreen> {
                 onLogoTap: () {
                   debugPrint('홈 로고 클릭');
                 },
+                searchKey: _coachMark.searchKey,
                 onSearchTap: () {
                   tripBloc.add(TripEvent.toggleSearch());
                 },
                 searchIcon: isSearching ? AppIcon.close : AppIcon.search,
+                alarmKey: _coachMark.alarmKey,
                 onAlarmTap: () {
                   context.push('/alarm');
                 },
+                settingKey: _coachMark.settingKey,
                 onSettingTap: () {
                   context.push('/setting');
                 },
@@ -240,6 +256,7 @@ class _TripListScreenState extends State<TripListScreen> {
         ),
 
         floatingActionButton: FloatingButton(
+          key: _coachMark.fabKey,
           icon: const Icon(Icons.add, size: 34, color: AppColors.light),
           onPressed: () {
             tripBloc.add(TripEvent.createNewTrip());

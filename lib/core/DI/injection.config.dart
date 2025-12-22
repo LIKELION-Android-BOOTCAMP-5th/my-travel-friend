@@ -331,6 +331,7 @@ import '../../feature/trip/presentation/viewmodels/trip_home/trip_home_bloc.dart
     as _i575;
 import '../../feature/trip/presentation/viewmodels/trip_request/trip_request_bloc.dart'
     as _i197;
+import '../service/internal/coach_mark_service.dart' as _i302;
 import '../service/internal/deep_link_service.dart' as _i507;
 import '../service/internal/permission_service.dart' as _i213;
 import '../service/internal/push_notification_service.dart' as _i737;
@@ -375,6 +376,9 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i507.DeepLinkService>(() => _i507.DeepLinkService());
     gh.lazySingleton<_i213.PermissionService>(() => _i213.PermissionService());
     gh.lazySingleton<_i1026.ThemeService>(() => _i1026.ThemeService());
+    gh.lazySingleton<_i302.CoachMarkService>(
+      () => _i302.CoachMarkService(gh<_i460.SharedPreferences>()),
+    );
     gh.lazySingleton<_i278.AppleAuthDataSource>(
       () => _i45.AppleAuthDataSourceImpl(gh<_i454.SupabaseClient>()),
     );
