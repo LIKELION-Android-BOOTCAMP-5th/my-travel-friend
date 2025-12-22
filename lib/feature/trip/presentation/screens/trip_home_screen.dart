@@ -5,14 +5,36 @@ import 'package:my_travel_friend/core/theme/app_font.dart';
 import 'package:my_travel_friend/core/theme/app_icon.dart';
 
 import '../../../../core/widget/toast_pop.dart';
+import '../coachmarks/trip_home_coach_mark.dart';
 import '../viewmodels/trip_home/trip_home_bloc.dart';
 import '../viewmodels/trip_home/trip_home_event.dart';
 import '../viewmodels/trip_home/trip_home_state.dart';
 import '../viewmodels/trip_request/trip_request_bloc.dart';
 import '../viewmodels/trip_request/trip_request_event.dart';
 
-class TripHomeScreen extends StatelessWidget {
+class TripHomeScreen extends StatefulWidget {
   const TripHomeScreen({super.key});
+
+  @override
+  State<TripHomeScreen> createState() => _TripHomeScreenState();
+}
+
+class _TripHomeScreenState extends State<TripHomeScreen> {
+  late final TripHomeCoachMark _coachMark;
+
+  @override
+  void initState() {
+    super.initState();
+    _coachMark = TripHomeCoachMark();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Future.delayed(const Duration(milliseconds: 300), () {
+        if (mounted) {
+          _coachMark.show(context);
+        }
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +60,10 @@ class TripHomeScreen extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    _CrewSummaryCard(),
+                    _CrewSummaryCard(
+                      key: _coachMark.crewKey,
+                      inviteKey: _coachMark.inviteKey,
+                    ),
                     const SizedBox(height: 12),
 
                     AnimatedSize(
@@ -55,10 +80,10 @@ class TripHomeScreen extends StatelessWidget {
 
                     if (state.isCrewExpanded) const SizedBox(height: 16),
 
-                    _TripCalendar(),
+                    _TripCalendar(key: _coachMark.calendarKey),
                     const SizedBox(height: 16),
 
-                    const _ScheduleSection(),
+                    _ScheduleSection(key: _coachMark.scheduleKey),
                     const SizedBox(height: 16),
 
                     if (state.usefulPhrases.isNotEmpty) ...[
@@ -95,6 +120,10 @@ class TripHomeScreen extends StatelessWidget {
 // Crew
 // =======================
 class _CrewSummaryCard extends StatelessWidget {
+  final GlobalKey? inviteKey;
+
+  const _CrewSummaryCard({super.key, this.inviteKey});
+
   @override
   Widget build(BuildContext context) {
     final state = context.watch<TripHomeBloc>().state;
@@ -118,6 +147,7 @@ class _CrewSummaryCard extends StatelessWidget {
 
           // 친구 초대
           IconButton(
+            key: inviteKey,
             icon: Icon(
               AppIcon.invite,
               color: isDark ? AppColors.light : AppColors.dark,
@@ -192,6 +222,8 @@ class _CrewMemberList extends StatelessWidget {
 // Calendar (여행기간 제한)
 // =======================
 class _TripCalendar extends StatefulWidget {
+  const _TripCalendar({super.key});
+
   @override
   State<_TripCalendar> createState() => _TripCalendarState();
 }
@@ -457,7 +489,7 @@ class _DateCellNullable extends StatelessWidget {
 // Schedule
 // =======================
 class _ScheduleSection extends StatelessWidget {
-  const _ScheduleSection();
+  const _ScheduleSection({super.key});
 
   @override
   Widget build(BuildContext context) {

@@ -51,7 +51,7 @@ class _TripListScreenState extends State<TripListScreen> {
     _scrollController.addListener(_onScroll);
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      Future.delayed(const Duration(milliseconds: 500), () {
+      Future.delayed(const Duration(milliseconds: 300), () {
         if (mounted) {
           _coachMark.show(context);
         }
