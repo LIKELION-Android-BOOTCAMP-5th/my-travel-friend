@@ -14,6 +14,7 @@ class TripShellCoachMark {
   final GlobalKey checklistTabKey = GlobalKey();
   final GlobalKey diaryTabKey = GlobalKey();
   final GlobalKey talkTabKey = GlobalKey();
+  final GlobalKey menuButtonKey = GlobalKey();
 
   TripShellCoachMark({CoachMarkService? coachMarkService})
     : _coachMarkService =
@@ -27,6 +28,20 @@ class TripShellCoachMark {
     if (!shouldShow) return;
 
     final targets = <TargetFocus>[];
+
+    // 0. 메뉴 버튼 (가장 먼저!)
+    if (menuButtonKey.currentContext != null) {
+      targets.add(
+        _coachMarkService.createTarget(
+          key: menuButtonKey,
+          title: '여행 관리',
+          description: '여행 정보를 수정하거나\n여행을 포기할 수 있어요.',
+          align: ContentAlign.bottom,
+          shape: ShapeLightFocus.Circle,
+          alignSkip: Alignment.bottomRight,
+        ),
+      );
+    }
 
     // 1. 여행 홈 탭
     if (homeTabKey.currentContext != null) {

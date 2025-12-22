@@ -150,6 +150,7 @@ class _TripShellScaffoldState extends State<TripShellScaffold> {
                   leading: Button(
                     width: 40,
                     height: 40,
+                    key: _coachMark.menuButtonKey,
                     icon: Icon(AppIcon.back),
                     contentColor: isDark
                         ? colorScheme.onSurface
