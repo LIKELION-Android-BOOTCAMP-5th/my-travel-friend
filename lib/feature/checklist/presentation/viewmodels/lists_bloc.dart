@@ -1,3 +1,4 @@
+import 'package:firebase_ai/firebase_ai.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 import 'package:my_travel_friend/feature/checklist/domain/entities/checklist_entity.dart';
@@ -12,6 +13,7 @@ import 'package:my_travel_friend/feature/checklist/domain/usecases/toggle_todo_l
 import 'package:my_travel_friend/feature/checklist/presentation/viewmodels/lists_state.dart';
 
 import '../../../../core/result/result.dart';
+import '../../../trip/domain/usecases/get_trip_by_id_usecase.dart';
 import '../../domain/entities/todo_list_entity.dart';
 import 'lists_event.dart';
 
@@ -26,7 +28,10 @@ class ListsBloc extends Bloc<ListsEvent, ListsState> {
   final DeleteTodoListUseCase _deleteTodoListUseCase;
   final ToggleChecklistUseCase _toggleChecklistUseCase;
   final ToggleTodoListUseCase _toggleTodoListUseCase;
-
+  final GetTripByIdUseCase _getTripByIdUseCase;
+  final GenerativeModel _model = FirebaseAI.googleAI().generativeModel(
+    model: "gemini-2.5-flash",
+  );
   ListsBloc(
     this._getMyChecklistUseCase,
     this._getMyTodoListUseCase,
@@ -36,6 +41,7 @@ class ListsBloc extends Bloc<ListsEvent, ListsState> {
     this._deleteTodoListUseCase,
     this._toggleChecklistUseCase,
     this._toggleTodoListUseCase,
+    this._getTripByIdUseCase,
   ) : super(const ListsState()) {
     on<Load>(_onLoad);
     on<ChangeTab>(_onChangeTab);
@@ -46,6 +52,9 @@ class ListsBloc extends Bloc<ListsEvent, ListsState> {
     on<CreateTodoList>(_onCreateTodoList);
     on<DeleteTodoList>(_onDeleteTodoList);
     on<ToggleTodoList>(_onToggleTodoList);
+    on<RequestAiRecommendation>(_onRequestAiRecommendation);
+    on<AddFromAi>(_onAddFromAi);
+    on<ResetAiRecommendation>(_onResetAiRecommendation);
   }
 
   // 초기 로드
@@ -94,7 +103,15 @@ class ListsBloc extends Bloc<ListsEvent, ListsState> {
 
   // 탭 변경
   void _onChangeTab(ChangeTab event, Emitter<ListsState> emit) {
-    emit(state.copyWith(currentTab: event.tab, newItemContent: ''));
+    emit(
+      state.copyWith(
+        currentTab: event.tab,
+        newItemContent: '',
+        isAiOpened: false,
+        isAiLoading: false,
+        aiRecommendations: [],
+      ),
+    );
   }
 
   // 입력 필드 내용 변경
@@ -309,6 +326,150 @@ class ListsBloc extends Bloc<ListsEvent, ListsState> {
           ),
         );
       },
+    );
+  }
+
+  //AI 추천
+  Future<void> _onRequestAiRecommendation(
+    RequestAiRecommendation event,
+    Emitter<ListsState> emit,
+  ) async {
+    emit(state.copyWith(isAiLoading: true));
+
+    String? country;
+    String? place;
+
+    try {
+      //여행 정보 조회
+      final tripResult = await _getTripByIdUseCase(state.tripId);
+
+      tripResult.when(
+        success: (trip) {
+          country = trip.country;
+          place = trip.place;
+        },
+        failure: (_) {
+          country = null;
+          place = null;
+        },
+      );
+
+      if (country == null) {
+        emit(state.copyWith(isAiLoading: false));
+        return;
+      }
+
+      //  프롬프트 생성
+      final prompt = _buildAiPrompt(
+        tab: state.currentTab,
+        country: country!,
+        place: place!,
+      );
+
+      // Gemini 호출
+      final response = await _model.generateContent([Content.text(prompt)]);
+
+      final raw = response.text ?? '';
+
+      final aiItems = raw
+          .split('\n')
+          .map((e) => e.replaceAll(RegExp(r'^[*\-•\d\.\s]+'), '').trim())
+          .where((e) => e.isNotEmpty)
+          .toList();
+
+      // 기존 항목 제거
+      final existing = state.currentTab == ListsTab.checklist
+          ? state.checklists.map((e) => e.content).toSet()
+          : state.todolists.map((e) => e.content).toSet();
+
+      final filtered = aiItems.where((e) => !existing.contains(e)).toList();
+
+      emit(
+        state.copyWith(
+          isAiLoading: false,
+          isAiOpened: true,
+          aiRecommendations: filtered,
+        ),
+      );
+    } catch (_) {
+      emit(state.copyWith(isAiLoading: false));
+    }
+  }
+
+  //AI용 프롬포트
+  String _buildAiPrompt({
+    required ListsTab tab,
+    String? country,
+    required String place,
+  }) {
+    final safePlace = place.trim();
+
+    // country가 있을 때 / 없을 때 문장 분기
+    final travelSentence = (country != null && country.trim().isNotEmpty)
+        ? '곧 ${country.trim()}의 $safePlace로 여행을 간다.'
+        : '곧 $safePlace로 여행을 간다.';
+
+    if (tab == ListsTab.checklist) {
+      return '''
+나는 한국인이다.
+$travelSentence
+
+이 여행을 위해 챙기면 좋은 "물품" 5~7개만 알려줘.
+
+규칙:
+- 설명/제목 없이
+- 한 줄에 하나
+- ':' 포함 문장 쓰지 말 것
+- 기호(*, -, 숫자) 없이 단어 형태로
+''';
+    } else {
+      return '''
+나는 한국인이다.
+$travelSentence
+
+이 여행을 위해 미리 해야 할 "할 일" 5~7개만 알려줘.
+
+규칙:
+- 설명/제목 없이
+- 한 줄에 하나
+- ':' 포함 문장 쓰지 말 것
+- 기호(*, -, 숫자) 없이 짧은 문장으로
+''';
+    }
+  }
+
+  //AI 추천된거 추가하기
+  Future<void> _onAddFromAi(AddFromAi event, Emitter<ListsState> emit) async {
+    final content = event.content.trim();
+    if (content.isEmpty) return;
+
+    // 기존 생성 로직 재사용
+    if (state.currentTab == ListsTab.checklist) {
+      add(ListsEvent.createChecklist(content: content));
+    } else {
+      add(ListsEvent.createTodoList(content: content));
+    }
+
+    // 추천 목록에서 제거
+    emit(
+      state.copyWith(
+        aiRecommendations: state.aiRecommendations
+            .where((e) => e != content)
+            .toList(),
+      ),
+    );
+  }
+
+  void _onResetAiRecommendation(
+    ResetAiRecommendation event,
+    Emitter<ListsState> emit,
+  ) {
+    emit(
+      state.copyWith(
+        isAiOpened: false,
+        isAiLoading: false,
+        aiRecommendations: [],
+      ),
     );
   }
 }

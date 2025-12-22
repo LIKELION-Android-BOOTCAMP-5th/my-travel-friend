@@ -804,6 +804,7 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i311.DeleteTodoListUseCase>(),
         gh<_i349.ToggleChecklistUseCase>(),
         gh<_i57.ToggleTodoListUseCase>(),
+        gh<_i277.GetTripByIdUseCase>(),
       ),
     );
     gh.factory<_i69.FriendRequestBloc>(

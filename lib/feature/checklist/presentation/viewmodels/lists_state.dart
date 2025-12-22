@@ -44,6 +44,10 @@ abstract class ListsState with _$ListsState {
     // 개별 토글 상태 관리 (수정됨)
     @Default({}) Set<int> togglingChecklistIds,
     @Default({}) Set<int> togglingTodoIds,
+
+    @Default(false) bool isAiLoading,
+    @Default(false) bool isAiOpened,
+    @Default([]) List<String> aiRecommendations,
   }) = _ListsState;
 
   // 진행률
