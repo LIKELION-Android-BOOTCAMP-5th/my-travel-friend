@@ -167,7 +167,7 @@ return clearMessage(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function( String title)?  titleChanged,TResult Function( String description)?  descriptionChanged,TResult Function( DateTime date)?  dateSelected,TResult Function( TimeOfDay time)?  timeSelected,TResult Function( String text)?  placeTextChanged,TResult Function()?  placeSearchRequested,TResult Function( String place,  String address,  double lat,  double lng)?  placeSelected,TResult Function()?  placeCleared,TResult Function( int categoryId)?  categorySelected,TResult Function( int tripId)?  initialized,TResult Function()?  loadTripMembers,TResult Function( UserEntity user)?  crewAdded,TResult Function( int userId)?  crewRemoved,TResult Function()?  submitPressed,TResult Function()?  exitRequested,TResult Function()?  exitConfirmed,TResult Function()?  clearMessage,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function( String title)?  titleChanged,TResult Function( String description)?  descriptionChanged,TResult Function( DateTime date)?  dateSelected,TResult Function( TimeOfDay time)?  timeSelected,TResult Function( String text)?  placeTextChanged,TResult Function()?  placeSearchRequested,TResult Function( String place,  String address,  double lat,  double lng)?  placeSelected,TResult Function()?  placeCleared,TResult Function( int categoryId)?  categorySelected,TResult Function( int tripId,  int userId)?  initialized,TResult Function()?  loadTripMembers,TResult Function( UserEntity user)?  crewAdded,TResult Function( int userId)?  crewRemoved,TResult Function()?  submitPressed,TResult Function()?  exitRequested,TResult Function()?  exitConfirmed,TResult Function()?  clearMessage,required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case TitleChanged() when titleChanged != null:
 return titleChanged(_that.title);case DescriptionChanged() when descriptionChanged != null:
@@ -179,7 +179,7 @@ return placeSearchRequested();case PlaceSelected() when placeSelected != null:
 return placeSelected(_that.place,_that.address,_that.lat,_that.lng);case PlaceCleared() when placeCleared != null:
 return placeCleared();case CategorySelected() when categorySelected != null:
 return categorySelected(_that.categoryId);case Initialized() when initialized != null:
-return initialized(_that.tripId);case LoadTripMembers() when loadTripMembers != null:
+return initialized(_that.tripId,_that.userId);case LoadTripMembers() when loadTripMembers != null:
 return loadTripMembers();case CrewAdded() when crewAdded != null:
 return crewAdded(_that.user);case CrewRemoved() when crewRemoved != null:
 return crewRemoved(_that.userId);case SubmitPressed() when submitPressed != null:
@@ -204,7 +204,7 @@ return clearMessage();case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function( String title)  titleChanged,required TResult Function( String description)  descriptionChanged,required TResult Function( DateTime date)  dateSelected,required TResult Function( TimeOfDay time)  timeSelected,required TResult Function( String text)  placeTextChanged,required TResult Function()  placeSearchRequested,required TResult Function( String place,  String address,  double lat,  double lng)  placeSelected,required TResult Function()  placeCleared,required TResult Function( int categoryId)  categorySelected,required TResult Function( int tripId)  initialized,required TResult Function()  loadTripMembers,required TResult Function( UserEntity user)  crewAdded,required TResult Function( int userId)  crewRemoved,required TResult Function()  submitPressed,required TResult Function()  exitRequested,required TResult Function()  exitConfirmed,required TResult Function()  clearMessage,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function( String title)  titleChanged,required TResult Function( String description)  descriptionChanged,required TResult Function( DateTime date)  dateSelected,required TResult Function( TimeOfDay time)  timeSelected,required TResult Function( String text)  placeTextChanged,required TResult Function()  placeSearchRequested,required TResult Function( String place,  String address,  double lat,  double lng)  placeSelected,required TResult Function()  placeCleared,required TResult Function( int categoryId)  categorySelected,required TResult Function( int tripId,  int userId)  initialized,required TResult Function()  loadTripMembers,required TResult Function( UserEntity user)  crewAdded,required TResult Function( int userId)  crewRemoved,required TResult Function()  submitPressed,required TResult Function()  exitRequested,required TResult Function()  exitConfirmed,required TResult Function()  clearMessage,}) {final _that = this;
 switch (_that) {
 case TitleChanged():
 return titleChanged(_that.title);case DescriptionChanged():
@@ -216,7 +216,7 @@ return placeSearchRequested();case PlaceSelected():
 return placeSelected(_that.place,_that.address,_that.lat,_that.lng);case PlaceCleared():
 return placeCleared();case CategorySelected():
 return categorySelected(_that.categoryId);case Initialized():
-return initialized(_that.tripId);case LoadTripMembers():
+return initialized(_that.tripId,_that.userId);case LoadTripMembers():
 return loadTripMembers();case CrewAdded():
 return crewAdded(_that.user);case CrewRemoved():
 return crewRemoved(_that.userId);case SubmitPressed():
@@ -240,7 +240,7 @@ return clearMessage();case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function( String title)?  titleChanged,TResult? Function( String description)?  descriptionChanged,TResult? Function( DateTime date)?  dateSelected,TResult? Function( TimeOfDay time)?  timeSelected,TResult? Function( String text)?  placeTextChanged,TResult? Function()?  placeSearchRequested,TResult? Function( String place,  String address,  double lat,  double lng)?  placeSelected,TResult? Function()?  placeCleared,TResult? Function( int categoryId)?  categorySelected,TResult? Function( int tripId)?  initialized,TResult? Function()?  loadTripMembers,TResult? Function( UserEntity user)?  crewAdded,TResult? Function( int userId)?  crewRemoved,TResult? Function()?  submitPressed,TResult? Function()?  exitRequested,TResult? Function()?  exitConfirmed,TResult? Function()?  clearMessage,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function( String title)?  titleChanged,TResult? Function( String description)?  descriptionChanged,TResult? Function( DateTime date)?  dateSelected,TResult? Function( TimeOfDay time)?  timeSelected,TResult? Function( String text)?  placeTextChanged,TResult? Function()?  placeSearchRequested,TResult? Function( String place,  String address,  double lat,  double lng)?  placeSelected,TResult? Function()?  placeCleared,TResult? Function( int categoryId)?  categorySelected,TResult? Function( int tripId,  int userId)?  initialized,TResult? Function()?  loadTripMembers,TResult? Function( UserEntity user)?  crewAdded,TResult? Function( int userId)?  crewRemoved,TResult? Function()?  submitPressed,TResult? Function()?  exitRequested,TResult? Function()?  exitConfirmed,TResult? Function()?  clearMessage,}) {final _that = this;
 switch (_that) {
 case TitleChanged() when titleChanged != null:
 return titleChanged(_that.title);case DescriptionChanged() when descriptionChanged != null:
@@ -252,7 +252,7 @@ return placeSearchRequested();case PlaceSelected() when placeSelected != null:
 return placeSelected(_that.place,_that.address,_that.lat,_that.lng);case PlaceCleared() when placeCleared != null:
 return placeCleared();case CategorySelected() when categorySelected != null:
 return categorySelected(_that.categoryId);case Initialized() when initialized != null:
-return initialized(_that.tripId);case LoadTripMembers() when loadTripMembers != null:
+return initialized(_that.tripId,_that.userId);case LoadTripMembers() when loadTripMembers != null:
 return loadTripMembers();case CrewAdded() when crewAdded != null:
 return crewAdded(_that.user);case CrewRemoved() when crewRemoved != null:
 return crewRemoved(_that.userId);case SubmitPressed() when submitPressed != null:
@@ -803,10 +803,11 @@ as int,
 
 
 class Initialized implements CreateScheduleEvent {
-  const Initialized({required this.tripId});
+  const Initialized({required this.tripId, required this.userId});
   
 
  final  int tripId;
+ final  int userId;
 
 /// Create a copy of CreateScheduleEvent
 /// with the given fields replaced by the non-null parameter values.
@@ -818,16 +819,16 @@ $InitializedCopyWith<Initialized> get copyWith => _$InitializedCopyWithImpl<Init
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is Initialized&&(identical(other.tripId, tripId) || other.tripId == tripId));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is Initialized&&(identical(other.tripId, tripId) || other.tripId == tripId)&&(identical(other.userId, userId) || other.userId == userId));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,tripId);
+int get hashCode => Object.hash(runtimeType,tripId,userId);
 
 @override
 String toString() {
-  return 'CreateScheduleEvent.initialized(tripId: $tripId)';
+  return 'CreateScheduleEvent.initialized(tripId: $tripId, userId: $userId)';
 }
 
 
@@ -838,7 +839,7 @@ abstract mixin class $InitializedCopyWith<$Res> implements $CreateScheduleEventC
   factory $InitializedCopyWith(Initialized value, $Res Function(Initialized) _then) = _$InitializedCopyWithImpl;
 @useResult
 $Res call({
- int tripId
+ int tripId, int userId
 });
 
 
@@ -855,9 +856,10 @@ class _$InitializedCopyWithImpl<$Res>
 
 /// Create a copy of CreateScheduleEvent
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') $Res call({Object? tripId = null,}) {
+@pragma('vm:prefer-inline') $Res call({Object? tripId = null,Object? userId = null,}) {
   return _then(Initialized(
 tripId: null == tripId ? _self.tripId : tripId // ignore: cast_nullable_to_non_nullable
+as int,userId: null == userId ? _self.userId : userId // ignore: cast_nullable_to_non_nullable
 as int,
   ));
 }

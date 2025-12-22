@@ -101,31 +101,17 @@ class _CreateTripScreenState extends State<CreateTripScreen> {
               title: "여행 계획 만들기",
               actions: [
                 Button(
-                  width: 40,
-                  height: 40,
-                  icon:
-                      state.isUploading ||
-                          state.pageState == CreateTripPageState.loading
-                      ? SizedBox(
-                          width: 20,
-                          height: 20,
-                          child: CircularProgressIndicator(
-                            strokeWidth: 2,
-                            color: state.isValid
-                                ? Colors.white
-                                : Colors.white.withOpacity(0.4),
-                          ),
-                        )
-                      : AppIcon.save,
-                  contentColor: isDark
-                      ? colorScheme.onSurface
-                      : AppColors.light,
-                  borderRadius: 20,
+                  text: '저장',
                   onTap: state.isValid
                       ? () => context.read<CreateTripBloc>().add(
                           const CreateTripEvent.createTrip(),
                         )
                       : null,
+                  height: 36,
+                  backgroundColor: Colors.transparent,
+                  contentColor: AppColors.primaryLight,
+                  borderRadius: 18,
+                  width: 36,
                 ),
               ],
             ),

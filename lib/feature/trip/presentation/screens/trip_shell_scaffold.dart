@@ -18,6 +18,7 @@ import '../../../chat/presentation/viewmodels/chat_unread/chat_unread_bloc.dart'
 import '../../../chat/presentation/viewmodels/chat_unread/chat_unread_event.dart';
 import '../../../chat/presentation/viewmodels/chat_unread/chat_unread_state.dart';
 import '../../domain/entities/trip_entity.dart';
+import '../coachmarks/trip_home_coach_mark.dart';
 import '../coachmarks/trip_shell_coach_mark.dart';
 import '../viewmodels/trip_detail/trip_detail_bloc.dart';
 import '../viewmodels/trip_detail/trip_detail_event.dart';
@@ -30,20 +31,24 @@ class TripShellScaffold extends StatefulWidget {
   const TripShellScaffold({super.key, required this.child});
 
   @override
-  State<TripShellScaffold> createState() => _TripShellScaffoldState();
+  State<TripShellScaffold> createState() => TripShellScaffoldState();
 }
 
-class _TripShellScaffoldState extends State<TripShellScaffold> {
+class TripShellScaffoldState extends State<TripShellScaffold> {
   late final TripShellCoachMark _coachMark;
-  bool _coachMarkShown = false;
+  late final TripHomeCoachMark _homeCoachMark;
+  late bool _coachMarkShown = false;
 
   late final ChatUnreadBloc _chatUnreadBloc;
+
+  TripHomeCoachMark get homeCoachMark => _homeCoachMark;
 
   @override
   void initState() {
     super.initState();
     _chatUnreadBloc = GetIt.instance<ChatUnreadBloc>();
     _coachMark = TripShellCoachMark();
+    _homeCoachMark = TripHomeCoachMark();
   }
 
   @override
@@ -59,7 +64,7 @@ class _TripShellScaffoldState extends State<TripShellScaffold> {
 
     Future.delayed(const Duration(milliseconds: 800), () {
       if (mounted) {
-        _coachMark.show(context);
+        _coachMark.show(context, homeCoachMark: _homeCoachMark);
       }
     });
   }
@@ -150,7 +155,6 @@ class _TripShellScaffoldState extends State<TripShellScaffold> {
                   leading: Button(
                     width: 40,
                     height: 40,
-                    key: _coachMark.menuButtonKey,
                     icon: Icon(AppIcon.back),
                     contentColor: isDark
                         ? colorScheme.onSurface
@@ -163,6 +167,7 @@ class _TripShellScaffoldState extends State<TripShellScaffold> {
                   ),
                   actions: [
                     Button(
+                      key: _coachMark.menuButtonKey,
                       icon: Icon(AppIcon.threeDots),
                       contentColor: isDark
                           ? colorScheme.onSurface

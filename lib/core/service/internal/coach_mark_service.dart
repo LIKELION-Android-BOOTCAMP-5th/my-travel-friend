@@ -102,7 +102,7 @@ class CoachMarkService {
         onSkip?.call();
         return true;
       },
-    ).show(context: context);
+    ).show(context: context, rootOverlay: true);
   }
 
   // 단일 타겟 생성
@@ -135,6 +135,65 @@ class CoachMarkService {
         ),
       ],
     );
+  }
+
+  TargetFocus createTargetWithScroll({
+    required GlobalKey key,
+    required String title,
+    required String description,
+    required ScrollController scrollController,
+    ContentAlign align = ContentAlign.bottom,
+    ShapeLightFocus shape = ShapeLightFocus.RRect,
+    double? radius,
+    double? paddingFocus,
+    Alignment alignSkip = Alignment.topRight,
+  }) {
+    return TargetFocus(
+      identify: key.toString(),
+      keyTarget: key,
+      alignSkip: alignSkip,
+      shape: shape,
+      radius: radius ?? 8,
+      paddingFocus: paddingFocus ?? 8,
+      contents: [
+        TargetContent(
+          align: align,
+          builder: (context, controller) {
+            _scrollToTarget(key, scrollController);
+            return _buildCoachMarkContent(
+              title: title,
+              description: description,
+            );
+          },
+        ),
+      ],
+    );
+  }
+
+  // 타겟 위치로 스크롤
+  void _scrollToTarget(GlobalKey key, ScrollController scrollController) {
+    if (!scrollController.hasClients) return;
+
+    final keyContext = key.currentContext;
+    if (keyContext == null) return;
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final renderBox = keyContext.findRenderObject() as RenderBox?;
+      if (renderBox == null) return;
+
+      final position = renderBox.localToGlobal(Offset.zero);
+      final screenHeight = MediaQuery.of(keyContext).size.height;
+
+      // 화면 중앙에 오도록 스크롤
+      final targetScroll =
+          scrollController.offset + position.dy - (screenHeight / 3);
+
+      scrollController.animateTo(
+        targetScroll.clamp(0, scrollController.position.maxScrollExtent),
+        duration: const Duration(milliseconds: 300),
+        curve: Curves.easeInOut,
+      );
+    });
   }
 
   // 코치마크 컨텐츠 위젯

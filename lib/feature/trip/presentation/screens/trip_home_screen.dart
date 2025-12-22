@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get_it/get_it.dart';
 import 'package:my_travel_friend/core/theme/app_colors.dart';
 import 'package:my_travel_friend/core/theme/app_font.dart';
 import 'package:my_travel_friend/core/theme/app_icon.dart';
+import 'package:my_travel_friend/feature/trip/presentation/screens/trip_shell_scaffold.dart';
 
-import '../../../../core/service/internal/coach_mark_service.dart';
 import '../../../../core/widget/toast_pop.dart';
 import '../coachmarks/trip_home_coach_mark.dart';
 import '../viewmodels/trip_home/trip_home_bloc.dart';
@@ -22,24 +21,15 @@ class TripHomeScreen extends StatefulWidget {
 }
 
 class _TripHomeScreenState extends State<TripHomeScreen> {
-  late final TripHomeCoachMark _coachMark;
+  TripHomeCoachMark? get _coachMark {
+    final shellState = context
+        .findAncestorStateOfType<TripShellScaffoldState>();
+    return shellState?.homeCoachMark;
+  }
 
   @override
   void initState() {
     super.initState();
-    _coachMark = TripHomeCoachMark();
-
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      Future.delayed(const Duration(milliseconds: 300), () {
-        if (mounted) {
-          // 탭 코치마크가 끝났으면 홈 코치마크 표시
-          final service = GetIt.instance<CoachMarkService>();
-          if (!service.shouldShowTripTabsCoachMark()) {
-            _coachMark.show(context);
-          }
-        }
-      });
-    });
   }
 
   @override
@@ -67,8 +57,8 @@ class _TripHomeScreenState extends State<TripHomeScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     _CrewSummaryCard(
-                      key: _coachMark.crewKey,
-                      inviteKey: _coachMark.inviteKey,
+                      key: _coachMark?.crewKey,
+                      inviteKey: _coachMark?.inviteKey,
                     ),
                     const SizedBox(height: 12),
 
@@ -86,10 +76,10 @@ class _TripHomeScreenState extends State<TripHomeScreen> {
 
                     if (state.isCrewExpanded) const SizedBox(height: 16),
 
-                    _TripCalendar(key: _coachMark.calendarKey),
+                    _TripCalendar(key: _coachMark?.calendarKey),
                     const SizedBox(height: 16),
 
-                    _ScheduleSection(key: _coachMark.scheduleKey),
+                    _ScheduleSection(key: _coachMark?.scheduleKey),
                     const SizedBox(height: 16),
 
                     if (state.usefulPhrases.isNotEmpty) ...[

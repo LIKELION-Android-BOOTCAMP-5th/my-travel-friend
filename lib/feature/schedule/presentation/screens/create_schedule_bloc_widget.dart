@@ -29,7 +29,9 @@ class CreateScheduleBlocWidget extends StatelessWidget {
 
         bloc.emit(bloc.state.copyWith(tripId: tripId));
 
-        bloc.add(CreateScheduleEvent.initialized(tripId: tripId));
+        bloc.add(
+          CreateScheduleEvent.initialized(tripId: tripId, userId: userId),
+        );
 
         return bloc;
       },

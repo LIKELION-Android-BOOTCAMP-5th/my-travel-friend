@@ -18,7 +18,7 @@ class TripHomeCoachMark {
           coachMarkService ?? GetIt.instance<CoachMarkService>();
 
   // 코치마크 표시 여부
-  bool get shouldShow => _coachMarkService.shouldShowTripListCoachMark();
+  bool get shouldShow => _coachMarkService.shouldShowTripHomeCoachMark();
 
   // 코치마크 표시
   void show(BuildContext context) {

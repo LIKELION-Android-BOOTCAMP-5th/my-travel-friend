@@ -19,7 +19,7 @@ mixin _$CreateScheduleState {
  TimeOfDay? get time;//시간
  DateTime? get startAt;//날짜 시간 합쳐서 올릴용
 //  장소 (optional)
- String? get place; String? get address; double? get lat; double? get lng; bool? get isPlaceSelected;//  메모
+ String? get place; String? get address; double? get lat; double? get lng; bool? get isPlaceSelected; int? get userId;//  메모
  String? get description; bool get isValid; bool get isSubmitting; bool get isDirty;// 카테고리
  int? get selectedCategoryId; bool get isPlaceFromMap;// 메세지 (성공/에러)
  String? get message; String? get errorType; String? get actionType; CreateSchedulepageState get pageState; List<UserEntity> get tripMembers;// 참여자
@@ -34,16 +34,16 @@ $CreateScheduleStateCopyWith<CreateScheduleState> get copyWith => _$CreateSchedu
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is CreateScheduleState&&(identical(other.tripId, tripId) || other.tripId == tripId)&&(identical(other.title, title) || other.title == title)&&(identical(other.date, date) || other.date == date)&&(identical(other.time, time) || other.time == time)&&(identical(other.startAt, startAt) || other.startAt == startAt)&&(identical(other.place, place) || other.place == place)&&(identical(other.address, address) || other.address == address)&&(identical(other.lat, lat) || other.lat == lat)&&(identical(other.lng, lng) || other.lng == lng)&&(identical(other.isPlaceSelected, isPlaceSelected) || other.isPlaceSelected == isPlaceSelected)&&(identical(other.description, description) || other.description == description)&&(identical(other.isValid, isValid) || other.isValid == isValid)&&(identical(other.isSubmitting, isSubmitting) || other.isSubmitting == isSubmitting)&&(identical(other.isDirty, isDirty) || other.isDirty == isDirty)&&(identical(other.selectedCategoryId, selectedCategoryId) || other.selectedCategoryId == selectedCategoryId)&&(identical(other.isPlaceFromMap, isPlaceFromMap) || other.isPlaceFromMap == isPlaceFromMap)&&(identical(other.message, message) || other.message == message)&&(identical(other.errorType, errorType) || other.errorType == errorType)&&(identical(other.actionType, actionType) || other.actionType == actionType)&&(identical(other.pageState, pageState) || other.pageState == pageState)&&const DeepCollectionEquality().equals(other.tripMembers, tripMembers)&&const DeepCollectionEquality().equals(other.selectedScheduleCrew, selectedScheduleCrew)&&(identical(other.tripStartDate, tripStartDate) || other.tripStartDate == tripStartDate)&&(identical(other.tripEndDate, tripEndDate) || other.tripEndDate == tripEndDate));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is CreateScheduleState&&(identical(other.tripId, tripId) || other.tripId == tripId)&&(identical(other.title, title) || other.title == title)&&(identical(other.date, date) || other.date == date)&&(identical(other.time, time) || other.time == time)&&(identical(other.startAt, startAt) || other.startAt == startAt)&&(identical(other.place, place) || other.place == place)&&(identical(other.address, address) || other.address == address)&&(identical(other.lat, lat) || other.lat == lat)&&(identical(other.lng, lng) || other.lng == lng)&&(identical(other.isPlaceSelected, isPlaceSelected) || other.isPlaceSelected == isPlaceSelected)&&(identical(other.userId, userId) || other.userId == userId)&&(identical(other.description, description) || other.description == description)&&(identical(other.isValid, isValid) || other.isValid == isValid)&&(identical(other.isSubmitting, isSubmitting) || other.isSubmitting == isSubmitting)&&(identical(other.isDirty, isDirty) || other.isDirty == isDirty)&&(identical(other.selectedCategoryId, selectedCategoryId) || other.selectedCategoryId == selectedCategoryId)&&(identical(other.isPlaceFromMap, isPlaceFromMap) || other.isPlaceFromMap == isPlaceFromMap)&&(identical(other.message, message) || other.message == message)&&(identical(other.errorType, errorType) || other.errorType == errorType)&&(identical(other.actionType, actionType) || other.actionType == actionType)&&(identical(other.pageState, pageState) || other.pageState == pageState)&&const DeepCollectionEquality().equals(other.tripMembers, tripMembers)&&const DeepCollectionEquality().equals(other.selectedScheduleCrew, selectedScheduleCrew)&&(identical(other.tripStartDate, tripStartDate) || other.tripStartDate == tripStartDate)&&(identical(other.tripEndDate, tripEndDate) || other.tripEndDate == tripEndDate));
 }
 
 
 @override
-int get hashCode => Object.hashAll([runtimeType,tripId,title,date,time,startAt,place,address,lat,lng,isPlaceSelected,description,isValid,isSubmitting,isDirty,selectedCategoryId,isPlaceFromMap,message,errorType,actionType,pageState,const DeepCollectionEquality().hash(tripMembers),const DeepCollectionEquality().hash(selectedScheduleCrew),tripStartDate,tripEndDate]);
+int get hashCode => Object.hashAll([runtimeType,tripId,title,date,time,startAt,place,address,lat,lng,isPlaceSelected,userId,description,isValid,isSubmitting,isDirty,selectedCategoryId,isPlaceFromMap,message,errorType,actionType,pageState,const DeepCollectionEquality().hash(tripMembers),const DeepCollectionEquality().hash(selectedScheduleCrew),tripStartDate,tripEndDate]);
 
 @override
 String toString() {
-  return 'CreateScheduleState(tripId: $tripId, title: $title, date: $date, time: $time, startAt: $startAt, place: $place, address: $address, lat: $lat, lng: $lng, isPlaceSelected: $isPlaceSelected, description: $description, isValid: $isValid, isSubmitting: $isSubmitting, isDirty: $isDirty, selectedCategoryId: $selectedCategoryId, isPlaceFromMap: $isPlaceFromMap, message: $message, errorType: $errorType, actionType: $actionType, pageState: $pageState, tripMembers: $tripMembers, selectedScheduleCrew: $selectedScheduleCrew, tripStartDate: $tripStartDate, tripEndDate: $tripEndDate)';
+  return 'CreateScheduleState(tripId: $tripId, title: $title, date: $date, time: $time, startAt: $startAt, place: $place, address: $address, lat: $lat, lng: $lng, isPlaceSelected: $isPlaceSelected, userId: $userId, description: $description, isValid: $isValid, isSubmitting: $isSubmitting, isDirty: $isDirty, selectedCategoryId: $selectedCategoryId, isPlaceFromMap: $isPlaceFromMap, message: $message, errorType: $errorType, actionType: $actionType, pageState: $pageState, tripMembers: $tripMembers, selectedScheduleCrew: $selectedScheduleCrew, tripStartDate: $tripStartDate, tripEndDate: $tripEndDate)';
 }
 
 
@@ -54,7 +54,7 @@ abstract mixin class $CreateScheduleStateCopyWith<$Res>  {
   factory $CreateScheduleStateCopyWith(CreateScheduleState value, $Res Function(CreateScheduleState) _then) = _$CreateScheduleStateCopyWithImpl;
 @useResult
 $Res call({
- int tripId, String? title, DateTime? date, TimeOfDay? time, DateTime? startAt, String? place, String? address, double? lat, double? lng, bool? isPlaceSelected, String? description, bool isValid, bool isSubmitting, bool isDirty, int? selectedCategoryId, bool isPlaceFromMap, String? message, String? errorType, String? actionType, CreateSchedulepageState pageState, List<UserEntity> tripMembers, List<UserEntity> selectedScheduleCrew, DateTime? tripStartDate, DateTime? tripEndDate
+ int tripId, String? title, DateTime? date, TimeOfDay? time, DateTime? startAt, String? place, String? address, double? lat, double? lng, bool? isPlaceSelected, int? userId, String? description, bool isValid, bool isSubmitting, bool isDirty, int? selectedCategoryId, bool isPlaceFromMap, String? message, String? errorType, String? actionType, CreateSchedulepageState pageState, List<UserEntity> tripMembers, List<UserEntity> selectedScheduleCrew, DateTime? tripStartDate, DateTime? tripEndDate
 });
 
 
@@ -71,7 +71,7 @@ class _$CreateScheduleStateCopyWithImpl<$Res>
 
 /// Create a copy of CreateScheduleState
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? tripId = null,Object? title = freezed,Object? date = freezed,Object? time = freezed,Object? startAt = freezed,Object? place = freezed,Object? address = freezed,Object? lat = freezed,Object? lng = freezed,Object? isPlaceSelected = freezed,Object? description = freezed,Object? isValid = null,Object? isSubmitting = null,Object? isDirty = null,Object? selectedCategoryId = freezed,Object? isPlaceFromMap = null,Object? message = freezed,Object? errorType = freezed,Object? actionType = freezed,Object? pageState = null,Object? tripMembers = null,Object? selectedScheduleCrew = null,Object? tripStartDate = freezed,Object? tripEndDate = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? tripId = null,Object? title = freezed,Object? date = freezed,Object? time = freezed,Object? startAt = freezed,Object? place = freezed,Object? address = freezed,Object? lat = freezed,Object? lng = freezed,Object? isPlaceSelected = freezed,Object? userId = freezed,Object? description = freezed,Object? isValid = null,Object? isSubmitting = null,Object? isDirty = null,Object? selectedCategoryId = freezed,Object? isPlaceFromMap = null,Object? message = freezed,Object? errorType = freezed,Object? actionType = freezed,Object? pageState = null,Object? tripMembers = null,Object? selectedScheduleCrew = null,Object? tripStartDate = freezed,Object? tripEndDate = freezed,}) {
   return _then(_self.copyWith(
 tripId: null == tripId ? _self.tripId : tripId // ignore: cast_nullable_to_non_nullable
 as int,title: freezed == title ? _self.title : title // ignore: cast_nullable_to_non_nullable
@@ -83,7 +83,8 @@ as String?,address: freezed == address ? _self.address : address // ignore: cast
 as String?,lat: freezed == lat ? _self.lat : lat // ignore: cast_nullable_to_non_nullable
 as double?,lng: freezed == lng ? _self.lng : lng // ignore: cast_nullable_to_non_nullable
 as double?,isPlaceSelected: freezed == isPlaceSelected ? _self.isPlaceSelected : isPlaceSelected // ignore: cast_nullable_to_non_nullable
-as bool?,description: freezed == description ? _self.description : description // ignore: cast_nullable_to_non_nullable
+as bool?,userId: freezed == userId ? _self.userId : userId // ignore: cast_nullable_to_non_nullable
+as int?,description: freezed == description ? _self.description : description // ignore: cast_nullable_to_non_nullable
 as String?,isValid: null == isValid ? _self.isValid : isValid // ignore: cast_nullable_to_non_nullable
 as bool,isSubmitting: null == isSubmitting ? _self.isSubmitting : isSubmitting // ignore: cast_nullable_to_non_nullable
 as bool,isDirty: null == isDirty ? _self.isDirty : isDirty // ignore: cast_nullable_to_non_nullable
@@ -182,10 +183,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int tripId,  String? title,  DateTime? date,  TimeOfDay? time,  DateTime? startAt,  String? place,  String? address,  double? lat,  double? lng,  bool? isPlaceSelected,  String? description,  bool isValid,  bool isSubmitting,  bool isDirty,  int? selectedCategoryId,  bool isPlaceFromMap,  String? message,  String? errorType,  String? actionType,  CreateSchedulepageState pageState,  List<UserEntity> tripMembers,  List<UserEntity> selectedScheduleCrew,  DateTime? tripStartDate,  DateTime? tripEndDate)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int tripId,  String? title,  DateTime? date,  TimeOfDay? time,  DateTime? startAt,  String? place,  String? address,  double? lat,  double? lng,  bool? isPlaceSelected,  int? userId,  String? description,  bool isValid,  bool isSubmitting,  bool isDirty,  int? selectedCategoryId,  bool isPlaceFromMap,  String? message,  String? errorType,  String? actionType,  CreateSchedulepageState pageState,  List<UserEntity> tripMembers,  List<UserEntity> selectedScheduleCrew,  DateTime? tripStartDate,  DateTime? tripEndDate)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _CreateScheduleState() when $default != null:
-return $default(_that.tripId,_that.title,_that.date,_that.time,_that.startAt,_that.place,_that.address,_that.lat,_that.lng,_that.isPlaceSelected,_that.description,_that.isValid,_that.isSubmitting,_that.isDirty,_that.selectedCategoryId,_that.isPlaceFromMap,_that.message,_that.errorType,_that.actionType,_that.pageState,_that.tripMembers,_that.selectedScheduleCrew,_that.tripStartDate,_that.tripEndDate);case _:
+return $default(_that.tripId,_that.title,_that.date,_that.time,_that.startAt,_that.place,_that.address,_that.lat,_that.lng,_that.isPlaceSelected,_that.userId,_that.description,_that.isValid,_that.isSubmitting,_that.isDirty,_that.selectedCategoryId,_that.isPlaceFromMap,_that.message,_that.errorType,_that.actionType,_that.pageState,_that.tripMembers,_that.selectedScheduleCrew,_that.tripStartDate,_that.tripEndDate);case _:
   return orElse();
 
 }
@@ -203,10 +204,10 @@ return $default(_that.tripId,_that.title,_that.date,_that.time,_that.startAt,_th
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int tripId,  String? title,  DateTime? date,  TimeOfDay? time,  DateTime? startAt,  String? place,  String? address,  double? lat,  double? lng,  bool? isPlaceSelected,  String? description,  bool isValid,  bool isSubmitting,  bool isDirty,  int? selectedCategoryId,  bool isPlaceFromMap,  String? message,  String? errorType,  String? actionType,  CreateSchedulepageState pageState,  List<UserEntity> tripMembers,  List<UserEntity> selectedScheduleCrew,  DateTime? tripStartDate,  DateTime? tripEndDate)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int tripId,  String? title,  DateTime? date,  TimeOfDay? time,  DateTime? startAt,  String? place,  String? address,  double? lat,  double? lng,  bool? isPlaceSelected,  int? userId,  String? description,  bool isValid,  bool isSubmitting,  bool isDirty,  int? selectedCategoryId,  bool isPlaceFromMap,  String? message,  String? errorType,  String? actionType,  CreateSchedulepageState pageState,  List<UserEntity> tripMembers,  List<UserEntity> selectedScheduleCrew,  DateTime? tripStartDate,  DateTime? tripEndDate)  $default,) {final _that = this;
 switch (_that) {
 case _CreateScheduleState():
-return $default(_that.tripId,_that.title,_that.date,_that.time,_that.startAt,_that.place,_that.address,_that.lat,_that.lng,_that.isPlaceSelected,_that.description,_that.isValid,_that.isSubmitting,_that.isDirty,_that.selectedCategoryId,_that.isPlaceFromMap,_that.message,_that.errorType,_that.actionType,_that.pageState,_that.tripMembers,_that.selectedScheduleCrew,_that.tripStartDate,_that.tripEndDate);case _:
+return $default(_that.tripId,_that.title,_that.date,_that.time,_that.startAt,_that.place,_that.address,_that.lat,_that.lng,_that.isPlaceSelected,_that.userId,_that.description,_that.isValid,_that.isSubmitting,_that.isDirty,_that.selectedCategoryId,_that.isPlaceFromMap,_that.message,_that.errorType,_that.actionType,_that.pageState,_that.tripMembers,_that.selectedScheduleCrew,_that.tripStartDate,_that.tripEndDate);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -223,10 +224,10 @@ return $default(_that.tripId,_that.title,_that.date,_that.time,_that.startAt,_th
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int tripId,  String? title,  DateTime? date,  TimeOfDay? time,  DateTime? startAt,  String? place,  String? address,  double? lat,  double? lng,  bool? isPlaceSelected,  String? description,  bool isValid,  bool isSubmitting,  bool isDirty,  int? selectedCategoryId,  bool isPlaceFromMap,  String? message,  String? errorType,  String? actionType,  CreateSchedulepageState pageState,  List<UserEntity> tripMembers,  List<UserEntity> selectedScheduleCrew,  DateTime? tripStartDate,  DateTime? tripEndDate)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int tripId,  String? title,  DateTime? date,  TimeOfDay? time,  DateTime? startAt,  String? place,  String? address,  double? lat,  double? lng,  bool? isPlaceSelected,  int? userId,  String? description,  bool isValid,  bool isSubmitting,  bool isDirty,  int? selectedCategoryId,  bool isPlaceFromMap,  String? message,  String? errorType,  String? actionType,  CreateSchedulepageState pageState,  List<UserEntity> tripMembers,  List<UserEntity> selectedScheduleCrew,  DateTime? tripStartDate,  DateTime? tripEndDate)?  $default,) {final _that = this;
 switch (_that) {
 case _CreateScheduleState() when $default != null:
-return $default(_that.tripId,_that.title,_that.date,_that.time,_that.startAt,_that.place,_that.address,_that.lat,_that.lng,_that.isPlaceSelected,_that.description,_that.isValid,_that.isSubmitting,_that.isDirty,_that.selectedCategoryId,_that.isPlaceFromMap,_that.message,_that.errorType,_that.actionType,_that.pageState,_that.tripMembers,_that.selectedScheduleCrew,_that.tripStartDate,_that.tripEndDate);case _:
+return $default(_that.tripId,_that.title,_that.date,_that.time,_that.startAt,_that.place,_that.address,_that.lat,_that.lng,_that.isPlaceSelected,_that.userId,_that.description,_that.isValid,_that.isSubmitting,_that.isDirty,_that.selectedCategoryId,_that.isPlaceFromMap,_that.message,_that.errorType,_that.actionType,_that.pageState,_that.tripMembers,_that.selectedScheduleCrew,_that.tripStartDate,_that.tripEndDate);case _:
   return null;
 
 }
@@ -238,7 +239,7 @@ return $default(_that.tripId,_that.title,_that.date,_that.time,_that.startAt,_th
 
 
 class _CreateScheduleState implements CreateScheduleState {
-  const _CreateScheduleState({this.tripId = 1, this.title, this.date, this.time, this.startAt, this.place, this.address, this.lat, this.lng, this.isPlaceSelected, this.description, this.isValid = false, this.isSubmitting = false, this.isDirty = false, this.selectedCategoryId, this.isPlaceFromMap = false, this.message, this.errorType, this.actionType, this.pageState = CreateSchedulepageState.init, final  List<UserEntity> tripMembers = const [], final  List<UserEntity> selectedScheduleCrew = const [], this.tripStartDate, this.tripEndDate}): _tripMembers = tripMembers,_selectedScheduleCrew = selectedScheduleCrew;
+  const _CreateScheduleState({this.tripId = 1, this.title, this.date, this.time, this.startAt, this.place, this.address, this.lat, this.lng, this.isPlaceSelected, this.userId, this.description, this.isValid = false, this.isSubmitting = false, this.isDirty = false, this.selectedCategoryId, this.isPlaceFromMap = false, this.message, this.errorType, this.actionType, this.pageState = CreateSchedulepageState.init, final  List<UserEntity> tripMembers = const [], final  List<UserEntity> selectedScheduleCrew = const [], this.tripStartDate, this.tripEndDate}): _tripMembers = tripMembers,_selectedScheduleCrew = selectedScheduleCrew;
   
 
 @override@JsonKey() final  int tripId;
@@ -256,6 +257,7 @@ class _CreateScheduleState implements CreateScheduleState {
 @override final  double? lat;
 @override final  double? lng;
 @override final  bool? isPlaceSelected;
+@override final  int? userId;
 //  메모
 @override final  String? description;
 @override@JsonKey() final  bool isValid;
@@ -298,16 +300,16 @@ _$CreateScheduleStateCopyWith<_CreateScheduleState> get copyWith => __$CreateSch
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _CreateScheduleState&&(identical(other.tripId, tripId) || other.tripId == tripId)&&(identical(other.title, title) || other.title == title)&&(identical(other.date, date) || other.date == date)&&(identical(other.time, time) || other.time == time)&&(identical(other.startAt, startAt) || other.startAt == startAt)&&(identical(other.place, place) || other.place == place)&&(identical(other.address, address) || other.address == address)&&(identical(other.lat, lat) || other.lat == lat)&&(identical(other.lng, lng) || other.lng == lng)&&(identical(other.isPlaceSelected, isPlaceSelected) || other.isPlaceSelected == isPlaceSelected)&&(identical(other.description, description) || other.description == description)&&(identical(other.isValid, isValid) || other.isValid == isValid)&&(identical(other.isSubmitting, isSubmitting) || other.isSubmitting == isSubmitting)&&(identical(other.isDirty, isDirty) || other.isDirty == isDirty)&&(identical(other.selectedCategoryId, selectedCategoryId) || other.selectedCategoryId == selectedCategoryId)&&(identical(other.isPlaceFromMap, isPlaceFromMap) || other.isPlaceFromMap == isPlaceFromMap)&&(identical(other.message, message) || other.message == message)&&(identical(other.errorType, errorType) || other.errorType == errorType)&&(identical(other.actionType, actionType) || other.actionType == actionType)&&(identical(other.pageState, pageState) || other.pageState == pageState)&&const DeepCollectionEquality().equals(other._tripMembers, _tripMembers)&&const DeepCollectionEquality().equals(other._selectedScheduleCrew, _selectedScheduleCrew)&&(identical(other.tripStartDate, tripStartDate) || other.tripStartDate == tripStartDate)&&(identical(other.tripEndDate, tripEndDate) || other.tripEndDate == tripEndDate));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _CreateScheduleState&&(identical(other.tripId, tripId) || other.tripId == tripId)&&(identical(other.title, title) || other.title == title)&&(identical(other.date, date) || other.date == date)&&(identical(other.time, time) || other.time == time)&&(identical(other.startAt, startAt) || other.startAt == startAt)&&(identical(other.place, place) || other.place == place)&&(identical(other.address, address) || other.address == address)&&(identical(other.lat, lat) || other.lat == lat)&&(identical(other.lng, lng) || other.lng == lng)&&(identical(other.isPlaceSelected, isPlaceSelected) || other.isPlaceSelected == isPlaceSelected)&&(identical(other.userId, userId) || other.userId == userId)&&(identical(other.description, description) || other.description == description)&&(identical(other.isValid, isValid) || other.isValid == isValid)&&(identical(other.isSubmitting, isSubmitting) || other.isSubmitting == isSubmitting)&&(identical(other.isDirty, isDirty) || other.isDirty == isDirty)&&(identical(other.selectedCategoryId, selectedCategoryId) || other.selectedCategoryId == selectedCategoryId)&&(identical(other.isPlaceFromMap, isPlaceFromMap) || other.isPlaceFromMap == isPlaceFromMap)&&(identical(other.message, message) || other.message == message)&&(identical(other.errorType, errorType) || other.errorType == errorType)&&(identical(other.actionType, actionType) || other.actionType == actionType)&&(identical(other.pageState, pageState) || other.pageState == pageState)&&const DeepCollectionEquality().equals(other._tripMembers, _tripMembers)&&const DeepCollectionEquality().equals(other._selectedScheduleCrew, _selectedScheduleCrew)&&(identical(other.tripStartDate, tripStartDate) || other.tripStartDate == tripStartDate)&&(identical(other.tripEndDate, tripEndDate) || other.tripEndDate == tripEndDate));
 }
 
 
 @override
-int get hashCode => Object.hashAll([runtimeType,tripId,title,date,time,startAt,place,address,lat,lng,isPlaceSelected,description,isValid,isSubmitting,isDirty,selectedCategoryId,isPlaceFromMap,message,errorType,actionType,pageState,const DeepCollectionEquality().hash(_tripMembers),const DeepCollectionEquality().hash(_selectedScheduleCrew),tripStartDate,tripEndDate]);
+int get hashCode => Object.hashAll([runtimeType,tripId,title,date,time,startAt,place,address,lat,lng,isPlaceSelected,userId,description,isValid,isSubmitting,isDirty,selectedCategoryId,isPlaceFromMap,message,errorType,actionType,pageState,const DeepCollectionEquality().hash(_tripMembers),const DeepCollectionEquality().hash(_selectedScheduleCrew),tripStartDate,tripEndDate]);
 
 @override
 String toString() {
-  return 'CreateScheduleState(tripId: $tripId, title: $title, date: $date, time: $time, startAt: $startAt, place: $place, address: $address, lat: $lat, lng: $lng, isPlaceSelected: $isPlaceSelected, description: $description, isValid: $isValid, isSubmitting: $isSubmitting, isDirty: $isDirty, selectedCategoryId: $selectedCategoryId, isPlaceFromMap: $isPlaceFromMap, message: $message, errorType: $errorType, actionType: $actionType, pageState: $pageState, tripMembers: $tripMembers, selectedScheduleCrew: $selectedScheduleCrew, tripStartDate: $tripStartDate, tripEndDate: $tripEndDate)';
+  return 'CreateScheduleState(tripId: $tripId, title: $title, date: $date, time: $time, startAt: $startAt, place: $place, address: $address, lat: $lat, lng: $lng, isPlaceSelected: $isPlaceSelected, userId: $userId, description: $description, isValid: $isValid, isSubmitting: $isSubmitting, isDirty: $isDirty, selectedCategoryId: $selectedCategoryId, isPlaceFromMap: $isPlaceFromMap, message: $message, errorType: $errorType, actionType: $actionType, pageState: $pageState, tripMembers: $tripMembers, selectedScheduleCrew: $selectedScheduleCrew, tripStartDate: $tripStartDate, tripEndDate: $tripEndDate)';
 }
 
 
@@ -318,7 +320,7 @@ abstract mixin class _$CreateScheduleStateCopyWith<$Res> implements $CreateSched
   factory _$CreateScheduleStateCopyWith(_CreateScheduleState value, $Res Function(_CreateScheduleState) _then) = __$CreateScheduleStateCopyWithImpl;
 @override @useResult
 $Res call({
- int tripId, String? title, DateTime? date, TimeOfDay? time, DateTime? startAt, String? place, String? address, double? lat, double? lng, bool? isPlaceSelected, String? description, bool isValid, bool isSubmitting, bool isDirty, int? selectedCategoryId, bool isPlaceFromMap, String? message, String? errorType, String? actionType, CreateSchedulepageState pageState, List<UserEntity> tripMembers, List<UserEntity> selectedScheduleCrew, DateTime? tripStartDate, DateTime? tripEndDate
+ int tripId, String? title, DateTime? date, TimeOfDay? time, DateTime? startAt, String? place, String? address, double? lat, double? lng, bool? isPlaceSelected, int? userId, String? description, bool isValid, bool isSubmitting, bool isDirty, int? selectedCategoryId, bool isPlaceFromMap, String? message, String? errorType, String? actionType, CreateSchedulepageState pageState, List<UserEntity> tripMembers, List<UserEntity> selectedScheduleCrew, DateTime? tripStartDate, DateTime? tripEndDate
 });
 
 
@@ -335,7 +337,7 @@ class __$CreateScheduleStateCopyWithImpl<$Res>
 
 /// Create a copy of CreateScheduleState
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? tripId = null,Object? title = freezed,Object? date = freezed,Object? time = freezed,Object? startAt = freezed,Object? place = freezed,Object? address = freezed,Object? lat = freezed,Object? lng = freezed,Object? isPlaceSelected = freezed,Object? description = freezed,Object? isValid = null,Object? isSubmitting = null,Object? isDirty = null,Object? selectedCategoryId = freezed,Object? isPlaceFromMap = null,Object? message = freezed,Object? errorType = freezed,Object? actionType = freezed,Object? pageState = null,Object? tripMembers = null,Object? selectedScheduleCrew = null,Object? tripStartDate = freezed,Object? tripEndDate = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? tripId = null,Object? title = freezed,Object? date = freezed,Object? time = freezed,Object? startAt = freezed,Object? place = freezed,Object? address = freezed,Object? lat = freezed,Object? lng = freezed,Object? isPlaceSelected = freezed,Object? userId = freezed,Object? description = freezed,Object? isValid = null,Object? isSubmitting = null,Object? isDirty = null,Object? selectedCategoryId = freezed,Object? isPlaceFromMap = null,Object? message = freezed,Object? errorType = freezed,Object? actionType = freezed,Object? pageState = null,Object? tripMembers = null,Object? selectedScheduleCrew = null,Object? tripStartDate = freezed,Object? tripEndDate = freezed,}) {
   return _then(_CreateScheduleState(
 tripId: null == tripId ? _self.tripId : tripId // ignore: cast_nullable_to_non_nullable
 as int,title: freezed == title ? _self.title : title // ignore: cast_nullable_to_non_nullable
@@ -347,7 +349,8 @@ as String?,address: freezed == address ? _self.address : address // ignore: cast
 as String?,lat: freezed == lat ? _self.lat : lat // ignore: cast_nullable_to_non_nullable
 as double?,lng: freezed == lng ? _self.lng : lng // ignore: cast_nullable_to_non_nullable
 as double?,isPlaceSelected: freezed == isPlaceSelected ? _self.isPlaceSelected : isPlaceSelected // ignore: cast_nullable_to_non_nullable
-as bool?,description: freezed == description ? _self.description : description // ignore: cast_nullable_to_non_nullable
+as bool?,userId: freezed == userId ? _self.userId : userId // ignore: cast_nullable_to_non_nullable
+as int?,description: freezed == description ? _self.description : description // ignore: cast_nullable_to_non_nullable
 as String?,isValid: null == isValid ? _self.isValid : isValid // ignore: cast_nullable_to_non_nullable
 as bool,isSubmitting: null == isSubmitting ? _self.isSubmitting : isSubmitting // ignore: cast_nullable_to_non_nullable
 as bool,isDirty: null == isDirty ? _self.isDirty : isDirty // ignore: cast_nullable_to_non_nullable

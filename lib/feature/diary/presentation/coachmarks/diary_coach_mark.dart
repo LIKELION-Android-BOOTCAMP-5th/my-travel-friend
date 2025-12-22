@@ -36,7 +36,7 @@ class DiaryCoachMark {
           title: '공유 다이어리',
           description: '크루 전체가 작성한 다이어리를 확인하세요.\n함께 여행의 추억을 공유해요.',
           align: ContentAlign.bottom,
-          alignSkip: Alignment.topRight,
+          alignSkip: Alignment.bottomLeft,
         ),
       );
     }
@@ -49,7 +49,7 @@ class DiaryCoachMark {
           title: '내 다이어리',
           description: '내가 작성한 다이어리만 모아볼 수 있어요\n비공개한 비밀다이어리는 여기서 볼 수 있어요',
           align: ContentAlign.bottom,
-          alignSkip: Alignment.topRight,
+          alignSkip: Alignment.bottomLeft,
         ),
       );
     }
@@ -62,7 +62,7 @@ class DiaryCoachMark {
           title: '카테고리 필터',
           description: '메모, 리뷰, 사진, 소비 등\n원하는 유형만 골라서 볼 수 있어요.',
           align: ContentAlign.bottom,
-          alignSkip: Alignment.topRight,
+          alignSkip: Alignment.bottomLeft,
         ),
       );
     }

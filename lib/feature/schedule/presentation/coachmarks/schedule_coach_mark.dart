@@ -36,7 +36,7 @@ class ScheduleCoachMark {
           title: '일자별 보기',
           description: '날짜별로 일정을 확인할 수 있어요.',
           align: ContentAlign.bottom,
-          alignSkip: Alignment.topRight,
+          alignSkip: Alignment.bottomLeft,
         ),
       );
     }
@@ -49,7 +49,7 @@ class ScheduleCoachMark {
           title: '카테고리별 보기',
           description: '숙소, 식당, 관광지 등\n카테고리별로 일정을 모아볼 수 있어요.',
           align: ContentAlign.bottom,
-          alignSkip: Alignment.topRight,
+          alignSkip: Alignment.bottomLeft,
         ),
       );
     }
@@ -62,7 +62,7 @@ class ScheduleCoachMark {
           title: '필터',
           description: '전체 또는 특정 날짜/카테고리만\n선택해서 볼 수 있어요.',
           align: ContentAlign.bottom,
-          alignSkip: Alignment.topRight,
+          alignSkip: Alignment.bottomLeft,
         ),
       );
     }

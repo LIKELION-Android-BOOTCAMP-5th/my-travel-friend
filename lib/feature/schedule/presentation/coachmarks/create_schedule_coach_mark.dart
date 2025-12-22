@@ -21,11 +21,11 @@ class CreateScheduleCoachMark {
     : _coachMarkService =
           coachMarkService ?? GetIt.instance<CoachMarkService>();
 
-  /// 코치마크 표시 여부
+  // 코치마크 표시 여부
   bool get shouldShow => _coachMarkService.shouldShowCreateScheduleCoachMark();
 
-  /// 코치마크 표시
-  void show(BuildContext context) {
+  // 코치마크 표시
+  void show(BuildContext context, {ScrollController? scrollController}) {
     if (!shouldShow) return;
 
     final targets = <TargetFocus>[];
@@ -96,30 +96,30 @@ class CreateScheduleCoachMark {
       );
     }
 
-    // 6. 참여자
+    // 6. 함께하는 크루원
     if (memberKey.currentContext != null) {
-      targets.add(
-        _coachMarkService.createTarget(
-          key: memberKey,
-          title: '참여자',
-          description: '이 일정에 함께할 크루를 선택하세요.\n한 명 이상 꼭 선택해야 해요',
-          align: ContentAlign.top,
-          alignSkip: Alignment.topRight,
-        ),
-      );
-    }
-
-    // 7. 저장 버튼
-    if (saveButtonKey.currentContext != null) {
-      targets.add(
-        _coachMarkService.createTarget(
-          key: saveButtonKey,
-          title: '저장',
-          description: '모든 정보를 입력하면 저장할 수 있어요.',
-          align: ContentAlign.top,
-          alignSkip: Alignment.topRight,
-        ),
-      );
+      if (scrollController != null) {
+        targets.add(
+          _coachMarkService.createTargetWithScroll(
+            key: memberKey,
+            title: '함께하는 크루원',
+            description: '이 일정에 함께할 크루를 선택하세요.',
+            scrollController: scrollController,
+            align: ContentAlign.top,
+            alignSkip: Alignment.topRight,
+          ),
+        );
+      } else {
+        targets.add(
+          _coachMarkService.createTarget(
+            key: memberKey,
+            title: '함께하는 크루원',
+            description: '이 일정에 함께할 크루를 선택하세요.',
+            align: ContentAlign.top,
+            alignSkip: Alignment.topRight,
+          ),
+        );
+      }
     }
 
     if (targets.isEmpty) return;

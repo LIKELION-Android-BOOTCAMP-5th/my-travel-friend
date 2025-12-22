@@ -37,8 +37,10 @@ abstract class CreateScheduleEvent with _$CreateScheduleEvent {
   //카테고리 선택
   const factory CreateScheduleEvent.categorySelected(int categoryId) =
       CategorySelected;
-  const factory CreateScheduleEvent.initialized({required int tripId}) =
-      Initialized;
+  const factory CreateScheduleEvent.initialized({
+    required int tripId,
+    required int userId,
+  }) = Initialized;
   //참여자 전체 가져오기
   const factory CreateScheduleEvent.loadTripMembers() = LoadTripMembers;
 

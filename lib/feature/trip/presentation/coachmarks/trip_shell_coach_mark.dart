@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
+import 'package:my_travel_friend/feature/trip/presentation/coachmarks/trip_home_coach_mark.dart';
 import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
 
 import '../../../../core/service/internal/coach_mark_service.dart';
@@ -21,11 +22,23 @@ class TripShellCoachMark {
           coachMarkService ?? GetIt.instance<CoachMarkService>();
 
   // 코치마크 표시 여부 (TripHome 코치마크와 별개)
-  bool get shouldShow => _coachMarkService.shouldShowTripHomeCoachMark();
+  bool get shouldShow => _coachMarkService.shouldShowTripTabsCoachMark();
 
   // 코치마크 표시
-  void show(BuildContext context) {
-    if (!shouldShow) return;
+  void show(
+    BuildContext context, {
+    VoidCallback? onFinish,
+    TripHomeCoachMark? homeCoachMark,
+  }) {
+    if (!shouldShow) {
+      if (homeCoachMark != null && homeCoachMark.shouldShow) {
+        Future.delayed(const Duration(milliseconds: 300), () {
+          homeCoachMark.show(context);
+        });
+      }
+      onFinish?.call();
+      return;
+    }
 
     final targets = <TargetFocus>[];
 
@@ -113,8 +126,28 @@ class TripShellCoachMark {
     _coachMarkService.showCoachMark(
       context: context,
       targets: targets,
-      onFinish: () => _coachMarkService.completeTripHomeCoachMark(),
-      onSkip: () => _coachMarkService.completeTripHomeCoachMark(),
+      onFinish: () {
+        _coachMarkService.completeTripTabsCoachMark();
+
+        if (homeCoachMark != null) {
+          Future.delayed(const Duration(milliseconds: 500), () {
+            homeCoachMark.show(context);
+          });
+        }
+
+        onFinish?.call();
+      },
+      onSkip: () {
+        _coachMarkService.completeTripTabsCoachMark();
+
+        if (homeCoachMark != null) {
+          Future.delayed(const Duration(milliseconds: 500), () {
+            homeCoachMark.show(context);
+          });
+        }
+
+        onFinish?.call();
+      },
     );
   }
 }

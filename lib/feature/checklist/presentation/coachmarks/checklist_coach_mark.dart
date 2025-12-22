@@ -36,7 +36,7 @@ class ChecklistCoachMark {
           title: '챙길 것',
           description: '여행에 필요한 짐을 체크하세요.\n추가할 것은 없는지 AI에게 물어볼 수도 있어요',
           align: ContentAlign.bottom,
-          alignSkip: Alignment.topRight,
+          alignSkip: Alignment.bottomLeft,
         ),
       );
     }
@@ -49,7 +49,7 @@ class ChecklistCoachMark {
           title: '해야 할 것',
           description: '여행 전 해야 할 일을 관리하세요.\n환전, 예약 확인 등을 체크할 수 있어요.',
           align: ContentAlign.bottom,
-          alignSkip: Alignment.topRight,
+          alignSkip: Alignment.bottomLeft,
         ),
       );
     }
@@ -62,7 +62,7 @@ class ChecklistCoachMark {
           title: '진행률',
           description: '얼마나 준비했는지 한 눈에 확인하세요.',
           align: ContentAlign.bottom,
-          alignSkip: Alignment.topRight,
+          alignSkip: Alignment.bottomLeft,
         ),
       );
     }
