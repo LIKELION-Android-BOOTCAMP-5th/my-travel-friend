@@ -5,6 +5,7 @@ import 'package:my_travel_friend/core/widget/button.dart';
 import 'package:my_travel_friend/feature/friend/presentation/widget/empty_card_widget.dart';
 
 import '../../../../core/theme/app_colors.dart';
+import '../../../../core/theme/app_font.dart';
 import '../../../../core/theme/app_icon.dart';
 import '../../../../core/widget/app_bar.dart';
 import '../../../../core/widget/pop_up_box.dart';
@@ -30,6 +31,7 @@ class FriendListScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final cs = Theme.of(context).colorScheme;
+    final isDark = cs.brightness == Brightness.dark;
     final bloc = context.read<FriendBloc>();
 
     // 검색어/검색결과 가져오기
@@ -47,59 +49,49 @@ class FriendListScreen extends StatelessWidget {
     //실제로 화면에 보여줄 리스트
     final List<UserEntity> displayList = isSearching ? searchedUsers : users;
 
-    return SafeArea(
-      child: Scaffold(
-        appBar: CustomButtonAppBar(
-          title: "친구 목록",
-          leading: Button(
-            onTap: () => context.pop(),
+    return Scaffold(
+      backgroundColor: isDark ? AppColors.navy : AppColors.darkGray,
+      appBar: CustomButtonAppBar(
+        title: "친구 목록",
+        leading: Button(
+          onTap: () => context.pop(),
+          width: 40,
+          height: 40,
+          icon: Icon(AppIcon.back),
+          contentColor: AppColors.lessLight,
+          borderRadius: 20,
+        ),
+        actions: [
+          // 친구 검색
+          Button(
+            onTap: () {
+              bloc.add(FriendEvent.searchToggle());
+            },
             width: 40,
             height: 40,
-            icon: Icon(AppIcon.back),
             contentColor: AppColors.lessLight,
             borderRadius: 20,
+            icon: isSearch ? Icon(AppIcon.close) : Icon(AppIcon.search),
           ),
-          actions: [
-            // 친구 검색
-            Button(
-              onTap: () {
-                bloc.add(FriendEvent.searchToggle());
-              },
-              width: 40,
-              height: 40,
-              contentColor: AppColors.lessLight,
-              borderRadius: 20,
-              icon: isSearch ? Icon(AppIcon.close) : Icon(AppIcon.search),
-            ),
 
-            // 친구 추가
-            Button(
-              onTap: () => context.push(
-                '/setting/friend/friend-request',
-                extra: {'requestId': userId},
-              ),
-              width: 40,
-              height: 40,
-              contentColor: AppColors.lessLight,
-              borderRadius: 20,
-              icon: Icon(AppIcon.invite),
+          // 친구 추가
+          Button(
+            onTap: () => context.push(
+              '/setting/friend/friend-request',
+              extra: {'requestId': userId},
             ),
-          ],
-        ),
+            width: 40,
+            height: 40,
+            contentColor: AppColors.lessLight,
+            borderRadius: 20,
+            icon: Icon(AppIcon.invite),
+          ),
+        ],
+      ),
 
-        body: Container(
+      body: SafeArea(
+        child: Container(
           padding: const EdgeInsets.all(16),
-          decoration: BoxDecoration(
-            color: cs.onPrimary,
-            borderRadius: BorderRadius.circular(18),
-            boxShadow: [
-              BoxShadow(
-                blurRadius: 8,
-                offset: const Offset(0, 4),
-                color: Colors.black.withOpacity(0.06),
-              ),
-            ],
-          ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -116,7 +108,13 @@ class FriendListScreen extends StatelessWidget {
                         bloc.add(FriendEvent.keywordChanged(value));
                       },
                     )
-                  : Text("친구 ${users.length}명"),
+                  : Text(
+                      "친구 ${users.length}명",
+                      style: AppFont.small.copyWith(
+                        color: cs.onSurface,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
 
               const SizedBox(height: 12),
 
@@ -155,8 +153,8 @@ class FriendListScreen extends StatelessWidget {
                                     return PopUpBox(
                                       title: '함께 여행가기',
                                       message:
-                                          '${user.nickname}님과 함게 여행을 떠나보세요',
-                                      leftText: '새로운 여행 계획',
+                                          '"${user.nickname}"님과 \n함께 여행을 떠나보세요',
+                                      leftText: '새로운 여행',
                                       rightText: '내 여행에 초대',
                                       icon: AppIcon.airplane,
                                       iconColor: cs.primary,

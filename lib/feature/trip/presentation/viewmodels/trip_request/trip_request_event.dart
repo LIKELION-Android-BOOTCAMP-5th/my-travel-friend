@@ -2,6 +2,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'trip_request_event.freezed.dart';
 
+//[엄수빈] 여행 초대 및 크루 이벤트
 @freezed
 class TripRequestEvent with _$TripRequestEvent {
   // 여행 초대 보내기
@@ -34,4 +35,8 @@ class TripRequestEvent with _$TripRequestEvent {
 
   const factory TripRequestEvent.getTripsByIds({required List<int> tripIds}) =
       GetTripsByIds;
+
+  // 초대 제외 리스트 (이미 리스트)
+  const factory TripRequestEvent.getInviteExcludes({required int tripId}) =
+      GetInviteExcludes;
 }

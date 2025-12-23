@@ -5,6 +5,7 @@ import '../../../domain/entities/trip_request_entity.dart';
 
 part 'trip_request_state.freezed.dart';
 
+//[엄수빈] 여행 초대 및 크루 상태
 enum TripRequestPageState { init, loading, loaded, success, error }
 
 @freezed
@@ -13,6 +14,11 @@ abstract class TripRequestState with _$TripRequestState {
     @Default([]) List<TripRequestEntity> tripRequests, // 받은 초대 목록
 
     @Default([]) List<TripEntity> invitedTrips, //id로 조회한 여행들
+    // 이미 초대한 targetId 목록
+    @Default(<int>{}) Set<int> pendingTargetIds,
+
+    /// 이 trip의 크루 유저 id 목록
+    @Default(<int>{}) Set<int> crewUserIds,
 
     String? message,
     String? errorType,

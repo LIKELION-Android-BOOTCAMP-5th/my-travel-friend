@@ -6,6 +6,7 @@ import 'package:my_travel_friend/feature/friend/presentation/viewmodel/friend_re
 import 'package:my_travel_friend/feature/friend/presentation/widget/empty_card_widget.dart';
 
 import '../../../../core/theme/app_colors.dart';
+import '../../../../core/theme/app_font.dart';
 import '../../../../core/theme/app_icon.dart';
 import '../../../../core/widget/app_bar.dart';
 import '../../../../core/widget/button.dart';
@@ -49,21 +50,25 @@ class FriendRequestScreen extends StatelessWidget {
           borderRadius: 20,
         ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: CustomScrollView(
-          slivers: [
-            SliverToBoxAdapter(
-              child: _NicknameSearchCard(onChanged: onSearchChanged),
-            ),
-            const SliverToBoxAdapter(child: SizedBox(height: 24)),
-            SliverToBoxAdapter(
-              child: _SearchResultSection(
-                state: state,
-                onRequestCreate: onRequestCreate,
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: CustomScrollView(
+            slivers: [
+              SliverToBoxAdapter(
+                child: _NicknameSearchCard(onChanged: onSearchChanged),
               ),
-            ),
-          ],
+              const SliverToBoxAdapter(child: SizedBox(height: 24)),
+              SliverToBoxAdapter(
+                child: _SearchResultSection(
+                  state: state,
+                  onRequestCreate: onRequestCreate,
+                ),
+              ),
+              const SliverToBoxAdapter(child: SizedBox(height: 24)),
+              SliverToBoxAdapter(child: _RinkSection()),
+            ],
+          ),
         ),
       ),
     );
@@ -87,7 +92,7 @@ class _NicknameSearchCard extends StatelessWidget {
           BoxShadow(
             blurRadius: 8,
             offset: const Offset(0, 4),
-            color: Colors.black.withOpacity(0.06),
+            color: AppColors.dark.withValues(alpha: 0.06),
           ),
         ],
       ),
@@ -189,9 +194,12 @@ class _SearchResultSection extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text(
+        Text(
           "검색 결과",
-          style: TextStyle(fontSize: 13, fontWeight: FontWeight.w500),
+          style: AppFont.small.copyWith(
+            color: cs.onSurface,
+            fontWeight: FontWeight.w600,
+          ),
         ),
         const SizedBox(height: 12),
         Container(
@@ -204,11 +212,58 @@ class _SearchResultSection extends StatelessWidget {
               BoxShadow(
                 blurRadius: 8,
                 offset: const Offset(0, 4),
-                color: Colors.black.withOpacity(0.06),
+                color: AppColors.dark.withValues(alpha: 0.06),
               ),
             ],
           ),
           child: content,
+        ),
+      ],
+    );
+  }
+}
+
+/// 링크 세션
+class _RinkSection extends StatelessWidget {
+  const _RinkSection({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final cs = Theme.of(context).colorScheme;
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          "링크로 친구 추가",
+          style: AppFont.small.copyWith(
+            color: cs.onSurface,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+        const SizedBox(height: 12),
+        Container(
+          padding: const EdgeInsets.fromLTRB(16, 16, 16, 20),
+          decoration: BoxDecoration(
+            color: cs.onPrimary,
+            borderRadius: BorderRadius.circular(18),
+            boxShadow: [
+              BoxShadow(
+                blurRadius: 8,
+                offset: const Offset(0, 4),
+                color: AppColors.dark.withValues(alpha: 0.06),
+              ),
+            ],
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Text(
+                "닉네임으로 검색",
+                style: TextStyle(fontSize: 13, fontWeight: FontWeight.w500),
+              ),
+            ],
+          ),
         ),
       ],
     );
