@@ -101,31 +101,17 @@ class _EditDiaryScreenState extends State<EditDiaryScreen> {
               ),
               actions: [
                 Button(
-                  width: 40,
-                  height: 40,
-                  icon:
-                      state.isUploading ||
-                          state.pageState == EditDiaryPageState.loading
-                      ? SizedBox(
-                          width: 20,
-                          height: 20,
-                          child: CircularProgressIndicator(
-                            strokeWidth: 2,
-                            color: isDark
-                                ? colorScheme.onSurface
-                                : AppColors.light,
-                          ),
-                        )
-                      : AppIcon.save,
-                  contentColor: isDark
-                      ? colorScheme.onSurface
-                      : AppColors.light,
-                  borderRadius: 20,
+                  text: '저장',
                   onTap: state.canSave && !state.isUploading
                       ? () => context.read<EditDiaryBloc>().add(
                           const EditDiaryEvent.updateDiary(),
                         )
                       : null,
+                  height: 36,
+                  backgroundColor: Colors.transparent,
+                  contentColor: AppColors.primaryLight,
+                  borderRadius: 18,
+                  width: 36,
                 ),
               ],
             ),

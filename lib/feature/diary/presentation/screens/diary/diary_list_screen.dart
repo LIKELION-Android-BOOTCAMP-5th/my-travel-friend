@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
 import 'package:my_travel_friend/feature/diary/presentation/widgets/public_tab.dart';
 
+import '../../../../../core/coachmark/presentations/targets/diary_coach_mark.dart';
 import '../../../../../core/theme/app_colors.dart';
 import '../../../../../core/theme/app_font.dart';
 import '../../../../../core/theme/app_icon.dart';
@@ -38,6 +40,14 @@ class _DiaryListScreenState extends State<DiaryListScreen> {
   // 무한 스크롤을 위한 컨트롤러
   late ScrollController _scrollController;
 
+  late final GlobalKey _sharedTabKey;
+  late final GlobalKey _myTabKey;
+  late final GlobalKey _filterKey;
+  late final GlobalKey _listKey;
+  late final GlobalKey _fabKey;
+
+  late final DiaryCoachMark _coachMark;
+
   static const List<String?> _filterTypes = [
     null,
     'MEMO',
@@ -52,6 +62,30 @@ class _DiaryListScreenState extends State<DiaryListScreen> {
     super.initState();
     _scrollController = ScrollController();
     _scrollController.addListener(_onScroll);
+
+    _sharedTabKey = GlobalKey();
+    _myTabKey = GlobalKey();
+    _filterKey = GlobalKey();
+    _listKey = GlobalKey();
+    _fabKey = GlobalKey();
+
+    _coachMark = GetIt.instance<DiaryCoachMark>();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Future.delayed(const Duration(milliseconds: 300), () {
+        if (mounted) {
+          // GlobalKey만 넘김 - title/description은 코치마크 클래스에!
+          _coachMark.show(
+            context,
+            sharedTabKey: _sharedTabKey,
+            myTabKey: _myTabKey,
+            filterKey: _filterKey,
+            listKey: _listKey,
+            fabKey: _fabKey,
+          );
+        }
+      });
+    });
   }
 
   @override
@@ -114,6 +148,7 @@ class _DiaryListScreenState extends State<DiaryListScreen> {
           ),
         ),
         floatingActionButton: FloatingButton(
+          key: _fabKey,
           icon: Icon(AppIcon.plus, color: AppColors.light),
           backgroundColor: AppColors.secondary,
           onPressed: () {
@@ -179,6 +214,7 @@ class _DiaryListScreenState extends State<DiaryListScreen> {
             // 공유 다이어리 탭
             Expanded(
               child: PublicTab(
+                key: _sharedTabKey,
                 label: '공유 다이어리',
                 isSelected: !state.isMyDiaries,
                 onTap: () {
@@ -192,6 +228,7 @@ class _DiaryListScreenState extends State<DiaryListScreen> {
             // 내 다이어리 탭
             Expanded(
               child: PublicTab(
+                key: _myTabKey,
                 label: '내 다이어리',
                 isSelected: state.isMyDiaries,
                 onTap: () {
@@ -216,6 +253,7 @@ class _DiaryListScreenState extends State<DiaryListScreen> {
       buildWhen: (prev, curr) => prev.currentFilter != curr.currentFilter,
       builder: (context, state) {
         return SingleChildScrollView(
+          key: _filterKey,
           scrollDirection: Axis.horizontal,
           child: Row(
             children: List.generate(_filterTypes.length, (index) {
@@ -263,6 +301,7 @@ class _DiaryListScreenState extends State<DiaryListScreen> {
         }
 
         return RefreshIndicator(
+          key: _listKey,
           onRefresh: () async {
             context.read<DiaryBloc>().add(const DiaryEvent.refresh());
           },
@@ -305,6 +344,7 @@ class _DiaryListScreenState extends State<DiaryListScreen> {
     final colorScheme = Theme.of(context).colorScheme;
 
     return Center(
+      key: _listKey,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [

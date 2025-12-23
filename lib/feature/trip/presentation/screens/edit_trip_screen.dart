@@ -101,31 +101,17 @@ class _EditTripScreenState extends State<EditTripScreen> {
               title: "여행 계획 수정하기",
               actions: [
                 Button(
-                  width: 40,
-                  height: 40,
-                  icon:
-                      state.isUploading ||
-                          state.pageState == EditTripPageState.loading
-                      ? SizedBox(
-                          width: 20,
-                          height: 20,
-                          child: CircularProgressIndicator(
-                            strokeWidth: 2,
-                            color: state.isValid
-                                ? Colors.white
-                                : Colors.white.withOpacity(0.4),
-                          ),
-                        )
-                      : AppIcon.save,
-                  contentColor: isDark
-                      ? colorScheme.onSurface
-                      : AppColors.light,
-                  borderRadius: 20,
+                  text: '저장',
                   onTap: state.isValid
                       ? () => context.read<EditTripBloc>().add(
                           const EditTripEvent.saveTrip(),
                         )
                       : null,
+                  height: 36,
+                  backgroundColor: Colors.transparent,
+                  contentColor: AppColors.primaryLight,
+                  borderRadius: 18,
+                  width: 36,
                 ),
               ],
             ),

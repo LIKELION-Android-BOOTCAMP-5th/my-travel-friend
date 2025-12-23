@@ -333,9 +333,6 @@ class AlarmBloc extends Bloc<AlarmEvent, AlarmState> {
         '/trip/$tripId/talk',
       ),
 
-      // D-Day 알림 -> 여행 - 홈
-      'D_DAY' when tripId != null => AlarmNavigationTo('/trip/$tripId'),
-
       _ => const AlarmNavigationNone(),
     };
   }
