@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
 import 'package:my_travel_friend/core/widget/bottom_sheat.dart';
 import 'package:my_travel_friend/core/widget/floating_button.dart';
@@ -13,6 +14,7 @@ import 'package:my_travel_friend/feature/trip/presentation/widgets/empty_travel_
 import 'package:my_travel_friend/feature/trip/presentation/widgets/trip_card.dart';
 import 'package:my_travel_friend/feature/trip/presentation/widgets/trip_screen_app_bar.dart';
 
+import '../../../../core/coachmark/presentations/targets/trip_list_coach_mark.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_icon.dart';
 import '../../../alarm/presentation/viewmodels/alarm_bloc.dart';
@@ -31,19 +33,49 @@ class _TripListScreenState extends State<TripListScreen> {
   final TextEditingController _searchController = TextEditingController();
   late final int userId;
 
+  // GlobalKey들 - initState에서 생성
+  late final GlobalKey _fabKey;
+  late final GlobalKey _searchKey;
+  late final GlobalKey _settingKey;
+  late final GlobalKey _alarmKey;
+
+  late final TripListCoachMark _coachMark;
+
   @override
   void initState() {
     super.initState();
+
+    // GlobalKey 생성 (initState에서!)
+    _fabKey = GlobalKey();
+    _searchKey = GlobalKey();
+    _settingKey = GlobalKey();
+    _alarmKey = GlobalKey();
+
+    _coachMark = GetIt.instance<TripListCoachMark>();
 
     final authState = context.read<AuthProfileBloc>().state;
     // 초기 userId 설정 (인증 상태를 확인하여)
     if (authState is AuthProfileAuthenticated) {
       userId = authState.userInfo.id!;
     } else {
-      userId = 0; // 안전한 기본값 설정 (실제 앱에서는 이전에 로딩 오버레이로 막혔을 것)
+      userId = 0; // 안전한 기본값 설정 (실제 앱에서는 이전에  로딩 오버레이로 막혔을 것)
     }
 
     _scrollController.addListener(_onScroll);
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Future.delayed(const Duration(milliseconds: 300), () {
+        if (mounted) {
+          _coachMark.show(
+            context,
+            fabKey: _fabKey,
+            searchKey: _searchKey,
+            alarmKey: _alarmKey,
+            settingKey: _settingKey,
+          );
+        }
+      });
+    });
   }
 
   void _onScroll() {
@@ -185,13 +217,16 @@ class _TripListScreenState extends State<TripListScreen> {
                 onLogoTap: () {
                   debugPrint('홈 로고 클릭');
                 },
+                searchKey: _searchKey,
                 onSearchTap: () {
                   tripBloc.add(TripEvent.toggleSearch());
                 },
                 searchIcon: isSearching ? AppIcon.close : AppIcon.search,
+                alarmKey: _alarmKey,
                 onAlarmTap: () {
                   context.push('/alarm');
                 },
+                settingKey: _settingKey,
                 onSettingTap: () {
                   context.push('/setting');
                 },
@@ -240,6 +275,7 @@ class _TripListScreenState extends State<TripListScreen> {
         ),
 
         floatingActionButton: FloatingButton(
+          key: _fabKey,
           icon: const Icon(Icons.add, size: 34, color: AppColors.light),
           onPressed: () {
             tripBloc.add(TripEvent.createNewTrip());

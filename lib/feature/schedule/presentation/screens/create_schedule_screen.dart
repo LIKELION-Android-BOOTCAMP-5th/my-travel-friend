@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
 import 'package:my_travel_friend/core/theme/app_icon.dart';
 
 import '../../../../../core/widget/button.dart';
 import '../../../../../core/widget/text_box.dart';
+import '../../../../core/coachmark/presentations/targets/create_schedule_coach_mark.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_font.dart';
 import '../../../../core/widget/app_bar.dart';
@@ -32,16 +34,55 @@ class _CreateScheduleScreenState extends State<CreateScheduleScreen> {
   final _titleController = TextEditingController();
   final _memoController = TextEditingController();
   final _placeController = TextEditingController();
+  final _scrollController = ScrollController();
+
+  late final GlobalKey _searchButtonKey;
+  late final GlobalKey _titleKey;
+  late final GlobalKey _dateTimeKey;
+  late final GlobalKey _placeKey;
+  late final GlobalKey _categoryKey;
+  late final GlobalKey _memberKey;
+  late final GlobalKey _saveButtonKey;
+
+  late final CreateScheduleCoachMark _coachMark;
 
   @override
   void initState() {
     super.initState();
 
+    _searchButtonKey = GlobalKey();
+    _titleKey = GlobalKey();
+    _dateTimeKey = GlobalKey();
+    _placeKey = GlobalKey();
+    _categoryKey = GlobalKey();
+    _memberKey = GlobalKey();
+    _saveButtonKey = GlobalKey();
+
+    // ✅ Bloc 초기 상태를 기반으로 controller 초기값 세팅
     final state = context.read<CreateScheduleBloc>().state;
 
     _titleController.text = state.title ?? '';
     _memoController.text = state.description ?? '';
     _placeController.text = state.place ?? '';
+
+    _coachMark = GetIt.instance<CreateScheduleCoachMark>();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Future.delayed(const Duration(milliseconds: 300), () {
+        if (mounted) {
+          _coachMark.show(
+            context,
+            searchButtonKey: _searchButtonKey,
+            titleKey: _titleKey,
+            dateTimeKey: _dateTimeKey,
+            placeKey: _placeKey,
+            categoryKey: _categoryKey,
+            memberKey: _memberKey,
+            scrollController: _scrollController,
+          );
+        }
+      });
+    });
   }
 
   @override
@@ -49,6 +90,7 @@ class _CreateScheduleScreenState extends State<CreateScheduleScreen> {
     _titleController.dispose();
     _memoController.dispose();
     _placeController.dispose();
+    _scrollController.dispose();
     super.dispose();
   }
 
@@ -59,7 +101,7 @@ class _CreateScheduleScreenState extends State<CreateScheduleScreen> {
           prev.actionType != curr.actionType || prev.message != curr.message,
       listener: (context, state) async {
         if (state.actionType == 'pop') {
-          Navigator.of(context).pop(false);
+          context.pop(false);
         }
 
         if (state.actionType == 'exit_confirm') {
@@ -72,7 +114,7 @@ class _CreateScheduleScreenState extends State<CreateScheduleScreen> {
               leftText: '취소',
               rightText: '확인',
               onRight: () {
-                Navigator.of(context).pop(true);
+                context.pop(true);
               },
             ),
           );
@@ -89,7 +131,7 @@ class _CreateScheduleScreenState extends State<CreateScheduleScreen> {
         }
 
         if (state.pageState == CreateSchedulepageState.success) {
-          Navigator.of(context).pop(true);
+          context.pop(true);
         }
       },
       child: BlocBuilder<CreateScheduleBloc, CreateScheduleState>(
@@ -124,6 +166,7 @@ class _CreateScheduleScreenState extends State<CreateScheduleScreen> {
                 ),
                 actions: [
                   Button(
+                    key: _searchButtonKey,
                     icon: const Icon(AppIcon.search),
                     onTap: () async {
                       final result = await context.push<PlaceCandidate>(
@@ -191,6 +234,7 @@ class _CreateScheduleScreenState extends State<CreateScheduleScreen> {
                             _sectionTitle('일정 제목'),
                             const SizedBox(height: 8),
                             TextBox(
+                              key: _titleKey,
                               controller: _titleController,
                               hintText: '예: 성산일출봉 방문',
                               maxLength: 20,
@@ -206,6 +250,7 @@ class _CreateScheduleScreenState extends State<CreateScheduleScreen> {
                             _sectionTitle('날짜'),
                             const SizedBox(height: 8),
                             Row(
+                              key: _dateTimeKey,
                               children: [
                                 Expanded(
                                   child: _pickerBox(
@@ -265,6 +310,7 @@ class _CreateScheduleScreenState extends State<CreateScheduleScreen> {
                             _sectionTitle('장소'),
                             const SizedBox(height: 8),
                             TextBox(
+                              key: _placeKey,
                               controller: _placeController,
                               hintText: '예: 제주 성산읍',
                               prefixIcon: const Icon(AppIcon.mapPin),
@@ -297,6 +343,7 @@ class _CreateScheduleScreenState extends State<CreateScheduleScreen> {
                             _sectionTitle('카테고리'),
                             const SizedBox(height: 8),
                             Wrap(
+                              key: _categoryKey,
                               spacing: 8,
                               runSpacing: 8,
                               children: [
@@ -315,7 +362,10 @@ class _CreateScheduleScreenState extends State<CreateScheduleScreen> {
 
                             _sectionTitle('함께하는 크루원 \n(함께할 크루원을 클릭해서 추가해주세요!)'),
                             const SizedBox(height: 8),
-                            _buildMembersSection(state),
+                            Container(
+                              key: _memberKey,
+                              child: _buildMembersSection(state),
+                            ),
 
                             if (state.selectedScheduleCrew.isNotEmpty) ...[
                               const SizedBox(height: 8),

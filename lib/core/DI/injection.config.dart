@@ -331,6 +331,16 @@ import '../../feature/trip/presentation/viewmodels/trip_home/trip_home_bloc.dart
     as _i575;
 import '../../feature/trip/presentation/viewmodels/trip_request/trip_request_bloc.dart'
     as _i197;
+import '../coachmark/presentations/targets/check_list_coach_mark.dart'
+    as _i1000;
+import '../coachmark/presentations/targets/create_schedule_coach_mark.dart'
+    as _i844;
+import '../coachmark/presentations/targets/diary_coach_mark.dart' as _i523;
+import '../coachmark/presentations/targets/schedule_coach_mark.dart' as _i804;
+import '../coachmark/presentations/targets/trip_home_coach_mark.dart' as _i629;
+import '../coachmark/presentations/targets/trip_list_coach_mark.dart' as _i78;
+import '../coachmark/presentations/targets/trip_shell_coach_mark.dart' as _i415;
+import '../coachmark/storage/coach_mark_storage.dart' as _i301;
 import '../service/internal/deep_link_service.dart' as _i507;
 import '../service/internal/permission_service.dart' as _i213;
 import '../service/internal/push_notification_service.dart' as _i737;
@@ -375,6 +385,9 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i507.DeepLinkService>(() => _i507.DeepLinkService());
     gh.lazySingleton<_i213.PermissionService>(() => _i213.PermissionService());
     gh.lazySingleton<_i1026.ThemeService>(() => _i1026.ThemeService());
+    gh.lazySingleton<_i301.CoachMarkStorage>(
+      () => _i301.CoachMarkStorage(gh<_i460.SharedPreferences>()),
+    );
     gh.lazySingleton<_i278.AppleAuthDataSource>(
       () => _i45.AppleAuthDataSourceImpl(gh<_i454.SupabaseClient>()),
     );
@@ -387,6 +400,27 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.lazySingleton<_i153.GoogleAuthDataSource>(
       () => _i795.SocialAuthDataSourceImpl(gh<_i116.GoogleSignIn>()),
+    );
+    gh.factory<_i1000.ChecklistCoachMark>(
+      () => _i1000.ChecklistCoachMark(gh<_i301.CoachMarkStorage>()),
+    );
+    gh.factory<_i844.CreateScheduleCoachMark>(
+      () => _i844.CreateScheduleCoachMark(gh<_i301.CoachMarkStorage>()),
+    );
+    gh.factory<_i523.DiaryCoachMark>(
+      () => _i523.DiaryCoachMark(gh<_i301.CoachMarkStorage>()),
+    );
+    gh.factory<_i804.ScheduleCoachMark>(
+      () => _i804.ScheduleCoachMark(gh<_i301.CoachMarkStorage>()),
+    );
+    gh.factory<_i629.TripHomeCoachMark>(
+      () => _i629.TripHomeCoachMark(gh<_i301.CoachMarkStorage>()),
+    );
+    gh.factory<_i78.TripListCoachMark>(
+      () => _i78.TripListCoachMark(gh<_i301.CoachMarkStorage>()),
+    );
+    gh.factory<_i415.TripShellCoachMark>(
+      () => _i415.TripShellCoachMark(gh<_i301.CoachMarkStorage>()),
     );
     gh.lazySingleton<_i231.GetThemeUseCase>(
       () => _i231.GetThemeUseCase(gh<_i1026.ThemeService>()),

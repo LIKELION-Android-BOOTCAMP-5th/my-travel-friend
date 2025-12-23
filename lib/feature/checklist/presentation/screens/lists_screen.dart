@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get_it/get_it.dart';
 
+import '../../../../core/coachmark/presentations/targets/check_list_coach_mark.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_font.dart';
 import '../../../../core/theme/app_icon.dart';
@@ -18,11 +20,52 @@ import '../widgets/list_box.dart';
 // - 체크박스 리스트
 // - FloatingActionButton으로 항목 추가
 
-class ListsScreen extends StatelessWidget {
+class ListsScreen extends StatefulWidget {
   final int tripId;
   final int userId;
 
   const ListsScreen({super.key, required this.tripId, required this.userId});
+
+  @override
+  State<ListsScreen> createState() => _ListsScreenState();
+}
+
+class _ListsScreenState extends State<ListsScreen> {
+  late final GlobalKey _checklistTabKey;
+  late final GlobalKey _todoTabKey;
+  late final GlobalKey _progressKey;
+  late final GlobalKey _listKey;
+  late final GlobalKey _fabKey;
+
+  late final ChecklistCoachMark _coachMark;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _checklistTabKey = GlobalKey();
+    _todoTabKey = GlobalKey();
+    _progressKey = GlobalKey();
+    _listKey = GlobalKey();
+    _fabKey = GlobalKey();
+
+    _coachMark = GetIt.instance<ChecklistCoachMark>();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Future.delayed(const Duration(milliseconds: 500), () {
+        if (mounted) {
+          _coachMark.show(
+            context,
+            checklistTabKey: _checklistTabKey,
+            todoTabKey: _todoTabKey,
+            progressKey: _progressKey,
+            listKey: _listKey,
+            fabKey: _fabKey,
+          );
+        }
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -51,6 +94,7 @@ class ListsScreen extends StatelessWidget {
         ),
       ),
       floatingActionButton: FloatingButton(
+        key: _fabKey,
         icon: Icon(AppIcon.plus, color: AppColors.light),
         backgroundColor: colorScheme.primary,
         onPressed: () {
@@ -69,6 +113,7 @@ class ListsScreen extends StatelessWidget {
           children: [
             Expanded(
               child: CheckTodoTab(
+                key: _checklistTabKey,
                 label: '챙길 것',
                 isSelected: state.currentTab == ListsTab.checklist,
                 onTap: () => context.read<ListsBloc>().add(
@@ -79,6 +124,7 @@ class ListsScreen extends StatelessWidget {
             const SizedBox(width: 8),
             Expanded(
               child: CheckTodoTab(
+                key: _todoTabKey,
                 label: '해야 할 것',
                 isSelected: state.currentTab == ListsTab.todoList,
                 onTap: () => context.read<ListsBloc>().add(
@@ -112,6 +158,7 @@ class ListsScreen extends StatelessWidget {
             : '이만큼 했어요!';
 
         return Container(
+          key: _progressKey,
           padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
             color: colorScheme.surfaceContainerHighest,
@@ -166,6 +213,7 @@ class ListsScreen extends StatelessWidget {
         // 빈 상태
         if (items.isEmpty) {
           return Container(
+            key: _listKey,
             decoration: BoxDecoration(
               color: colorScheme.surfaceContainerHighest,
               borderRadius: BorderRadius.circular(16),
@@ -197,6 +245,7 @@ class ListsScreen extends StatelessWidget {
 
         // 리스트
         return Container(
+          key: _listKey,
           decoration: BoxDecoration(
             color: colorScheme.surfaceContainerHighest,
             borderRadius: BorderRadius.circular(16),

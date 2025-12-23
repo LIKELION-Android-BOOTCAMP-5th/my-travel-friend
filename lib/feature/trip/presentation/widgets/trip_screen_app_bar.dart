@@ -11,6 +11,9 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
   final VoidCallback? onSettingTap;
   final IconData? searchIcon;
   final bool hasUnreadAlarm;
+  final GlobalKey? searchKey;
+  final GlobalKey? alarmKey;
+  final GlobalKey? settingKey;
 
   const HomeAppBar({
     super.key,
@@ -20,6 +23,9 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
     this.onSettingTap,
     this.searchIcon,
     this.hasUnreadAlarm = false,
+    this.searchKey,
+    this.alarmKey,
+    this.settingKey,
   });
 
   @override
@@ -49,6 +55,7 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
             const Spacer(),
 
             Button(
+              key: searchKey,
               width: 40,
               height: 40,
               icon: Icon(searchIcon ?? AppIcon.search),
@@ -61,6 +68,7 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
             _buildAlarmButton(),
             const SizedBox(width: 6),
             Button(
+              key: settingKey,
               width: 40,
               height: 40,
               icon: Icon(AppIcon.setting),
@@ -80,6 +88,7 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
     return Stack(
       children: [
         Button(
+          key: alarmKey,
           width: 40,
           height: 40,
           icon: Icon(AppIcon.alarm),
