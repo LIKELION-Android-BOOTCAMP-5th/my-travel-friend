@@ -1,4 +1,3 @@
-// [이재은] Trip 공통 Shell (AppBar + BottomNav)
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
@@ -25,6 +24,7 @@ import '../viewmodels/trip_detail/trip_detail_event.dart';
 import '../viewmodels/trip_detail/trip_detail_state.dart';
 import 'edit_trip_screen.dart';
 
+// [이재은] Trip 공통 Shell (AppBar + BottomNav)
 class TripShellScaffold extends StatefulWidget {
   final Widget child;
 
@@ -51,11 +51,17 @@ class TripShellScaffoldState extends State<TripShellScaffold> {
 
   late final TripShellCoachMark _coachMark;
   late final TripHomeCoachMark _homeCoachMark;
+
   late bool _coachMarkShown = false;
 
-  late final ChatUnreadBloc _chatUnreadBloc;
-
+  // TripHomeScreen에서 접근 가능하도록 getter
+  GlobalKey get crewKey => _crewKey;
+  GlobalKey get inviteKey => _inviteKey;
+  GlobalKey get calendarKey => _calendarKey;
+  GlobalKey get scheduleKey => _scheduleKey;
   TripHomeCoachMark get homeCoachMark => _homeCoachMark;
+
+  late final ChatUnreadBloc _chatUnreadBloc;
 
   @override
   void initState() {
@@ -74,21 +80,9 @@ class TripShellScaffoldState extends State<TripShellScaffold> {
     _calendarKey = GlobalKey();
     _scheduleKey = GlobalKey();
 
+    _coachMark = GetIt.instance<TripShellCoachMark>();
+    _homeCoachMark = GetIt.instance<TripHomeCoachMark>();
     _chatUnreadBloc = GetIt.instance<ChatUnreadBloc>();
-    _coachMark = TripShellCoachMark(
-      menuButtonKey: _menuButtonKey,
-      homeTabKey: _homeTabKey,
-      scheduleTabKey: _scheduleTabKey,
-      checklistTabKey: _checklistTabKey,
-      diaryTabKey: _diaryTabKey,
-      talkTabKey: _talkTabKey,
-    );
-    _homeCoachMark = TripHomeCoachMark(
-      crewKey: _crewKey,
-      inviteKey: _inviteKey,
-      calendarKey: _calendarKey,
-      scheduleKey: _scheduleKey,
-    );
   }
 
   @override
@@ -104,7 +98,28 @@ class TripShellScaffoldState extends State<TripShellScaffold> {
 
     Future.delayed(const Duration(milliseconds: 800), () {
       if (mounted) {
-        _coachMark.show(context, homeCoachMark: _homeCoachMark);
+        _coachMark.show(
+          context,
+          menuButtonKey: _menuButtonKey,
+          homeTabKey: _homeTabKey,
+          scheduleTabKey: _scheduleTabKey,
+          checklistTabKey: _checklistTabKey,
+          diaryTabKey: _diaryTabKey,
+          talkTabKey: _talkTabKey,
+          onShowHomeCoachMark: () {
+            Future.delayed(const Duration(milliseconds: 500), () {
+              if (mounted) {
+                _homeCoachMark.show(
+                  context,
+                  crewKey: _crewKey,
+                  inviteKey: _inviteKey,
+                  calendarKey: _calendarKey,
+                  scheduleKey: _scheduleKey,
+                );
+              }
+            });
+          },
+        );
       }
     });
   }
@@ -207,7 +222,7 @@ class TripShellScaffoldState extends State<TripShellScaffold> {
                   ),
                   actions: [
                     Button(
-                      key: _coachMark.menuButtonKey,
+                      key: _menuButtonKey,
                       icon: Icon(AppIcon.threeDots),
                       contentColor: isDark
                           ? colorScheme.onSurface
@@ -224,11 +239,11 @@ class TripShellScaffoldState extends State<TripShellScaffold> {
                   currentIndex: currentIndex,
                   onTap: (index) => _onNavTap(context, index, tripId),
                   chatUnreadCount: showBadge ? unreadState.unreadCount : 0,
-                  homeKey: _coachMark.homeTabKey,
-                  scheduleKey: _coachMark.scheduleTabKey,
-                  checklistKey: _coachMark.checklistTabKey,
-                  diaryKey: _coachMark.diaryTabKey,
-                  talkKey: _coachMark.talkTabKey,
+                  homeKey: _homeTabKey,
+                  scheduleKey: _scheduleTabKey,
+                  checklistKey: _checklistTabKey,
+                  diaryKey: _diaryTabKey,
+                  talkKey: _talkTabKey,
                 ),
               );
             },

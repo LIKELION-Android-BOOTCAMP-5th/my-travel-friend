@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
 import 'package:my_travel_friend/core/theme/app_icon.dart';
 
@@ -57,15 +58,7 @@ class _CreateScheduleScreenState extends State<CreateScheduleScreen> {
     _memberKey = GlobalKey();
     _saveButtonKey = GlobalKey();
 
-    _coachMark = CreateScheduleCoachMark(
-      searchButtonKey: _searchButtonKey,
-      titleKey: _titleKey,
-      dateTimeKey: _dateTimeKey,
-      placeKey: _placeKey,
-      categoryKey: _categoryKey,
-      memberKey: _memberKey,
-      saveButtonKey: _saveButtonKey,
-    );
+    _coachMark = GetIt.instance<CreateScheduleCoachMark>();
 
     // ✅ Bloc 초기 상태를 기반으로 controller 초기값 세팅
     final state = context.read<CreateScheduleBloc>().state;
@@ -77,7 +70,16 @@ class _CreateScheduleScreenState extends State<CreateScheduleScreen> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       Future.delayed(const Duration(milliseconds: 300), () {
         if (mounted) {
-          _coachMark.show(context);
+          _coachMark.show(
+            context,
+            searchButtonKey: _searchButtonKey,
+            titleKey: _titleKey,
+            dateTimeKey: _dateTimeKey,
+            placeKey: _placeKey,
+            categoryKey: _categoryKey,
+            memberKey: _memberKey,
+            scrollController: _scrollController,
+          );
         }
       });
     });
@@ -164,7 +166,7 @@ class _CreateScheduleScreenState extends State<CreateScheduleScreen> {
                 ),
                 actions: [
                   Button(
-                    key: _coachMark.searchButtonKey,
+                    key: _searchButtonKey,
                     icon: const Icon(AppIcon.search),
                     onTap: () async {
                       final result = await context.push<PlaceCandidate>(
@@ -232,7 +234,7 @@ class _CreateScheduleScreenState extends State<CreateScheduleScreen> {
                             _sectionTitle('일정 제목'),
                             const SizedBox(height: 8),
                             TextBox(
-                              key: _coachMark.titleKey,
+                              key: _titleKey,
                               controller: _titleController,
                               hintText: '예: 성산일출봉 방문',
                               maxLength: 20,
@@ -248,7 +250,7 @@ class _CreateScheduleScreenState extends State<CreateScheduleScreen> {
                             _sectionTitle('날짜'),
                             const SizedBox(height: 8),
                             Row(
-                              key: _coachMark.dateTimeKey,
+                              key: _dateTimeKey,
                               children: [
                                 Expanded(
                                   child: _pickerBox(
@@ -308,7 +310,7 @@ class _CreateScheduleScreenState extends State<CreateScheduleScreen> {
                             _sectionTitle('장소'),
                             const SizedBox(height: 8),
                             TextBox(
-                              key: _coachMark.placeKey,
+                              key: _placeKey,
                               controller: _placeController,
                               hintText: '예: 제주 성산읍',
                               prefixIcon: const Icon(AppIcon.mapPin),
@@ -341,7 +343,7 @@ class _CreateScheduleScreenState extends State<CreateScheduleScreen> {
                             _sectionTitle('카테고리'),
                             const SizedBox(height: 8),
                             Wrap(
-                              key: _coachMark.categoryKey,
+                              key: _categoryKey,
                               spacing: 8,
                               runSpacing: 8,
                               children: [
@@ -361,7 +363,7 @@ class _CreateScheduleScreenState extends State<CreateScheduleScreen> {
                             _sectionTitle('함께하는 크루원 \n(함께할 크루원을 클릭해서 추가해주세요!)'),
                             const SizedBox(height: 8),
                             Container(
-                              key: _coachMark.memberKey,
+                              key: _memberKey,
                               child: _buildMembersSection(state),
                             ),
 

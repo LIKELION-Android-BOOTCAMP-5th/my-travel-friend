@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get_it/get_it.dart';
 
 import '../../../../core/coachmark/presentations/targets/checklist_coach_mark.dart';
 import '../../../../core/theme/app_colors.dart';
@@ -48,18 +49,19 @@ class _ListsScreenState extends State<ListsScreen> {
     _listKey = GlobalKey();
     _fabKey = GlobalKey();
 
-    _coachMark = ChecklistCoachMark(
-      checklistTabKey: _checklistTabKey,
-      todoTabKey: _todoTabKey,
-      progressKey: _progressKey,
-      listKey: _listKey,
-      fabKey: _fabKey,
-    );
+    _coachMark = GetIt.instance<ChecklistCoachMark>();
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       Future.delayed(const Duration(milliseconds: 500), () {
         if (mounted) {
-          _coachMark.show(context);
+          _coachMark.show(
+            context,
+            checklistTabKey: _checklistTabKey,
+            todoTabKey: _todoTabKey,
+            progressKey: _progressKey,
+            listKey: _listKey,
+            fabKey: _fabKey,
+          );
         }
       });
     });
@@ -92,7 +94,7 @@ class _ListsScreenState extends State<ListsScreen> {
         ),
       ),
       floatingActionButton: FloatingButton(
-        key: _coachMark.fabKey,
+        key: _fabKey,
         icon: Icon(AppIcon.plus, color: AppColors.light),
         backgroundColor: colorScheme.primary,
         onPressed: () {
@@ -111,7 +113,7 @@ class _ListsScreenState extends State<ListsScreen> {
           children: [
             Expanded(
               child: CheckTodoTab(
-                key: _coachMark.checklistTabKey,
+                key: _checklistTabKey,
                 label: '챙길 것',
                 isSelected: state.currentTab == ListsTab.checklist,
                 onTap: () => context.read<ListsBloc>().add(
@@ -122,7 +124,7 @@ class _ListsScreenState extends State<ListsScreen> {
             const SizedBox(width: 8),
             Expanded(
               child: CheckTodoTab(
-                key: _coachMark.todoTabKey,
+                key: _todoTabKey,
                 label: '해야 할 것',
                 isSelected: state.currentTab == ListsTab.todoList,
                 onTap: () => context.read<ListsBloc>().add(
@@ -156,7 +158,7 @@ class _ListsScreenState extends State<ListsScreen> {
             : '이만큼 했어요!';
 
         return Container(
-          key: _coachMark.progressKey,
+          key: _progressKey,
           padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
             color: colorScheme.surfaceContainerHighest,
@@ -211,7 +213,7 @@ class _ListsScreenState extends State<ListsScreen> {
         // 빈 상태
         if (items.isEmpty) {
           return Container(
-            key: _coachMark.listKey,
+            key: _listKey,
             decoration: BoxDecoration(
               color: colorScheme.surfaceContainerHighest,
               borderRadius: BorderRadius.circular(16),
@@ -243,7 +245,7 @@ class _ListsScreenState extends State<ListsScreen> {
 
         // 리스트
         return Container(
-          key: _coachMark.listKey,
+          key: _listKey,
           decoration: BoxDecoration(
             color: colorScheme.surfaceContainerHighest,
             borderRadius: BorderRadius.circular(16),

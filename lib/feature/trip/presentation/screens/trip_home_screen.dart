@@ -5,7 +5,6 @@ import 'package:my_travel_friend/core/theme/app_font.dart';
 import 'package:my_travel_friend/core/theme/app_icon.dart';
 import 'package:my_travel_friend/feature/trip/presentation/screens/trip_shell_scaffold.dart';
 
-import '../../../../core/coachmark/presentations/targets/trip_home_coach_mark.dart';
 import '../../../../core/widget/toast_pop.dart';
 import '../viewmodels/trip_home/trip_home_bloc.dart';
 import '../viewmodels/trip_home/trip_home_event.dart';
@@ -21,11 +20,8 @@ class TripHomeScreen extends StatefulWidget {
 }
 
 class _TripHomeScreenState extends State<TripHomeScreen> {
-  TripHomeCoachMark? get _coachMark {
-    final shellState = context
-        .findAncestorStateOfType<TripShellScaffoldState>();
-    return shellState?.homeCoachMark;
-  }
+  TripShellScaffoldState? get _shellState =>
+      context.findAncestorStateOfType<TripShellScaffoldState>();
 
   @override
   void initState() {
@@ -57,8 +53,8 @@ class _TripHomeScreenState extends State<TripHomeScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     _CrewSummaryCard(
-                      key: _coachMark?.crewKey,
-                      inviteKey: _coachMark?.inviteKey,
+                      key: _shellState?.crewKey,
+                      inviteKey: _shellState?.inviteKey,
                     ),
                     const SizedBox(height: 12),
 
@@ -76,10 +72,10 @@ class _TripHomeScreenState extends State<TripHomeScreen> {
 
                     if (state.isCrewExpanded) const SizedBox(height: 16),
 
-                    _TripCalendar(key: _coachMark?.calendarKey),
+                    _TripCalendar(key: _shellState?.calendarKey),
                     const SizedBox(height: 16),
 
-                    _ScheduleSection(key: _coachMark?.scheduleKey),
+                    _ScheduleSection(key: _shellState?.scheduleKey),
                     const SizedBox(height: 16),
 
                     if (state.usefulPhrases.isNotEmpty) ...[

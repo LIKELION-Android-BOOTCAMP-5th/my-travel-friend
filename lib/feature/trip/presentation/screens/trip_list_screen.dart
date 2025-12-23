@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
 import 'package:my_travel_friend/core/widget/bottom_sheat.dart';
 import 'package:my_travel_friend/core/widget/floating_button.dart';
@@ -50,13 +51,7 @@ class _TripListScreenState extends State<TripListScreen> {
     _settingKey = GlobalKey();
     _alarmKey = GlobalKey();
 
-    // 코치마크 생성 (GlobalKey 전달)
-    _coachMark = TripListCoachMark(
-      fabKey: _fabKey,
-      searchKey: _searchKey,
-      settingKey: _settingKey,
-      alarmKey: _alarmKey,
-    );
+    _coachMark = GetIt.instance<TripListCoachMark>();
 
     final authState = context.read<AuthProfileBloc>().state;
     // 초기 userId 설정 (인증 상태를 확인하여)
@@ -71,7 +66,13 @@ class _TripListScreenState extends State<TripListScreen> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       Future.delayed(const Duration(milliseconds: 300), () {
         if (mounted) {
-          _coachMark.show(context);
+          _coachMark.show(
+            context,
+            fabKey: _fabKey,
+            searchKey: _searchKey,
+            settingKey: _settingKey,
+            alarmKey: _alarmKey,
+          );
         }
       });
     });
@@ -216,16 +217,16 @@ class _TripListScreenState extends State<TripListScreen> {
                 onLogoTap: () {
                   debugPrint('홈 로고 클릭');
                 },
-                searchKey: _coachMark.searchKey,
+                searchKey: _searchKey,
                 onSearchTap: () {
                   tripBloc.add(TripEvent.toggleSearch());
                 },
                 searchIcon: isSearching ? AppIcon.close : AppIcon.search,
-                alarmKey: _coachMark.alarmKey,
+                alarmKey: _alarmKey,
                 onAlarmTap: () {
                   context.push('/alarm');
                 },
-                settingKey: _coachMark.settingKey,
+                settingKey: _settingKey,
                 onSettingTap: () {
                   context.push('/setting');
                 },
@@ -274,7 +275,7 @@ class _TripListScreenState extends State<TripListScreen> {
         ),
 
         floatingActionButton: FloatingButton(
-          key: _coachMark.fabKey,
+          key: _fabKey,
           icon: const Icon(Icons.add, size: 34, color: AppColors.light),
           onPressed: () {
             tripBloc.add(TripEvent.createNewTrip());

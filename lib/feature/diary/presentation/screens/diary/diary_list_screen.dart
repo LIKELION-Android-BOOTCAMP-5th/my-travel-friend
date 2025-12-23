@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
 import 'package:my_travel_friend/feature/diary/presentation/widgets/public_tab.dart';
 
@@ -68,18 +69,19 @@ class _DiaryListScreenState extends State<DiaryListScreen> {
     _listKey = GlobalKey();
     _fabKey = GlobalKey();
 
-    _coachMark = DiaryCoachMark(
-      sharedTabKey: _sharedTabKey,
-      myTabKey: _myTabKey,
-      filterKey: _filterKey,
-      listKey: _listKey,
-      fabKey: _fabKey,
-    );
+    _coachMark = GetIt.instance<DiaryCoachMark>();
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       Future.delayed(const Duration(milliseconds: 300), () {
         if (mounted) {
-          _coachMark.show(context);
+          _coachMark.show(
+            context,
+            sharedTabKey: _sharedTabKey,
+            myTabKey: _myTabKey,
+            filterKey: _filterKey,
+            listKey: _listKey,
+            fabKey: _fabKey,
+          );
         }
       });
     });
@@ -145,7 +147,7 @@ class _DiaryListScreenState extends State<DiaryListScreen> {
           ),
         ),
         floatingActionButton: FloatingButton(
-          key: _coachMark.fabKey,
+          key: _fabKey,
           icon: Icon(AppIcon.plus, color: AppColors.light),
           backgroundColor: AppColors.secondary,
           onPressed: () {
@@ -211,7 +213,7 @@ class _DiaryListScreenState extends State<DiaryListScreen> {
             // 공유 다이어리 탭
             Expanded(
               child: PublicTab(
-                key: _coachMark.sharedTabKey,
+                key: _sharedTabKey,
                 label: '공유 다이어리',
                 isSelected: !state.isMyDiaries,
                 onTap: () {
@@ -225,7 +227,7 @@ class _DiaryListScreenState extends State<DiaryListScreen> {
             // 내 다이어리 탭
             Expanded(
               child: PublicTab(
-                key: _coachMark.myTabKey,
+                key: _myTabKey,
                 label: '내 다이어리',
                 isSelected: state.isMyDiaries,
                 onTap: () {
@@ -250,7 +252,7 @@ class _DiaryListScreenState extends State<DiaryListScreen> {
       buildWhen: (prev, curr) => prev.currentFilter != curr.currentFilter,
       builder: (context, state) {
         return SingleChildScrollView(
-          key: _coachMark.filterKey,
+          key: _filterKey,
           scrollDirection: Axis.horizontal,
           child: Row(
             children: List.generate(_filterTypes.length, (index) {
@@ -298,7 +300,7 @@ class _DiaryListScreenState extends State<DiaryListScreen> {
         }
 
         return RefreshIndicator(
-          key: _coachMark.listKey,
+          key: _listKey,
           onRefresh: () async {
             context.read<DiaryBloc>().add(const DiaryEvent.refresh());
           },
@@ -341,7 +343,7 @@ class _DiaryListScreenState extends State<DiaryListScreen> {
     final colorScheme = Theme.of(context).colorScheme;
 
     return Center(
-      key: _coachMark.listKey,
+      key: _listKey,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
