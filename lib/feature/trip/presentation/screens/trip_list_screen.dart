@@ -13,11 +13,11 @@ import 'package:my_travel_friend/feature/trip/presentation/widgets/empty_travel_
 import 'package:my_travel_friend/feature/trip/presentation/widgets/trip_card.dart';
 import 'package:my_travel_friend/feature/trip/presentation/widgets/trip_screen_app_bar.dart';
 
+import '../../../../core/coachmark/presentations/targets/trip_list_coach_mark.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_icon.dart';
 import '../../../alarm/presentation/viewmodels/alarm_bloc.dart';
 import '../../../alarm/presentation/viewmodels/alarm_state.dart';
-import '../coachmarks/trip_list_coach_mark.dart';
 import '../viewmodels/trip/trip_bloc.dart';
 
 class TripListScreen extends StatefulWidget {
@@ -32,13 +32,31 @@ class _TripListScreenState extends State<TripListScreen> {
   final TextEditingController _searchController = TextEditingController();
   late final int userId;
 
+  // GlobalKey들 - initState에서 생성
+  late final GlobalKey _fabKey;
+  late final GlobalKey _searchKey;
+  late final GlobalKey _settingKey;
+  late final GlobalKey _alarmKey;
+
   late final TripListCoachMark _coachMark;
 
   @override
   void initState() {
     super.initState();
 
-    _coachMark = TripListCoachMark();
+    // GlobalKey 생성 (initState에서!)
+    _fabKey = GlobalKey();
+    _searchKey = GlobalKey();
+    _settingKey = GlobalKey();
+    _alarmKey = GlobalKey();
+
+    // 코치마크 생성 (GlobalKey 전달)
+    _coachMark = TripListCoachMark(
+      fabKey: _fabKey,
+      searchKey: _searchKey,
+      settingKey: _settingKey,
+      alarmKey: _alarmKey,
+    );
 
     final authState = context.read<AuthProfileBloc>().state;
     // 초기 userId 설정 (인증 상태를 확인하여)

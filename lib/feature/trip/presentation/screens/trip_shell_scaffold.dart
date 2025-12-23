@@ -4,6 +4,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../../core/coachmark/presentations/targets/trip_home_coach_mark.dart';
+import '../../../../core/coachmark/presentations/targets/trip_shell_coach_mark.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_icon.dart';
 import '../../../../core/widget/app_bar.dart';
@@ -18,8 +20,6 @@ import '../../../chat/presentation/viewmodels/chat_unread/chat_unread_bloc.dart'
 import '../../../chat/presentation/viewmodels/chat_unread/chat_unread_event.dart';
 import '../../../chat/presentation/viewmodels/chat_unread/chat_unread_state.dart';
 import '../../domain/entities/trip_entity.dart';
-import '../coachmarks/trip_home_coach_mark.dart';
-import '../coachmarks/trip_shell_coach_mark.dart';
 import '../viewmodels/trip_detail/trip_detail_bloc.dart';
 import '../viewmodels/trip_detail/trip_detail_event.dart';
 import '../viewmodels/trip_detail/trip_detail_state.dart';
@@ -35,6 +35,20 @@ class TripShellScaffold extends StatefulWidget {
 }
 
 class TripShellScaffoldState extends State<TripShellScaffold> {
+  // Globalkey 생성
+  late final GlobalKey _menuButtonKey;
+  late final GlobalKey _homeTabKey;
+  late final GlobalKey _scheduleTabKey;
+  late final GlobalKey _checklistTabKey;
+  late final GlobalKey _diaryTabKey;
+  late final GlobalKey _talkTabKey;
+
+  // TripHome 용 GlobalKey
+  late final GlobalKey _crewKey;
+  late final GlobalKey _inviteKey;
+  late final GlobalKey _calendarKey;
+  late final GlobalKey _scheduleKey;
+
   late final TripShellCoachMark _coachMark;
   late final TripHomeCoachMark _homeCoachMark;
   late bool _coachMarkShown = false;
@@ -46,9 +60,35 @@ class TripShellScaffoldState extends State<TripShellScaffold> {
   @override
   void initState() {
     super.initState();
+
+    // GlobalKey 생성 (initState에서!)
+    _menuButtonKey = GlobalKey();
+    _homeTabKey = GlobalKey();
+    _scheduleTabKey = GlobalKey();
+    _checklistTabKey = GlobalKey();
+    _diaryTabKey = GlobalKey();
+    _talkTabKey = GlobalKey();
+
+    _crewKey = GlobalKey();
+    _inviteKey = GlobalKey();
+    _calendarKey = GlobalKey();
+    _scheduleKey = GlobalKey();
+
     _chatUnreadBloc = GetIt.instance<ChatUnreadBloc>();
-    _coachMark = TripShellCoachMark();
-    _homeCoachMark = TripHomeCoachMark();
+    _coachMark = TripShellCoachMark(
+      menuButtonKey: _menuButtonKey,
+      homeTabKey: _homeTabKey,
+      scheduleTabKey: _scheduleTabKey,
+      checklistTabKey: _checklistTabKey,
+      diaryTabKey: _diaryTabKey,
+      talkTabKey: _talkTabKey,
+    );
+    _homeCoachMark = TripHomeCoachMark(
+      crewKey: _crewKey,
+      inviteKey: _inviteKey,
+      calendarKey: _calendarKey,
+      scheduleKey: _scheduleKey,
+    );
   }
 
   @override

@@ -5,8 +5,8 @@ import 'package:my_travel_friend/core/theme/app_font.dart';
 import 'package:my_travel_friend/core/theme/app_icon.dart';
 import 'package:my_travel_friend/feature/trip/presentation/screens/trip_shell_scaffold.dart';
 
+import '../../../../core/coachmark/presentations/targets/trip_home_coach_mark.dart';
 import '../../../../core/widget/toast_pop.dart';
-import '../coachmarks/trip_home_coach_mark.dart';
 import '../viewmodels/trip_home/trip_home_bloc.dart';
 import '../viewmodels/trip_home/trip_home_event.dart';
 import '../viewmodels/trip_home/trip_home_state.dart';

@@ -3,12 +3,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:my_travel_friend/feature/diary/presentation/widgets/public_tab.dart';
 
+import '../../../../../core/coachmark/presentations/targets/diary_coach_mark.dart';
 import '../../../../../core/theme/app_colors.dart';
 import '../../../../../core/theme/app_font.dart';
 import '../../../../../core/theme/app_icon.dart';
 import '../../../../../core/widget/floating_button.dart';
 import '../../../domain/entities/diary_entity.dart';
-import '../../coachmarks/diary_coach_mark.dart';
 import '../../viewmodels/diary/diary_bloc.dart';
 import '../../viewmodels/diary/diary_event.dart';
 import '../../viewmodels/diary/diary_state.dart';
@@ -39,6 +39,12 @@ class _DiaryListScreenState extends State<DiaryListScreen> {
   // 무한 스크롤을 위한 컨트롤러
   late ScrollController _scrollController;
 
+  late final GlobalKey _sharedTabKey;
+  late final GlobalKey _myTabKey;
+  late final GlobalKey _filterKey;
+  late final GlobalKey _listKey;
+  late final GlobalKey _fabKey;
+
   late final DiaryCoachMark _coachMark;
 
   static const List<String?> _filterTypes = [
@@ -56,7 +62,19 @@ class _DiaryListScreenState extends State<DiaryListScreen> {
     _scrollController = ScrollController();
     _scrollController.addListener(_onScroll);
 
-    _coachMark = DiaryCoachMark();
+    _sharedTabKey = GlobalKey();
+    _myTabKey = GlobalKey();
+    _filterKey = GlobalKey();
+    _listKey = GlobalKey();
+    _fabKey = GlobalKey();
+
+    _coachMark = DiaryCoachMark(
+      sharedTabKey: _sharedTabKey,
+      myTabKey: _myTabKey,
+      filterKey: _filterKey,
+      listKey: _listKey,
+      fabKey: _fabKey,
+    );
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       Future.delayed(const Duration(milliseconds: 300), () {

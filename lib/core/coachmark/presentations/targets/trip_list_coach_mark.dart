@@ -1,25 +1,30 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
+import 'package:my_travel_friend/core/coachmark/storage/coach_mark_storage.dart';
 import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
 
-import '../../../../core/service/internal/coach_mark_service.dart';
+import '../coach_mark_builder.dart';
 
 // [이재은] 여행 목록 화면 코치마크
 class TripListCoachMark {
-  final CoachMarkService _coachMarkService;
+  final CoachMarkStorage _storage;
 
   // GlobalKey들 - 화면에서 위젯에 연결
-  final GlobalKey fabKey = GlobalKey();
-  final GlobalKey searchKey = GlobalKey();
-  final GlobalKey settingKey = GlobalKey();
-  final GlobalKey alarmKey = GlobalKey();
+  final GlobalKey fabKey;
+  final GlobalKey searchKey;
+  final GlobalKey settingKey;
+  final GlobalKey alarmKey;
 
-  TripListCoachMark({CoachMarkService? coachMarkService})
-    : _coachMarkService =
-          coachMarkService ?? GetIt.instance<CoachMarkService>();
+  TripListCoachMark({
+    required this.fabKey,
+    required this.searchKey,
+    required this.settingKey,
+    required this.alarmKey,
+    CoachMarkStorage? storage,
+  }) : _storage = storage ?? GetIt.instance<CoachMarkStorage>();
 
   // 코치마크 표시 여부
-  bool get shouldShow => _coachMarkService.shouldShowTripListCoachMark();
+  bool get shouldShow => _storage.shouldShowTripList();
 
   // 코치마크 표시
   void show(BuildContext context) {
@@ -32,7 +37,7 @@ class TripListCoachMark {
 
     // FAB 타겟
     if (fabKey.currentContext != null) {
-      final target = _coachMarkService.createTarget(
+      final target = CoachMarkBuilder.createTarget(
         key: fabKey,
         title: '새 여행 만들기',
         description: '이 버튼을 눌러 새로운 여행을 만들어보세요!\n친구들과 함께 여행을 계획할 수 있어요.',
@@ -45,7 +50,7 @@ class TripListCoachMark {
 
     // 검색 타겟
     if (searchKey.currentContext != null) {
-      final target = _coachMarkService.createTarget(
+      final target = CoachMarkBuilder.createTarget(
         key: searchKey,
         alignSkip: Alignment.topLeft,
         title: '여행 검색',
@@ -59,7 +64,7 @@ class TripListCoachMark {
 
     // 알림 타겟
     if (alarmKey.currentContext != null) {
-      final target = _coachMarkService.createTarget(
+      final target = CoachMarkBuilder.createTarget(
         key: alarmKey,
         alignSkip: Alignment.topLeft,
         title: '알림',
@@ -73,7 +78,7 @@ class TripListCoachMark {
 
     // 설정 타겟
     if (settingKey.currentContext != null) {
-      final target = _coachMarkService.createTarget(
+      final target = CoachMarkBuilder.createTarget(
         key: settingKey,
         alignSkip: Alignment.topLeft,
         title: '설정',
@@ -86,14 +91,14 @@ class TripListCoachMark {
     }
 
     // 코치마크 표시
-    _coachMarkService.showCoachMark(
+    CoachMarkBuilder.show(
       context: context,
       targets: targets,
       onFinish: () {
-        _coachMarkService.completeTripListCoachMark();
+        _storage.completeTripList();
       },
       onSkip: () {
-        _coachMarkService.completeTripListCoachMark();
+        _storage.completeTripList();
       },
     );
   }

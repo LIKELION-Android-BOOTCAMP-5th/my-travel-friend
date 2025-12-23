@@ -5,11 +5,11 @@ import 'package:my_travel_friend/core/theme/app_icon.dart';
 
 import '../../../../../core/widget/button.dart';
 import '../../../../../core/widget/text_box.dart';
+import '../../../../core/coachmark/presentations/targets/create_schedule_coach_mark.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_font.dart';
 import '../../../../core/widget/app_bar.dart';
 import '../../../../core/widget/pop_up_box.dart';
-import '../coachmarks/create_schedule_coach_mark.dart';
 import '../viewmodels/create_schedule/create_schedule_bloc.dart';
 import '../viewmodels/create_schedule/create_schedule_event.dart';
 import '../viewmodels/create_schedule/create_schedule_state.dart';
@@ -33,6 +33,15 @@ class _CreateScheduleScreenState extends State<CreateScheduleScreen> {
   final _titleController = TextEditingController();
   final _memoController = TextEditingController();
   final _placeController = TextEditingController();
+  final _scrollController = ScrollController();
+
+  late final GlobalKey _searchButtonKey;
+  late final GlobalKey _titleKey;
+  late final GlobalKey _dateTimeKey;
+  late final GlobalKey _placeKey;
+  late final GlobalKey _categoryKey;
+  late final GlobalKey _memberKey;
+  late final GlobalKey _saveButtonKey;
 
   late final CreateScheduleCoachMark _coachMark;
 
@@ -40,7 +49,23 @@ class _CreateScheduleScreenState extends State<CreateScheduleScreen> {
   void initState() {
     super.initState();
 
-    _coachMark = CreateScheduleCoachMark();
+    _searchButtonKey = GlobalKey();
+    _titleKey = GlobalKey();
+    _dateTimeKey = GlobalKey();
+    _placeKey = GlobalKey();
+    _categoryKey = GlobalKey();
+    _memberKey = GlobalKey();
+    _saveButtonKey = GlobalKey();
+
+    _coachMark = CreateScheduleCoachMark(
+      searchButtonKey: _searchButtonKey,
+      titleKey: _titleKey,
+      dateTimeKey: _dateTimeKey,
+      placeKey: _placeKey,
+      categoryKey: _categoryKey,
+      memberKey: _memberKey,
+      saveButtonKey: _saveButtonKey,
+    );
 
     // ✅ Bloc 초기 상태를 기반으로 controller 초기값 세팅
     final state = context.read<CreateScheduleBloc>().state;
@@ -63,6 +88,7 @@ class _CreateScheduleScreenState extends State<CreateScheduleScreen> {
     _titleController.dispose();
     _memoController.dispose();
     _placeController.dispose();
+    _scrollController.dispose();
     super.dispose();
   }
 

@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../core/coachmark/presentations/targets/checklist_coach_mark.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_font.dart';
 import '../../../../core/theme/app_icon.dart';
 import '../../../../core/widget/floating_button.dart';
-import '../coachmarks/checklist_coach_mark.dart';
 import '../viewmodels/lists_bloc.dart';
 import '../viewmodels/lists_event.dart';
 import '../viewmodels/lists_state.dart';
@@ -30,12 +30,31 @@ class ListsScreen extends StatefulWidget {
 }
 
 class _ListsScreenState extends State<ListsScreen> {
+  late final GlobalKey _checklistTabKey;
+  late final GlobalKey _todoTabKey;
+  late final GlobalKey _progressKey;
+  late final GlobalKey _listKey;
+  late final GlobalKey _fabKey;
+
   late final ChecklistCoachMark _coachMark;
 
   @override
   void initState() {
     super.initState();
-    _coachMark = ChecklistCoachMark();
+
+    _checklistTabKey = GlobalKey();
+    _todoTabKey = GlobalKey();
+    _progressKey = GlobalKey();
+    _listKey = GlobalKey();
+    _fabKey = GlobalKey();
+
+    _coachMark = ChecklistCoachMark(
+      checklistTabKey: _checklistTabKey,
+      todoTabKey: _todoTabKey,
+      progressKey: _progressKey,
+      listKey: _listKey,
+      fabKey: _fabKey,
+    );
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       Future.delayed(const Duration(milliseconds: 500), () {

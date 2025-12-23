@@ -5,10 +5,10 @@ import 'package:my_travel_friend/feature/schedule/presentation/viewmodels/schedu
 import 'package:my_travel_friend/feature/schedule/presentation/widgets/schedule_card.dart';
 import 'package:my_travel_friend/feature/schedule/presentation/widgets/schedule_tap_button.dart';
 
+import '../../../../core/coachmark/presentations/targets/schedule_coach_mark.dart';
 import '../../../../core/theme/app_icon.dart';
 import '../../../../core/widget/floating_button.dart';
 import '../../../trip/domain/entities/trip_entity.dart';
-import '../coachmarks/schedule_coach_mark.dart';
 import '../viewmodels/schedule/schedule_bloc.dart';
 import '../viewmodels/schedule/schedule_event.dart';
 import '../widgets/empty_schedule_care.dart';
@@ -25,13 +25,31 @@ class ScheduleScreen extends StatefulWidget {
 class _ScheduleScreenState extends State<ScheduleScreen> {
   final ScrollController _scroll = ScrollController();
 
+  late final GlobalKey _dateTabKey;
+  late final GlobalKey _categoryTabKey;
+  late final GlobalKey _filterKey;
+  late final GlobalKey _listKey;
+  late final GlobalKey _fabKey;
+
   late final ScheduleCoachMark _coachMark;
 
   @override
   void initState() {
     super.initState();
 
-    _coachMark = ScheduleCoachMark();
+    _dateTabKey = GlobalKey();
+    _categoryTabKey = GlobalKey();
+    _filterKey = GlobalKey();
+    _listKey = GlobalKey();
+    _fabKey = GlobalKey();
+
+    _coachMark = ScheduleCoachMark(
+      dateTabKey: _dateTabKey,
+      categoryTabKey: _categoryTabKey,
+      filterKey: _filterKey,
+      listKey: _listKey,
+      fabKey: _fabKey,
+    );
 
     // 무한스크롤
     _scroll.addListener(() {

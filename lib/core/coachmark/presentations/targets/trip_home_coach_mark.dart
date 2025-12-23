@@ -1,24 +1,30 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
-import 'package:my_travel_friend/core/service/internal/coach_mark_service.dart';
+import 'package:my_travel_friend/core/coachmark/storage/coach_mark_storage.dart';
 import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
+
+import '../coach_mark_builder.dart';
 
 // [이재은] 여행홈 코치마크
 class TripHomeCoachMark {
-  final CoachMarkService _coachMarkService;
+  final CoachMarkStorage _storage;
 
   // GlobalKey
-  final GlobalKey calendarKey = GlobalKey();
-  final GlobalKey crewKey = GlobalKey();
-  final GlobalKey inviteKey = GlobalKey();
-  final GlobalKey scheduleKey = GlobalKey();
+  final GlobalKey calendarKey;
+  final GlobalKey crewKey;
+  final GlobalKey inviteKey;
+  final GlobalKey scheduleKey;
 
-  TripHomeCoachMark({CoachMarkService? coachMarkService})
-    : _coachMarkService =
-          coachMarkService ?? GetIt.instance<CoachMarkService>();
+  TripHomeCoachMark({
+    required this.calendarKey,
+    required this.crewKey,
+    required this.inviteKey,
+    required this.scheduleKey,
+    CoachMarkStorage? storage,
+  }) : _storage = storage ?? GetIt.instance<CoachMarkStorage>();
 
   // 코치마크 표시 여부
-  bool get shouldShow => _coachMarkService.shouldShowTripHomeCoachMark();
+  bool get shouldShow => _storage.shouldShowTripHome();
 
   // 코치마크 표시
   void show(BuildContext context) {
@@ -32,7 +38,7 @@ class TripHomeCoachMark {
     // 크루 멤버 타겟
     if (crewKey.currentContext != null) {
       targets.add(
-        _coachMarkService.createTarget(
+        CoachMarkBuilder.createTarget(
           key: crewKey,
           title: '크루 멤버',
           description: '함께 여행하는 친구들을 확인하세요.\n탭하면 멤버 목록이 펼쳐져요.',
@@ -45,7 +51,7 @@ class TripHomeCoachMark {
     // 초대 버튼 타겟
     if (inviteKey.currentContext != null) {
       targets.add(
-        _coachMarkService.createTarget(
+        CoachMarkBuilder.createTarget(
           key: inviteKey,
           title: '친구 초대',
           description: '친구를 여행에 초대해보세요!\n함께 일정을 계획할 수 있어요.',
@@ -59,7 +65,7 @@ class TripHomeCoachMark {
     // 캘린더 타겟
     if (calendarKey.currentContext != null) {
       targets.add(
-        _coachMarkService.createTarget(
+        CoachMarkBuilder.createTarget(
           key: calendarKey,
           title: '주간 캘린더',
           description: '날짜를 선택하면 해당 날짜의\n일정을 확인할 수 있어요.',
@@ -72,7 +78,7 @@ class TripHomeCoachMark {
     // 일정 타겟
     if (scheduleKey.currentContext != null) {
       targets.add(
-        _coachMarkService.createTarget(
+        CoachMarkBuilder.createTarget(
           key: scheduleKey,
           title: '오늘의 일정',
           description: '선택한 날짜의 일정이 표시돼요.\n탭하면 상세 정보를 볼 수 있어요.',
@@ -82,11 +88,11 @@ class TripHomeCoachMark {
       );
     }
 
-    _coachMarkService.showCoachMark(
+    CoachMarkBuilder.show(
       context: context,
       targets: targets,
-      onFinish: () => _coachMarkService.completeTripHomeCoachMark(),
-      onSkip: () => _coachMarkService.completeTripHomeCoachMark(),
+      onFinish: () => _storage.completeTripHome(),
+      onSkip: () => _storage.completeTripHome(),
     );
   }
 }
