@@ -74,6 +74,7 @@ class _DiaryListScreenState extends State<DiaryListScreen> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       Future.delayed(const Duration(milliseconds: 300), () {
         if (mounted) {
+          // GlobalKey만 넘김 - title/description은 코치마크 클래스에!
           _coachMark.show(
             context,
             sharedTabKey: _sharedTabKey,

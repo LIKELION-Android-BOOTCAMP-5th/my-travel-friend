@@ -58,14 +58,14 @@ class _CreateScheduleScreenState extends State<CreateScheduleScreen> {
     _memberKey = GlobalKey();
     _saveButtonKey = GlobalKey();
 
-    _coachMark = GetIt.instance<CreateScheduleCoachMark>();
-
     // ✅ Bloc 초기 상태를 기반으로 controller 초기값 세팅
     final state = context.read<CreateScheduleBloc>().state;
 
     _titleController.text = state.title ?? '';
     _memoController.text = state.description ?? '';
     _placeController.text = state.place ?? '';
+
+    _coachMark = GetIt.instance<CreateScheduleCoachMark>();
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       Future.delayed(const Duration(milliseconds: 300), () {

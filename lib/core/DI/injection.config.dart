@@ -331,7 +331,8 @@ import '../../feature/trip/presentation/viewmodels/trip_home/trip_home_bloc.dart
     as _i575;
 import '../../feature/trip/presentation/viewmodels/trip_request/trip_request_bloc.dart'
     as _i197;
-import '../coachmark/presentations/targets/checklist_coach_mark.dart' as _i849;
+import '../coachmark/presentations/targets/check_list_coach_mark.dart'
+    as _i1000;
 import '../coachmark/presentations/targets/create_schedule_coach_mark.dart'
     as _i844;
 import '../coachmark/presentations/targets/diary_coach_mark.dart' as _i523;
@@ -400,8 +401,8 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i153.GoogleAuthDataSource>(
       () => _i795.SocialAuthDataSourceImpl(gh<_i116.GoogleSignIn>()),
     );
-    gh.factory<_i849.ChecklistCoachMark>(
-      () => _i849.ChecklistCoachMark(gh<_i301.CoachMarkStorage>()),
+    gh.factory<_i1000.ChecklistCoachMark>(
+      () => _i1000.ChecklistCoachMark(gh<_i301.CoachMarkStorage>()),
     );
     gh.factory<_i844.CreateScheduleCoachMark>(
       () => _i844.CreateScheduleCoachMark(gh<_i301.CoachMarkStorage>()),

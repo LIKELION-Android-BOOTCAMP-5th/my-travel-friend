@@ -51,7 +51,6 @@ class TripShellScaffoldState extends State<TripShellScaffold> {
 
   late final TripShellCoachMark _coachMark;
   late final TripHomeCoachMark _homeCoachMark;
-
   late bool _coachMarkShown = false;
 
   // TripHomeScreen에서 접근 가능하도록 getter
@@ -59,7 +58,6 @@ class TripShellScaffoldState extends State<TripShellScaffold> {
   GlobalKey get inviteKey => _inviteKey;
   GlobalKey get calendarKey => _calendarKey;
   GlobalKey get scheduleKey => _scheduleKey;
-  TripHomeCoachMark get homeCoachMark => _homeCoachMark;
 
   late final ChatUnreadBloc _chatUnreadBloc;
 
@@ -82,17 +80,9 @@ class TripShellScaffoldState extends State<TripShellScaffold> {
 
     _coachMark = GetIt.instance<TripShellCoachMark>();
     _homeCoachMark = GetIt.instance<TripHomeCoachMark>();
-    _chatUnreadBloc = GetIt.instance<ChatUnreadBloc>();
   }
 
-  @override
-  void dispose() {
-    _chatUnreadBloc.add(const StopUnreadSubscription());
-    _chatUnreadBloc.close();
-    super.dispose();
-  }
-
-  void _showCoachMarkIfNeeded() {
+  void showCoachMarkIfNeeded() {
     if (_coachMarkShown) return;
     _coachMarkShown = true;
 
@@ -106,7 +96,7 @@ class TripShellScaffoldState extends State<TripShellScaffold> {
           checklistTabKey: _checklistTabKey,
           diaryTabKey: _diaryTabKey,
           talkTabKey: _talkTabKey,
-          onShowHomeCoachMark: () {
+          onFinish: () {
             Future.delayed(const Duration(milliseconds: 500), () {
               if (mounted) {
                 _homeCoachMark.show(
@@ -122,6 +112,13 @@ class TripShellScaffoldState extends State<TripShellScaffold> {
         );
       }
     });
+  }
+
+  @override
+  void dispose() {
+    _chatUnreadBloc.add(const StopUnreadSubscription());
+    _chatUnreadBloc.close();
+    super.dispose();
   }
 
   @override
@@ -153,7 +150,7 @@ class TripShellScaffoldState extends State<TripShellScaffold> {
                 ),
               );
             }
-            _showCoachMarkIfNeeded();
+            showCoachMarkIfNeeded();
           }
         },
         builder: (context, state) {

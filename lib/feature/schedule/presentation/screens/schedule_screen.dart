@@ -44,8 +44,6 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
     _listKey = GlobalKey();
     _fabKey = GlobalKey();
 
-    _coachMark = GetIt.instance<ScheduleCoachMark>();
-
     // 무한스크롤
     _scroll.addListener(() {
       if (_scroll.position.pixels >= _scroll.position.maxScrollExtent - 100) {
@@ -54,6 +52,8 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
         );
       }
     });
+
+    _coachMark = GetIt.instance<ScheduleCoachMark>();
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       Future.delayed(const Duration(milliseconds: 500), () {

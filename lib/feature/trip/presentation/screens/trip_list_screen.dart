@@ -70,8 +70,8 @@ class _TripListScreenState extends State<TripListScreen> {
             context,
             fabKey: _fabKey,
             searchKey: _searchKey,
-            settingKey: _settingKey,
             alarmKey: _alarmKey,
+            settingKey: _settingKey,
           );
         }
       });
