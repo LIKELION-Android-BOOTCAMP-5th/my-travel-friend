@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../theme/app_colors.dart';
 import '../theme/app_font.dart';
+import '../theme/app_icon.dart';
 
 class PopUpBox extends StatelessWidget {
   final String title; // 팝업 제목
@@ -34,7 +35,7 @@ class PopUpBox extends StatelessWidget {
     // 아이콘 관련
     this.showIcon = true,
     this.iconColor = const Color(0xfff27b7b),
-    this.icon = Icons.abc,
+    this.icon = AppIcon.alert,
 
     // 버튼 색상 관련
     this.leftButtonColor = const Color(0xffF3F4F6),
