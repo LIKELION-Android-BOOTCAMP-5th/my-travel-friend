@@ -55,7 +55,7 @@ extension TripRequestEventPatterns on TripRequestEvent {
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( CreateTripRequest value)?  createTripRequest,TResult Function( AcceptTripRequest value)?  acceptTripRequest,TResult Function( DeleteTripRequest value)?  deleteTripRequest,TResult Function( GetTripRequest value)?  getTripRequest,TResult Function( AddTrip value)?  addTrip,TResult Function( GetTripsByIds value)?  getTripsByIds,required TResult orElse(),}){
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( CreateTripRequest value)?  createTripRequest,TResult Function( AcceptTripRequest value)?  acceptTripRequest,TResult Function( DeleteTripRequest value)?  deleteTripRequest,TResult Function( GetTripRequest value)?  getTripRequest,TResult Function( AddTrip value)?  addTrip,TResult Function( GetTripsByIds value)?  getTripsByIds,TResult Function( GetInviteExcludes value)?  getInviteExcludes,required TResult orElse(),}){
 final _that = this;
 switch (_that) {
 case CreateTripRequest() when createTripRequest != null:
@@ -64,7 +64,8 @@ return acceptTripRequest(_that);case DeleteTripRequest() when deleteTripRequest 
 return deleteTripRequest(_that);case GetTripRequest() when getTripRequest != null:
 return getTripRequest(_that);case AddTrip() when addTrip != null:
 return addTrip(_that);case GetTripsByIds() when getTripsByIds != null:
-return getTripsByIds(_that);case _:
+return getTripsByIds(_that);case GetInviteExcludes() when getInviteExcludes != null:
+return getInviteExcludes(_that);case _:
   return orElse();
 
 }
@@ -82,7 +83,7 @@ return getTripsByIds(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( CreateTripRequest value)  createTripRequest,required TResult Function( AcceptTripRequest value)  acceptTripRequest,required TResult Function( DeleteTripRequest value)  deleteTripRequest,required TResult Function( GetTripRequest value)  getTripRequest,required TResult Function( AddTrip value)  addTrip,required TResult Function( GetTripsByIds value)  getTripsByIds,}){
+@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( CreateTripRequest value)  createTripRequest,required TResult Function( AcceptTripRequest value)  acceptTripRequest,required TResult Function( DeleteTripRequest value)  deleteTripRequest,required TResult Function( GetTripRequest value)  getTripRequest,required TResult Function( AddTrip value)  addTrip,required TResult Function( GetTripsByIds value)  getTripsByIds,required TResult Function( GetInviteExcludes value)  getInviteExcludes,}){
 final _that = this;
 switch (_that) {
 case CreateTripRequest():
@@ -91,7 +92,8 @@ return acceptTripRequest(_that);case DeleteTripRequest():
 return deleteTripRequest(_that);case GetTripRequest():
 return getTripRequest(_that);case AddTrip():
 return addTrip(_that);case GetTripsByIds():
-return getTripsByIds(_that);case _:
+return getTripsByIds(_that);case GetInviteExcludes():
+return getInviteExcludes(_that);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -108,7 +110,7 @@ return getTripsByIds(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( CreateTripRequest value)?  createTripRequest,TResult? Function( AcceptTripRequest value)?  acceptTripRequest,TResult? Function( DeleteTripRequest value)?  deleteTripRequest,TResult? Function( GetTripRequest value)?  getTripRequest,TResult? Function( AddTrip value)?  addTrip,TResult? Function( GetTripsByIds value)?  getTripsByIds,}){
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( CreateTripRequest value)?  createTripRequest,TResult? Function( AcceptTripRequest value)?  acceptTripRequest,TResult? Function( DeleteTripRequest value)?  deleteTripRequest,TResult? Function( GetTripRequest value)?  getTripRequest,TResult? Function( AddTrip value)?  addTrip,TResult? Function( GetTripsByIds value)?  getTripsByIds,TResult? Function( GetInviteExcludes value)?  getInviteExcludes,}){
 final _that = this;
 switch (_that) {
 case CreateTripRequest() when createTripRequest != null:
@@ -117,7 +119,8 @@ return acceptTripRequest(_that);case DeleteTripRequest() when deleteTripRequest 
 return deleteTripRequest(_that);case GetTripRequest() when getTripRequest != null:
 return getTripRequest(_that);case AddTrip() when addTrip != null:
 return addTrip(_that);case GetTripsByIds() when getTripsByIds != null:
-return getTripsByIds(_that);case _:
+return getTripsByIds(_that);case GetInviteExcludes() when getInviteExcludes != null:
+return getInviteExcludes(_that);case _:
   return null;
 
 }
@@ -134,7 +137,7 @@ return getTripsByIds(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function( int requestId,  int targetId,  int tripId)?  createTripRequest,TResult Function( int requestId,  int tripId,  int myUserId)?  acceptTripRequest,TResult Function( int id)?  deleteTripRequest,TResult Function( dynamic myId)?  getTripRequest,TResult Function( int myId,  int tripId)?  addTrip,TResult Function( List<int> tripIds)?  getTripsByIds,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function( int requestId,  int targetId,  int tripId)?  createTripRequest,TResult Function( int requestId,  int tripId,  int myUserId)?  acceptTripRequest,TResult Function( int id)?  deleteTripRequest,TResult Function( dynamic myId)?  getTripRequest,TResult Function( int myId,  int tripId)?  addTrip,TResult Function( List<int> tripIds)?  getTripsByIds,TResult Function( int tripId)?  getInviteExcludes,required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case CreateTripRequest() when createTripRequest != null:
 return createTripRequest(_that.requestId,_that.targetId,_that.tripId);case AcceptTripRequest() when acceptTripRequest != null:
@@ -142,7 +145,8 @@ return acceptTripRequest(_that.requestId,_that.tripId,_that.myUserId);case Delet
 return deleteTripRequest(_that.id);case GetTripRequest() when getTripRequest != null:
 return getTripRequest(_that.myId);case AddTrip() when addTrip != null:
 return addTrip(_that.myId,_that.tripId);case GetTripsByIds() when getTripsByIds != null:
-return getTripsByIds(_that.tripIds);case _:
+return getTripsByIds(_that.tripIds);case GetInviteExcludes() when getInviteExcludes != null:
+return getInviteExcludes(_that.tripId);case _:
   return orElse();
 
 }
@@ -160,7 +164,7 @@ return getTripsByIds(_that.tripIds);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function( int requestId,  int targetId,  int tripId)  createTripRequest,required TResult Function( int requestId,  int tripId,  int myUserId)  acceptTripRequest,required TResult Function( int id)  deleteTripRequest,required TResult Function( dynamic myId)  getTripRequest,required TResult Function( int myId,  int tripId)  addTrip,required TResult Function( List<int> tripIds)  getTripsByIds,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function( int requestId,  int targetId,  int tripId)  createTripRequest,required TResult Function( int requestId,  int tripId,  int myUserId)  acceptTripRequest,required TResult Function( int id)  deleteTripRequest,required TResult Function( dynamic myId)  getTripRequest,required TResult Function( int myId,  int tripId)  addTrip,required TResult Function( List<int> tripIds)  getTripsByIds,required TResult Function( int tripId)  getInviteExcludes,}) {final _that = this;
 switch (_that) {
 case CreateTripRequest():
 return createTripRequest(_that.requestId,_that.targetId,_that.tripId);case AcceptTripRequest():
@@ -168,7 +172,8 @@ return acceptTripRequest(_that.requestId,_that.tripId,_that.myUserId);case Delet
 return deleteTripRequest(_that.id);case GetTripRequest():
 return getTripRequest(_that.myId);case AddTrip():
 return addTrip(_that.myId,_that.tripId);case GetTripsByIds():
-return getTripsByIds(_that.tripIds);case _:
+return getTripsByIds(_that.tripIds);case GetInviteExcludes():
+return getInviteExcludes(_that.tripId);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -185,7 +190,7 @@ return getTripsByIds(_that.tripIds);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function( int requestId,  int targetId,  int tripId)?  createTripRequest,TResult? Function( int requestId,  int tripId,  int myUserId)?  acceptTripRequest,TResult? Function( int id)?  deleteTripRequest,TResult? Function( dynamic myId)?  getTripRequest,TResult? Function( int myId,  int tripId)?  addTrip,TResult? Function( List<int> tripIds)?  getTripsByIds,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function( int requestId,  int targetId,  int tripId)?  createTripRequest,TResult? Function( int requestId,  int tripId,  int myUserId)?  acceptTripRequest,TResult? Function( int id)?  deleteTripRequest,TResult? Function( dynamic myId)?  getTripRequest,TResult? Function( int myId,  int tripId)?  addTrip,TResult? Function( List<int> tripIds)?  getTripsByIds,TResult? Function( int tripId)?  getInviteExcludes,}) {final _that = this;
 switch (_that) {
 case CreateTripRequest() when createTripRequest != null:
 return createTripRequest(_that.requestId,_that.targetId,_that.tripId);case AcceptTripRequest() when acceptTripRequest != null:
@@ -193,7 +198,8 @@ return acceptTripRequest(_that.requestId,_that.tripId,_that.myUserId);case Delet
 return deleteTripRequest(_that.id);case GetTripRequest() when getTripRequest != null:
 return getTripRequest(_that.myId);case AddTrip() when addTrip != null:
 return addTrip(_that.myId,_that.tripId);case GetTripsByIds() when getTripsByIds != null:
-return getTripsByIds(_that.tripIds);case _:
+return getTripsByIds(_that.tripIds);case GetInviteExcludes() when getInviteExcludes != null:
+return getInviteExcludes(_that.tripId);case _:
   return null;
 
 }
@@ -607,6 +613,72 @@ class _$GetTripsByIdsCopyWithImpl<$Res>
   return _then(GetTripsByIds(
 tripIds: null == tripIds ? _self._tripIds : tripIds // ignore: cast_nullable_to_non_nullable
 as List<int>,
+  ));
+}
+
+
+}
+
+/// @nodoc
+
+
+class GetInviteExcludes implements TripRequestEvent {
+  const GetInviteExcludes({required this.tripId});
+  
+
+ final  int tripId;
+
+/// Create a copy of TripRequestEvent
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$GetInviteExcludesCopyWith<GetInviteExcludes> get copyWith => _$GetInviteExcludesCopyWithImpl<GetInviteExcludes>(this, _$identity);
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is GetInviteExcludes&&(identical(other.tripId, tripId) || other.tripId == tripId));
+}
+
+
+@override
+int get hashCode => Object.hash(runtimeType,tripId);
+
+@override
+String toString() {
+  return 'TripRequestEvent.getInviteExcludes(tripId: $tripId)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class $GetInviteExcludesCopyWith<$Res> implements $TripRequestEventCopyWith<$Res> {
+  factory $GetInviteExcludesCopyWith(GetInviteExcludes value, $Res Function(GetInviteExcludes) _then) = _$GetInviteExcludesCopyWithImpl;
+@useResult
+$Res call({
+ int tripId
+});
+
+
+
+
+}
+/// @nodoc
+class _$GetInviteExcludesCopyWithImpl<$Res>
+    implements $GetInviteExcludesCopyWith<$Res> {
+  _$GetInviteExcludesCopyWithImpl(this._self, this._then);
+
+  final GetInviteExcludes _self;
+  final $Res Function(GetInviteExcludes) _then;
+
+/// Create a copy of TripRequestEvent
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') $Res call({Object? tripId = null,}) {
+  return _then(GetInviteExcludes(
+tripId: null == tripId ? _self.tripId : tripId // ignore: cast_nullable_to_non_nullable
+as int,
   ));
 }
 

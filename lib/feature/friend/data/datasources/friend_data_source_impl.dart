@@ -42,7 +42,8 @@ class FriendDataSourceImpl implements FriendDataSource {
       final friendRes = await _supabaseClient
           .from(_table)
           .select()
-          .or('user1_id.eq.$myId,user2_id.eq.$myId');
+          .or('user1_id.eq.$myId,user2_id.eq.$myId')
+          .order('created_at', ascending: false);
 
       final friendList = (friendRes as List)
           .map((json) => FriendDTO.fromJson(json))
@@ -52,30 +53,45 @@ class FriendDataSourceImpl implements FriendDataSource {
         return const Result.success([]);
       }
 
-      // 친구 관계에서 상대방 userId만
-      final friendUserIds = <int>{};
+      final orderedFriendUserIds = <int>[]; // 최근 추가된 친구 순
+      final seen = <int>{};
 
       for (final f in friendList) {
         final user1 = f.userId1;
         final user2 = f.userId2;
 
-        if (user1 == myId && user2 != null) {
-          friendUserIds.add(user2);
-        } else if (user2 == myId && user1 != null) {
-          friendUserIds.add(user1);
+        int? otherId;
+        if (user1 == myId) otherId = user2;
+        if (user2 == myId) otherId = user1;
+
+        if (otherId != null && !seen.contains(otherId)) {
+          orderedFriendUserIds.add(otherId);
+          seen.add(otherId);
         }
+      }
+
+      if (orderedFriendUserIds.isEmpty) {
+        return const Result.success([]);
       }
 
       final userRes = await _supabaseClient
           .from(_user)
           .select()
-          .filter('id', 'in', friendUserIds.toList());
+          .filter('id', 'in', orderedFriendUserIds);
 
       final userList = (userRes as List)
           .map((json) => UserDTO.fromJson(json))
           .toList();
 
-      return Result.success(userList);
+      final userMap = {for (final u in userList) u.id!: u};
+      final orderedUsers = <UserDTO>[];
+
+      for (final id in orderedFriendUserIds) {
+        final u = userMap[id];
+        if (u != null) orderedUsers.add(u);
+      }
+
+      return Result.success(orderedUsers);
     } catch (e) {
       return Result.failure(Failure.serverFailure(message: e.toString()));
     }

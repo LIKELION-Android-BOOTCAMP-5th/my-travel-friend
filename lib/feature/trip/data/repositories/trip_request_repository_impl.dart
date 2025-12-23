@@ -5,6 +5,7 @@ import '../../domain/entities/trip_request_entity.dart';
 import '../../domain/repositories/trip_request_repository.dart';
 import '../datasources/trip_request_data_source.dart';
 
+//[엄수빈] 여행 요청 레포 구현
 @LazySingleton(as: TripRequestRepository)
 class TripRequestRepositoryImpl implements TripRequestRepository {
   final TripRequestDataSource _dataSource;
@@ -20,21 +21,6 @@ class TripRequestRepositoryImpl implements TripRequestRepository {
       success: (dtoList) {
         final entities = dtoList.map((dto) => dto.toEntity()).toList();
         return Result.success(entities);
-      },
-      failure: (failure) {
-        return Result.failure(failure);
-      },
-    );
-  }
-
-  //trip
-  @override
-  Future<Result<void>> addTrip(int myId, int tripId) async {
-    final result = await _dataSource.addTrip(myId, tripId);
-
-    return result.when(
-      success: (_) {
-        return Result.success(null);
       },
       failure: (failure) {
         return Result.failure(failure);
@@ -84,6 +70,18 @@ class TripRequestRepositoryImpl implements TripRequestRepository {
     return result.when(
       success: (_) => const Result.success(null),
       failure: (failure) => Result.failure(failure),
+    );
+  }
+
+  //이미 리스트
+  @override
+  Future<Result<List<TripRequestEntity>>> getPendingInvites(int tripId) async {
+    final result = await _dataSource.getPendingInvites(tripId);
+
+    return result.when(
+      success: (dtoList) =>
+          Result.success(dtoList.map((e) => e.toEntity()).toList()),
+      failure: (f) => Result.failure(f),
     );
   }
 }
