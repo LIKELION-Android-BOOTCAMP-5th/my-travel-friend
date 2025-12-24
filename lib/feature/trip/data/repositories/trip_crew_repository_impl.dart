@@ -26,8 +26,8 @@ class TripCrewRepositoryImpl implements TripCrewRepository {
 
   //trip에 추가하기
   @override
-  Future<Result<void>> addTrip(int myId, int tripId) async {
-    final result = await _dataSource.addTrip(myId, tripId);
+  Future<Result<void>> addTrip(int tripId, int myId) async {
+    final result = await _dataSource.addTrip(tripId, myId);
 
     return result.when(
       success: (_) {

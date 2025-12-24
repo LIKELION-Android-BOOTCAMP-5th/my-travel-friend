@@ -35,11 +35,11 @@ class TripCrewDataSourceImpl implements TripCrewDataSource {
 
   // trip_crew에 추가하기
   @override
-  Future<Result<void>> addTrip(int myId, int tripId) async {
+  Future<Result<void>> addTrip(int tripId, int myId) async {
     try {
       await _supabaseClient.from(_table).insert({
-        'member_id': myId,
         'trip_id': tripId,
+        'member_id': myId,
       });
 
       return const Result.success(null);

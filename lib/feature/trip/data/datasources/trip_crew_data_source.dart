@@ -7,5 +7,5 @@ abstract class TripCrewDataSource {
   Future<Result<List<TripCrewDTO>>> getTripCrew(int tripId);
 
   // trip 넣기
-  Future<Result<void>> addTrip(int myId, int tripId);
+  Future<Result<void>> addTrip(int tripId, int myId);
 }
