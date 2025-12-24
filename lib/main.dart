@@ -71,21 +71,23 @@ Future<void> _requestPermissions() async {
   final pushService = GetIt.instance<PushNotificationService>();
   await pushService.requestPermission();
 
-  // 순차적으로 요청 (동시 요청 X)
+  // 카메라 - 아직 안 물어본 경우만 요청
   final cameraStatus = await Permission.camera.status;
-  if (!cameraStatus.isGranted) {
+  if (cameraStatus.isDenied) {
+    // 처음(아직 안 물어봄)일 때만
     await Permission.camera.request();
   }
 
+  // 사진 - 아직 안 물어본 경우만 요청
   final photosStatus = await Permission.photos.status;
-  if (!photosStatus.isGranted) {
+  if (photosStatus.isDenied) {
     await Permission.photos.request();
   }
 
   // Android만
   if (Platform.isAndroid) {
     final storageStatus = await Permission.storage.status;
-    if (!storageStatus.isGranted) {
+    if (storageStatus.isDenied) {
       await Permission.storage.request();
     }
   }

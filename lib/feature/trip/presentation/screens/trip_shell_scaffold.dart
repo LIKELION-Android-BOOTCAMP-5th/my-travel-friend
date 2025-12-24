@@ -80,6 +80,8 @@ class TripShellScaffoldState extends State<TripShellScaffold> {
 
     _coachMark = GetIt.instance<TripShellCoachMark>();
     _homeCoachMark = GetIt.instance<TripHomeCoachMark>();
+
+    _chatUnreadBloc = GetIt.instance<ChatUnreadBloc>();
   }
 
   void showCoachMarkIfNeeded() {
