@@ -322,7 +322,7 @@ class _TripListScreenState extends State<TripListScreen> {
     return ListView.builder(
       controller: _scrollController,
       physics: const AlwaysScrollableScrollPhysics(),
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+      padding: const EdgeInsets.fromLTRB(16, 12, 16, 50),
       itemCount: trips.length,
       itemBuilder: (context, index) {
         final trip = trips[index];
