@@ -157,7 +157,16 @@ class CreateTripBloc extends Bloc<CreateTripEvent, CreateTripState> {
   }
 
   void _onInitialized(Initialized event, Emitter<CreateTripState> emit) {
-    emit(state.copyWith(userId: event.userId, friendId: event.friendId));
+    emit(
+      state.copyWith(
+        userId: event.userId,
+        friendId: event.friendId,
+        coverStyle: "COLOR",
+        coverType: "BLUE",
+        coverImg: null,
+        localImgFile: null,
+      ),
+    );
   }
 
   void _onSetFriend(SetFriend event, Emitter<CreateTripState> emit) {

@@ -15,7 +15,7 @@ abstract class CreateTripState with _$CreateTripState {
     @Default('') String place,
     @Default('') String startAt,
     @Default('') String endAt,
-    @Default('skyBlue') String coverType,
+    @Default('Blue') String coverType,
     @Default('') String country,
     @Default('COLOR') String coverStyle,
     String? coverImg,
