@@ -96,12 +96,12 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
           final isDateTab = state.viewMode == ScheduleFilterType.date;
 
           return Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.all(4.0),
             child: Column(
               children: [
                 // 1) 상단 모드 탭 (일자별 / 카테고리별)
                 Padding(
-                  padding: const EdgeInsets.all(8.0),
+                  padding: const EdgeInsets.all(4.0),
                   child: Row(
                     children: [
                       Expanded(
@@ -111,7 +111,7 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                           isSelected: isDateTab,
                           onTap: () =>
                               bloc.add(const ScheduleEvent.switchToDateMode()),
-                          height: 50,
+                          height: 40,
                           horizontalPadding: 22,
                         ),
                       ),
@@ -124,7 +124,7 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                           onTap: () => bloc.add(
                             const ScheduleEvent.switchToCategoryMode(),
                           ),
-                          height: 50,
+                          height: 40,
                           horizontalPadding: 22,
                         ),
                       ),
@@ -132,12 +132,12 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                   ),
                 ),
 
-                const SizedBox(height: 8),
+                const SizedBox(height: 4),
 
                 // 2) 하위 탭 (전체 / 날짜 목록 / 카테고리 목록)
                 SizedBox(
                   key: _filterKey,
-                  height: 50,
+                  height: 40,
 
                   child: ListView(
                     scrollDirection: Axis.horizontal,
@@ -151,7 +151,7 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                             state.selectedCategoryId == null,
                         onTap: () =>
                             bloc.add(const ScheduleEvent.clearFilter()),
-                        height: 32,
+                        height: 30,
                         horizontalPadding: 20,
                       ),
 
@@ -168,7 +168,7 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                               onTap: () => bloc.add(
                                 ScheduleEvent.selectDate(date: date),
                               ),
-                              height: 32,
+                              height: 30,
                               horizontalPadding: 20,
                             ),
                           ),
