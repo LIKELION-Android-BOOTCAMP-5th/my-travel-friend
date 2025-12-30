@@ -22,10 +22,10 @@ import 'feature/setting/presentation/viewmodels/theme/theme_state.dart'
 
 @pragma('vm:entry-point')
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
-  //dotenv는di 등록이 안되므로 먼저 여기서 초기화
+  /*//dotenv는di 등록이 안되므로 먼저 여기서 초기화
   await dotenv.load(fileName: "assets/config/.env");
   //DI관련
-  await configureDependencies();
+  await configureDependencies();*/
   print("Handling a background message: ${message.messageId}");
   // TODO: 백그라운드에서 실행시 로직 처리
 }
@@ -46,7 +46,11 @@ void main() async {
   final pushService = GetIt.instance<PushNotificationService>();
   //푸시메시지 초기화
   await pushService.initialize();
-
+  // 앱 종료 상태에서 알림 클릭 진입 처리
+  final initialMessage = await FirebaseMessaging.instance.getInitialMessage();
+  if (initialMessage != null) {
+    pushService.handleRemoteMessageRouting(initialMessage);
+  }
   runApp(
     MultiBlocProvider(
       providers: [
@@ -98,49 +102,41 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<ThemeBloc, ThemeState>(
-      builder: (context, state) {
-        return MaterialApp.router(
-          routerConfig: AppRouter.instance.router,
-          debugShowCheckedModeBanner: false,
-          theme: AppTheme.light,
-          darkTheme: AppTheme.dark,
-          themeMode: context.read<ThemeBloc>().themeMode,
+    // watch를 사용하여 상태 감시.
+    final themeMode = context.watch<ThemeBloc>().themeMode;
 
-          builder: (context, child) {
-            return BlocConsumer<AuthProfileBloc, AuthProfileState>(
-              listenWhen: (prev, curr) => prev.runtimeType != curr.runtimeType,
-              listener: (context, state) {
-                if (state is AuthProfileAuthenticated) {
-                  context.read<AlarmBloc>().add(
-                    AlarmEvent.startWatching(userId: state.userInfo.id!),
-                  );
-                  AppRouter.instance.router.go('/home');
-                }
-                if (state is AuthProfileUnauthenticated) {
-                  context.read<AlarmBloc>().add(
-                    const AlarmEvent.stopWatching(),
-                  );
-                  AppRouter.instance.router.go('/login');
-                }
-              },
-              builder: (context, authState) {
-                // 로그아웃 중이면 로딩 오버레이
-                if (authState is AuthProfileLoading) {
-                  return Stack(
-                    children: [
-                      child ?? const SizedBox.shrink(),
-                      Container(
-                        color: Colors.black.withOpacity(0.3),
-                        child: const Center(child: CircularProgressIndicator()),
-                      ),
-                    ],
-                  );
-                }
-                return child ?? const SizedBox.shrink();
-              },
-            );
+    return MaterialApp.router(
+      routerConfig: AppRouter.instance.router,
+      debugShowCheckedModeBanner: false,
+      theme: AppTheme.light,
+      darkTheme: AppTheme.dark,
+      themeMode: themeMode,
+      builder: (context, child) {
+        return BlocListener<AuthProfileBloc, AuthProfileState>(
+          listenWhen: (prev, curr) => prev.runtimeType != curr.runtimeType,
+          listener: (context, state) {
+            if (state is AuthProfileAuthenticated) {
+              context.read<AlarmBloc>().add(
+                AlarmEvent.startWatching(userId: state.userInfo.id!),
+              );
+            } else if (state is AuthProfileUnauthenticated) {
+              context.read<AlarmBloc>().add(const AlarmEvent.stopWatching());
+            }
           },
+          child: BlocBuilder<AuthProfileBloc, AuthProfileState>(
+            builder: (context, authState) {
+              return Stack(
+                children: [
+                  child ?? const SizedBox.shrink(),
+                  if (authState is AuthProfileLoading)
+                    Container(
+                      color: Colors.black.withOpacity(0.3),
+                      child: const Center(child: CircularProgressIndicator()),
+                    ),
+                ],
+              );
+            },
+          ),
         );
       },
     );

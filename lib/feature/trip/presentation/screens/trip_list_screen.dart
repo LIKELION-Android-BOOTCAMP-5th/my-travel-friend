@@ -168,8 +168,8 @@ class _TripListScreenState extends State<TripListScreen> {
             if (state.navigateToCreate) {
               tripBloc.add(const TripEvent.navigationHandled());
               // GoRouter 푸시 및 결과값 대기
-              final result = await context.push(
-                '/trip/create',
+              final result = await context.pushNamed(
+                'tripCreate',
                 extra: {"userId": userId},
               );
               if (result == true && context.mounted) {
@@ -187,8 +187,8 @@ class _TripListScreenState extends State<TripListScreen> {
             if (state.navigateToEdit && state.selectedTrip != null) {
               tripBloc.add(const TripEvent.navigationHandled());
               // GoRouter 푸시 및 결과값 대기
-              final result = await context.push(
-                '/trip/edit',
+              final result = await context.pushNamed(
+                'tripEdit',
                 extra: {"trip": state.selectedTrip},
               );
               if (result == true && context.mounted) {
@@ -224,11 +224,11 @@ class _TripListScreenState extends State<TripListScreen> {
                 searchIcon: isSearching ? AppIcon.close : AppIcon.search,
                 alarmKey: _alarmKey,
                 onAlarmTap: () {
-                  context.push('/alarm');
+                  context.pushNamed("alarm");
                 },
                 settingKey: _settingKey,
                 onSettingTap: () {
-                  context.push('/setting');
+                  context.pushNamed('setting');
                 },
               );
             },
@@ -340,7 +340,11 @@ class _TripListScreenState extends State<TripListScreen> {
                 ? trip.coverImg
                 : null,
             onTap: () {
-              context.go('/trip/${trip.id}/trip_home');
+              //context.go('/home/trip/${trip.id}/trip_home');
+              context.pushNamed(
+                "tripHome",
+                pathParameters: {'tripId': "${trip.id}"},
+              );
             },
             onMenu: () => _showMenu(trip),
           ),

@@ -116,9 +116,11 @@ class PushNotificationService {
   void handleRemoteMessageRouting(RemoteMessage message) {
     final Map<String, dynamic> fcmData = message.data;
     final String alarmType = fcmData['alarm_type']?.toString() ?? 'UNKNOWN';
-
+    final String deepLinkDataString = fcmData["deep_link_data"] ?? "{}";
+    final Map<String, dynamic> deeplinkData = jsonDecode(deepLinkDataString);
+    print("deep_link_data: $deeplinkData");
     //알림타입과 데이터를 통해 라우팅경로를 생성하고 푸시
-    _deepLinkService.navigateFromNotification(alarmType, fcmData);
+    _deepLinkService.navigateFromNotification(alarmType, deeplinkData);
   }
 
   //로컬푸시를 눌렀을때
@@ -126,17 +128,20 @@ class PushNotificationService {
     NotificationResponse notificationResponse,
   ) {
     final String? payload = notificationResponse.payload;
-
+    print("onDidReceiveNotificationResponse 실행됨");
     if (payload != null && payload.isNotEmpty) {
       try {
-        //데이터 파싱
         final Map<String, dynamic> fcmData = jsonDecode(payload);
-
         final String alarmType = fcmData['alarm_type'] ?? 'UNKNOWN';
+        final String deepLinkDataString = fcmData["deep_link_data"] ?? "{}";
+        final Map<String, dynamic> deeplinkData = jsonDecode(
+          deepLinkDataString,
+        );
 
-        _deepLinkService.navigateFromNotification(alarmType, fcmData);
+        print("deep_link_data: $deeplinkData");
+        _deepLinkService.navigateFromNotification(alarmType, deeplinkData);
       } catch (e) {
-        print('알림처리중 에러: $e');
+        print('알림 처리 중 에러: $e');
       }
     }
   }

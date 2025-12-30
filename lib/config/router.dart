@@ -1,7 +1,10 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
+import 'package:my_travel_friend/config/router_observer.dart';
+import 'package:my_travel_friend/config/router_refresh_stream.dart';
+import 'package:my_travel_friend/core/service/internal/deep_link_service.dart';
 import 'package:my_travel_friend/feature/auth/presentation/screens/auth_bloc_widget.dart';
 import 'package:my_travel_friend/feature/auth/presentation/viewmodel/auth/auth_bloc.dart';
 import 'package:my_travel_friend/feature/auth/presentation/viewmodel/auth_profile/auth_profile_bloc.dart';
@@ -19,21 +22,13 @@ import 'package:my_travel_friend/splash.dart';
 import '../feature/alarm/presentation/screens/alarm_bloc_widget.dart';
 import '../feature/chat/presentation/screens/chat_bloc_widget.dart';
 import '../feature/checklist/presentation/screens/lists_bloc_widget.dart';
-import '../feature/diary/domain/entities/diary_entity.dart';
 import '../feature/diary/presentation/screens/diary/diary_bloc_widget.dart';
-import '../feature/diary/presentation/screens/edit_diary/edit_diary_bloc_widget.dart';
-import '../feature/diary/presentation/screens/new_diary/new_diary_bloc_widget.dart';
 import '../feature/diary/presentation/viewmodels/diary/diary_bloc.dart';
-import '../feature/diary/presentation/viewmodels/new_diary/new_diary_bloc.dart';
 import '../feature/friend/presentation/screen/friend_bloc_widget.dart';
 import '../feature/friend/presentation/screen/friend_request_bloc_widget.dart';
 import '../feature/friend/presentation/screen/recevice_list_bloc_widget.dart';
 import '../feature/friend/presentation/screen/recevice_trip_bloc_widget.dart';
 import '../feature/onboarding/presentation/screens/onboarding_bloc_widget.dart';
-import '../feature/schedule/domain/entities/schedule_entity.dart';
-import '../feature/schedule/presentation/screens/create_schedule_bloc_widget.dart';
-import '../feature/schedule/presentation/screens/edit_schedule_bloc_widget.dart';
-import '../feature/schedule/presentation/screens/map_search_bloc_widget.dart';
 import '../feature/setting/presentation/screens/alarm/alarm_setting_bloc_widget.dart';
 import '../feature/setting/presentation/screens/profile/profile_bloc_widget.dart';
 import '../feature/setting/presentation/screens/theme/theme_bloc_widget.dart';
@@ -51,291 +46,244 @@ class AppRouter {
 
   AppRouter._internal();
 
-  final GoRouter router = GoRouter(
+  late final GoRouter router = GoRouter(
+    observers: [RouterObserver()],
+    refreshListenable: Listenable.merge([
+      GoRouterRefreshStream(GetIt.I<AuthProfileBloc>().stream),
+      GetIt.I<
+        DeepLinkService
+      >(), // 딥링크 서비스 등록 (notifyListeners 호출 시 redirect 실행)
+    ]),
     initialLocation: '/splash',
+    redirect: (context, state) {
+      final authState = GetIt.I<AuthProfileBloc>().state;
+      final deepLinkService = GetIt.I<DeepLinkService>();
 
-    redirect: (BuildContext context, GoRouterState state) {
-      // AuthProfileBloc의 상태를 GetIt에서 가져와서 확인
-      final AuthProfileState authState = getIt<AuthProfileBloc>().state;
-      final bool isLoggedIn = authState is AuthProfileAuthenticated;
-      final currentPath = state.matchedLocation;
+      // 1. 비인증 사용자 처리
+      if (authState is AuthProfileUnauthenticated) {
+        return state.matchedLocation == '/login' ? null : '/login';
+      }
 
-      if (authState is AuthProfileLoading || currentPath == '/splash') {
+      // 2. 인증 로딩 중 (판단 유보)
+      if (authState is AuthProfileInitial || authState is AuthProfileLoading) {
         return null;
       }
 
-      if (authState is AuthProfileInitial) {
-        return '/splash';
-      }
+      // 3. 인증 완료 사용자
+      if (authState is AuthProfileAuthenticated) {
+        final target = deepLinkService.pendingPath;
 
-      // 로그인 상태가 필요한 경로 목록
-      const lockedPaths = [
-        '/friend',
-        '/setting',
-        '/alarm',
-        '/diary',
-        '/trip',
-        '/home',
-      ];
+        // [핵심] 딥링크 대기 중인 경로가 있다면 그곳으로 안내
+        // 옵저버에서 지워주기 전까지는 target이 유지되므로 유연하게 대처 가능합니다.
+        if (target != null && state.matchedLocation != target) {
+          print("[Redirect] 딥링크 목적지로 경로 안내: $target");
+          return target;
+        }
 
-      final isGoingToLockedPath = lockedPaths.any(
-        (path) => currentPath.startsWith(path),
-      );
-
-      // 초기 상태거나 로딩 중이면 스플래시로
-      if (authState is AuthProfileInitial || authState is AuthProfileLoading) {
-        return '/splash';
-      }
-
-      // 2. 미인증 시 접근 불가 경로 차단
-      if (!isLoggedIn && isGoingToLockedPath) {
-        return '/login';
-      }
-
-      // 3. 인증 완료 시 로그인/온보딩 화면 접근 차단
-      final isGoingToAuthPath =
-          currentPath == '/onboarding' || currentPath == '/login';
-      if (isLoggedIn && isGoingToAuthPath) {
-        return '/home';
+        // 초기 진입로(/, /login, /splash)에 있을 때만 홈으로 보냄
+        final initialPaths = ['/', '/login', '/splash'];
+        if (initialPaths.contains(state.matchedLocation)) {
+          print("[Redirect] 초기 진입로 감지, 홈으로 이동");
+          return '/home';
+        }
       }
 
       return null;
     },
-
     routes: [
-      // 기본 라우트
+      // --- 비인증 영역 ---
       GoRoute(
         path: '/splash',
+        name: 'splash',
         builder: (context, state) => const SplashScreen(),
       ),
-      GoRoute(path: '/', builder: (context, state) => TripBlocWidget()),
-
-      // 온보딩 화면 (새로 추가)
       GoRoute(
         path: '/onboarding',
+        name: 'onboarding',
         builder: (context, state) => const OnboardingBlocWidget(),
       ),
-
       GoRoute(
         path: '/login',
+        name: 'login',
         builder: (context, state) => BlocProvider.value(
-          //bloc 제공자
           value: getIt<AuthBloc>(),
           child: const AuthBlocWidget(),
         ),
       ),
 
-      // 앱 홈
+      // --- 인증 영역 (Home 및 하위 계층) ---
       GoRoute(
         path: '/home',
+        name: 'home',
         builder: (context, state) => const TripBlocWidget(),
-      ),
-
-      // Trip 생성 /수정
-      GoRoute(
-        path: '/trip/create',
-        builder: (context, state) {
-          final authState = context.read<AuthProfileBloc>().state;
-          final userId = (authState is AuthProfileAuthenticated)
-              ? authState.userInfo.id!
-              : 0;
-
-          return BlocProvider(
-            create: (context) => GetIt.instance<CreateTripBloc>(),
-            child: CreateTripBlocWidget(userId: userId),
-          );
-        },
-      ),
-      GoRoute(
-        path: '/trip/edit',
-        builder: (context, state) {
-          final extra = state.extra as Map<String, dynamic>;
-          final trip = extra['trip'] as TripEntity;
-
-          return EditTripBlocWidget(trip: trip);
-        },
-      ),
-      // 설정 관련
-      GoRoute(
-        path: '/alarm',
-        builder: (context, state) => const AlarmBlocWidget(),
-      ),
-      GoRoute(
-        path: '/setting',
-        builder: (context, state) => const MenuBlocWidget(),
-      ),
-      GoRoute(
-        path: '/setting/alarm',
-        builder: (context, state) => const AlarmSettingBlocWidget(),
-      ),
-      GoRoute(
-        path: '/setting/profile',
-        builder: (context, state) => const ProfileBlocWidget(),
-      ),
-      GoRoute(
-        path: '/setting/permission',
-        builder: (context, state) => const PermissionBlocWidget(),
-      ),
-      GoRoute(
-        path: '/setting/theme',
-        builder: (context, state) => const ThemeBlocWidget(),
-      ),
-      GoRoute(
-        path: '/setting/friend',
-        builder: (context, state) {
-          final authState = context.read<AuthProfileBloc>().state;
-          final userId = (authState is AuthProfileAuthenticated)
-              ? authState.userInfo.id!
-              : 0;
-          return FriendBlocWidget(userId: userId);
-        },
-      ),
-      GoRoute(
-        path: '/setting/friend/friend-request',
-        builder: (context, state) {
-          final extra = state.extra as Map<String, dynamic>;
-          final requestId = extra['requestId'] as int;
-          return FriendRequestBlocWidget(requestId: requestId);
-        },
-      ),
-      GoRoute(
-        path: '/setting/friend_recevice',
-        builder: (context, state) {
-          final authState = context.read<AuthProfileBloc>().state;
-          final userId = (authState is AuthProfileAuthenticated)
-              ? authState.userInfo.id!
-              : 0;
-
-          return BlocProvider(
-            create: (context) => GetIt.instance<FriendRequestBloc>(),
-            child: ReceviceListBlocWidget(userId: userId),
-          );
-        },
-      ),
-      GoRoute(
-        path: '/setting/recevice_trip',
-        builder: (context, state) {
-          final authState = context.read<AuthProfileBloc>().state;
-          final userId = (authState is AuthProfileAuthenticated)
-              ? authState.userInfo.id!
-              : 0;
-          return ReceviceTripBlocWidget(myId: userId);
-        },
-      ),
-      // Trip ShellRoute
-      ShellRoute(
-        builder: (context, state, child) {
-          final tripIdStr = state.pathParameters['tripId'] ?? '0';
-          final tripId = int.tryParse(tripIdStr) ?? 0;
-
-          final tripDetailBloc = getIt<TripDetailBloc>();
-
-          tripDetailBloc.add(TripDetailEvent.loadTripDetail(tripId: tripId));
-
-          return BlocProvider(
-            create: (context) => tripDetailBloc,
-            child: TripShellScaffold(child: child),
-          );
-        },
         routes: [
-          // [0] 여행 홈
+          // 여행 생성/수정
           GoRoute(
-            path: '/trip/:tripId/trip_home',
+            path: 'trip/create',
+            name: 'tripCreate',
             builder: (context, state) {
-              final tripId = int.parse(state.pathParameters['tripId']!);
-              return TripHomeBlocWidget(tripId: tripId);
-            },
-          ),
-
-          // [1] 여행 스케줄
-          GoRoute(
-            path: '/trip/:tripId/schedule',
-            builder: (context, state) {
-              final tripId = int.parse(state.pathParameters['tripId']!);
-              return ScheduleBlocWidget(tripId: tripId);
-            },
-          ),
-
-          // [2] 여행 체크리스트
-          GoRoute(
-            path: '/trip/:tripId/checklist',
-            builder: (context, state) {
-              final tripId = int.parse(state.pathParameters['tripId']!);
-              return ListsBlocWidget(tripId: tripId);
-            },
-          ),
-          // [3] 여행 다이어리
-          GoRoute(
-            path: '/trip/:tripId/diary',
-            builder: (context, state) {
-              final tripId = int.parse(state.pathParameters['tripId']!);
+              final authState = context.read<AuthProfileBloc>().state;
+              final userId = (authState is AuthProfileAuthenticated)
+                  ? authState.userInfo.id!
+                  : 0;
               return BlocProvider(
-                //bloc 제공자
-                create: (context) => GetIt.instance<DiaryBloc>(),
-                child: DiaryBlocWidget(tripId: tripId),
+                create: (context) => GetIt.instance<CreateTripBloc>(),
+                child: CreateTripBlocWidget(userId: userId),
               );
             },
           ),
-          // [4] 여행 톡톡
           GoRoute(
-            path: '/trip/:tripId/talk',
+            path: 'trip/edit',
+            name: 'tripEdit',
             builder: (context, state) {
-              final tripId = int.parse(state.pathParameters['tripId']!);
-              return ChatBlocWidget(tripId: tripId);
+              final extra = state.extra as Map<String, dynamic>;
+              return EditTripBlocWidget(trip: extra['trip'] as TripEntity);
             },
           ),
+
+          // 알림
+          GoRoute(
+            path: 'alarm',
+            name: 'alarm',
+            builder: (context, state) => const AlarmBlocWidget(),
+          ),
+
+          // 설정 계층
+          GoRoute(
+            path: 'setting',
+            name: 'setting',
+            builder: (context, state) => const MenuBlocWidget(),
+            routes: [
+              GoRoute(
+                path: 'settingAlarm',
+                name: 'settingAlarm',
+                builder: (context, state) => const AlarmSettingBlocWidget(),
+              ),
+              GoRoute(
+                path: 'profile',
+                name: 'profile',
+                builder: (context, state) => const ProfileBlocWidget(),
+              ),
+              GoRoute(
+                path: 'permission',
+                name: 'permission',
+                builder: (context, state) => const PermissionBlocWidget(),
+              ),
+              GoRoute(
+                path: 'theme',
+                name: 'theme',
+                builder: (context, state) => const ThemeBlocWidget(),
+              ),
+              // 친구 계층
+              GoRoute(
+                path: 'friend',
+                name: 'friend',
+                builder: (context, state) {
+                  final authState = context.read<AuthProfileBloc>().state;
+                  return FriendBlocWidget(
+                    userId: (authState is AuthProfileAuthenticated)
+                        ? authState.userInfo.id!
+                        : 0,
+                  );
+                },
+                routes: [
+                  GoRoute(
+                    path: 'friend-request',
+                    name: 'friendRequest',
+                    builder: (context, state) {
+                      final extra = state.extra as Map<String, dynamic>;
+                      return FriendRequestBlocWidget(
+                        requestId: extra['requestId'] as int,
+                      );
+                    },
+                  ),
+                ],
+              ),
+              GoRoute(
+                path: 'friend-receive',
+                name: 'friendReceive',
+                builder: (context, state) => BlocProvider(
+                  create: (context) => GetIt.instance<FriendRequestBloc>(),
+                  child: ReceviceListBlocWidget(
+                    userId:
+                        (context.read<AuthProfileBloc>().state
+                                as AuthProfileAuthenticated)
+                            .userInfo
+                            .id!,
+                  ),
+                ),
+              ),
+              GoRoute(
+                path: 'receive_trip',
+                name: 'tripReceive',
+                builder: (context, state) {
+                  final authState = context.read<AuthProfileBloc>().state;
+                  final userId = (authState is AuthProfileAuthenticated)
+                      ? authState.userInfo.id!
+                      : 0;
+                  return ReceviceTripBlocWidget(myId: userId);
+                },
+              ),
+            ],
+          ),
+
+          // 여행 상세 (ShellRoute)
+          ShellRoute(
+            builder: (context, state, child) {
+              final tripId =
+                  int.tryParse(state.pathParameters['tripId'] ?? '0') ?? 0;
+              final tripDetailBloc = getIt<TripDetailBloc>();
+              tripDetailBloc.add(
+                TripDetailEvent.loadTripDetail(tripId: tripId),
+              );
+              return BlocProvider(
+                create: (context) => tripDetailBloc,
+                child: TripShellScaffold(child: child),
+              );
+            },
+            routes: [
+              GoRoute(
+                path: 'trip/:tripId/trip_home',
+                name: 'tripHome',
+                builder: (context, state) => TripHomeBlocWidget(
+                  tripId: int.parse(state.pathParameters['tripId']!),
+                ),
+              ),
+              GoRoute(
+                path: 'trip/:tripId/schedule',
+                name: 'tripSchedule',
+                builder: (context, state) => ScheduleBlocWidget(
+                  tripId: int.parse(state.pathParameters['tripId']!),
+                ),
+              ),
+              GoRoute(
+                path: 'trip/:tripId/checklist',
+                name: 'tripChecklist',
+                builder: (context, state) => ListsBlocWidget(
+                  tripId: int.parse(state.pathParameters['tripId']!),
+                ),
+              ),
+              GoRoute(
+                path: 'trip/:tripId/diary',
+                name: 'tripDiary',
+                builder: (context, state) => BlocProvider(
+                  create: (context) => GetIt.instance<DiaryBloc>(),
+                  child: DiaryBlocWidget(
+                    tripId: int.parse(state.pathParameters['tripId']!),
+                  ),
+                ),
+              ),
+              GoRoute(
+                path: 'trip/:tripId/talk',
+                name: 'tripTalk',
+                builder: (context, state) {
+                  final tripId = int.parse(state.pathParameters['tripId']!);
+                  return ChatBlocWidget(tripId: tripId);
+                },
+              ),
+            ],
+          ),
         ],
-      ),
-      // [3-1] 다이어리 생성 (쉘라우터 밖)
-      GoRoute(
-        path: '/diary/new/:tripId',
-        builder: (context, state) {
-          final tripId = int.parse(state.pathParameters['tripId']!);
-          return BlocProvider(
-            create: (context) => GetIt.instance<NewDiaryBloc>(),
-            child: NewDiaryBlocWidget(tripId: tripId),
-          );
-        },
-      ),
-      // [3-2] 다이어리 수정 (쉘라우터 밖)
-      GoRoute(
-        path: '/diary/edit/:tripId',
-        builder: (context, state) {
-          final extra = state.extra as Map<String, dynamic>;
-          final diary = extra['diary'] as DiaryEntity;
-          return EditDiaryBlocWidget(diary: diary);
-        },
-      ),
-      GoRoute(
-        path: '/schedule/create/:tripId',
-        builder: (context, state) {
-          final tripId = int.parse(state.pathParameters['tripId']!);
-
-          return CreateScheduleBlocWidget(tripId: tripId);
-        },
-      ),
-      GoRoute(
-        path: '/schedule/edit/:tripId',
-        builder: (context, state) {
-          final tripId = int.parse(state.pathParameters['tripId']!);
-          final schedule = state.extra as ScheduleEntity;
-          return EditScheduleBlocWidget(schedule: schedule, tripId: tripId);
-        },
-      ),
-      GoRoute(
-        path: '/trip/:tripId/map-search',
-        builder: (context, state) {
-          final tripId = int.parse(state.pathParameters['tripId']!);
-
-          final extra = state.extra as Map<String, dynamic>?;
-
-          return MapSearchBlocWidget(
-            tripId: tripId,
-            initialLat: extra?['lat'],
-            initialLng: extra?['lng'],
-            initialAddress: extra?['address'],
-          );
-        },
       ),
     ],
   );
