@@ -181,14 +181,16 @@ class HomeWidgetService {
     final settings = await getSettings();
     await _applySettingsToWidget(settings);
 
-    await HomeWidget.saveWidgetData('dday_trip_id', trip.id);
-    await HomeWidget.saveWidgetData('dday_trip_title', trip.title ?? '여행');
-    await HomeWidget.saveWidgetData('dday_trip_place', trip.place ?? '');
-    await HomeWidget.saveWidgetData('dday_start_date', _formatDate(startDate));
-    await HomeWidget.saveWidgetData('dday_end_date', _formatDate(endDate));
-    await HomeWidget.saveWidgetData('dday_value', dDay);
-    await HomeWidget.saveWidgetData('dday_text', dDayText);
-    await HomeWidget.saveWidgetData('dday_updated_at', now.toIso8601String());
+    await Future.wait([
+      HomeWidget.saveWidgetData('dday_trip_id', trip.id),
+      HomeWidget.saveWidgetData('dday_trip_title', trip.title ?? '여행'),
+      HomeWidget.saveWidgetData('dday_trip_place', trip.place ?? ''),
+      HomeWidget.saveWidgetData('dday_start_date', _formatDate(startDate)),
+      HomeWidget.saveWidgetData('dday_end_date', _formatDate(endDate)),
+      HomeWidget.saveWidgetData('dday_value', dDay),
+      HomeWidget.saveWidgetData('dday_text', dDayText),
+      HomeWidget.saveWidgetData('dday_updated_at', now.toIso8601String()),
+    ]);
 
     await HomeWidget.updateWidget(
       androidName: ddayWidgetAndroid,
@@ -210,13 +212,15 @@ class HomeWidgetService {
   }
 
   Future<void> _clearDDayWidget() async {
-    await HomeWidget.saveWidgetData('dday_trip_id', -1);
-    await HomeWidget.saveWidgetData('dday_trip_title', '여행을 추가해주세요');
-    await HomeWidget.saveWidgetData('dday_trip_place', '');
-    await HomeWidget.saveWidgetData('dday_start_date', '');
-    await HomeWidget.saveWidgetData('dday_end_date', '');
-    await HomeWidget.saveWidgetData('dday_value', 0);
-    await HomeWidget.saveWidgetData('dday_text', 'D-?');
+    await Future.wait([
+      HomeWidget.saveWidgetData('dday_trip_id', -1),
+      HomeWidget.saveWidgetData('dday_trip_title', '여행을 추가해주세요'),
+      HomeWidget.saveWidgetData('dday_trip_place', ''),
+      HomeWidget.saveWidgetData('dday_start_date', ''),
+      HomeWidget.saveWidgetData('dday_end_date', ''),
+      HomeWidget.saveWidgetData('dday_value', 0),
+      HomeWidget.saveWidgetData('dday_text', 'D-?'),
+    ]);
 
     await HomeWidget.updateWidget(
       androidName: ddayWidgetAndroid,
@@ -263,9 +267,11 @@ class HomeWidgetService {
     final settings = await getSettings();
     await _applySettingsToWidget(settings);
 
-    await HomeWidget.saveWidgetData('schedule_trip_id', trip.id);
-    await HomeWidget.saveWidgetData('schedule_trip_title', trip.title ?? '여행');
-    await HomeWidget.saveWidgetData('schedule_date', _formatDateKorean(now));
+    await Future.wait([
+      HomeWidget.saveWidgetData('schedule_trip_id', trip.id),
+      HomeWidget.saveWidgetData('schedule_trip_title', trip.title ?? '여행'),
+      HomeWidget.saveWidgetData('schedule_date', _formatDateKorean(now)),
+    ]);
 
     final schedulesJson = todaySchedules.map((s) {
       final dateTime = DateTime.tryParse(s.date ?? '');
@@ -280,12 +286,11 @@ class HomeWidgetService {
       };
     }).toList();
 
-    await HomeWidget.saveWidgetData('schedule_list', jsonEncode(schedulesJson));
-    await HomeWidget.saveWidgetData('schedule_count', todaySchedules.length);
-    await HomeWidget.saveWidgetData(
-      'schedule_updated_at',
-      now.toIso8601String(),
-    );
+    await Future.wait([
+      HomeWidget.saveWidgetData('schedule_list', jsonEncode(schedulesJson)),
+      HomeWidget.saveWidgetData('schedule_count', todaySchedules.length),
+      HomeWidget.saveWidgetData('schedule_updated_at', now.toIso8601String()),
+    ]);
 
     await HomeWidget.updateWidget(
       androidName: scheduleWidgetAndroid,
@@ -344,11 +349,13 @@ class HomeWidgetService {
 
   Future<void> _clearScheduleWidget() async {
     final now = DateTime.now();
-    await HomeWidget.saveWidgetData('schedule_trip_id', -1);
-    await HomeWidget.saveWidgetData('schedule_trip_title', '여행을 추가해주세요');
-    await HomeWidget.saveWidgetData('schedule_date', _formatDateKorean(now));
-    await HomeWidget.saveWidgetData('schedule_list', '[]');
-    await HomeWidget.saveWidgetData('schedule_count', 0);
+    await Future.wait([
+      HomeWidget.saveWidgetData('schedule_trip_id', -1),
+      HomeWidget.saveWidgetData('schedule_trip_title', '여행을 추가해주세요'),
+      HomeWidget.saveWidgetData('schedule_date', _formatDateKorean(now)),
+      HomeWidget.saveWidgetData('schedule_list', '[]'),
+      HomeWidget.saveWidgetData('schedule_count', 0),
+    ]);
 
     await HomeWidget.updateWidget(
       androidName: scheduleWidgetAndroid,
