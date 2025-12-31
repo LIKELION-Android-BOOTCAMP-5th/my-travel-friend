@@ -55,3 +55,4 @@ android/keystore/
 *.jks
 *.keystore
 ios/XCBuildData/
+android/build/
