@@ -280,6 +280,17 @@ class MenuScreen extends StatelessWidget {
                   ),
                   MenuBox(
                     state: state,
+                    title: "위젯 설정",
+                    onTap: () {
+                      context.push('/setting/widget');
+                    },
+                  ),
+                  Divider(
+                    height: 0.5,
+                    color: colorScheme.outlineVariant.withOpacity(0.3),
+                  ),
+                  MenuBox(
+                    state: state,
                     title: "권한 설정",
                     onTap: () {
                       context.push('/setting/permission');
