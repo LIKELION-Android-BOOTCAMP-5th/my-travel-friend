@@ -29,6 +29,7 @@
         android:label="나의 여행 친구"
         android:name="${applicationName}"
         android:icon="@mipmap/icon_logos">
+
         <activity
             android:name=".MainActivity"
             android:exported="true"
@@ -37,10 +38,9 @@
             android:theme="@style/LaunchTheme"
             android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"
             android:hardwareAccelerated="true"
-            android:windowSoftInputMode="adjustResize">
-            <!--flutter_local_notification 추가 세팅-->
-            android:showWhenLocked="true"<!--화면 잠금에도 보임-->
-            android:turnScreenOn="true"><!--알림 오면 화면 켜짐-->
+            android:windowSoftInputMode="adjustResize"
+            android:showWhenLocked="true"
+            android:turnScreenOn="true">
             <!--flutter_local_notification 추가 세팅-->
             <!-- Specifies an Android theme to apply to this Activity as soon as
                  the Android process has started. This theme is visible to the user
@@ -59,7 +59,7 @@
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-                <data android:scheme="com.example.myTravelFriend" android:host="login-callback" />
+                <data android:scheme="com.example.mytravelfriend" android:host="login-callback" />
             </intent-filter>-->
             <!--콜백url처리용-->
             <!-- 애플 로그인 용 -->
@@ -70,6 +70,15 @@
                 <data android:scheme="mytravelfriend" android:host="login-callback" />
             </intent-filter>
             <!-- 애플 로그인 용 -->
+
+            <!-- 위젯 딥링크 -->
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="mytravelfriend" android:host="trip" />
+            </intent-filter>
+
         </activity>
         <!--flutter_local_notification용 리시버 설정-->
         <receiver android:exported="false" android:name="com.dexterous.flutterlocalnotifications.ScheduledNotificationReceiver" />
@@ -91,6 +100,30 @@
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyAQiYobEnqYRrwp2yK6T9gFVR-MdKTZx-s" />
+
+        <!-- D-Day 위젯 -->
+        <receiver
+            android:name=".DDayWidgetProvider"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/widget_dday_info" />
+        </receiver>
+
+        <!-- 일정 위젯 -->
+        <receiver
+            android:name=".ScheduleWidgetProvider"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/widget_schedule_info" />
+        </receiver>
 
     </application>
     <!-- Required to query activities that can process text, see:
