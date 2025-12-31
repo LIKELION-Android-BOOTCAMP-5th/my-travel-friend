@@ -71,20 +71,19 @@ class AppRouter {
 
       // 3. 인증 완료 사용자
       if (authState is AuthProfileAuthenticated) {
+        // 초기 진입로(/, /login, /splash)에 있을 때만 홈으로 보냄
+        final initialPaths = ['/', '/login', '/splash'];
         final target = deepLinkService.pendingPath;
+        if (initialPaths.contains(state.matchedLocation) && target == null) {
+          print("[Redirect] 초기 진입로 감지, 홈으로 이동");
+          return '/home';
+        }
 
         // [핵심] 딥링크 대기 중인 경로가 있다면 그곳으로 안내
         // 옵저버에서 지워주기 전까지는 target이 유지되므로 유연하게 대처 가능합니다.
         if (target != null && state.matchedLocation != target) {
           print("[Redirect] 딥링크 목적지로 경로 안내: $target");
           return target;
-        }
-
-        // 초기 진입로(/, /login, /splash)에 있을 때만 홈으로 보냄
-        final initialPaths = ['/', '/login', '/splash'];
-        if (initialPaths.contains(state.matchedLocation)) {
-          print("[Redirect] 초기 진입로 감지, 홈으로 이동");
-          return '/home';
         }
       }
 
