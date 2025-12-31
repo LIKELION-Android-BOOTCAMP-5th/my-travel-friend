@@ -59,30 +59,13 @@ class ProfileScreen extends StatelessWidget {
                   if (context.canPop()) {
                     context.pop();
                   } else {
-                    context.go('/setting'); // 스택 없으면 설정으로
+                    context.push('/setting'); // 스택 없으면 설정으로
                   }
                 },
               ),
               actions: [
                 Button(
-                  width: 40,
-                  height: 40,
-                  icon: isSaving || state.isUploading
-                      ? SizedBox(
-                          width: 20,
-                          height: 20,
-                          child: CircularProgressIndicator(
-                            strokeWidth: 2,
-                            color: isDark
-                                ? colorScheme.onSurface
-                                : AppColors.light,
-                          ),
-                        )
-                      : AppIcon.save,
-                  contentColor: isDark
-                      ? colorScheme.onSurface
-                      : AppColors.light,
-                  borderRadius: 20,
+                  text: '저장',
                   onTap: canSave && !isSaving && !state.isUploading
                       ? () {
                           context.read<ProfileBloc>().add(
@@ -90,6 +73,11 @@ class ProfileScreen extends StatelessWidget {
                           );
                         }
                       : null,
+                  height: 36,
+                  backgroundColor: Colors.transparent,
+                  contentColor: AppColors.light,
+                  borderRadius: 18,
+                  width: 36,
                 ),
               ],
             ),

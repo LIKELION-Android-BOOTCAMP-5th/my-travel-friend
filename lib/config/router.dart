@@ -35,6 +35,7 @@ import '../feature/schedule/presentation/screens/create_schedule_bloc_widget.dar
 import '../feature/schedule/presentation/screens/edit_schedule_bloc_widget.dart';
 import '../feature/schedule/presentation/screens/map_search_bloc_widget.dart';
 import '../feature/setting/presentation/screens/alarm/alarm_setting_bloc_widget.dart';
+import '../feature/setting/presentation/screens/home_widget/widget_settings_bloc_widget.dart';
 import '../feature/setting/presentation/screens/profile/profile_bloc_widget.dart';
 import '../feature/setting/presentation/screens/theme/theme_bloc_widget.dart';
 import '../feature/trip/domain/entities/trip_entity.dart';
@@ -175,6 +176,10 @@ class AppRouter {
       GoRoute(
         path: '/setting/permission',
         builder: (context, state) => const PermissionBlocWidget(),
+      ),
+      GoRoute(
+        path: '/setting/widget',
+        builder: (context, state) => const WidgetSettingsBlocWidget(),
       ),
       GoRoute(
         path: '/setting/theme',
