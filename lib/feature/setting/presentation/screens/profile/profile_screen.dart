@@ -33,7 +33,7 @@ class ProfileScreen extends StatelessWidget {
             if (context.canPop()) {
               context.pop();
             } else {
-              context.go('/setting');
+              context.goNamed('setting');
             }
           });
         } else if (state.pageState == ProfilePageState.error) {
@@ -59,7 +59,7 @@ class ProfileScreen extends StatelessWidget {
                   if (context.canPop()) {
                     context.pop();
                   } else {
-                    context.push('/setting'); // 스택 없으면 설정으로
+                    context.pushNamed('setting'); // 스택 없으면 설정으로
                   }
                 },
               ),

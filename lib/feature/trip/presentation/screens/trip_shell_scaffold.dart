@@ -137,7 +137,7 @@ class TripShellScaffoldState extends State<TripShellScaffold> {
           if (state.pageState == TripDetailPageState.left) {
             _chatUnreadBloc.add(const StopUnreadSubscription());
             ToastPop.show('여행을 포기했습니다');
-            context.go('/home');
+            context.goNamed('/home');
           }
 
           // trip 로드 완료 시 구독 시작
@@ -175,7 +175,7 @@ class TripShellScaffoldState extends State<TripShellScaffold> {
                     Text('오류: ${state.errorMessage}'),
                     const SizedBox(height: 16),
                     ElevatedButton(
-                      onPressed: () => context.go('/home'),
+                      onPressed: () => context.goNamed('home'),
                       child: const Text('홈으로 돌아가기'),
                     ),
                   ],
@@ -216,7 +216,7 @@ class TripShellScaffoldState extends State<TripShellScaffold> {
                     borderRadius: 20,
                     onTap: () {
                       _chatUnreadBloc.add(const StopUnreadSubscription());
-                      context.go('/home');
+                      context.goNamed('home');
                     },
                   ),
                   actions: [
@@ -267,20 +267,26 @@ class TripShellScaffoldState extends State<TripShellScaffold> {
 
   // 네비게이션 탭 클릭 처리
   void _onNavTap(BuildContext context, int index, int tripId) {
-    final routes = [
+    /*final routes = [
       '/trip/$tripId/trip_home',
       '/trip/$tripId/schedule',
       '/trip/$tripId/checklist',
       '/trip/$tripId/diary',
       '/trip/$tripId/talk',
+    ];*/
+    final routes = [
+      'tripHome',
+      'tripSchedule',
+      'tripChecklist',
+      'tripDiary',
+      'tripTalk',
     ];
-
     if (index < routes.length) {
       // 채팅 탭으로 이동하면 카운트 초기화
       if (index == 4) {
         _chatUnreadBloc.add(const ResetUnreadCount());
       }
-      context.go(routes[index]);
+      context.goNamed(routes[index], pathParameters: {"tripId": "$tripId"});
     }
   }
 
@@ -302,9 +308,9 @@ class TripShellScaffoldState extends State<TripShellScaffold> {
           title: "여행계획 수정하기",
           onTap: () async {
             // push 결과로 받기
-            final result = await context.push<bool>(
-              '/trip/edit',
-              extra: {'trip': trip},
+            final result = await context.pushNamed(
+              'tripEdit',
+              extra: {"trip": trip},
             );
 
             // 수정 완료 시 새로고침

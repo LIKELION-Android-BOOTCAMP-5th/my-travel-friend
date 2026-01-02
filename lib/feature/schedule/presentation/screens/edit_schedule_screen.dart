@@ -141,8 +141,9 @@ class _EditScheduleScreenState extends State<EditScheduleScreen> {
                   Button(
                     icon: const Icon(AppIcon.search),
                     onTap: () async {
-                      final result = await context.push<PlaceCandidate>(
-                        '/trip/${state.tripId}/map-search',
+                      final result = await context.pushNamed<PlaceCandidate>(
+                        'tripMapSearch',
+                        pathParameters: {'tripId': '${state.tripId}'},
                         extra: {
                           'lat': state.lat,
                           'lng': state.lng,

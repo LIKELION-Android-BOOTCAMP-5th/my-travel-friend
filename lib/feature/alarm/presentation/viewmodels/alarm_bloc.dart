@@ -308,11 +308,13 @@ class AlarmBloc extends Bloc<AlarmEvent, AlarmState> {
     return switch (type) {
       // 설정 쪽 - 친구, 여행 초대
       // 여행 초대 알림 -> 설정 - 여행 초대
-      'TRIP_REQUEST' => const AlarmNavigationTo('/setting/recevice_trip'),
+      'TRIP_REQUEST' => const AlarmNavigationTo('/home/setting/receive_trip'),
       // 친구 요청 알림 -> 설정 - 친구 요청
-      'FRIEND_REQUEST' => const AlarmNavigationTo('/setting/friend_recevice'),
+      'FRIEND_REQUEST' => const AlarmNavigationTo(
+        '/home/setting/friend-receive',
+      ),
       // 친구 수락 알림 -> 설정 - 친구 목록
-      'NEW_FRIEND' => const AlarmNavigationTo('/setting/friend'),
+      'NEW_FRIEND' => const AlarmNavigationTo('/home/setting/friend'),
 
       // 여행 상세 쪽 - 스케줄, 톡톡
       // 스케줄 생성, 수정 -> 여행 - 일정 - 해당 스케줄 포커스
@@ -325,12 +327,12 @@ class AlarmBloc extends Bloc<AlarmEvent, AlarmState> {
 
       // 스케줄 삭제 -> 여행 - 일정 (스케줄 아이디 없음)
       'SCHEDULE_DELETED' when tripId != null => AlarmNavigationTo(
-        '/trip/$tripId/schedule',
+        '/home/trip/$tripId/schedule',
       ),
 
       // 톡톡 메세지 알림 -> 여행 - 톡톡탭
       'TALK_MESSAGE' when tripId != null => AlarmNavigationTo(
-        '/trip/$tripId/talk',
+        '/home/trip/$tripId/talk',
       ),
 
       _ => const AlarmNavigationNone(),
@@ -339,7 +341,7 @@ class AlarmBloc extends Bloc<AlarmEvent, AlarmState> {
 
   // 스케줄 경로 생성 헬퍼
   String _buildPath(int tripId, int? scheduleId) {
-    final basePath = '/trip/$tripId/schedule';
+    final basePath = '/home/trip/$tripId/schedule';
     if (scheduleId != null) {
       return '$basePath?scheduleId=$scheduleId';
     }

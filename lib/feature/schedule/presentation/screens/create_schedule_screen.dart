@@ -129,7 +129,8 @@ class _CreateScheduleScreenState extends State<CreateScheduleScreen> {
           );
         }
 
-        if (state.pageState == CreateSchedulepageState.success) {
+        if (state.pageState == CreateSchedulepageState.success &&
+            context.mounted) {
           context.pop(true);
         }
       },
@@ -168,8 +169,9 @@ class _CreateScheduleScreenState extends State<CreateScheduleScreen> {
                     key: _searchButtonKey,
                     icon: const Icon(AppIcon.search),
                     onTap: () async {
-                      final result = await context.push<PlaceCandidate>(
-                        '/trip/${widget.tripId}/map-search',
+                      final result = await context.pushNamed<PlaceCandidate>(
+                        'tripMapSearch',
+                        pathParameters: {'tripId': '${widget.tripId}'},
                         extra: {
                           'lat': state.lat,
                           'lng': state.lng,

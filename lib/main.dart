@@ -21,9 +21,6 @@ import 'feature/setting/presentation/viewmodels/theme/theme_event.dart';
 import 'feature/setting/presentation/viewmodels/theme/theme_state.dart'
     hide AppTheme;
 
-// 위젯에서 앱 실행 시 pending 경로 저장 (URI 대신 경로 문자열)
-String? _pendingWidgetPath;
-
 @pragma('vm:entry-point')
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   //dotenv는di 등록이 안되므로 먼저 여기서 초기화
@@ -50,6 +47,11 @@ void main() async {
   final pushService = GetIt.instance<PushNotificationService>();
   //푸시메시지 초기화
   await pushService.initialize();
+  // 앱 종료 상태에서 알림 클릭 진입 처리
+  final initialMessage = await FirebaseMessaging.instance.getInitialMessage();
+  if (initialMessage != null) {
+    pushService.handleRemoteMessageRouting(initialMessage);
+  }
 
   // 위젯 딥링크 초기화
   await _initHomeWidget();
@@ -71,6 +73,8 @@ void main() async {
     ),
   );
 }
+
+String? _pendingWidgetPath;
 
 // 위젯 딥링크 처리
 Future<void> _initHomeWidget() async {
@@ -168,57 +172,41 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<ThemeBloc, ThemeState>(
-      builder: (context, state) {
-        return MaterialApp.router(
-          routerConfig: AppRouter.instance.router,
-          debugShowCheckedModeBanner: false,
-          theme: AppTheme.light,
-          darkTheme: AppTheme.dark,
-          themeMode: context.read<ThemeBloc>().themeMode,
+    // watch를 사용하여 상태 감시.
+    final themeMode = context.watch<ThemeBloc>().themeMode;
 
-          builder: (context, child) {
-            return BlocConsumer<AuthProfileBloc, AuthProfileState>(
-              listenWhen: (prev, curr) => prev.runtimeType != curr.runtimeType,
-              listener: (context, state) {
-                if (state is AuthProfileAuthenticated) {
-                  context.read<AlarmBloc>().add(
-                    AlarmEvent.startWatching(userId: state.userInfo.id!),
-                  );
-
-                  // 인증 완료 후 pending 경로가 있으면 해당 페이지로 이동
-                  if (_pendingWidgetPath != null) {
-                    Future.delayed(const Duration(milliseconds: 300), () {
-                      _navigateToPath(_pendingWidgetPath!);
-                      _pendingWidgetPath = null;
-                    });
-                  } else {
-                    AppRouter.instance.router.go('/home');
-                  }
-                }
-                if (state is AuthProfileUnauthenticated) {
-                  context.read<AlarmBloc>().add(
-                    const AlarmEvent.stopWatching(),
-                  );
-                  AppRouter.instance.router.go('/login');
-                }
-              },
-              builder: (context, authState) {
-                if (authState is AuthProfileLoading) {
-                  return Stack(
-                    children: [
-                      child ?? const SizedBox.shrink(),
-                      Container(
-                        color: Colors.black.withOpacity(0.3),
-                        child: const Center(child: CircularProgressIndicator()),
-                      ),
-                    ],
-                  );
-                }
-                return child ?? const SizedBox.shrink();
-              },
-            );
+    return MaterialApp.router(
+      routerConfig: AppRouter.instance.router,
+      debugShowCheckedModeBanner: false,
+      theme: AppTheme.light,
+      darkTheme: AppTheme.dark,
+      themeMode: themeMode,
+      builder: (context, child) {
+        return BlocListener<AuthProfileBloc, AuthProfileState>(
+          listenWhen: (prev, curr) => prev.runtimeType != curr.runtimeType,
+          listener: (context, state) {
+            if (state is AuthProfileAuthenticated) {
+              context.read<AlarmBloc>().add(
+                AlarmEvent.startWatching(userId: state.userInfo.id!),
+              );
+            } else if (state is AuthProfileUnauthenticated) {
+              context.read<AlarmBloc>().add(const AlarmEvent.stopWatching());
+            }
           },
+          child: BlocBuilder<AuthProfileBloc, AuthProfileState>(
+            builder: (context, authState) {
+              return Stack(
+                children: [
+                  child ?? const SizedBox.shrink(),
+                  if (authState is AuthProfileLoading)
+                    Container(
+                      color: Colors.black.withOpacity(0.3),
+                      child: const Center(child: CircularProgressIndicator()),
+                    ),
+                ],
+              );
+            },
+          ),
         );
       },
     );

@@ -79,7 +79,7 @@ class _EditTripScreenState extends State<EditTripScreen> {
 
             final shouldExit = await _showExitConfirmDialog(context);
             if (shouldExit && context.mounted) {
-              Navigator.of(context).pop(result);
+              context.pop(result);
             }
           },
           child: Scaffold(
@@ -543,7 +543,7 @@ Future<bool> _showExitConfirmDialog(BuildContext context) async {
       },
       onRight: () {
         // 확인 → true 반환
-        Navigator.of(context).pop(true);
+        context.pop(true);
       },
     ),
   );

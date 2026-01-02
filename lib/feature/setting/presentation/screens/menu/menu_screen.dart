@@ -38,7 +38,7 @@ class MenuScreen extends StatelessWidget {
           icon: Icon(AppIcon.back),
           contentColor: isDark ? colorScheme.onSurface : AppColors.light,
           borderRadius: 20,
-          onTap: () => context.push('/home'),
+          onTap: () => context.pushNamed('home'),
         ),
       ),
       body: BlocBuilder<MenuBloc, MenuState>(
@@ -189,9 +189,9 @@ class MenuScreen extends StatelessWidget {
                     state: state,
                     title: "친구 목록 보기",
                     onTap: () {
-                      context.push(
-                        '/setting/friend',
-                        extra: {'userId': userProfile.id},
+                      context.pushNamed(
+                        'friend',
+                        //extra: {'userId': userProfile.id},
                       );
                     },
                   ),
@@ -203,9 +203,9 @@ class MenuScreen extends StatelessWidget {
                     state: state,
                     title: "내가 받은 친구 요청",
                     onTap: () {
-                      context.push(
-                        '/setting/friend_recevice',
-                        extra: {'userId': userProfile.id},
+                      context.pushNamed(
+                        'friendReceive',
+                        //extra: {'userId': userProfile.id},
                       );
                     },
                   ),
@@ -217,9 +217,9 @@ class MenuScreen extends StatelessWidget {
                     state: state,
                     title: "내가 받은 여행 초대",
                     onTap: () {
-                      context.push(
-                        '/setting/recevice_trip',
-                        extra: {'myId': userProfile.id},
+                      context.pushNamed(
+                        'tripReceive',
+                        //extra: {'myId': userProfile.id},
                       );
                     },
                   ),
@@ -260,7 +260,7 @@ class MenuScreen extends StatelessWidget {
                     state: state,
                     title: "푸시 알림 설정",
                     onTap: () {
-                      context.push('/setting/alarm');
+                      context.pushNamed('settingAlarm');
                     },
                   ),
                   Divider(
@@ -271,7 +271,7 @@ class MenuScreen extends StatelessWidget {
                     state: state,
                     title: "테마 설정",
                     onTap: () {
-                      context.push('/setting/theme');
+                      context.pushNamed('theme');
                     },
                   ),
                   Divider(
@@ -282,7 +282,7 @@ class MenuScreen extends StatelessWidget {
                     state: state,
                     title: "위젯 설정",
                     onTap: () {
-                      context.push('/setting/widget');
+                      context.pushNamed('widget');
                     },
                   ),
                   Divider(
@@ -293,7 +293,7 @@ class MenuScreen extends StatelessWidget {
                     state: state,
                     title: "권한 설정",
                     onTap: () {
-                      context.push('/setting/permission');
+                      context.pushNamed('permission');
                     },
                   ),
                 ],

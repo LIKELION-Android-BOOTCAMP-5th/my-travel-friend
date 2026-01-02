@@ -1,49 +1,53 @@
-import 'package:go_router/go_router.dart';
+import 'package:flutter/material.dart'; // ChangeNotifier를 위해 필요
 import 'package:injectable/injectable.dart';
 
-import '../../../config/router.dart';
-
 @lazySingleton
-class DeepLinkService {
-  final GoRouter _router = AppRouter.instance.router;
+class DeepLinkService extends ChangeNotifier {
+  String? _pendingPath;
+  String? get pendingPath => _pendingPath;
 
-  // 알림 데이터를 받아 라우팅을 실행하는 핵심 메서드
-  void navigateFromNotification(
-    String alarmType,
-    Map<String, dynamic> fcmData,
-  ) {
-    final String targetRoute = _generateRoute(alarmType, fcmData);
+  //저장된 딥링크 경로를 소모
+  String? consumePendingPath() {
+    if (_pendingPath == null) return null;
 
-    _router.push(targetRoute);
+    print("[DeepLinkService] 경로 소모됨: $_pendingPath");
+    final path = _pendingPath;
+    _pendingPath = null;
+    return path;
   }
 
-  // 로컬 알림 페이로드에서 데이터를 추출하여 라우팅 실행 (onDidReceiveNotificationResponse 콜백용)
+  //경로세팅 후 알림
+  void navigateFromNotification(
+    String alarmType,
+    Map<String, dynamic> deeplinkData,
+  ) {
+    final String targetRoute = _generateRoute(alarmType, deeplinkData);
+    print("[DeepLinkService] 새로운 경로 감지: $targetRoute");
+
+    _pendingPath = targetRoute;
+
+    notifyListeners();
+  }
+
+  //경로 지정
   String _generateRoute(String alarmType, Map<String, dynamic> deepLinkData) {
     switch (alarmType) {
       case 'TRIP_REQUEST':
-        throw UnimplementedError();
-
+        return '/home/setting/receive_trip';
       case 'FRIEND_REQUEST':
-        throw UnimplementedError();
-
+        return "/home/setting/friend-receive";
       case 'NEW_FRIEND':
-        throw UnimplementedError();
-
+        return "/home/setting/friend";
       case 'SCHEDULE_EDITED':
-        throw UnimplementedError();
       case 'SCHEDULE_ADDED':
-        throw UnimplementedError();
       case 'SCHEDULE_DELETED':
-        throw UnimplementedError();
-
+        return "/home/trip/${deepLinkData["trip_id"]}/schedule";
       case 'TALK_MESSAGE':
-        throw UnimplementedError();
-
+        return "/home/trip/${deepLinkData["trip_id"]}/talk";
       case 'D_DAY':
-        throw UnimplementedError();
+        return "/home/trip/${deepLinkData["trip_id"]}/trip_home";
       default:
-        // 정의되지 않은 알람 타입일 경우 기본 홈 경로
-        return '/';
+        return '/home';
     }
   }
 }

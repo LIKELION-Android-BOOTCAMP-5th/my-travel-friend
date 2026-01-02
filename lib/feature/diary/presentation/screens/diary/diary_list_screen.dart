@@ -163,11 +163,10 @@ class _DiaryListScreenState extends State<DiaryListScreen> {
   // - 작성 성공 시 true 반환받아 목록 새로고침
   //-> bloc state로 쓰기
   Future<void> _navigateToCreate() async {
-    final res = await context.push<bool>(
-      '/diary/new/${widget.tripId}',
-      extra: {'tripId': widget.tripId, 'userId': widget.userId},
+    final res = await context.pushNamed(
+      'tripDiaryNew',
+      pathParameters: {'tripId': "${widget.tripId}"},
     );
-
     if (mounted) {
       context.read<DiaryBloc>().add(
         DiaryEvent.onCreateCompleted(success: res == true),
@@ -177,9 +176,10 @@ class _DiaryListScreenState extends State<DiaryListScreen> {
 
   // 다이어리 수정 화면으로 이동
   Future<void> _navigateToEdit(DiaryEntity diary) async {
-    final res = await context.push<bool>(
-      '/diary/edit/${widget.tripId}',
+    final res = await context.pushNamed<bool>(
+      'tripDiaryEdit',
       extra: {'diary': diary},
+      pathParameters: {'tripId': "${widget.tripId}"},
     );
 
     if (mounted) {
