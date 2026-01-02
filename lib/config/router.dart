@@ -22,14 +22,21 @@ import 'package:my_travel_friend/splash.dart';
 import '../feature/alarm/presentation/screens/alarm_bloc_widget.dart';
 import '../feature/chat/presentation/screens/chat_bloc_widget.dart';
 import '../feature/checklist/presentation/screens/lists_bloc_widget.dart';
+import '../feature/diary/domain/entities/diary_entity.dart';
 import '../feature/diary/presentation/screens/diary/diary_bloc_widget.dart';
+import '../feature/diary/presentation/screens/edit_diary/edit_diary_bloc_widget.dart';
+import '../feature/diary/presentation/screens/new_diary/new_diary_bloc_widget.dart';
 import '../feature/diary/presentation/viewmodels/diary/diary_bloc.dart';
+import '../feature/diary/presentation/viewmodels/new_diary/new_diary_bloc.dart';
 import '../feature/friend/presentation/screen/friend_bloc_widget.dart';
 import '../feature/friend/presentation/screen/friend_request_bloc_widget.dart';
 import '../feature/friend/presentation/screen/recevice_list_bloc_widget.dart';
 import '../feature/friend/presentation/screen/recevice_trip_bloc_widget.dart';
 import '../feature/onboarding/presentation/screens/onboarding_bloc_widget.dart';
+import '../feature/schedule/presentation/screens/create_schedule_bloc_widget.dart';
+import '../feature/schedule/presentation/screens/map_search_bloc_widget.dart';
 import '../feature/setting/presentation/screens/alarm/alarm_setting_bloc_widget.dart';
+import '../feature/setting/presentation/screens/home_widget/widget_settings_bloc_widget.dart';
 import '../feature/setting/presentation/screens/profile/profile_bloc_widget.dart';
 import '../feature/setting/presentation/screens/theme/theme_bloc_widget.dart';
 import '../feature/trip/domain/entities/trip_entity.dart';
@@ -89,6 +96,7 @@ class AppRouter {
 
       return null;
     },
+
     routes: [
       // --- 비인증 영역 ---
       GoRoute(
@@ -96,15 +104,20 @@ class AppRouter {
         name: 'splash',
         builder: (context, state) => const SplashScreen(),
       ),
+      GoRoute(path: '/', builder: (context, state) => TripBlocWidget()),
+
+      // 온보딩 화면 (새로 추가)
       GoRoute(
         path: '/onboarding',
         name: 'onboarding',
         builder: (context, state) => const OnboardingBlocWidget(),
       ),
+
       GoRoute(
         path: '/login',
         name: 'login',
         builder: (context, state) => BlocProvider.value(
+          //bloc 제공자
           value: getIt<AuthBloc>(),
           child: const AuthBlocWidget(),
         ),
@@ -172,6 +185,11 @@ class AppRouter {
                 path: 'theme',
                 name: 'theme',
                 builder: (context, state) => const ThemeBlocWidget(),
+              ),
+              GoRoute(
+                path: 'widget',
+                name: 'widget',
+                builder: (context, state) => const WidgetSettingsBlocWidget(),
               ),
               // 친구 계층
               GoRoute(
@@ -281,6 +299,60 @@ class AppRouter {
                 },
               ),
             ],
+          ),
+          GoRoute(
+            path: '/trip/:tripId/diary/new',
+            name: 'tripDiaryNew',
+            builder: (context, state) {
+              final tripId = int.parse(state.pathParameters['tripId']!);
+              return BlocProvider(
+                create: (context) => GetIt.instance<NewDiaryBloc>(),
+                child: NewDiaryBlocWidget(tripId: tripId),
+              );
+            },
+          ),
+          GoRoute(
+            path: '/trip/:tripId/diary/edit',
+            name: 'tripDiaryEdit',
+            builder: (context, state) {
+              final extra = state.extra as Map<String, dynamic>;
+              final diary = extra['diary'] as DiaryEntity;
+              return EditDiaryBlocWidget(diary: diary);
+            },
+          ),
+          GoRoute(
+            path: '/trip/:tripId/map-search',
+            name: 'tripMapSearch',
+            builder: (context, state) {
+              final tripId = int.parse(state.pathParameters['tripId']!);
+
+              final extra = state.extra as Map<String, dynamic>?;
+
+              return MapSearchBlocWidget(
+                tripId: tripId,
+                initialLat: extra?['lat'],
+                initialLng: extra?['lng'],
+                initialAddress: extra?['address'],
+              );
+            },
+          ),
+          GoRoute(
+            path: '/trip/:tripId/schedule/create',
+            name: 'ScheduleCreate',
+            builder: (context, state) {
+              final tripId = int.parse(state.pathParameters['tripId']!);
+
+              return CreateScheduleBlocWidget(tripId: tripId);
+            },
+          ),
+          GoRoute(
+            path: '/trip/:tripId/schedule/edit',
+            name: 'ScheduleEdit',
+            builder: (context, state) {
+              final tripId = int.parse(state.pathParameters['tripId']!);
+
+              return CreateScheduleBlocWidget(tripId: tripId);
+            },
           ),
         ],
       ),

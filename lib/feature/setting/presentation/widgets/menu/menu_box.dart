@@ -82,6 +82,7 @@ class MenuBox extends StatelessWidget {
       "푸시 알림 설정" => Icon(AppIcon.alarm, size: 20, color: colorScheme.onSurface),
       "테마 설정" => Icon(AppIcon.palette, size: 20, color: colorScheme.onSurface),
       "권한 설정" => Icon(AppIcon.defense, size: 20, color: colorScheme.onSurface),
+      "위젯 설정" => Icon(AppIcon.setting, size: 20, color: colorScheme.onSurface),
       "문의하기" => Icon(AppIcon.talk, size: 20, color: colorScheme.onSurface),
       "개인 정보 처리 방침" => Icon(
         AppIcon.user,

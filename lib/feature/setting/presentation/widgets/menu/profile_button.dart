@@ -20,7 +20,7 @@ class ProfileButton extends StatelessWidget {
     return GestureDetector(
       behavior: HitTestBehavior.opaque,
       onTap: () {
-        context.push('/setting/profile');
+        context.pushNamed('profile');
       },
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),

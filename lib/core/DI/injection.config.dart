@@ -185,6 +185,7 @@ import '../../feature/friend/domain/usecases/search_request_name_usecase.dart'
 import '../../feature/friend/presentation/viewmodel/friend_bloc.dart' as _i186;
 import '../../feature/friend/presentation/viewmodel/friend_request_bloc.dart'
     as _i69;
+import '../../feature/home_widget/service/home_widget_service.dart' as _i195;
 import '../../feature/onboarding/data/datasources/onboarding_data_source.dart'
     as _i23;
 import '../../feature/onboarding/data/datasources/onboarding_data_source_impl.dart'
@@ -255,6 +256,14 @@ import '../../feature/setting/domain/usecases/alarm/get_my_alarm_setting_usecase
     as _i420;
 import '../../feature/setting/domain/usecases/alarm/update_alarm_setting_usecase.dart'
     as _i87;
+import '../../feature/setting/domain/usecases/home_widget/get_widget_settings_usecase.dart'
+    as _i292;
+import '../../feature/setting/domain/usecases/home_widget/save_widget_settings_usecase.dart'
+    as _i380;
+import '../../feature/setting/domain/usecases/home_widget/select_trip_for_widget_usecase.dart'
+    as _i1032;
+import '../../feature/setting/domain/usecases/home_widget/update_widget_usecase.dart'
+    as _i462;
 import '../../feature/setting/domain/usecases/permission/check_permission_usecase.dart'
     as _i584;
 import '../../feature/setting/domain/usecases/permission/open_settings_usecase.dart'
@@ -275,6 +284,8 @@ import '../../feature/setting/domain/usecases/theme/update_theme_usecase.dart'
     as _i668;
 import '../../feature/setting/presentation/viewmodels/alarm/alarm_setting_bloc.dart'
     as _i695;
+import '../../feature/setting/presentation/viewmodels/home_widget/widget_setting_bloc.dart'
+    as _i363;
 import '../../feature/setting/presentation/viewmodels/menu/menu_bloc.dart'
     as _i70;
 import '../../feature/setting/presentation/viewmodels/permission/permission_bloc.dart'
@@ -396,6 +407,7 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i507.DeepLinkService>(() => _i507.DeepLinkService());
     gh.lazySingleton<_i213.PermissionService>(() => _i213.PermissionService());
     gh.lazySingleton<_i1026.ThemeService>(() => _i1026.ThemeService());
+    gh.lazySingleton<_i195.HomeWidgetService>(() => _i195.HomeWidgetService());
     gh.lazySingleton<_i301.CoachMarkStorage>(
       () => _i301.CoachMarkStorage(gh<_i460.SharedPreferences>()),
     );
@@ -468,6 +480,18 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.lazySingleton<_i334.ScheduleDataSource>(
       () => _i77.ScheduleDataSourceImpl(supabase: gh<_i454.SupabaseClient>()),
+    );
+    gh.lazySingleton<_i292.GetWidgetSettingsUseCase>(
+      () => _i292.GetWidgetSettingsUseCase(gh<_i195.HomeWidgetService>()),
+    );
+    gh.lazySingleton<_i380.SaveWidgetSettingsUseCase>(
+      () => _i380.SaveWidgetSettingsUseCase(gh<_i195.HomeWidgetService>()),
+    );
+    gh.lazySingleton<_i1032.SelectTripForWidgetUseCase>(
+      () => _i1032.SelectTripForWidgetUseCase(gh<_i195.HomeWidgetService>()),
+    );
+    gh.lazySingleton<_i462.UpdateWidgetUseCase>(
+      () => _i462.UpdateWidgetUseCase(gh<_i195.HomeWidgetService>()),
     );
     gh.lazySingleton<_i340.FriendRequestDataSource>(
       () => _i920.FriendRequestDataSourceImpl(gh<_i454.SupabaseClient>()),
@@ -655,6 +679,16 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.lazySingleton<_i945.CheckNicknameDuplicateUseCase>(
       () => _i945.CheckNicknameDuplicateUseCase(gh<_i565.ProfileRepository>()),
+    );
+    gh.factory<_i363.WidgetSettingsBloc>(
+      () => _i363.WidgetSettingsBloc(
+        gh<_i292.GetWidgetSettingsUseCase>(),
+        gh<_i380.SaveWidgetSettingsUseCase>(),
+        gh<_i462.UpdateWidgetUseCase>(),
+        gh<_i1032.SelectTripForWidgetUseCase>(),
+        gh<_i521.GetMyTripUsecase>(),
+        gh<_i818.GetUserScheduleUseCase>(),
+      ),
     );
     gh.factory<_i135.OnboardingBloc>(
       () => _i135.OnboardingBloc(

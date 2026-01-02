@@ -2,6 +2,7 @@ import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:my_travel_friend/feature/schedule/presentation/viewmodels/map_search/map_search_bloc.dart';
 import 'package:my_travel_friend/feature/schedule/presentation/viewmodels/map_search/map_search_event.dart';
@@ -36,7 +37,7 @@ class _MapSearchScreenState extends State<MapSearchScreen> {
           listenWhen: (p, c) =>
               p.selectedPlace != c.selectedPlace && c.selectedPlace != null,
           listener: (context, state) {
-            Navigator.pop(context, state.selectedPlace);
+            context.pop(state.selectedPlace);
           },
         ),
 

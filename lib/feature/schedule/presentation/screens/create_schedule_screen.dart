@@ -58,7 +58,6 @@ class _CreateScheduleScreenState extends State<CreateScheduleScreen> {
     _memberKey = GlobalKey();
     _saveButtonKey = GlobalKey();
 
-    // ✅ Bloc 초기 상태를 기반으로 controller 초기값 세팅
     final state = context.read<CreateScheduleBloc>().state;
 
     _titleController.text = state.title ?? '';
@@ -130,7 +129,8 @@ class _CreateScheduleScreenState extends State<CreateScheduleScreen> {
           );
         }
 
-        if (state.pageState == CreateSchedulepageState.success) {
+        if (state.pageState == CreateSchedulepageState.success &&
+            context.mounted) {
           context.pop(true);
         }
       },
@@ -169,8 +169,9 @@ class _CreateScheduleScreenState extends State<CreateScheduleScreen> {
                     key: _searchButtonKey,
                     icon: const Icon(AppIcon.search),
                     onTap: () async {
-                      final result = await context.push<PlaceCandidate>(
-                        '/trip/${widget.tripId}/map-search',
+                      final result = await context.pushNamed<PlaceCandidate>(
+                        'tripMapSearch',
+                        pathParameters: {'tripId': '${widget.tripId}'},
                         extra: {
                           'lat': state.lat,
                           'lng': state.lng,
@@ -209,7 +210,7 @@ class _CreateScheduleScreenState extends State<CreateScheduleScreen> {
                     height: 36,
                     backgroundColor: Colors.transparent,
                     contentColor: state.isValid
-                        ? AppColors.primaryLight
+                        ? AppColors.light
                         : AppColors.light.withOpacity(0.4),
                     borderRadius: 18,
                     width: 36,

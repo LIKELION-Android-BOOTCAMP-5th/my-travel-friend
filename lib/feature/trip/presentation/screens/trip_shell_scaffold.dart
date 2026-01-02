@@ -175,7 +175,7 @@ class TripShellScaffoldState extends State<TripShellScaffold> {
                     Text('오류: ${state.errorMessage}'),
                     const SizedBox(height: 16),
                     ElevatedButton(
-                      onPressed: () => context.goNamed('/home'),
+                      onPressed: () => context.goNamed('home'),
                       child: const Text('홈으로 돌아가기'),
                     ),
                   ],
@@ -216,7 +216,7 @@ class TripShellScaffoldState extends State<TripShellScaffold> {
                     borderRadius: 20,
                     onTap: () {
                       _chatUnreadBloc.add(const StopUnreadSubscription());
-                      context.goNamed('/home');
+                      context.goNamed('home');
                     },
                   ),
                   actions: [

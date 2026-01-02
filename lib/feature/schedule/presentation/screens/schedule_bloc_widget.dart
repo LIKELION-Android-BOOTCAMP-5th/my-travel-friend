@@ -46,7 +46,10 @@ class _ScheduleBlocContent extends StatelessWidget {
 
         // 화면 이동
         if (state.navigateToCreate) {
-          final result = await context.push<bool>('/schedule/create/$tripId');
+          final result = await context.pushNamed<bool>(
+            'ScheduleCreate',
+            pathParameters: {'tripId': '$tripId'},
+          );
 
           context.read<ScheduleBloc>().add(
             const ScheduleEvent.resetNavigation(),
@@ -60,8 +63,9 @@ class _ScheduleBlocContent extends StatelessWidget {
         }
 
         if (state.navigateToEdit && state.editingSchedule != null) {
-          final result = await context.push<bool>(
-            '/schedule/edit/$tripId',
+          final result = await context.pushNamed<bool>(
+            'ScheduleEdit',
+            pathParameters: {'tripId': '$tripId'},
             extra: state.editingSchedule,
           );
 

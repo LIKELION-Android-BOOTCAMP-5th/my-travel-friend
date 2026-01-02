@@ -52,7 +52,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
           );
         }
         if (state.shouldNavigateToLogin) {
-          context.go('/home');
+          context.goNamed('home');
         }
       },
       builder: (context, state) {

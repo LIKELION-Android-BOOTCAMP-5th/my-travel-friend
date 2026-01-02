@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get_it/get_it.dart';
+import 'package:home_widget/home_widget.dart';
 import 'package:my_travel_friend/config/router.dart';
 import 'package:my_travel_friend/core/DI/injection.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -22,10 +23,10 @@ import 'feature/setting/presentation/viewmodels/theme/theme_state.dart'
 
 @pragma('vm:entry-point')
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
-  /*//dotenv는di 등록이 안되므로 먼저 여기서 초기화
+  //dotenv는di 등록이 안되므로 먼저 여기서 초기화
   await dotenv.load(fileName: "assets/config/.env");
   //DI관련
-  await configureDependencies();*/
+  await configureDependencies();
   print("Handling a background message: ${message.messageId}");
   // TODO: 백그라운드에서 실행시 로직 처리
 }
@@ -51,6 +52,10 @@ void main() async {
   if (initialMessage != null) {
     pushService.handleRemoteMessageRouting(initialMessage);
   }
+
+  // 위젯 딥링크 초기화
+  await _initHomeWidget();
+
   runApp(
     MultiBlocProvider(
       providers: [
@@ -67,6 +72,71 @@ void main() async {
       child: const MyApp(),
     ),
   );
+}
+
+String? _pendingWidgetPath;
+
+// 위젯 딥링크 처리
+Future<void> _initHomeWidget() async {
+  await HomeWidget.setAppGroupId('group.com.team1113.mytravelfriend');
+
+  // 앱이 위젯에서 실행된 경우 - 경로만 저장 (네비게이션 X)
+  try {
+    final initialUri = await HomeWidget.initiallyLaunchedFromHomeWidget();
+    if (initialUri != null) {
+      debugPrint('Initial widget URI: $initialUri');
+      _pendingWidgetPath = _parseWidgetUri(initialUri);
+      debugPrint('Pending widget path: $_pendingWidgetPath');
+    }
+  } catch (e) {
+    debugPrint('Error getting initial widget URI: $e');
+  }
+
+  // 앱 실행 중 위젯 클릭 처리
+  HomeWidget.widgetClicked.listen((uri) {
+    if (uri != null) {
+      debugPrint('Widget clicked URI: $uri');
+      final path = _parseWidgetUri(uri);
+      if (path != null) {
+        _navigateToPath(path);
+      }
+    }
+  });
+}
+
+// URI를 경로로 변환 (네비게이션 없이)
+String? _parseWidgetUri(Uri uri) {
+  final uriString = uri.toString();
+  debugPrint('Parsing widget URI: $uriString');
+
+  // mytravelfriend://trip/47 -> /trip/47/trip_home
+  // mytravelfriend://trip/47/schedule -> /trip/47/schedule
+  final regex = RegExp(r'trip/(\d+)(/schedule)?');
+  final match = regex.firstMatch(uriString);
+
+  if (match != null) {
+    final tripId = match.group(1);
+    final isSchedule = match.group(2) != null;
+
+    if (tripId != null) {
+      if (isSchedule) {
+        return '/trip/$tripId/schedule';
+      } else {
+        return '/trip/$tripId/trip_home';
+      }
+    }
+  }
+  return null;
+}
+
+// 실제 네비게이션 수행
+void _navigateToPath(String path) {
+  try {
+    debugPrint('Navigating to: $path');
+    AppRouter.instance.router.go(path);
+  } catch (e) {
+    debugPrint('Navigation error: $e');
+  }
 }
 
 // 앱 시작시 필요한 권한 요청

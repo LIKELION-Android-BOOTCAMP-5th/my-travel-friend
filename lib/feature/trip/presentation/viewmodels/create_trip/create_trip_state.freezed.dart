@@ -239,7 +239,7 @@ return $default(_that.userId,_that.title,_that.place,_that.startAt,_that.endAt,_
 
 
 class _CreateTripState extends CreateTripState {
-  const _CreateTripState({this.userId = 0, this.title = '', this.place = '', this.startAt = '', this.endAt = '', this.coverType = 'skyBlue', this.country = '', this.coverStyle = 'COLOR', this.coverImg, this.localImgFile, this.createTrip, this.friendId, this.message, this.errorType, this.actionType, this.isSameDay = false, this.showSameDayDialog = false, this.isUploading = false, this.pageState = CreateTripPageState.init}): super._();
+  const _CreateTripState({this.userId = 0, this.title = '', this.place = '', this.startAt = '', this.endAt = '', this.coverType = 'Blue', this.country = '', this.coverStyle = 'COLOR', this.coverImg, this.localImgFile, this.createTrip, this.friendId, this.message, this.errorType, this.actionType, this.isSameDay = false, this.showSameDayDialog = false, this.isUploading = false, this.pageState = CreateTripPageState.init}): super._();
   
 
 @override@JsonKey() final  int userId;
