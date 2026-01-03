@@ -117,8 +117,12 @@ struct DDayProvider: TimelineProvider {
     
     func getTimeline(in context: Context, completion: @escaping (Timeline<DDayEntry>) -> Void) {
         let entry = DDayEntry(date: Date(), data: WidgetDataManager.shared.getDDayData())
-        let nextUpdate = Calendar.current.date(byAdding: .hour, value: 1, to: Date())!
-        completion(Timeline(entries: [entry], policy: .after(nextUpdate)))
+        
+        // 다음 자정에 업데이트 (D-Day 변경을 위해)
+        let calendar = Calendar.current
+        let tomorrow = calendar.startOfDay(for: calendar.date(byAdding: .day, value: 1, to: Date())!)
+        
+        completion(Timeline(entries: [entry], policy: .after(tomorrow)))
     }
 }
 
@@ -196,8 +200,12 @@ struct ScheduleProvider: TimelineProvider {
     
     func getTimeline(in context: Context, completion: @escaping (Timeline<ScheduleEntry>) -> Void) {
         let entry = ScheduleEntry(date: Date(), data: WidgetDataManager.shared.getScheduleData())
-        let nextUpdate = Calendar.current.date(byAdding: .minute, value: 30, to: Date())!
-        completion(Timeline(entries: [entry], policy: .after(nextUpdate)))
+        
+        // 다음 자정에 업데이트
+        let calendar = Calendar.current
+        let tomorrow = calendar.startOfDay(for: calendar.date(byAdding: .day, value: 1, to: Date())!)
+        
+        completion(Timeline(entries: [entry], policy: .after(tomorrow)))
     }
 }
 

@@ -62,7 +62,33 @@ class AppRouter {
       >(), // 딥링크 서비스 등록 (notifyListeners 호출 시 redirect 실행)
     ]),
     initialLocation: '/splash',
+
+    // 예외 처리
+    onException: (context, state, router) {
+      debugPrint('[GoRouter Exception] ${state.uri}');
+
+      // custom scheme이면 직접 네비게이션
+      final uriString = state.uri.toString();
+      if (uriString.contains('mytravelfriend://')) {
+        final path = _parseWidgetScheme(uriString);
+        if (path != null) {
+          debugPrint('[GoRouter] Widget -> $path');
+          // 직접 이동 (notifyListeners 사용 안 함)
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            router.go(path);
+          });
+        }
+        return;
+      }
+
+      router.go('/home');
+    },
+
     redirect: (context, state) {
+      // custom scheme 무시
+      if (state.uri.toString().contains('mytravelfriend://')) {
+        return null;
+      }
       final authState = GetIt.I<AuthProfileBloc>().state;
       final deepLinkService = GetIt.I<DeepLinkService>();
 
@@ -358,4 +384,24 @@ class AppRouter {
       ),
     ],
   );
+
+  // 위젯 scheme을 경로로 변환
+  static String? _parseWidgetScheme(String uriString) {
+    final regex = RegExp(r'trip/(\d+)(/schedule)?');
+    final match = regex.firstMatch(uriString);
+
+    if (match != null) {
+      final tripId = match.group(1);
+      final isSchedule = match.group(2) != null;
+
+      if (tripId != null) {
+        if (isSchedule) {
+          return '/home/trip/$tripId/schedule';
+        } else {
+          return '/home/trip/$tripId/trip_home';
+        }
+      }
+    }
+    return null;
+  }
 }

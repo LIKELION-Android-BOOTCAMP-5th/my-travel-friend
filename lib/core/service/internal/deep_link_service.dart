@@ -16,7 +16,7 @@ class DeepLinkService extends ChangeNotifier {
     return path;
   }
 
-  //경로세팅 후 알림
+  // 경로세팅 후 알림
   void navigateFromNotification(
     String alarmType,
     Map<String, dynamic> deeplinkData,
@@ -46,6 +46,10 @@ class DeepLinkService extends ChangeNotifier {
         return "/home/trip/${deepLinkData["trip_id"]}/talk";
       case 'D_DAY':
         return "/home/trip/${deepLinkData["trip_id"]}/trip_home";
+      case 'WIDGET_TRIP':
+        return "/home/trip/${deepLinkData["trip_id"]}/trip_home";
+      case 'WIDGET_SCHEDULE':
+        return "/home/trip/${deepLinkData["trip_id"]}/schedule";
       default:
         return '/home';
     }

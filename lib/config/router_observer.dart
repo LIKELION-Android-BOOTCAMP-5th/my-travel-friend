@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
-import 'package:go_router/go_router.dart';
 import 'package:my_travel_friend/config/router.dart';
 import 'package:my_travel_friend/core/service/internal/deep_link_service.dart';
 
@@ -14,6 +13,12 @@ class RouterObserver extends NavigatorObserver {
         .currentConfiguration
         .uri
         .toString();
+
+    // custom scheme은 무시
+    if (currentLocation.contains('mytravelfriend://')) {
+      print("[Observer] 위젯 scheme 무시: $currentLocation");
+      return;
+    }
 
     final deepLinkService = GetIt.I<DeepLinkService>();
     final String? pendingPath = deepLinkService.pendingPath;
