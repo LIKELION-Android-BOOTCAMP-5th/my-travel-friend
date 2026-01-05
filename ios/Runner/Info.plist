@@ -61,7 +61,12 @@
 	<array>
 		<string>fetch</string>
 		<string>remote-notification</string>
+        <string>processing</string>
 	</array>
+    <key>BGTaskSchedulerPermittedIdentifiers</key>
+    <array>
+        <string>com.team1113.mytravelfriend.widgetRefresh</string>
+    </array>
 	<key>UIDeviceFamily</key>
 	<array>
 		<integer>1</integer>

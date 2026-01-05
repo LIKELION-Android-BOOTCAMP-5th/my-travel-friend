@@ -17,30 +17,54 @@ class WidgetDataManager {
         UserDefaults(suiteName: suiteName)
     }
     
-    func getDDayData() -> DDayData {
-        guard let defaults = userDefaults else {
-            return DDayData.placeholder
+    //  D-Day 직접 계산
+        private func calculateDDayText(from startDateStr: String?) -> String {
+            guard let startDateStr = startDateStr, !startDateStr.isEmpty else { return "D-?" }
+            
+            let formatter = DateFormatter()
+            formatter.dateFormat = "yyyy-MM-dd"
+            
+            let dateOnly = String(startDateStr.split(separator: "T").first ?? Substring(startDateStr))
+            
+            guard let startDate = formatter.date(from: dateOnly) else { return "D-?" }
+            
+            let calendar = Calendar.current
+            let today = calendar.startOfDay(for: Date())
+            let start = calendar.startOfDay(for: startDate)
+            
+            let days = calendar.dateComponents([.day], from: today, to: start).day ?? 0
+            
+            switch days {
+            case let d where d > 0:
+                return "D-\(d)"
+            case 0:
+                return "D-Day"
+            default:
+                return "D+\(-days)"
+            }
         }
-        let tripId = defaults.integer(forKey: "dday_trip_id")
-        let tripTitle = defaults.string(forKey: "dday_trip_title") ?? "여행을 선택하세요"
-        let dDayText = defaults.string(forKey: "dday_text") ?? "D-?"
-        return DDayData(tripId: tripId, tripTitle: tripTitle, dDayText: dDayText)
-    }
-    
-    func getScheduleData() -> ScheduleData {
-        guard let defaults = userDefaults else {
-            return ScheduleData.placeholder
-        }
-        let tripId = defaults.integer(forKey: "schedule_trip_id")
-        let tripTitle = defaults.string(forKey: "schedule_trip_title") ?? "오늘의 일정"
-        let scheduleDate = defaults.string(forKey: "schedule_date") ?? ""
-        let scheduleCount = defaults.integer(forKey: "schedule_count")
         
-        var schedules: [ScheduleItem] = []
-        if let jsonString = defaults.string(forKey: "schedule_list"),
-           let data = jsonString.data(using: .utf8),
-           let jsonArray = try? JSONSerialization.jsonObject(with: data) as? [[String: Any]] {
-            schedules = jsonArray.prefix(3).map { dict in
+        //  오늘 날짜 일정 필터링
+        private func filterTodaySchedules(from allSchedulesJson: String) -> [ScheduleItem] {
+            let formatter = DateFormatter()
+            formatter.dateFormat = "yyyy-MM-dd"
+            let todayPrefix = formatter.string(from: Date())
+            
+            guard let data = allSchedulesJson.data(using: .utf8),
+                  let jsonArray = try? JSONSerialization.jsonObject(with: data) as? [[String: Any]] else {
+                return []
+            }
+            
+            let filtered = jsonArray.filter { dict in
+                let date = dict["date"] as? String ?? ""
+                return date.hasPrefix(todayPrefix)
+            }
+            
+            let sorted = filtered.sorted { a, b in
+                (a["date"] as? String ?? "") < (b["date"] as? String ?? "")
+            }
+            
+            return sorted.prefix(3).map { dict in
                 ScheduleItem(
                     id: dict["id"] as? Int ?? 0,
                     title: dict["title"] as? String ?? "",
@@ -48,9 +72,54 @@ class WidgetDataManager {
                 )
             }
         }
-        return ScheduleData(tripId: tripId, tripTitle: tripTitle, scheduleDate: scheduleDate, schedules: schedules, totalCount: scheduleCount)
+        
+        //  오늘 날짜 텍스트
+        private func getTodayDateText() -> String {
+            let formatter = DateFormatter()
+            formatter.locale = Locale(identifier: "ko_KR")
+            formatter.dateFormat = "M월 d일 (E)"
+            return formatter.string(from: Date())
+        }
+        
+        func getDDayData() -> DDayData {
+            guard let defaults = userDefaults else {
+                return DDayData.placeholder
+            }
+            
+            let tripId = defaults.integer(forKey: "dday_trip_id")
+            let tripTitle = defaults.string(forKey: "dday_trip_title") ?? "여행을 선택하세요"
+            
+            //  저장된 시작 날짜로 D-Day 직접 계산
+            let startDate = defaults.string(forKey: "dday_start_date")
+            let dDayText = calculateDDayText(from: startDate)
+            
+            return DDayData(tripId: tripId, tripTitle: tripTitle, dDayText: dDayText)
+        }
+        
+        func getScheduleData() -> ScheduleData {
+            guard let defaults = userDefaults else {
+                return ScheduleData.placeholder
+            }
+            
+            let tripId = defaults.integer(forKey: "schedule_trip_id")
+            let tripTitle = defaults.string(forKey: "schedule_trip_title") ?? "오늘의 일정"
+            
+            //  전체 일정에서 오늘 날짜만 필터링
+            let allSchedulesJson = defaults.string(forKey: "schedule_all_list") ?? "[]"
+            let todaySchedules = filterTodaySchedules(from: allSchedulesJson)
+            
+            //  오늘 날짜
+            let scheduleDate = getTodayDateText()
+            
+            return ScheduleData(
+                tripId: tripId,
+                tripTitle: tripTitle,
+                scheduleDate: scheduleDate,
+                schedules: todaySchedules,
+                totalCount: todaySchedules.count
+            )
+        }
     }
-}
 
 // MARK: - Models
 struct DDayData {
@@ -165,7 +234,7 @@ struct DDayWidgetView: View {
                 .foregroundColor(accentColor)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .widgetURL(URL(string: "mytravelfriend://trip/\(entry.data.tripId)"))
+        .widgetURL(URL(string: "homewidget://trip/\(entry.data.tripId)"))
         .containerBackground(bgColor, for: .widget)
     }
 }
@@ -284,7 +353,7 @@ struct ScheduleWidgetView: View {
             }
         }
         .padding(12)
-        .widgetURL(URL(string: "mytravelfriend://trip/\(entry.data.tripId)/schedule"))
+        .widgetURL(URL(string: "homewidget://trip/\(entry.data.tripId)/schedule"))
         .containerBackground(bgColor, for: .widget)
     }
 }

@@ -33,6 +33,152 @@ class ScheduleWidgetProvider : AppWidgetProvider() {
                 defaultColor
             }
         }
+        
+        private fun filterTodaySchedules(allSchedulesJson: String): List<JSONObject> {
+            val today = LocalDate.now().toString()  // "2025-01-15"
+            val result = mutableListOf<JSONObject>()
+
+            try {
+                val jsonArray = JSONArray(allSchedulesJson)
+                for (i in 0 until jsonArray.length()) {
+                    val item = jsonArray.getJSONObject(i)
+                    val date = item.optString("date", "")
+
+                    if (date.startsWith(today)) {
+                        result.add(item)
+                    }
+                }
+
+                // 시간순 정렬
+                result.sortBy { it.optString("date", "") }
+
+            } catch (e: Exception) {
+                android.util.Log.e("ScheduleWidget", "Filter error: ${e.message}")
+            }
+
+            return result
+        }
+        
+        private fun getTodayDateText(): String {
+            val today = LocalDate.now()
+            val formatter = DateTimeFormatter.ofPattern("M월 d일 (E)", Locale.KOREAN)
+            return today.format(formatter)
+        }
+
+        internal fun updateAppWidget(
+            context: Context,
+            appWidgetManager: AppWidgetManager,
+            appWidgetId: Int
+        ) {
+            val prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+
+            val tripId = prefs.getInt("schedule_trip_id", -1)
+            val tripTitle = prefs.getString("schedule_trip_title", "오늘의 일정") ?: "오늘의 일정"
+
+            //  전체 일정에서 오늘 날짜만 필터링
+            val allSchedulesJson = prefs.getString("schedule_all_list", "[]") ?: "[]"
+            val todaySchedules = filterTodaySchedules(allSchedulesJson)
+            val scheduleDate = getTodayDateText()
+
+            // 테마 색상
+            val bgColorStr = prefs.getString("settings_bg_color", "#FFFFFFFF") ?: "#FFFFFFFF"
+            val textColorStr = prefs.getString("settings_text_color", "#FF333333") ?: "#FF333333"
+            val accentColorStr = prefs.getString("settings_accent_color", "#FF4A90D9") ?: "#FF4A90D9"
+
+            val bgColor = parseColor(bgColorStr, Color.WHITE)
+            val textColor = parseColor(textColorStr, Color.DKGRAY)
+            val accentColor = parseColor(accentColorStr, Color.BLUE)
+
+            val views = RemoteViews(context.packageName, R.layout.widget_schedule)
+
+            views.setInt(R.id.widget_container, "setBackgroundColor", bgColor)
+            views.setTextColor(R.id.tv_trip_title, textColor)
+            views.setTextColor(R.id.tv_date, textColor)
+            views.setTextColor(R.id.tv_empty, textColor)
+            views.setTextColor(R.id.tv_more, accentColor)
+
+            views.setTextViewText(R.id.tv_trip_title, tripTitle)
+            views.setTextViewText(R.id.tv_date, scheduleDate)
+
+            val itemCount = minOf(todaySchedules.size, 3)
+
+            if (itemCount == 0) {
+                views.setViewVisibility(R.id.tv_empty, View.VISIBLE)
+                views.setViewVisibility(R.id.schedule_item_1, View.GONE)
+                views.setViewVisibility(R.id.schedule_item_2, View.GONE)
+                views.setViewVisibility(R.id.schedule_item_3, View.GONE)
+                views.setViewVisibility(R.id.tv_more, View.GONE)
+            } else {
+                views.setViewVisibility(R.id.tv_empty, View.GONE)
+
+                for (i in 0 until 3) {
+                    val itemId = when (i) {
+                        0 -> R.id.schedule_item_1
+                        1 -> R.id.schedule_item_2
+                        else -> R.id.schedule_item_3
+                    }
+                    val timeId = when (i) {
+                        0 -> R.id.tv_time_1
+                        1 -> R.id.tv_time_2
+                        else -> R.id.tv_time_3
+                    }
+                    val titleId = when (i) {
+                        0 -> R.id.tv_schedule_1
+                        1 -> R.id.tv_schedule_2
+                        else -> R.id.tv_schedule_3
+                    }
+
+                    if (i < itemCount) {
+                        val item = todaySchedules[i]
+                        val time = item.optString("time", "")
+                        val title = item.optString("title", "")
+
+                        views.setViewVisibility(itemId, View.VISIBLE)
+                        views.setTextViewText(timeId, time)
+                        views.setTextViewText(titleId, title)
+                        views.setTextColor(timeId, accentColor)
+                        views.setTextColor(titleId, textColor)
+                    } else {
+                        views.setViewVisibility(itemId, View.GONE)
+                    }
+                }
+
+                if (todaySchedules.size > 3) {
+                    views.setViewVisibility(R.id.tv_more, View.VISIBLE)
+                    views.setTextViewText(R.id.tv_more, "+${todaySchedules.size - 3}개 더보기")
+                } else {
+                    views.setViewVisibility(R.id.tv_more, View.GONE)
+                }
+            }
+            
+            // 클릭 인텐트
+            if (tripId > 0) {
+                val intent = Intent(context, MainActivity::class.java).apply {
+                    action = "es.antonborri.home_widget.action.LAUNCH"
+                    data = Uri.parse("homewidget://trip/$tripId/schedule")
+                }
+                intent.setPackage(context.packageName)
+                val pendingIntent = PendingIntent.getActivity(
+                    context,
+                    appWidgetId,
+                    intent,
+                    PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+                )
+                views.setOnClickPendingIntent(R.id.widget_container, pendingIntent)
+            } else {
+                val intent = context.packageManager.getLaunchIntentForPackage(context.packageName)
+                val pendingIntent = PendingIntent.getActivity(
+                    context,
+                    appWidgetId,
+                    intent,
+                    PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+                )
+                views.setOnClickPendingIntent(R.id.widget_container, pendingIntent)
+            }
+
+            appWidgetManager.updateAppWidget(appWidgetId, views)
+        }
+    }
 
         internal fun updateAppWidget(
             context: Context,
@@ -136,7 +282,10 @@ class ScheduleWidgetProvider : AppWidgetProvider() {
             }
 
             if (tripId > 0) {
-                val intent = Intent(Intent.ACTION_VIEW, Uri.parse("mytravelfriend://trip/$tripId/schedule"))
+                val intent = Intent(context, MainActivity::class.java).apply {
+                    action = "es.antonborri.home_widget.action.LAUNCH"
+                    data = Uri.parse("homewidget://trip/$tripId/schedule")
+                }
                 intent.setPackage(context.packageName)
                 val pendingIntent = PendingIntent.getActivity(
                     context,

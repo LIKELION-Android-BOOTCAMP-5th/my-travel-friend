@@ -7,9 +7,9 @@ import 'package:home_widget/home_widget.dart';
 import 'package:my_travel_friend/config/router.dart';
 import 'package:my_travel_friend/core/DI/injection.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'core/result/result.dart';
-import 'core/service/internal/deep_link_service.dart';
 import 'core/service/internal/push_notification_service.dart';
 import 'core/theme/app_theme.dart';
 import 'feature/alarm/presentation/viewmodels/alarm_bloc.dart';
@@ -28,6 +28,23 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   await dotenv.load(fileName: "assets/config/.env");
   await configureDependencies();
   print("Handling a background message: ${message.messageId}");
+}
+
+@pragma('vm:entry-point')
+Future<void> backgroundCallback(Uri? uri) async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  try {
+    await dotenv.load(fileName: "assets/config/.env");
+    await configureDependencies();
+
+    debugPrint('🔄 Widget background callback started');
+
+    final homeWidgetService = GetIt.instance<HomeWidgetService>();
+    await homeWidgetService.refreshWidgetsInBackground();
+  } catch (e) {
+    debugPrint(' Widget background callback error: $e');
+  }
 }
 
 void main() async {
@@ -64,22 +81,22 @@ void main() async {
   );
 }
 
-// 위젯 딥링크 처리
+Uri? _pendingWidgetUri; // 대기 중인 위젯 URI
+
 Future<void> _initHomeWidget() async {
   await HomeWidget.setAppGroupId('group.com.team1113.mytravelfriend');
+  await HomeWidget.registerInteractivityCallback(backgroundCallback);
 
-  // 앱이 위젯에서 실행된 경우
   try {
     final initialUri = await HomeWidget.initiallyLaunchedFromHomeWidget();
     if (initialUri != null) {
       debugPrint('Initial widget URI: $initialUri');
-      _handleWidgetUri(initialUri);
+      _pendingWidgetUri = initialUri; // 나중에 처리
     }
   } catch (e) {
     debugPrint('Error getting initial widget URI: $e');
   }
 
-  // 앱 실행 중 위젯 클릭 처리
   HomeWidget.widgetClicked.listen((uri) {
     if (uri != null) {
       debugPrint('Widget clicked URI: $uri');
@@ -88,11 +105,11 @@ Future<void> _initHomeWidget() async {
   });
 }
 
-// 위젯 URI를 DeepLinkService로 전달
 void _handleWidgetUri(Uri uri) {
   final uriString = uri.toString();
   debugPrint('Handling widget URI: $uriString');
 
+  // homewidget://trip/47 또는 homewidget://trip/47/schedule
   final regex = RegExp(r'trip/(\d+)(/schedule)?');
   final match = regex.firstMatch(uriString);
 
@@ -101,11 +118,16 @@ void _handleWidgetUri(Uri uri) {
     final isSchedule = match.group(2) != null;
 
     if (tripId != null) {
-      final deepLinkService = GetIt.instance<DeepLinkService>();
-      deepLinkService.navigateFromNotification(
-        isSchedule ? 'WIDGET_SCHEDULE' : 'WIDGET_TRIP',
-        {'trip_id': tripId},
-      );
+      final path = isSchedule
+          ? '/home/trip/$tripId/schedule'
+          : '/home/trip/$tripId/trip_home';
+
+      debugPrint('Widget navigation to: $path');
+
+      // SchedulerBinding으로 프레임 후 실행
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        AppRouter.instance.router.go(path);
+      });
     }
   }
 }
@@ -231,7 +253,13 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
               context.read<AlarmBloc>().add(
                 AlarmEvent.startWatching(userId: state.userInfo.id!),
               );
+              _saveUserIdForBackground(state.userInfo.id!);
               _checkAndRefreshWidget();
+
+              if (_pendingWidgetUri != null) {
+                _handleWidgetUri(_pendingWidgetUri!);
+                _pendingWidgetUri = null;
+              }
             } else if (state is AuthProfileUnauthenticated) {
               context.read<AlarmBloc>().add(const AlarmEvent.stopWatching());
             }
@@ -253,5 +281,15 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
         );
       },
     );
+  }
+
+  Future<void> _saveUserIdForBackground(int userId) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setInt('widget_user_id', userId);
+  }
+
+  Future<void> _clearUserIdForBackground() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.remove('widget_user_id');
   }
 }

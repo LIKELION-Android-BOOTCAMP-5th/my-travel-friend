@@ -63,27 +63,6 @@ class AppRouter {
     ]),
     initialLocation: '/splash',
 
-    // 예외 처리
-    onException: (context, state, router) {
-      debugPrint('[GoRouter Exception] ${state.uri}');
-
-      // custom scheme이면 직접 네비게이션
-      final uriString = state.uri.toString();
-      if (uriString.contains('mytravelfriend://')) {
-        final path = _parseWidgetScheme(uriString);
-        if (path != null) {
-          debugPrint('[GoRouter] Widget -> $path');
-          // 직접 이동 (notifyListeners 사용 안 함)
-          WidgetsBinding.instance.addPostFrameCallback((_) {
-            router.go(path);
-          });
-        }
-        return;
-      }
-
-      router.go('/home');
-    },
-
     redirect: (context, state) {
       // custom scheme 무시
       if (state.uri.toString().contains('mytravelfriend://')) {

@@ -31,6 +31,26 @@ class DDayWidgetProvider : AppWidgetProvider() {
                 defaultColor
             }
         }
+        
+        private fun calculateDDayText(startDateStr: String?): String {
+            if (startDateStr.isNullOrEmpty()) return "D-?"
+
+            return try {
+                val dateOnly = startDateStr.split("T")[0]
+                val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+                val startDate = LocalDate.parse(dateOnly, formatter)
+                val today = LocalDate.now()
+                val days = ChronoUnit.DAYS.between(today, startDate)
+
+                when {
+                    days > 0 -> "D-$days"
+                    days == 0L -> "D-Day"
+                    else -> "D+${-days}"
+                }
+            } catch (e: Exception) {
+                "D-?"
+            }
+        }
 
         internal fun updateAppWidget(
             context: Context,
@@ -41,7 +61,8 @@ class DDayWidgetProvider : AppWidgetProvider() {
 
             val tripId = prefs.getInt("dday_trip_id", -1)
             val tripTitle = prefs.getString("dday_trip_title", "여행을 선택하세요") ?: "여행을 선택하세요"
-            val dDayText = prefs.getString("dday_text", "D-?") ?: "D-?"
+            val startDate = prefs.getString("dday_start_date", null)
+            val dDayText = calculateDDayText(startDate)
 
             // 테마 색상 읽기 (ARGB 형식 지원)
             val bgColorStr = prefs.getString("settings_bg_color", "#FFFFFFFF") ?: "#FFFFFFFF"
@@ -65,7 +86,10 @@ class DDayWidgetProvider : AppWidgetProvider() {
             views.setTextViewText(R.id.tv_dday, dDayText)
 
             if (tripId > 0) {
-                val intent = Intent(Intent.ACTION_VIEW, Uri.parse("mytravelfriend://trip/$tripId"))
+                val intent = Intent(context, MainActivity::class.java).apply {
+                    action = "es.antonborri.home_widget.action.LAUNCH"
+                    data = Uri.parse("homewidget://trip/$tripId")
+                }
                 intent.setPackage(context.packageName)
                 val pendingIntent = PendingIntent.getActivity(
                     context,
