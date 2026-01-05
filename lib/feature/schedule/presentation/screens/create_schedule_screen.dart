@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
 import 'package:my_travel_friend/core/theme/app_icon.dart';
+import 'package:my_travel_friend/feature/schedule/presentation/widgets/route_type.dart';
 
 import '../../../../../core/widget/button.dart';
 import '../../../../../core/widget/text_box.dart';
@@ -173,6 +174,7 @@ class _CreateScheduleScreenState extends State<CreateScheduleScreen> {
                         'tripMapSearch',
                         pathParameters: {'tripId': '${widget.tripId}'},
                         extra: {
+                          'mode': MapSearchMode.aiSearch,
                           'lat': state.lat,
                           'lng': state.lng,
                           'address': state.address,
@@ -315,10 +317,34 @@ class _CreateScheduleScreenState extends State<CreateScheduleScreen> {
                               controller: _placeController,
                               hintText: '예: 제주 성산읍',
                               prefixIcon: const Icon(AppIcon.mapPin),
-                              onChanged: (v) {
-                                context.read<CreateScheduleBloc>().add(
-                                  CreateScheduleEvent.placeTextChanged(v),
-                                );
+                              readOnly: true,
+                              onTap: () async {
+                                debugPrint('📤 [PlaceTap] push mapSearch mode');
+                                final result = await context
+                                    .pushNamed<PlaceCandidate>(
+                                      'tripMapSearch',
+                                      pathParameters: {
+                                        'tripId': '${widget.tripId}',
+                                      },
+                                      extra: {
+                                        'mode': MapSearchMode.mapSearch,
+                                        'lat': state.lat,
+                                        'lng': state.lng,
+                                        'address': state.address,
+                                      },
+                                    );
+
+                                if (result != null) {
+                                  context.read<CreateScheduleBloc>().add(
+                                    CreateScheduleEvent.placeSelected(
+                                      place: result.place,
+                                      address: result.address,
+                                      lat: result.lat,
+                                      lng: result.lng,
+                                    ),
+                                  );
+                                  _placeController.text = result.place;
+                                }
                               },
                             ),
 

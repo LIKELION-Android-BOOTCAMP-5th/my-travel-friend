@@ -6,6 +6,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 import 'package:injectable/injectable.dart';
 
+import '../../widgets/route_type.dart';
 import 'map_search_event.dart';
 import 'map_search_state.dart';
 
@@ -28,19 +29,18 @@ class MapSearchBloc extends Bloc<MapSearchEvent, MapSearchState> {
   // 초기 진입
 
   void _onInitialized(Initialized event, Emitter<MapSearchState> emit) {
-    if (event.lat != null && event.lng != null) {
-      emit(
-        state.copyWith(
-          tripId: event.tripId,
-          initialLat: event.lat,
-          initialLng: event.lng,
-          initialAddress: event.address,
-          selectedLat: event.lat,
-          selectedLng: event.lng,
-          hasInitialLocation: true,
-        ),
-      );
-    }
+    emit(
+      state.copyWith(
+        tripId: event.tripId,
+        mode: event.mode,
+        initialLat: event.lat,
+        initialLng: event.lng,
+        initialAddress: event.address,
+        selectedLat: event.lat,
+        selectedLng: event.lng,
+        hasInitialLocation: event.lat != null && event.lng != null,
+      ),
+    );
   }
 
   // 검색어 입력
@@ -58,8 +58,39 @@ class MapSearchBloc extends Bloc<MapSearchEvent, MapSearchState> {
     final query = state.query.trim();
     if (query.isEmpty) return;
 
-    emit(state.copyWith(isSearching: true));
+    if (state.mode == MapSearchMode.mapSearch) {
+      return _runNormalMapSearch(query, emit);
+    } else {
+      return _runAiSearch(query, emit); // 기존 코드 옮기기
+    }
+  }
 
+  // 장소 선택
+
+  void _onPlaceSelected(PlaceSelected event, Emitter<MapSearchState> emit) {
+    emit(
+      state.copyWith(
+        selectedPlace: event.place,
+        selectedLat: event.place.lat,
+        selectedLng: event.place.lng,
+      ),
+    );
+  }
+
+  void _onPlaceFocused(PlaceFocused event, Emitter<MapSearchState> emit) {
+    emit(state.copyWith(focusedPlace: event.place));
+  }
+
+  // 선택 확정
+
+  void _onConfirmPressed(ConfirmPressed event, Emitter<MapSearchState> emit) {
+    if (state.selectedPlace == null) {
+      emit(state.copyWith(message: '장소를 선택해주세요'));
+    }
+  }
+
+  Future<void> _runAiSearch(String query, Emitter<MapSearchState> emit) async {
+    emit(state.copyWith(isSearching: true));
     try {
       final prompt =
           '''
@@ -143,32 +174,52 @@ class MapSearchBloc extends Bloc<MapSearchEvent, MapSearchState> {
           showBottomSheet: true,
         ),
       );
-    } catch (e) {
+    } catch (_) {
       emit(state.copyWith(isSearching: false, message: '검색 중 오류가 발생했어요'));
     }
   }
 
-  // 장소 선택
+  Future<void> _runNormalMapSearch(
+    String query,
+    Emitter<MapSearchState> emit,
+  ) async {
+    emit(state.copyWith(isSearching: true));
 
-  void _onPlaceSelected(PlaceSelected event, Emitter<MapSearchState> emit) {
-    emit(
-      state.copyWith(
-        selectedPlace: event.place,
-        selectedLat: event.place.lat,
-        selectedLng: event.place.lng,
-      ),
-    );
-  }
+    try {
+      final url =
+          'https://maps.googleapis.com/maps/api/place/textsearch/json'
+          '?query=${Uri.encodeQueryComponent(query)}'
+          '&language=ko'
+          '&key=$_apiKey';
 
-  void _onPlaceFocused(PlaceFocused event, Emitter<MapSearchState> emit) {
-    emit(state.copyWith(focusedPlace: event.place));
-  }
+      final res = await http.get(Uri.parse(url));
+      final data = jsonDecode(res.body);
 
-  // 선택 확정
+      if (data['status'] != 'OK' || (data['results'] as List).isEmpty) {
+        emit(state.copyWith(isSearching: false, message: '검색 결과가 없어요'));
+        return;
+      }
 
-  void _onConfirmPressed(ConfirmPressed event, Emitter<MapSearchState> emit) {
-    if (state.selectedPlace == null) {
-      emit(state.copyWith(message: '장소를 선택해주세요'));
+      final results = (data['results'] as List).map((r) {
+        return PlaceCandidate(
+          place: r['name'],
+          address: r['formatted_address'] ?? '',
+          lat: (r['geometry']['location']['lat'] as num).toDouble(),
+          lng: (r['geometry']['location']['lng'] as num).toDouble(),
+          rating: r['rating'] != null ? (r['rating'] as num).toDouble() : null,
+          aiReason: '',
+        );
+      }).toList();
+
+      emit(
+        state.copyWith(
+          candidates: results,
+          isSearching: false,
+          showBottomSheet: true,
+        ),
+      );
+    } catch (_) {
+      emit(state.copyWith(isSearching: false, message: '검색 중 오류가 발생했어요'));
     }
   }
 }

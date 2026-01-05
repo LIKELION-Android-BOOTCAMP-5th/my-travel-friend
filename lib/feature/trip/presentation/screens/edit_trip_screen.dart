@@ -109,7 +109,7 @@ class _EditTripScreenState extends State<EditTripScreen> {
                       : null,
                   height: 36,
                   backgroundColor: Colors.transparent,
-                  contentColor: AppColors.primaryLight,
+                  contentColor: AppColors.light,
                   borderRadius: 18,
                   width: 36,
                 ),

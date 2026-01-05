@@ -1,5 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
+import '../../widgets/route_type.dart';
 import 'map_search_state.dart';
 
 part 'map_search_event.freezed.dart';
@@ -9,6 +10,7 @@ class MapSearchEvent with _$MapSearchEvent {
   // 초기 진입
   const factory MapSearchEvent.initialized({
     required int tripId,
+    required MapSearchMode mode,
     double? lat,
     double? lng,
     String? address,

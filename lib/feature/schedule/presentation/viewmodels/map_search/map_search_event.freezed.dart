@@ -134,10 +134,10 @@ return confirmPressed(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function( int tripId,  double? lat,  double? lng,  String? address)?  initialized,TResult Function( String query)?  queryChanged,TResult Function()?  searchRequested,TResult Function( PlaceCandidate place)?  placeFocused,TResult Function( PlaceCandidate place)?  placeSelected,TResult Function()?  confirmPressed,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function( int tripId,  MapSearchMode mode,  double? lat,  double? lng,  String? address)?  initialized,TResult Function( String query)?  queryChanged,TResult Function()?  searchRequested,TResult Function( PlaceCandidate place)?  placeFocused,TResult Function( PlaceCandidate place)?  placeSelected,TResult Function()?  confirmPressed,required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case Initialized() when initialized != null:
-return initialized(_that.tripId,_that.lat,_that.lng,_that.address);case QueryChanged() when queryChanged != null:
+return initialized(_that.tripId,_that.mode,_that.lat,_that.lng,_that.address);case QueryChanged() when queryChanged != null:
 return queryChanged(_that.query);case SearchRequested() when searchRequested != null:
 return searchRequested();case PlaceFocused() when placeFocused != null:
 return placeFocused(_that.place);case PlaceSelected() when placeSelected != null:
@@ -160,10 +160,10 @@ return confirmPressed();case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function( int tripId,  double? lat,  double? lng,  String? address)  initialized,required TResult Function( String query)  queryChanged,required TResult Function()  searchRequested,required TResult Function( PlaceCandidate place)  placeFocused,required TResult Function( PlaceCandidate place)  placeSelected,required TResult Function()  confirmPressed,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function( int tripId,  MapSearchMode mode,  double? lat,  double? lng,  String? address)  initialized,required TResult Function( String query)  queryChanged,required TResult Function()  searchRequested,required TResult Function( PlaceCandidate place)  placeFocused,required TResult Function( PlaceCandidate place)  placeSelected,required TResult Function()  confirmPressed,}) {final _that = this;
 switch (_that) {
 case Initialized():
-return initialized(_that.tripId,_that.lat,_that.lng,_that.address);case QueryChanged():
+return initialized(_that.tripId,_that.mode,_that.lat,_that.lng,_that.address);case QueryChanged():
 return queryChanged(_that.query);case SearchRequested():
 return searchRequested();case PlaceFocused():
 return placeFocused(_that.place);case PlaceSelected():
@@ -185,10 +185,10 @@ return confirmPressed();case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function( int tripId,  double? lat,  double? lng,  String? address)?  initialized,TResult? Function( String query)?  queryChanged,TResult? Function()?  searchRequested,TResult? Function( PlaceCandidate place)?  placeFocused,TResult? Function( PlaceCandidate place)?  placeSelected,TResult? Function()?  confirmPressed,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function( int tripId,  MapSearchMode mode,  double? lat,  double? lng,  String? address)?  initialized,TResult? Function( String query)?  queryChanged,TResult? Function()?  searchRequested,TResult? Function( PlaceCandidate place)?  placeFocused,TResult? Function( PlaceCandidate place)?  placeSelected,TResult? Function()?  confirmPressed,}) {final _that = this;
 switch (_that) {
 case Initialized() when initialized != null:
-return initialized(_that.tripId,_that.lat,_that.lng,_that.address);case QueryChanged() when queryChanged != null:
+return initialized(_that.tripId,_that.mode,_that.lat,_that.lng,_that.address);case QueryChanged() when queryChanged != null:
 return queryChanged(_that.query);case SearchRequested() when searchRequested != null:
 return searchRequested();case PlaceFocused() when placeFocused != null:
 return placeFocused(_that.place);case PlaceSelected() when placeSelected != null:
@@ -205,10 +205,11 @@ return confirmPressed();case _:
 
 
 class Initialized implements MapSearchEvent {
-  const Initialized({required this.tripId, this.lat, this.lng, this.address});
+  const Initialized({required this.tripId, required this.mode, this.lat, this.lng, this.address});
   
 
  final  int tripId;
+ final  MapSearchMode mode;
  final  double? lat;
  final  double? lng;
  final  String? address;
@@ -223,16 +224,16 @@ $InitializedCopyWith<Initialized> get copyWith => _$InitializedCopyWithImpl<Init
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is Initialized&&(identical(other.tripId, tripId) || other.tripId == tripId)&&(identical(other.lat, lat) || other.lat == lat)&&(identical(other.lng, lng) || other.lng == lng)&&(identical(other.address, address) || other.address == address));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is Initialized&&(identical(other.tripId, tripId) || other.tripId == tripId)&&(identical(other.mode, mode) || other.mode == mode)&&(identical(other.lat, lat) || other.lat == lat)&&(identical(other.lng, lng) || other.lng == lng)&&(identical(other.address, address) || other.address == address));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,tripId,lat,lng,address);
+int get hashCode => Object.hash(runtimeType,tripId,mode,lat,lng,address);
 
 @override
 String toString() {
-  return 'MapSearchEvent.initialized(tripId: $tripId, lat: $lat, lng: $lng, address: $address)';
+  return 'MapSearchEvent.initialized(tripId: $tripId, mode: $mode, lat: $lat, lng: $lng, address: $address)';
 }
 
 
@@ -243,7 +244,7 @@ abstract mixin class $InitializedCopyWith<$Res> implements $MapSearchEventCopyWi
   factory $InitializedCopyWith(Initialized value, $Res Function(Initialized) _then) = _$InitializedCopyWithImpl;
 @useResult
 $Res call({
- int tripId, double? lat, double? lng, String? address
+ int tripId, MapSearchMode mode, double? lat, double? lng, String? address
 });
 
 
@@ -260,10 +261,11 @@ class _$InitializedCopyWithImpl<$Res>
 
 /// Create a copy of MapSearchEvent
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') $Res call({Object? tripId = null,Object? lat = freezed,Object? lng = freezed,Object? address = freezed,}) {
+@pragma('vm:prefer-inline') $Res call({Object? tripId = null,Object? mode = null,Object? lat = freezed,Object? lng = freezed,Object? address = freezed,}) {
   return _then(Initialized(
 tripId: null == tripId ? _self.tripId : tripId // ignore: cast_nullable_to_non_nullable
-as int,lat: freezed == lat ? _self.lat : lat // ignore: cast_nullable_to_non_nullable
+as int,mode: null == mode ? _self.mode : mode // ignore: cast_nullable_to_non_nullable
+as MapSearchMode,lat: freezed == lat ? _self.lat : lat // ignore: cast_nullable_to_non_nullable
 as double?,lng: freezed == lng ? _self.lng : lng // ignore: cast_nullable_to_non_nullable
 as double?,address: freezed == address ? _self.address : address // ignore: cast_nullable_to_non_nullable
 as String?,

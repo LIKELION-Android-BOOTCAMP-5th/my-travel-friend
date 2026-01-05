@@ -8,11 +8,14 @@ import 'package:my_travel_friend/feature/schedule/presentation/widgets/schedule_
 
 import '../../../../core/coachmark/presentations/targets/schedule_coach_mark.dart';
 import '../../../../core/theme/app_icon.dart';
+import '../../../../core/widget/bottom_sheat.dart';
 import '../../../../core/widget/floating_button.dart';
+import '../../../../core/widget/toast_pop.dart';
 import '../../../trip/domain/entities/trip_entity.dart';
 import '../viewmodels/schedule/schedule_bloc.dart';
 import '../viewmodels/schedule/schedule_event.dart';
 import '../widgets/empty_schedule_care.dart';
+import '../widgets/route_type.dart';
 
 class ScheduleScreen extends StatefulWidget {
   final int tripId;
@@ -223,26 +226,57 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                                 .whereType<String>()
                                 .where((img) => img.isNotEmpty && img != 'null')
                                 .toList();
+
                             final category = state.categoryMap[s.categoryId];
-                            return Padding(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 12,
-                                vertical: 8,
-                              ),
-                              child: ScheduleCard(
-                                title: s.title,
-                                dateTime: formatScheduleDateTime(s.date),
-                                place: s.place ?? "",
-                                tagName: category!.content,
-                                profileImages: profileImages,
-                                memo: s.description,
-                                onEdit: () => bloc.add(
-                                  ScheduleEvent.navigateToEdit(schedule: s),
+
+                            final isDateMode =
+                                state.viewMode == ScheduleFilterType.date;
+
+                            final hasPrev = index > 0;
+                            final prev = hasPrev
+                                ? state.visibleSchedules[index - 1]
+                                : null;
+
+                            final canShowRouteButton =
+                                state.viewMode == ScheduleFilterType.date &&
+                                state.selectedDate != null &&
+                                prev != null;
+
+                            return Column(
+                              children: [
+                                if (canShowRouteButton)
+                                  Padding(
+                                    padding: const EdgeInsets.only(bottom: 12),
+                                    child: _RouteBetweenSchedulesButton(
+                                      fromLat: prev!.lat,
+                                      fromLng: prev.lng,
+                                      fromName: prev.place,
+                                      toLat: s.lat,
+                                      toLng: s.lng,
+                                      toName: s.place,
+                                    ),
+                                  ),
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 12,
+                                    vertical: 8,
+                                  ),
+                                  child: ScheduleCard(
+                                    title: s.title,
+                                    dateTime: formatScheduleDateTime(s.date),
+                                    place: s.place ?? "",
+                                    tagName: category!.content,
+                                    profileImages: profileImages,
+                                    memo: s.description,
+                                    onEdit: () => bloc.add(
+                                      ScheduleEvent.navigateToEdit(schedule: s),
+                                    ),
+                                    onDelete: () => bloc.add(
+                                      ScheduleEvent.deleteSchedule(s.id!),
+                                    ),
+                                  ),
                                 ),
-                                onDelete: () => bloc.add(
-                                  ScheduleEvent.deleteSchedule(s.id!),
-                                ),
-                              ),
+                              ],
                             );
                           },
                         ),
@@ -276,4 +310,105 @@ List<String> buildTripDates(TripEntity trip) {
 String formatDateLabel(String date) {
   final dt = DateTime.parse(date);
   return '${dt.month}월 ${dt.day}일';
+}
+
+class _RouteBetweenSchedulesButton extends StatelessWidget {
+  final double? fromLat;
+  final double? fromLng;
+  final String? fromName;
+
+  final double? toLat;
+  final double? toLng;
+  final String? toName;
+
+  const _RouteBetweenSchedulesButton({
+    this.fromLat,
+    this.fromLng,
+    this.fromName,
+    this.toLat,
+    this.toLng,
+    this.toName,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final canExecute =
+        fromLat != null &&
+        fromLng != null &&
+        toLat != null &&
+        toLng != null &&
+        fromName != null &&
+        toName != null;
+
+    return TextButton.icon(
+      icon: const Icon(Icons.alt_route),
+      label: const Text('길찾기'),
+      onPressed: () {
+        if (!canExecute) {
+          ToastPop.show('위치 정보가 부족해요. 잠시 후 다시 시도해주세요.');
+          return;
+        }
+        CommonBottomSheet.show(
+          context,
+          sheetTitle: '이동 수단 선택',
+          actions: [
+            BottomSheetAction(
+              icon: const Icon(Icons.directions_walk),
+              iconBgColor: AppColors.secondary,
+              title: '도보',
+              onTap: () {
+                context.read<ScheduleBloc>().add(
+                  ScheduleEvent.requestRoute(
+                    fromLat: fromLat!,
+                    fromLng: fromLng!,
+                    fromName: fromName!,
+                    toLat: toLat!,
+                    toLng: toLng!,
+                    toName: toName!,
+                    type: RouteType.walk,
+                  ),
+                );
+              },
+            ),
+            BottomSheetAction(
+              icon: const Icon(Icons.directions_car),
+              iconBgColor: AppColors.primaryLight,
+              title: '자동차',
+              onTap: () {
+                context.read<ScheduleBloc>().add(
+                  ScheduleEvent.requestRoute(
+                    fromLat: fromLat!,
+                    fromLng: fromLng!,
+                    fromName: fromName!,
+                    toLat: toLat!,
+                    toLng: toLng!,
+                    toName: toName!,
+                    type: RouteType.car,
+                  ),
+                );
+              },
+            ),
+            BottomSheetAction(
+              icon: const Icon(Icons.directions_transit),
+              iconBgColor: AppColors.lightGreen,
+              title: '대중교통',
+              onTap: () {
+                context.read<ScheduleBloc>().add(
+                  ScheduleEvent.requestRoute(
+                    fromLat: fromLat!,
+                    fromLng: fromLng!,
+                    fromName: fromName!,
+                    toLat: toLat!,
+                    toLng: toLng!,
+                    toName: toName!,
+                    type: RouteType.transit,
+                  ),
+                );
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
 }

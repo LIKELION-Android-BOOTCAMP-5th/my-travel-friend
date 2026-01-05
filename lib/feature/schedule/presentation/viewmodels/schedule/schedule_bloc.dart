@@ -12,6 +12,7 @@ import '../../../../trip/domain/usecases/get_trip_by_id_usecase.dart';
 import '../../../domain/entities/category_entity.dart';
 import '../../../domain/entities/schedule_entity.dart';
 import '../../../domain/usecases/get_category_usecase.dart';
+import '../../widgets/route_type.dart';
 import 'schedule_event.dart';
 
 @injectable
@@ -43,6 +44,8 @@ class ScheduleBloc extends Bloc<ScheduleEvent, ScheduleState> {
     on<SwitchToDateMode>(_onSwitchToDateMode);
     on<SwitchToCategoryMode>(_onSwitchToCategoryMode);
     on<Refresh>(_onRefreshSchedules);
+    on<RequestRoute>(_onRequestRoute);
+    on<ClearRoute>(_onClearRoute);
   }
 
   Future<void> _onFetchSchedules(
@@ -186,13 +189,19 @@ class ScheduleBloc extends Bloc<ScheduleEvent, ScheduleState> {
     NavigateToCreate event,
     Emitter<ScheduleState> emit,
   ) {
-    emit(state.copyWith(navigateToCreate: true));
+    emit(state.copyWith(navigateToCreate: true, navigateToEdit: false));
   }
 
   // 수정 화면 이동
 
   void _onNavigateToEdit(NavigateToEdit event, Emitter<ScheduleState> emit) {
-    emit(state.copyWith(navigateToEdit: true, editingSchedule: event.schedule));
+    emit(
+      state.copyWith(
+        navigateToCreate: false,
+        navigateToEdit: true,
+        editingSchedule: event.schedule,
+      ),
+    );
   }
 
   // 스케줄 참여 멤버
@@ -306,5 +315,135 @@ class ScheduleBloc extends Bloc<ScheduleEvent, ScheduleState> {
         visibleSchedules: state.schedules,
       ),
     );
+  }
+
+  void _onRequestRoute(RequestRoute event, Emitter<ScheduleState> emit) {
+    final country = state.trip?.country ?? '';
+    final isKorea = _isKoreaCountry(country);
+
+    final url = isKorea
+        ? _buildNaverMapUrlWithLatLng(
+            fromLat: event.fromLat,
+            fromLng: event.fromLng,
+            fromName: event.fromName,
+            toLat: event.toLat,
+            toLng: event.toLng,
+            toName: event.toName,
+            type: event.type,
+          )
+        : _buildGoogleMapUrlWithLatLng(
+            fromLat: event.fromLat,
+            fromLng: event.fromLng,
+            toLat: event.toLat,
+            toLng: event.toLng,
+            type: event.type,
+          );
+
+    emit(state.copyWith(routeUrl: url, routeRequested: true));
+  }
+
+  void _onClearRoute(ClearRoute event, Emitter<ScheduleState> emit) {
+    emit(
+      state.copyWith(
+        routeRequested: false,
+        routeUrl: null,
+        routeFrom: null,
+        routeTo: null,
+        routeType: null,
+      ),
+    );
+  }
+
+  bool _isKoreaCountry(String country) {
+    final normalized = country.trim().toLowerCase();
+
+    return normalized == '한국' ||
+        normalized == '대한민국' ||
+        normalized == 'korea' ||
+        normalized == 'south korea';
+  }
+
+  String _buildNaverMapUrlWithLatLng({
+    required double fromLat,
+    required double fromLng,
+    required String fromName,
+    required double toLat,
+    required double toLng,
+    required String toName,
+    required RouteType type,
+  }) {
+    final sname = Uri.encodeComponent(fromName);
+    final dname = Uri.encodeComponent(toName);
+
+    final routePath = switch (type) {
+      RouteType.walk => 'walk',
+      RouteType.car => 'car',
+      RouteType.transit => 'public',
+    };
+
+    final buffer = StringBuffer(
+      'nmap://route/$routePath'
+      '?slat=$fromLat'
+      '&slng=$fromLng'
+      '&sname=$sname'
+      '&dlat=$toLat'
+      '&dlng=$toLng'
+      '&dname=$dname'
+      '&appname=com.team1113.mytravelfriend',
+    );
+
+    if (type == RouteType.transit) {
+      buffer.write('&pathType=2');
+    }
+
+    return buffer.toString();
+  }
+
+  String _buildGoogleMapUrlWithLatLng({
+    required double fromLat,
+    required double fromLng,
+    required double toLat,
+    required double toLng,
+    required RouteType type,
+  }) {
+    final travelMode = switch (type) {
+      RouteType.car => 'driving',
+      RouteType.walk => 'walking',
+      RouteType.transit => 'transit',
+    };
+
+    return 'https://www.google.com/maps/dir/?api=1'
+        '&origin=$fromLat,$fromLng'
+        '&destination=$toLat,$toLng'
+        '&travelmode=$travelMode';
+  }
+
+  String buildNaverWebUrl({required String from, required String to}) {
+    final encodedFrom = Uri.encodeComponent(from);
+    final encodedTo = Uri.encodeComponent(to);
+
+    return 'https://map.naver.com/v5/directions'
+        '?start=$encodedFrom'
+        '&goal=$encodedTo';
+  }
+
+  String buildGoogleWebUrl({
+    required String from,
+    required String to,
+    required RouteType type,
+  }) {
+    final travelMode = switch (type) {
+      RouteType.car => 'driving',
+      RouteType.walk => 'walking',
+      RouteType.transit => 'transit',
+    };
+
+    final encodedFrom = Uri.encodeComponent(from);
+    final encodedTo = Uri.encodeComponent(to);
+
+    return 'https://www.google.com/maps/dir/?api=1'
+        '&origin=$encodedFrom'
+        '&destination=$encodedTo'
+        '&travelmode=$travelMode';
   }
 }

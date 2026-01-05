@@ -4,6 +4,7 @@ import 'package:my_travel_friend/core/DI/injection.dart';
 import 'package:my_travel_friend/feature/schedule/presentation/viewmodels/map_search/map_search_bloc.dart';
 
 import '../viewmodels/map_search/map_search_event.dart';
+import '../widgets/route_type.dart';
 import 'map_search_screen.dart';
 
 class MapSearchBlocWidget extends StatelessWidget {
@@ -11,13 +12,14 @@ class MapSearchBlocWidget extends StatelessWidget {
   final double? initialLat;
   final double? initialLng;
   final String? initialAddress;
-
+  final MapSearchMode mode;
   const MapSearchBlocWidget({
     super.key,
     this.initialLat,
     this.initialLng,
     this.initialAddress,
     required this.tripId,
+    required this.mode,
   });
 
   @override
@@ -29,6 +31,7 @@ class MapSearchBlocWidget extends StatelessWidget {
         bloc.add(
           MapSearchEvent.initialized(
             tripId: tripId,
+            mode: mode,
             lat: initialLat,
             lng: initialLng,
             address: initialAddress,

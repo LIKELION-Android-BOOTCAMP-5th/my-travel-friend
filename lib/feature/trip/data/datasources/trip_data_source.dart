@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:my_travel_friend/core/result/result.dart';
+import 'package:my_travel_friend/feature/auth/data/models/user_model.dart';
 import 'package:my_travel_friend/feature/trip/data/dtos/trip_dto.dart';
 import 'package:my_travel_friend/feature/trip/data/dtos/useful_pharse_dto.dart';
 
@@ -43,4 +44,6 @@ abstract class TripDataSource {
   // tripId로 여행을 조회한 뒤,
   // 해당 여행의 country와 같은 useful_pharse만 조회
   Future<Result<List<UsefulPharseDTO>>> getUsefulPhrasesByTrip(int tripId);
+
+  Future<Result<UserDTO>> getUserById(int userId);
 }

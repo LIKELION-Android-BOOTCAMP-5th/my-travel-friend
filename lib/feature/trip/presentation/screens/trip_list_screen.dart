@@ -375,7 +375,7 @@ class _TripListScreenState extends State<TripListScreen> {
 
   Color getCoverColor(String coverType) {
     switch (coverType) {
-      case "Pink":
+      case "PINK":
         return AppColors.lightPink;
       case "YELLOW":
         return AppColors.tertiary;
