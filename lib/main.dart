@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -10,63 +8,55 @@ import 'package:my_travel_friend/config/router.dart';
 import 'package:my_travel_friend/core/DI/injection.dart';
 import 'package:permission_handler/permission_handler.dart';
 
+import 'core/result/result.dart';
+import 'core/service/internal/deep_link_service.dart';
 import 'core/service/internal/push_notification_service.dart';
 import 'core/theme/app_theme.dart';
 import 'feature/alarm/presentation/viewmodels/alarm_bloc.dart';
 import 'feature/alarm/presentation/viewmodels/alarm_event.dart';
 import 'feature/auth/presentation/viewmodel/auth_profile/auth_profile_bloc.dart';
 import 'feature/auth/presentation/viewmodel/auth_profile/auth_profile_state.dart';
+import 'feature/home_widget/service/home_widget_service.dart';
+import 'feature/schedule/domain/entities/schedule_entity.dart';
+import 'feature/schedule/domain/usecases/get_user_schudule_usecase.dart';
 import 'feature/setting/presentation/viewmodels/theme/theme_bloc.dart';
 import 'feature/setting/presentation/viewmodels/theme/theme_event.dart';
-import 'feature/setting/presentation/viewmodels/theme/theme_state.dart'
-    hide AppTheme;
+import 'feature/trip/domain/usecases/get_my_trip_usecase.dart';
 
 @pragma('vm:entry-point')
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
-  //dotenv는di 등록이 안되므로 먼저 여기서 초기화
   await dotenv.load(fileName: "assets/config/.env");
-  //DI관련
   await configureDependencies();
   print("Handling a background message: ${message.messageId}");
-  // TODO: 백그라운드에서 실행시 로직 처리
 }
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  //dotenv는di 등록이 안되므로 먼저 여기서 초기화
   await dotenv.load(fileName: "assets/config/.env");
-  //DI관련
   await configureDependencies();
 
-  // 권한 요청
   await _requestPermissions();
 
-  //백그라운드 핸들러
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
 
   final pushService = GetIt.instance<PushNotificationService>();
-  //푸시메시지 초기화
   await pushService.initialize();
-  // 앱 종료 상태에서 알림 클릭 진입 처리
+
   final initialMessage = await FirebaseMessaging.instance.getInitialMessage();
   if (initialMessage != null) {
     pushService.handleRemoteMessageRouting(initialMessage);
   }
 
-  // 위젯 딥링크 초기화
   await _initHomeWidget();
 
   runApp(
     MultiBlocProvider(
       providers: [
-        //supabase listener를 통한 유저 객체 상태용 bloc
         BlocProvider(create: (context) => GetIt.instance<AuthProfileBloc>()),
-        // [이재은] 앱 테마 관리용 bloc
         BlocProvider(
           create: (context) =>
               GetIt.instance<ThemeBloc>()..add(const LoadTheme()),
         ),
-        // 알림 표시용 bloc
         BlocProvider(create: (context) => GetIt.instance<AlarmBloc>()),
       ],
       child: const MyApp(),
@@ -74,19 +64,16 @@ void main() async {
   );
 }
 
-String? _pendingWidgetPath;
-
 // 위젯 딥링크 처리
 Future<void> _initHomeWidget() async {
   await HomeWidget.setAppGroupId('group.com.team1113.mytravelfriend');
 
-  // 앱이 위젯에서 실행된 경우 - 경로만 저장 (네비게이션 X)
+  // 앱이 위젯에서 실행된 경우
   try {
     final initialUri = await HomeWidget.initiallyLaunchedFromHomeWidget();
     if (initialUri != null) {
       debugPrint('Initial widget URI: $initialUri');
-      _pendingWidgetPath = _parseWidgetUri(initialUri);
-      debugPrint('Pending widget path: $_pendingWidgetPath');
+      _handleWidgetUri(initialUri);
     }
   } catch (e) {
     debugPrint('Error getting initial widget URI: $e');
@@ -96,21 +83,16 @@ Future<void> _initHomeWidget() async {
   HomeWidget.widgetClicked.listen((uri) {
     if (uri != null) {
       debugPrint('Widget clicked URI: $uri');
-      final path = _parseWidgetUri(uri);
-      if (path != null) {
-        _navigateToPath(path);
-      }
+      _handleWidgetUri(uri);
     }
   });
 }
 
-// URI를 경로로 변환 (네비게이션 없이)
-String? _parseWidgetUri(Uri uri) {
+// 위젯 URI를 DeepLinkService로 전달
+void _handleWidgetUri(Uri uri) {
   final uriString = uri.toString();
-  debugPrint('Parsing widget URI: $uriString');
+  debugPrint('Handling widget URI: $uriString');
 
-  // mytravelfriend://trip/47 -> /trip/47/trip_home
-  // mytravelfriend://trip/47/schedule -> /trip/47/schedule
   final regex = RegExp(r'trip/(\d+)(/schedule)?');
   final match = regex.firstMatch(uriString);
 
@@ -119,60 +101,120 @@ String? _parseWidgetUri(Uri uri) {
     final isSchedule = match.group(2) != null;
 
     if (tripId != null) {
-      if (isSchedule) {
-        return '/trip/$tripId/schedule';
-      } else {
-        return '/trip/$tripId/trip_home';
-      }
+      final deepLinkService = GetIt.instance<DeepLinkService>();
+      deepLinkService.navigateFromNotification(
+        isSchedule ? 'WIDGET_SCHEDULE' : 'WIDGET_TRIP',
+        {'trip_id': tripId},
+      );
     }
   }
-  return null;
 }
 
-// 실제 네비게이션 수행
-void _navigateToPath(String path) {
-  try {
-    debugPrint('Navigating to: $path');
-    AppRouter.instance.router.go(path);
-  } catch (e) {
-    debugPrint('Navigation error: $e');
-  }
-}
-
-// 앱 시작시 필요한 권한 요청
 Future<void> _requestPermissions() async {
-  // FCM 푸시 알림 권한
   final pushService = GetIt.instance<PushNotificationService>();
   await pushService.requestPermission();
 
-  // 카메라 - 아직 안 물어본 경우만 요청
   final cameraStatus = await Permission.camera.status;
   if (cameraStatus.isDenied) {
-    // 처음(아직 안 물어봄)일 때만
     await Permission.camera.request();
-  }
-
-  // 사진 - 아직 안 물어본 경우만 요청
-  final photosStatus = await Permission.photos.status;
-  if (photosStatus.isDenied) {
-    await Permission.photos.request();
-  }
-
-  // Android만
-  if (Platform.isAndroid) {
-    final storageStatus = await Permission.storage.status;
-    if (storageStatus.isDenied) {
-      await Permission.storage.request();
-    }
   }
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
 
   @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
+  DateTime? _lastRefreshDate;
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) {
+      _checkAndRefreshWidget();
+    }
+  }
+
+  Future<void> _checkAndRefreshWidget() async {
+    final now = DateTime.now();
+    final today = DateTime(now.year, now.month, now.day);
+
+    if (_lastRefreshDate != null &&
+        _lastRefreshDate!.year == today.year &&
+        _lastRefreshDate!.month == today.month &&
+        _lastRefreshDate!.day == today.day) {
+      return;
+    }
+
+    final authState = GetIt.instance<AuthProfileBloc>().state;
+    if (authState is AuthProfileAuthenticated) {
+      try {
+        final userId = authState.userInfo.id!;
+        final homeWidgetService = GetIt.instance<HomeWidgetService>();
+        final getMyTripUseCase = GetIt.instance<GetMyTripUsecase>();
+        final getUserScheduleUseCase = GetIt.instance<GetUserScheduleUseCase>();
+
+        final tripsResult = await getMyTripUseCase(userId, 1);
+
+        await tripsResult.when(
+          success: (trips) async {
+            if (trips.isEmpty) {
+              await homeWidgetService.refreshAllWidgets();
+              return;
+            }
+
+            final settings = await homeWidgetService.getSettings();
+            final selectedTrip = homeWidgetService.selectTripForWidget(
+              trips: trips,
+              settings: settings,
+            );
+
+            if (selectedTrip != null) {
+              final schedulesResult = await getUserScheduleUseCase(
+                tripId: selectedTrip.id!,
+                userId: userId,
+              );
+
+              final schedules = schedulesResult.when(
+                success: (data) => data,
+                failure: (_) => <ScheduleEntity>[],
+              );
+
+              await homeWidgetService.updateAllWidgets(
+                trips: trips,
+                userSchedules: schedules,
+              );
+            }
+          },
+          failure: (_) async {
+            await homeWidgetService.refreshAllWidgets();
+          },
+        );
+
+        _lastRefreshDate = today;
+        debugPrint('Widget refreshed at: $today');
+      } catch (e) {
+        debugPrint('Widget refresh error: $e');
+      }
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
-    // watch를 사용하여 상태 감시.
     final themeMode = context.watch<ThemeBloc>().themeMode;
 
     return MaterialApp.router(
@@ -189,6 +231,7 @@ class MyApp extends StatelessWidget {
               context.read<AlarmBloc>().add(
                 AlarmEvent.startWatching(userId: state.userInfo.id!),
               );
+              _checkAndRefreshWidget();
             } else if (state is AuthProfileUnauthenticated) {
               context.read<AlarmBloc>().add(const AlarmEvent.stopWatching());
             }

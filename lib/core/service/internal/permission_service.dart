@@ -45,7 +45,6 @@ class PermissionService {
   static const List<AppPermissionType> appPermissions = [
     AppPermissionType.notification,
     AppPermissionType.camera,
-    AppPermissionType.photo,
   ];
 
   // 앱에서 사용 하는 권한 메타 정보
