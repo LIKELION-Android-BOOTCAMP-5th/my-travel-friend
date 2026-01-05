@@ -100,7 +100,7 @@
 
         <!-- D-Day 위젯 -->
         <receiver
-            android:name=".DDayWidgetProvider"
+            android:name=".DDayWidgetReceiver"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
@@ -112,7 +112,7 @@
 
         <!-- 일정 위젯 -->
         <receiver
-            android:name=".ScheduleWidgetProvider"
+            android:name=".ScheduleWidgetReceiver"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />

@@ -81,6 +81,7 @@ Future<void> _initHomeWidget() async {
 
   // 앱 실행 중 위젯 클릭 처리
   HomeWidget.widgetClicked.listen((uri) {
+    print("위젯리스너동작");
     if (uri != null) {
       debugPrint('Widget clicked URI: $uri');
       _handleWidgetUri(uri);
@@ -90,23 +91,20 @@ Future<void> _initHomeWidget() async {
 
 // 위젯 URI를 DeepLinkService로 전달
 void _handleWidgetUri(Uri uri) {
-  final uriString = uri.toString();
-  debugPrint('Handling widget URI: $uriString');
+  debugPrint('Handling widget URI: ${uri.toString()}');
 
-  final regex = RegExp(r'trip/(\d+)(/schedule)?');
-  final match = regex.firstMatch(uriString);
+  final Map<String, String> params = Map.from(uri.queryParameters);
 
-  if (match != null) {
-    final tripId = match.group(1);
-    final isSchedule = match.group(2) != null;
+  final String? type = params['type'];
 
-    if (tripId != null) {
-      final deepLinkService = GetIt.instance<DeepLinkService>();
-      deepLinkService.navigateFromNotification(
-        isSchedule ? 'WIDGET_SCHEDULE' : 'WIDGET_TRIP',
-        {'trip_id': tripId},
-      );
-    }
+  if (type != null) {
+    final deepLinkService = GetIt.instance<DeepLinkService>();
+
+    deepLinkService.navigateFromNotification(type, params);
+
+    debugPrint('[WidgetLink] 모든 파라미터가 서비스로 전달됨: $params');
+  } else {
+    debugPrint('[WidgetLink] type 파라미터가 누락되었습니다.');
   }
 }
 
