@@ -7,6 +7,8 @@ plugins {
     // The Flutter Gradle Plugin must be applied after the Android and Kotlin Gradle plugins.
     id("dev.flutter.flutter-gradle-plugin")
     id("com.google.gms.google-services")
+    //컴포즈
+    id("org.jetbrains.kotlin.plugin.compose") version "2.1.0"
 }
 
 val keystoreProperties = Properties()
@@ -19,6 +21,12 @@ android {
     namespace = "com.team1113.mytravelfriend"
     compileSdk = flutter.compileSdkVersion
     ndkVersion = flutter.ndkVersion
+
+    // --- 위젯용 컴포즈 설정 ---
+    buildFeatures {
+        compose = true
+    }
+    // --- 위젯용 컴포즈 설정---
 
     compileOptions {
         // Desugaring 활성화 추가
@@ -75,4 +83,12 @@ dependencies {
 
     //fcm android
     implementation(platform("com.google.firebase:firebase-bom:34.6.0"))
+
+    //Glance 라이브러리들
+    implementation("androidx.glance:glance-appwidget:1.1.0")
+    implementation("androidx.glance:glance-material3:1.1.0")
+    implementation("androidx.compose.ui:ui:1.7.0")
+    implementation("androidx.compose.runtime:runtime:1.7.0")
+
+    implementation(project(":home_widget"))
 }

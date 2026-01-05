@@ -85,10 +85,6 @@ class AppRouter {
     },
 
     redirect: (context, state) {
-      // custom scheme 무시
-      if (state.uri.toString().contains('mytravelfriend://')) {
-        return null;
-      }
       final authState = GetIt.I<AuthProfileBloc>().state;
       final deepLinkService = GetIt.I<DeepLinkService>();
 
