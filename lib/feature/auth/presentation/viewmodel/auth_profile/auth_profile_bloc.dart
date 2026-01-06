@@ -74,6 +74,7 @@ class AuthProfileBloc extends Bloc<AuthProfileEvent, AuthProfileState> {
       failure: (failure) {
         // Repository 계층에서 에러 발생 시
         emit(AuthProfileState.error(message: failure.message));
+        emit(const AuthProfileState.unauthenticated());
       },
     );
   }
