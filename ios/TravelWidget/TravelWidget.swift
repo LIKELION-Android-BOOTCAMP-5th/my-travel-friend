@@ -165,7 +165,7 @@ struct DDayWidgetView: View {
                 .foregroundColor(accentColor)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .widgetURL(URL(string: "mytravelfriend://trip/\(entry.data.tripId)"))
+        .widgetURL(URL(string: "mytravelfriend://widget?type=WIDGET_TRIP&trip_id=\(entry.data.tripId)"))
         .containerBackground(bgColor, for: .widget)
     }
 }
@@ -284,7 +284,7 @@ struct ScheduleWidgetView: View {
             }
         }
         .padding(12)
-        .widgetURL(URL(string: "mytravelfriend://trip/\(entry.data.tripId)/schedule"))
+        .widgetURL(URL(string: "mytravelfriend://widget?type=WIDGET_SCHEDULE&trip_id=\(entry.data.tripId)"))
         .containerBackground(bgColor, for: .widget)
     }
 }
