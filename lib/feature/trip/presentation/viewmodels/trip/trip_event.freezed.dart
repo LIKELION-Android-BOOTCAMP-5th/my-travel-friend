@@ -55,7 +55,7 @@ extension TripEventPatterns on TripEvent {
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( GetMyTrips value)?  getMyTrips,TResult Function( LoadMoreTrips value)?  loadMoreTrips,TResult Function( ChangeSorting value)?  changeSorting,TResult Function( SearchKeywordChanged value)?  searchKeywordChanged,TResult Function( SearchTrips value)?  searchTrips,TResult Function( ToggleSearch value)?  toggleSearch,TResult Function( SelectTrip value)?  selectTrip,TResult Function( CreateNewTrip value)?  createNewTrip,TResult Function( NavigationHandled value)?  navigationHandled,TResult Function( OpenTripMenu value)?  openTripMenu,TResult Function( UpdateTrip value)?  updateTrip,TResult Function( LeaveTrip value)?  leaveTrip,TResult Function( DeleteTrip value)?  deleteTrip,TResult Function( RefreshTrips value)?  refreshTrips,required TResult orElse(),}){
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( GetMyTrips value)?  getMyTrips,TResult Function( LoadMoreTrips value)?  loadMoreTrips,TResult Function( ChangeSorting value)?  changeSorting,TResult Function( SearchKeywordChanged value)?  searchKeywordChanged,TResult Function( SearchTrips value)?  searchTrips,TResult Function( ToggleSearch value)?  toggleSearch,TResult Function( SelectTrip value)?  selectTrip,TResult Function( CreateNewTrip value)?  createNewTrip,TResult Function( NavigationHandled value)?  navigationHandled,TResult Function( OpenTripMenu value)?  openTripMenu,TResult Function( UpdateTrip value)?  updateTrip,TResult Function( LeaveTrip value)?  leaveTrip,TResult Function( DeleteTrip value)?  deleteTrip,TResult Function( RefreshTrips value)?  refreshTrips,TResult Function( ToggleUpcomingSorting value)?  toggleUpcomingSorting,TResult Function( ToggleFinishedSorting value)?  toggleFinishedSorting,required TResult orElse(),}){
 final _that = this;
 switch (_that) {
 case GetMyTrips() when getMyTrips != null:
@@ -72,7 +72,9 @@ return openTripMenu(_that);case UpdateTrip() when updateTrip != null:
 return updateTrip(_that);case LeaveTrip() when leaveTrip != null:
 return leaveTrip(_that);case DeleteTrip() when deleteTrip != null:
 return deleteTrip(_that);case RefreshTrips() when refreshTrips != null:
-return refreshTrips(_that);case _:
+return refreshTrips(_that);case ToggleUpcomingSorting() when toggleUpcomingSorting != null:
+return toggleUpcomingSorting(_that);case ToggleFinishedSorting() when toggleFinishedSorting != null:
+return toggleFinishedSorting(_that);case _:
   return orElse();
 
 }
@@ -90,7 +92,7 @@ return refreshTrips(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( GetMyTrips value)  getMyTrips,required TResult Function( LoadMoreTrips value)  loadMoreTrips,required TResult Function( ChangeSorting value)  changeSorting,required TResult Function( SearchKeywordChanged value)  searchKeywordChanged,required TResult Function( SearchTrips value)  searchTrips,required TResult Function( ToggleSearch value)  toggleSearch,required TResult Function( SelectTrip value)  selectTrip,required TResult Function( CreateNewTrip value)  createNewTrip,required TResult Function( NavigationHandled value)  navigationHandled,required TResult Function( OpenTripMenu value)  openTripMenu,required TResult Function( UpdateTrip value)  updateTrip,required TResult Function( LeaveTrip value)  leaveTrip,required TResult Function( DeleteTrip value)  deleteTrip,required TResult Function( RefreshTrips value)  refreshTrips,}){
+@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( GetMyTrips value)  getMyTrips,required TResult Function( LoadMoreTrips value)  loadMoreTrips,required TResult Function( ChangeSorting value)  changeSorting,required TResult Function( SearchKeywordChanged value)  searchKeywordChanged,required TResult Function( SearchTrips value)  searchTrips,required TResult Function( ToggleSearch value)  toggleSearch,required TResult Function( SelectTrip value)  selectTrip,required TResult Function( CreateNewTrip value)  createNewTrip,required TResult Function( NavigationHandled value)  navigationHandled,required TResult Function( OpenTripMenu value)  openTripMenu,required TResult Function( UpdateTrip value)  updateTrip,required TResult Function( LeaveTrip value)  leaveTrip,required TResult Function( DeleteTrip value)  deleteTrip,required TResult Function( RefreshTrips value)  refreshTrips,required TResult Function( ToggleUpcomingSorting value)  toggleUpcomingSorting,required TResult Function( ToggleFinishedSorting value)  toggleFinishedSorting,}){
 final _that = this;
 switch (_that) {
 case GetMyTrips():
@@ -107,7 +109,9 @@ return openTripMenu(_that);case UpdateTrip():
 return updateTrip(_that);case LeaveTrip():
 return leaveTrip(_that);case DeleteTrip():
 return deleteTrip(_that);case RefreshTrips():
-return refreshTrips(_that);case _:
+return refreshTrips(_that);case ToggleUpcomingSorting():
+return toggleUpcomingSorting(_that);case ToggleFinishedSorting():
+return toggleFinishedSorting(_that);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -124,7 +128,7 @@ return refreshTrips(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( GetMyTrips value)?  getMyTrips,TResult? Function( LoadMoreTrips value)?  loadMoreTrips,TResult? Function( ChangeSorting value)?  changeSorting,TResult? Function( SearchKeywordChanged value)?  searchKeywordChanged,TResult? Function( SearchTrips value)?  searchTrips,TResult? Function( ToggleSearch value)?  toggleSearch,TResult? Function( SelectTrip value)?  selectTrip,TResult? Function( CreateNewTrip value)?  createNewTrip,TResult? Function( NavigationHandled value)?  navigationHandled,TResult? Function( OpenTripMenu value)?  openTripMenu,TResult? Function( UpdateTrip value)?  updateTrip,TResult? Function( LeaveTrip value)?  leaveTrip,TResult? Function( DeleteTrip value)?  deleteTrip,TResult? Function( RefreshTrips value)?  refreshTrips,}){
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( GetMyTrips value)?  getMyTrips,TResult? Function( LoadMoreTrips value)?  loadMoreTrips,TResult? Function( ChangeSorting value)?  changeSorting,TResult? Function( SearchKeywordChanged value)?  searchKeywordChanged,TResult? Function( SearchTrips value)?  searchTrips,TResult? Function( ToggleSearch value)?  toggleSearch,TResult? Function( SelectTrip value)?  selectTrip,TResult? Function( CreateNewTrip value)?  createNewTrip,TResult? Function( NavigationHandled value)?  navigationHandled,TResult? Function( OpenTripMenu value)?  openTripMenu,TResult? Function( UpdateTrip value)?  updateTrip,TResult? Function( LeaveTrip value)?  leaveTrip,TResult? Function( DeleteTrip value)?  deleteTrip,TResult? Function( RefreshTrips value)?  refreshTrips,TResult? Function( ToggleUpcomingSorting value)?  toggleUpcomingSorting,TResult? Function( ToggleFinishedSorting value)?  toggleFinishedSorting,}){
 final _that = this;
 switch (_that) {
 case GetMyTrips() when getMyTrips != null:
@@ -141,7 +145,9 @@ return openTripMenu(_that);case UpdateTrip() when updateTrip != null:
 return updateTrip(_that);case LeaveTrip() when leaveTrip != null:
 return leaveTrip(_that);case DeleteTrip() when deleteTrip != null:
 return deleteTrip(_that);case RefreshTrips() when refreshTrips != null:
-return refreshTrips(_that);case _:
+return refreshTrips(_that);case ToggleUpcomingSorting() when toggleUpcomingSorting != null:
+return toggleUpcomingSorting(_that);case ToggleFinishedSorting() when toggleFinishedSorting != null:
+return toggleFinishedSorting(_that);case _:
   return null;
 
 }
@@ -158,7 +164,7 @@ return refreshTrips(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function( int userId)?  getMyTrips,TResult Function( int userId)?  loadMoreTrips,TResult Function( SortingTrip sorting)?  changeSorting,TResult Function( String keyword)?  searchKeywordChanged,TResult Function( int userId,  String keyword)?  searchTrips,TResult Function()?  toggleSearch,TResult Function( TripEntity trip)?  selectTrip,TResult Function()?  createNewTrip,TResult Function()?  navigationHandled,TResult Function( TripEntity trip)?  openTripMenu,TResult Function( TripEntity trip)?  updateTrip,TResult Function( int tripId,  int userId)?  leaveTrip,TResult Function( int tripId)?  deleteTrip,TResult Function( int userId)?  refreshTrips,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function( int userId)?  getMyTrips,TResult Function( int userId)?  loadMoreTrips,TResult Function( SortingTrip sorting)?  changeSorting,TResult Function( String keyword)?  searchKeywordChanged,TResult Function( int userId,  String keyword)?  searchTrips,TResult Function()?  toggleSearch,TResult Function( TripEntity trip)?  selectTrip,TResult Function()?  createNewTrip,TResult Function()?  navigationHandled,TResult Function( TripEntity trip)?  openTripMenu,TResult Function( TripEntity trip)?  updateTrip,TResult Function( int tripId,  int userId)?  leaveTrip,TResult Function( int tripId)?  deleteTrip,TResult Function( int userId)?  refreshTrips,TResult Function()?  toggleUpcomingSorting,TResult Function()?  toggleFinishedSorting,required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case GetMyTrips() when getMyTrips != null:
 return getMyTrips(_that.userId);case LoadMoreTrips() when loadMoreTrips != null:
@@ -174,7 +180,9 @@ return openTripMenu(_that.trip);case UpdateTrip() when updateTrip != null:
 return updateTrip(_that.trip);case LeaveTrip() when leaveTrip != null:
 return leaveTrip(_that.tripId,_that.userId);case DeleteTrip() when deleteTrip != null:
 return deleteTrip(_that.tripId);case RefreshTrips() when refreshTrips != null:
-return refreshTrips(_that.userId);case _:
+return refreshTrips(_that.userId);case ToggleUpcomingSorting() when toggleUpcomingSorting != null:
+return toggleUpcomingSorting();case ToggleFinishedSorting() when toggleFinishedSorting != null:
+return toggleFinishedSorting();case _:
   return orElse();
 
 }
@@ -192,7 +200,7 @@ return refreshTrips(_that.userId);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function( int userId)  getMyTrips,required TResult Function( int userId)  loadMoreTrips,required TResult Function( SortingTrip sorting)  changeSorting,required TResult Function( String keyword)  searchKeywordChanged,required TResult Function( int userId,  String keyword)  searchTrips,required TResult Function()  toggleSearch,required TResult Function( TripEntity trip)  selectTrip,required TResult Function()  createNewTrip,required TResult Function()  navigationHandled,required TResult Function( TripEntity trip)  openTripMenu,required TResult Function( TripEntity trip)  updateTrip,required TResult Function( int tripId,  int userId)  leaveTrip,required TResult Function( int tripId)  deleteTrip,required TResult Function( int userId)  refreshTrips,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function( int userId)  getMyTrips,required TResult Function( int userId)  loadMoreTrips,required TResult Function( SortingTrip sorting)  changeSorting,required TResult Function( String keyword)  searchKeywordChanged,required TResult Function( int userId,  String keyword)  searchTrips,required TResult Function()  toggleSearch,required TResult Function( TripEntity trip)  selectTrip,required TResult Function()  createNewTrip,required TResult Function()  navigationHandled,required TResult Function( TripEntity trip)  openTripMenu,required TResult Function( TripEntity trip)  updateTrip,required TResult Function( int tripId,  int userId)  leaveTrip,required TResult Function( int tripId)  deleteTrip,required TResult Function( int userId)  refreshTrips,required TResult Function()  toggleUpcomingSorting,required TResult Function()  toggleFinishedSorting,}) {final _that = this;
 switch (_that) {
 case GetMyTrips():
 return getMyTrips(_that.userId);case LoadMoreTrips():
@@ -208,7 +216,9 @@ return openTripMenu(_that.trip);case UpdateTrip():
 return updateTrip(_that.trip);case LeaveTrip():
 return leaveTrip(_that.tripId,_that.userId);case DeleteTrip():
 return deleteTrip(_that.tripId);case RefreshTrips():
-return refreshTrips(_that.userId);case _:
+return refreshTrips(_that.userId);case ToggleUpcomingSorting():
+return toggleUpcomingSorting();case ToggleFinishedSorting():
+return toggleFinishedSorting();case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -225,7 +235,7 @@ return refreshTrips(_that.userId);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function( int userId)?  getMyTrips,TResult? Function( int userId)?  loadMoreTrips,TResult? Function( SortingTrip sorting)?  changeSorting,TResult? Function( String keyword)?  searchKeywordChanged,TResult? Function( int userId,  String keyword)?  searchTrips,TResult? Function()?  toggleSearch,TResult? Function( TripEntity trip)?  selectTrip,TResult? Function()?  createNewTrip,TResult? Function()?  navigationHandled,TResult? Function( TripEntity trip)?  openTripMenu,TResult? Function( TripEntity trip)?  updateTrip,TResult? Function( int tripId,  int userId)?  leaveTrip,TResult? Function( int tripId)?  deleteTrip,TResult? Function( int userId)?  refreshTrips,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function( int userId)?  getMyTrips,TResult? Function( int userId)?  loadMoreTrips,TResult? Function( SortingTrip sorting)?  changeSorting,TResult? Function( String keyword)?  searchKeywordChanged,TResult? Function( int userId,  String keyword)?  searchTrips,TResult? Function()?  toggleSearch,TResult? Function( TripEntity trip)?  selectTrip,TResult? Function()?  createNewTrip,TResult? Function()?  navigationHandled,TResult? Function( TripEntity trip)?  openTripMenu,TResult? Function( TripEntity trip)?  updateTrip,TResult? Function( int tripId,  int userId)?  leaveTrip,TResult? Function( int tripId)?  deleteTrip,TResult? Function( int userId)?  refreshTrips,TResult? Function()?  toggleUpcomingSorting,TResult? Function()?  toggleFinishedSorting,}) {final _that = this;
 switch (_that) {
 case GetMyTrips() when getMyTrips != null:
 return getMyTrips(_that.userId);case LoadMoreTrips() when loadMoreTrips != null:
@@ -241,7 +251,9 @@ return openTripMenu(_that.trip);case UpdateTrip() when updateTrip != null:
 return updateTrip(_that.trip);case LeaveTrip() when leaveTrip != null:
 return leaveTrip(_that.tripId,_that.userId);case DeleteTrip() when deleteTrip != null:
 return deleteTrip(_that.tripId);case RefreshTrips() when refreshTrips != null:
-return refreshTrips(_that.userId);case _:
+return refreshTrips(_that.userId);case ToggleUpcomingSorting() when toggleUpcomingSorting != null:
+return toggleUpcomingSorting();case ToggleFinishedSorting() when toggleFinishedSorting != null:
+return toggleFinishedSorting();case _:
   return null;
 
 }
@@ -1101,5 +1113,69 @@ as int,
 
 
 }
+
+/// @nodoc
+
+
+class ToggleUpcomingSorting implements TripEvent {
+  const ToggleUpcomingSorting();
+  
+
+
+
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ToggleUpcomingSorting);
+}
+
+
+@override
+int get hashCode => runtimeType.hashCode;
+
+@override
+String toString() {
+  return 'TripEvent.toggleUpcomingSorting()';
+}
+
+
+}
+
+
+
+
+/// @nodoc
+
+
+class ToggleFinishedSorting implements TripEvent {
+  const ToggleFinishedSorting();
+  
+
+
+
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ToggleFinishedSorting);
+}
+
+
+@override
+int get hashCode => runtimeType.hashCode;
+
+@override
+String toString() {
+  return 'TripEvent.toggleFinishedSorting()';
+}
+
+
+}
+
+
+
 
 // dart format on

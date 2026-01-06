@@ -24,6 +24,18 @@ abstract class TripState with _$TripState {
     @Default(TripPageState.init) TripPageState pageState,
     @Default(false) bool hasMore,
     @Default(false) bool isLoadingMore,
+    //여행 상태별 분류
+    // 진행중인 여행 (start <= today <= end)
+    @Default([]) List<TripEntity> ongoingTrips,
+    // 예정된 여행 (start > today)
+    @Default([]) List<TripEntity> upcomingTrips,
+    // 종료된 여행 (end < today)
+    @Default([]) List<TripEntity> finishedTrips,
+
+    //예정 여행 정렬
+    @Default(SortingTrip.recent) SortingTrip upcomingSorting,
+    //종료 여행 정렬
+    @Default(SortingTrip.recent) SortingTrip finishedSorting,
 
     // 네비게이션 (작성 화면 이동)
     @Default(false) bool navigateToCreate,

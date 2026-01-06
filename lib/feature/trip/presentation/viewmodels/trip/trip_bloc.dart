@@ -41,6 +41,8 @@ class TripBloc extends Bloc<TripEvent, TripState> {
     on<ChangeSorting>(_onChangeSorting);
     on<CreateNewTrip>(_onCreateNewTrip);
     on<UpdateTrip>(_onUpdateTrip);
+    on<ToggleUpcomingSorting>(_onToggleUpcomingSorting);
+    on<ToggleFinishedSorting>(_onToggleFinishedSorting);
     //네비게이션
     on<NavigationHandled>((event, emit) {
       emit(state.copyWith(navigateToCreate: false, navigateToEdit: false));
@@ -67,6 +69,7 @@ class TripBloc extends Bloc<TripEvent, TripState> {
             currentPage: 1,
           ),
         );
+        _classifyAndEmitTrips(data, emit);
       },
       failure: (_) => emit(state.copyWith(pageState: TripPageState.error)),
     );
@@ -260,5 +263,86 @@ class TripBloc extends Bloc<TripEvent, TripState> {
   // 수정할 Trip 저장 (이후 UI에서 이동 처리)
   void _onUpdateTrip(UpdateTrip event, Emitter<TripState> emit) {
     emit(state.copyWith(selectedTrip: event.trip, navigateToEdit: true));
+  }
+
+  void _classifyAndEmitTrips(List<TripEntity> trips, Emitter<TripState> emit) {
+    final now = DateTime.now();
+    final today = DateTime(now.year, now.month, now.day);
+
+    final ongoing = <TripEntity>[];
+    final upcoming = <TripEntity>[];
+    final finished = <TripEntity>[];
+
+    for (final trip in trips) {
+      final startRaw = DateTime.parse(trip.startAt).toLocal();
+      final endRaw = DateTime.parse(trip.endAt).toLocal();
+
+      final start = DateTime(startRaw.year, startRaw.month, startRaw.day);
+      final end = DateTime(endRaw.year, endRaw.month, endRaw.day);
+
+      if (!start.isAfter(today) && !end.isBefore(today)) {
+        // start <= today <= end
+        ongoing.add(trip);
+      } else if (start.isAfter(today)) {
+        upcoming.add(trip);
+      } else {
+        finished.add(trip);
+      }
+    }
+
+    emit(
+      state.copyWith(
+        ongoingTrips: ongoing,
+        upcomingTrips: _sortTrips(upcoming, state.upcomingSorting),
+        finishedTrips: _sortTrips(finished, state.finishedSorting),
+      ),
+    );
+  }
+
+  List<TripEntity> _sortTrips(List<TripEntity> trips, SortingTrip sorting) {
+    final sorted = [...trips];
+
+    sorted.sort((a, b) {
+      final aDate = DateTime.parse(a.startAt);
+      final bDate = DateTime.parse(b.startAt);
+
+      return sorting == SortingTrip.recent
+          ? bDate.compareTo(aDate) // 최신순
+          : aDate.compareTo(bDate); // 오래된순
+    });
+
+    return sorted;
+  }
+
+  void _onToggleUpcomingSorting(
+    ToggleUpcomingSorting event,
+    Emitter<TripState> emit,
+  ) {
+    final nextSorting = state.upcomingSorting == SortingTrip.recent
+        ? SortingTrip.old
+        : SortingTrip.recent;
+
+    emit(
+      state.copyWith(
+        upcomingSorting: nextSorting,
+        upcomingTrips: _sortTrips(state.upcomingTrips, nextSorting),
+      ),
+    );
+  }
+
+  void _onToggleFinishedSorting(
+    ToggleFinishedSorting event,
+    Emitter<TripState> emit,
+  ) {
+    final nextSorting = state.finishedSorting == SortingTrip.recent
+        ? SortingTrip.old
+        : SortingTrip.recent;
+
+    emit(
+      state.copyWith(
+        finishedSorting: nextSorting,
+        finishedTrips: _sortTrips(state.finishedTrips, nextSorting),
+      ),
+    );
   }
 }
