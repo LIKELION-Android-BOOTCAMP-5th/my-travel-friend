@@ -56,4 +56,9 @@ abstract class TripEvent with _$TripEvent {
 
   //재정렬 or 업데이트 후 리스트 다시 로드
   const factory TripEvent.refreshTrips({required int userId}) = RefreshTrips;
+  //  예정된 여행 정렬 토글
+  const factory TripEvent.toggleUpcomingSorting() = ToggleUpcomingSorting;
+
+  // 종료된 여행 정렬 토글
+  const factory TripEvent.toggleFinishedSorting() = ToggleFinishedSorting;
 }
