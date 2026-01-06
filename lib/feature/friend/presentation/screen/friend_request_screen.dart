@@ -1,17 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:my_travel_friend/feature/friend/presentation/viewmodel/friend_request_bloc.dart';
 import 'package:my_travel_friend/feature/friend/presentation/viewmodel/friend_request_state.dart';
 import 'package:my_travel_friend/feature/friend/presentation/widget/empty_card_widget.dart';
+import 'package:share_plus/share_plus.dart';
 
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_font.dart';
 import '../../../../core/theme/app_icon.dart';
+import '../../../../core/util/friend_link.dart';
 import '../../../../core/widget/app_bar.dart';
 import '../../../../core/widget/button.dart';
 import '../../../../core/widget/pop_up_box.dart';
 import '../../../../core/widget/text_box.dart';
+import '../../../../core/widget/toast_pop.dart';
 import '../widget/request_friend_widget.dart';
 
 /// [엄수빈] 친구 추가 화면
@@ -66,7 +70,7 @@ class FriendRequestScreen extends StatelessWidget {
                 ),
               ),
               const SliverToBoxAdapter(child: SizedBox(height: 24)),
-              SliverToBoxAdapter(child: _RinkSection()),
+              SliverToBoxAdapter(child: _RinkSection(myUserId: requestId)),
             ],
           ),
         ),
@@ -223,13 +227,18 @@ class _SearchResultSection extends StatelessWidget {
   }
 }
 
-/// 링크 세션
+// 링크 세션
 class _RinkSection extends StatelessWidget {
-  const _RinkSection({super.key});
+  final int myUserId;
+
+  const _RinkSection({super.key, required this.myUserId});
+
+  String get _inviteLink => createInviteLink(myUserId);
 
   @override
   Widget build(BuildContext context) {
     final cs = Theme.of(context).colorScheme;
+    final inviteLink = _inviteLink; //build에서 1회만 사용
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -242,6 +251,7 @@ class _RinkSection extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 12),
+
         Container(
           padding: const EdgeInsets.fromLTRB(16, 16, 16, 20),
           decoration: BoxDecoration(
@@ -258,9 +268,85 @@ class _RinkSection extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              // 설명 문구
               const Text(
-                "닉네임으로 검색",
+                "링크를 공유해서 친구를 추가해보세요",
                 style: TextStyle(fontSize: 13, fontWeight: FontWeight.w500),
+              ),
+              const SizedBox(height: 12),
+
+              // 링크 미리보기 박스
+              Container(
+                width: double.infinity,
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 12,
+                  vertical: 10,
+                ),
+                decoration: BoxDecoration(
+                  color: cs.surface,
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Text(
+                  inviteLink,
+                  style: TextStyle(
+                    fontSize: 12,
+                    color: cs.onSurface.withOpacity(0.7),
+                  ),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
+
+              const SizedBox(height: 12),
+
+              Row(
+                children: [
+                  // 복사 버튼
+                  Expanded(
+                    child: OutlinedButton(
+                      onPressed: () async {
+                        try {
+                          await Clipboard.setData(
+                            ClipboardData(text: inviteLink),
+                          );
+                          ToastPop.show('친구에게 공유해 보세요!');
+                        } catch (e) {
+                          ToastPop.show('복사에 실패했어요');
+                        }
+                      },
+                      style: OutlinedButton.styleFrom(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                      ),
+                      child: const Text('복사'),
+                    ),
+                  ),
+                  const SizedBox(width: 8),
+
+                  // 공유 버튼
+                  Expanded(
+                    child: ElevatedButton(
+                      onPressed: () async {
+                        try {
+                          await SharePlus.instance.share(
+                            ShareParams(text: '내 여행 친구가 되어줘 ✈️\n\n$inviteLink'),
+                          );
+                        } catch (e) {
+                          ToastPop.show('공유에 실패했어요');
+                        }
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: cs.primary,
+                        foregroundColor: cs.onPrimary,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                      ),
+                      child: const Text('공유'),
+                    ),
+                  ),
+                ],
               ),
             ],
           ),
