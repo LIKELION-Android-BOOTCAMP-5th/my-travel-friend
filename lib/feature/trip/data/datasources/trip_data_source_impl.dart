@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:injectable/injectable.dart';
 import 'package:my_travel_friend/core/result/failures.dart';
 import 'package:my_travel_friend/core/result/result.dart';
+import 'package:my_travel_friend/feature/auth/data/models/user_model.dart';
 import 'package:my_travel_friend/feature/trip/data/dtos/trip_dto.dart';
 import 'package:my_travel_friend/feature/trip/data/dtos/useful_pharse_dto.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -270,6 +271,25 @@ class TripDataSourceImpl implements TripDataSource {
           .toList();
 
       return Result.success(phrases);
+    } catch (e) {
+      return Result.failure(Failure.serverFailure(message: e.toString()));
+    }
+  }
+
+  @override
+  Future<Result<UserDTO>> getUserById(int userId) async {
+    try {
+      final res = await _supabaseClient
+          .from('user')
+          .select()
+          .eq('id', userId)
+          .maybeSingle();
+
+      if (res == null) {
+        return Result.failure(Failure.serverFailure(message: 'User not found'));
+      }
+
+      return Result.success(UserDTO.fromJson(res));
     } catch (e) {
       return Result.failure(Failure.serverFailure(message: e.toString()));
     }

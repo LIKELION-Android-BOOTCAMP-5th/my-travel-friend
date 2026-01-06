@@ -5,8 +5,10 @@ import 'package:firebase_ai/firebase_ai.dart';
 import 'package:injectable/injectable.dart';
 import 'package:my_travel_friend/core/result/result.dart';
 import 'package:my_travel_friend/feature/trip/domain/repositories/trip_repository.dart';
+import 'package:my_travel_friend/feature/trip/domain/usecases/create_trip_request_usecase.dart';
 
 import '../../../domain/usecases/create_trip_usecase.dart';
+import '../../../domain/usecases/get_user_by_id_usecase.dart';
 import 'create_trip_event.dart';
 import 'create_trip_state.dart';
 
@@ -14,15 +16,20 @@ import 'create_trip_state.dart';
 class CreateTripBloc extends Bloc<CreateTripEvent, CreateTripState> {
   final CreateTripUsecase _createTripUsecase;
   final TripRepository _tripRepository;
-
+  final GetUserByIdUseCase _getUserByIdUseCase;
+  final CreateTripRequestUsecase _createTripRequestUsecase;
   Timer? _debounce;
 
   final generativeModel = FirebaseAI.googleAI().generativeModel(
     model: "gemini-2.5-flash",
   );
 
-  CreateTripBloc(this._createTripUsecase, this._tripRepository)
-    : super(const CreateTripState()) {
+  CreateTripBloc(
+    this._createTripUsecase,
+    this._tripRepository,
+    this._getUserByIdUseCase,
+    this._createTripRequestUsecase,
+  ) : super(const CreateTripState()) {
     on<ChangeTitle>(_onChangeTitle);
     on<ChangePlace>(_onChangePlaceWithDebounce);
     on<PlaceAIResult>(_onPlaceAIResult);
@@ -156,7 +163,10 @@ class CreateTripBloc extends Bloc<CreateTripEvent, CreateTripState> {
     emit(state.copyWith(localImgFile: null, coverImg: null));
   }
 
-  void _onInitialized(Initialized event, Emitter<CreateTripState> emit) {
+  Future<void> _onInitialized(
+    Initialized event,
+    Emitter<CreateTripState> emit,
+  ) async {
     emit(
       state.copyWith(
         userId: event.userId,
@@ -167,6 +177,16 @@ class CreateTripBloc extends Bloc<CreateTripEvent, CreateTripState> {
         localImgFile: null,
       ),
     );
+    if (event.friendId != null) {
+      final result = await _getUserByIdUseCase(event.friendId!);
+
+      result.when(
+        success: (user) {
+          emit(state.copyWith(friendUser: user));
+        },
+        failure: (f) {},
+      );
+    }
   }
 
   void _onSetFriend(SetFriend event, Emitter<CreateTripState> emit) {
@@ -219,15 +239,34 @@ class CreateTripBloc extends Bloc<CreateTripEvent, CreateTripState> {
 
       result.when(
         success: (trip) async {
+          String finalMessage = "새로운 여행 일정이 만들어졌어요!";
           emit(
             state.copyWith(
               createTrip: trip,
               isUploading: false,
               pageState: CreateTripPageState.success,
-              message: "새로운 여행 일정이 만들어졌어요!",
+              message: finalMessage,
             ),
           );
+
+          if (state.friendId != null) {
+            final inviteResult = await _createTripRequestUsecase(
+              state.userId,
+              state.friendId!,
+              trip.id!,
+            );
+
+            inviteResult.when(
+              success: (_) {
+                finalMessage = '여행이 생성되고 친구를 초대했어요!';
+              },
+              failure: (_) {
+                finalMessage = '여행은 생성됐지만 초대에 실패했어요';
+              },
+            );
+          }
         },
+
         failure: (e) {
           emit(
             state.copyWith(

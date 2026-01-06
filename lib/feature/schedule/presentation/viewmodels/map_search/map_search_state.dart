@@ -1,11 +1,14 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
+import '../../widgets/route_type.dart';
+
 part 'map_search_state.freezed.dart';
 
 @freezed
 abstract class MapSearchState with _$MapSearchState {
   const factory MapSearchState({
     int? tripId,
+    @Default(MapSearchMode.aiSearch) MapSearchMode mode,
     double? initialLat,
     double? initialLng,
     String? initialAddress,

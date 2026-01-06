@@ -14,6 +14,7 @@ import '../viewmodels/edit_schedule/edit_schedule_bloc.dart';
 import '../viewmodels/edit_schedule/edit_schedule_event.dart';
 import '../viewmodels/edit_schedule/edit_schedule_state.dart';
 import '../viewmodels/map_search/map_search_state.dart';
+import '../widgets/route_type.dart';
 
 class EditScheduleScreen extends StatefulWidget {
   final ScheduleEntity schedule;
@@ -145,6 +146,7 @@ class _EditScheduleScreenState extends State<EditScheduleScreen> {
                         'tripMapSearch',
                         pathParameters: {'tripId': '${state.tripId}'},
                         extra: {
+                          'mode': MapSearchMode.aiSearch,
                           'lat': state.lat,
                           'lng': state.lng,
                           'address': state.address,
@@ -285,10 +287,34 @@ class _EditScheduleScreenState extends State<EditScheduleScreen> {
                               controller: _placeController,
                               hintText: '예: 제주 성산읍',
                               prefixIcon: const Icon(AppIcon.mapPin),
-                              onChanged: (v) {
-                                context.read<EditScheduleBloc>().add(
-                                  EditScheduleEvent.placeTextChanged(v),
-                                );
+                              readOnly: true,
+                              onTap: () async {
+                                debugPrint('📤 [PlaceTap] push mapSearch mode');
+                                final result = await context
+                                    .pushNamed<PlaceCandidate>(
+                                      'tripMapSearch',
+                                      pathParameters: {
+                                        'tripId': '${state.tripId}',
+                                      },
+                                      extra: {
+                                        'mode': MapSearchMode.mapSearch,
+                                        'lat': state.lat,
+                                        'lng': state.lng,
+                                        'address': state.address,
+                                      },
+                                    );
+
+                                if (result != null) {
+                                  context.read<EditScheduleBloc>().add(
+                                    EditScheduleEvent.placeSelected(
+                                      place: result.place,
+                                      address: result.address,
+                                      lat: result.lat,
+                                      lng: result.lng,
+                                    ),
+                                  );
+                                  _placeController.text = result.place;
+                                }
                               },
                             ),
 

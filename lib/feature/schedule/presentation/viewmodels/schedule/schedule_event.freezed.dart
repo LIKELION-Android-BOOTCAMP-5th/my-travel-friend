@@ -55,7 +55,7 @@ extension ScheduleEventPatterns on ScheduleEvent {
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( FetchSchedules value)?  fetchSchedules,TResult Function( SelectDate value)?  selectDate,TResult Function( SelectCategory value)?  selectCategory,TResult Function( ClearFilter value)?  clearFilter,TResult Function( NavigateToCreate value)?  navigateToCreate,TResult Function( DeleteSchedule value)?  deleteSchedule,TResult Function( NavigateToEdit value)?  navigateToEdit,TResult Function( FetchScheduleMembers value)?  fetchScheduleMembers,TResult Function( Refresh value)?  refresh,TResult Function( ToggleMemo value)?  toggleMemo,TResult Function( SwitchToDateMode value)?  switchToDateMode,TResult Function( SwitchToCategoryMode value)?  switchToCategoryMode,TResult Function( LoadMore value)?  loadMore,TResult Function( ResetNavigation value)?  resetNavigation,TResult Function( ClearMessage value)?  clearMessage,required TResult orElse(),}){
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( FetchSchedules value)?  fetchSchedules,TResult Function( SelectDate value)?  selectDate,TResult Function( SelectCategory value)?  selectCategory,TResult Function( ClearFilter value)?  clearFilter,TResult Function( NavigateToCreate value)?  navigateToCreate,TResult Function( DeleteSchedule value)?  deleteSchedule,TResult Function( NavigateToEdit value)?  navigateToEdit,TResult Function( FetchScheduleMembers value)?  fetchScheduleMembers,TResult Function( Refresh value)?  refresh,TResult Function( ToggleMemo value)?  toggleMemo,TResult Function( SwitchToDateMode value)?  switchToDateMode,TResult Function( SwitchToCategoryMode value)?  switchToCategoryMode,TResult Function( LoadMore value)?  loadMore,TResult Function( ResetNavigation value)?  resetNavigation,TResult Function( ClearMessage value)?  clearMessage,TResult Function( RequestRoute value)?  requestRoute,TResult Function( ClearRoute value)?  clearRoute,required TResult orElse(),}){
 final _that = this;
 switch (_that) {
 case FetchSchedules() when fetchSchedules != null:
@@ -73,7 +73,9 @@ return switchToDateMode(_that);case SwitchToCategoryMode() when switchToCategory
 return switchToCategoryMode(_that);case LoadMore() when loadMore != null:
 return loadMore(_that);case ResetNavigation() when resetNavigation != null:
 return resetNavigation(_that);case ClearMessage() when clearMessage != null:
-return clearMessage(_that);case _:
+return clearMessage(_that);case RequestRoute() when requestRoute != null:
+return requestRoute(_that);case ClearRoute() when clearRoute != null:
+return clearRoute(_that);case _:
   return orElse();
 
 }
@@ -91,7 +93,7 @@ return clearMessage(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( FetchSchedules value)  fetchSchedules,required TResult Function( SelectDate value)  selectDate,required TResult Function( SelectCategory value)  selectCategory,required TResult Function( ClearFilter value)  clearFilter,required TResult Function( NavigateToCreate value)  navigateToCreate,required TResult Function( DeleteSchedule value)  deleteSchedule,required TResult Function( NavigateToEdit value)  navigateToEdit,required TResult Function( FetchScheduleMembers value)  fetchScheduleMembers,required TResult Function( Refresh value)  refresh,required TResult Function( ToggleMemo value)  toggleMemo,required TResult Function( SwitchToDateMode value)  switchToDateMode,required TResult Function( SwitchToCategoryMode value)  switchToCategoryMode,required TResult Function( LoadMore value)  loadMore,required TResult Function( ResetNavigation value)  resetNavigation,required TResult Function( ClearMessage value)  clearMessage,}){
+@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( FetchSchedules value)  fetchSchedules,required TResult Function( SelectDate value)  selectDate,required TResult Function( SelectCategory value)  selectCategory,required TResult Function( ClearFilter value)  clearFilter,required TResult Function( NavigateToCreate value)  navigateToCreate,required TResult Function( DeleteSchedule value)  deleteSchedule,required TResult Function( NavigateToEdit value)  navigateToEdit,required TResult Function( FetchScheduleMembers value)  fetchScheduleMembers,required TResult Function( Refresh value)  refresh,required TResult Function( ToggleMemo value)  toggleMemo,required TResult Function( SwitchToDateMode value)  switchToDateMode,required TResult Function( SwitchToCategoryMode value)  switchToCategoryMode,required TResult Function( LoadMore value)  loadMore,required TResult Function( ResetNavigation value)  resetNavigation,required TResult Function( ClearMessage value)  clearMessage,required TResult Function( RequestRoute value)  requestRoute,required TResult Function( ClearRoute value)  clearRoute,}){
 final _that = this;
 switch (_that) {
 case FetchSchedules():
@@ -109,7 +111,9 @@ return switchToDateMode(_that);case SwitchToCategoryMode():
 return switchToCategoryMode(_that);case LoadMore():
 return loadMore(_that);case ResetNavigation():
 return resetNavigation(_that);case ClearMessage():
-return clearMessage(_that);case _:
+return clearMessage(_that);case RequestRoute():
+return requestRoute(_that);case ClearRoute():
+return clearRoute(_that);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -126,7 +130,7 @@ return clearMessage(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( FetchSchedules value)?  fetchSchedules,TResult? Function( SelectDate value)?  selectDate,TResult? Function( SelectCategory value)?  selectCategory,TResult? Function( ClearFilter value)?  clearFilter,TResult? Function( NavigateToCreate value)?  navigateToCreate,TResult? Function( DeleteSchedule value)?  deleteSchedule,TResult? Function( NavigateToEdit value)?  navigateToEdit,TResult? Function( FetchScheduleMembers value)?  fetchScheduleMembers,TResult? Function( Refresh value)?  refresh,TResult? Function( ToggleMemo value)?  toggleMemo,TResult? Function( SwitchToDateMode value)?  switchToDateMode,TResult? Function( SwitchToCategoryMode value)?  switchToCategoryMode,TResult? Function( LoadMore value)?  loadMore,TResult? Function( ResetNavigation value)?  resetNavigation,TResult? Function( ClearMessage value)?  clearMessage,}){
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( FetchSchedules value)?  fetchSchedules,TResult? Function( SelectDate value)?  selectDate,TResult? Function( SelectCategory value)?  selectCategory,TResult? Function( ClearFilter value)?  clearFilter,TResult? Function( NavigateToCreate value)?  navigateToCreate,TResult? Function( DeleteSchedule value)?  deleteSchedule,TResult? Function( NavigateToEdit value)?  navigateToEdit,TResult? Function( FetchScheduleMembers value)?  fetchScheduleMembers,TResult? Function( Refresh value)?  refresh,TResult? Function( ToggleMemo value)?  toggleMemo,TResult? Function( SwitchToDateMode value)?  switchToDateMode,TResult? Function( SwitchToCategoryMode value)?  switchToCategoryMode,TResult? Function( LoadMore value)?  loadMore,TResult? Function( ResetNavigation value)?  resetNavigation,TResult? Function( ClearMessage value)?  clearMessage,TResult? Function( RequestRoute value)?  requestRoute,TResult? Function( ClearRoute value)?  clearRoute,}){
 final _that = this;
 switch (_that) {
 case FetchSchedules() when fetchSchedules != null:
@@ -144,7 +148,9 @@ return switchToDateMode(_that);case SwitchToCategoryMode() when switchToCategory
 return switchToCategoryMode(_that);case LoadMore() when loadMore != null:
 return loadMore(_that);case ResetNavigation() when resetNavigation != null:
 return resetNavigation(_that);case ClearMessage() when clearMessage != null:
-return clearMessage(_that);case _:
+return clearMessage(_that);case RequestRoute() when requestRoute != null:
+return requestRoute(_that);case ClearRoute() when clearRoute != null:
+return clearRoute(_that);case _:
   return null;
 
 }
@@ -161,7 +167,7 @@ return clearMessage(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function( int tripId,  bool isRefresh)?  fetchSchedules,TResult Function( String date)?  selectDate,TResult Function( int categoryId)?  selectCategory,TResult Function()?  clearFilter,TResult Function()?  navigateToCreate,TResult Function( int scheduleId)?  deleteSchedule,TResult Function( ScheduleEntity schedule)?  navigateToEdit,TResult Function( int scheduleId)?  fetchScheduleMembers,TResult Function( int tripId)?  refresh,TResult Function()?  toggleMemo,TResult Function()?  switchToDateMode,TResult Function()?  switchToCategoryMode,TResult Function( int tripId)?  loadMore,TResult Function()?  resetNavigation,TResult Function()?  clearMessage,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function( int tripId,  bool isRefresh)?  fetchSchedules,TResult Function( String date)?  selectDate,TResult Function( int categoryId)?  selectCategory,TResult Function()?  clearFilter,TResult Function()?  navigateToCreate,TResult Function( int scheduleId)?  deleteSchedule,TResult Function( ScheduleEntity schedule)?  navigateToEdit,TResult Function( int scheduleId)?  fetchScheduleMembers,TResult Function( int tripId)?  refresh,TResult Function()?  toggleMemo,TResult Function()?  switchToDateMode,TResult Function()?  switchToCategoryMode,TResult Function( int tripId)?  loadMore,TResult Function()?  resetNavigation,TResult Function()?  clearMessage,TResult Function( double fromLat,  double fromLng,  String fromName,  double toLat,  double toLng,  String toName,  RouteType type)?  requestRoute,TResult Function()?  clearRoute,required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case FetchSchedules() when fetchSchedules != null:
 return fetchSchedules(_that.tripId,_that.isRefresh);case SelectDate() when selectDate != null:
@@ -178,7 +184,9 @@ return switchToDateMode();case SwitchToCategoryMode() when switchToCategoryMode 
 return switchToCategoryMode();case LoadMore() when loadMore != null:
 return loadMore(_that.tripId);case ResetNavigation() when resetNavigation != null:
 return resetNavigation();case ClearMessage() when clearMessage != null:
-return clearMessage();case _:
+return clearMessage();case RequestRoute() when requestRoute != null:
+return requestRoute(_that.fromLat,_that.fromLng,_that.fromName,_that.toLat,_that.toLng,_that.toName,_that.type);case ClearRoute() when clearRoute != null:
+return clearRoute();case _:
   return orElse();
 
 }
@@ -196,7 +204,7 @@ return clearMessage();case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function( int tripId,  bool isRefresh)  fetchSchedules,required TResult Function( String date)  selectDate,required TResult Function( int categoryId)  selectCategory,required TResult Function()  clearFilter,required TResult Function()  navigateToCreate,required TResult Function( int scheduleId)  deleteSchedule,required TResult Function( ScheduleEntity schedule)  navigateToEdit,required TResult Function( int scheduleId)  fetchScheduleMembers,required TResult Function( int tripId)  refresh,required TResult Function()  toggleMemo,required TResult Function()  switchToDateMode,required TResult Function()  switchToCategoryMode,required TResult Function( int tripId)  loadMore,required TResult Function()  resetNavigation,required TResult Function()  clearMessage,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function( int tripId,  bool isRefresh)  fetchSchedules,required TResult Function( String date)  selectDate,required TResult Function( int categoryId)  selectCategory,required TResult Function()  clearFilter,required TResult Function()  navigateToCreate,required TResult Function( int scheduleId)  deleteSchedule,required TResult Function( ScheduleEntity schedule)  navigateToEdit,required TResult Function( int scheduleId)  fetchScheduleMembers,required TResult Function( int tripId)  refresh,required TResult Function()  toggleMemo,required TResult Function()  switchToDateMode,required TResult Function()  switchToCategoryMode,required TResult Function( int tripId)  loadMore,required TResult Function()  resetNavigation,required TResult Function()  clearMessage,required TResult Function( double fromLat,  double fromLng,  String fromName,  double toLat,  double toLng,  String toName,  RouteType type)  requestRoute,required TResult Function()  clearRoute,}) {final _that = this;
 switch (_that) {
 case FetchSchedules():
 return fetchSchedules(_that.tripId,_that.isRefresh);case SelectDate():
@@ -213,7 +221,9 @@ return switchToDateMode();case SwitchToCategoryMode():
 return switchToCategoryMode();case LoadMore():
 return loadMore(_that.tripId);case ResetNavigation():
 return resetNavigation();case ClearMessage():
-return clearMessage();case _:
+return clearMessage();case RequestRoute():
+return requestRoute(_that.fromLat,_that.fromLng,_that.fromName,_that.toLat,_that.toLng,_that.toName,_that.type);case ClearRoute():
+return clearRoute();case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -230,7 +240,7 @@ return clearMessage();case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function( int tripId,  bool isRefresh)?  fetchSchedules,TResult? Function( String date)?  selectDate,TResult? Function( int categoryId)?  selectCategory,TResult? Function()?  clearFilter,TResult? Function()?  navigateToCreate,TResult? Function( int scheduleId)?  deleteSchedule,TResult? Function( ScheduleEntity schedule)?  navigateToEdit,TResult? Function( int scheduleId)?  fetchScheduleMembers,TResult? Function( int tripId)?  refresh,TResult? Function()?  toggleMemo,TResult? Function()?  switchToDateMode,TResult? Function()?  switchToCategoryMode,TResult? Function( int tripId)?  loadMore,TResult? Function()?  resetNavigation,TResult? Function()?  clearMessage,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function( int tripId,  bool isRefresh)?  fetchSchedules,TResult? Function( String date)?  selectDate,TResult? Function( int categoryId)?  selectCategory,TResult? Function()?  clearFilter,TResult? Function()?  navigateToCreate,TResult? Function( int scheduleId)?  deleteSchedule,TResult? Function( ScheduleEntity schedule)?  navigateToEdit,TResult? Function( int scheduleId)?  fetchScheduleMembers,TResult? Function( int tripId)?  refresh,TResult? Function()?  toggleMemo,TResult? Function()?  switchToDateMode,TResult? Function()?  switchToCategoryMode,TResult? Function( int tripId)?  loadMore,TResult? Function()?  resetNavigation,TResult? Function()?  clearMessage,TResult? Function( double fromLat,  double fromLng,  String fromName,  double toLat,  double toLng,  String toName,  RouteType type)?  requestRoute,TResult? Function()?  clearRoute,}) {final _that = this;
 switch (_that) {
 case FetchSchedules() when fetchSchedules != null:
 return fetchSchedules(_that.tripId,_that.isRefresh);case SelectDate() when selectDate != null:
@@ -247,7 +257,9 @@ return switchToDateMode();case SwitchToCategoryMode() when switchToCategoryMode 
 return switchToCategoryMode();case LoadMore() when loadMore != null:
 return loadMore(_that.tripId);case ResetNavigation() when resetNavigation != null:
 return resetNavigation();case ClearMessage() when clearMessage != null:
-return clearMessage();case _:
+return clearMessage();case RequestRoute() when requestRoute != null:
+return requestRoute(_that.fromLat,_that.fromLng,_that.fromName,_that.toLat,_that.toLng,_that.toName,_that.type);case ClearRoute() when clearRoute != null:
+return clearRoute();case _:
   return null;
 
 }
@@ -1010,6 +1022,116 @@ int get hashCode => runtimeType.hashCode;
 @override
 String toString() {
   return 'ScheduleEvent.clearMessage()';
+}
+
+
+}
+
+
+
+
+/// @nodoc
+
+
+class RequestRoute implements ScheduleEvent {
+  const RequestRoute({required this.fromLat, required this.fromLng, required this.fromName, required this.toLat, required this.toLng, required this.toName, required this.type});
+  
+
+ final  double fromLat;
+ final  double fromLng;
+ final  String fromName;
+ final  double toLat;
+ final  double toLng;
+ final  String toName;
+ final  RouteType type;
+
+/// Create a copy of ScheduleEvent
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$RequestRouteCopyWith<RequestRoute> get copyWith => _$RequestRouteCopyWithImpl<RequestRoute>(this, _$identity);
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is RequestRoute&&(identical(other.fromLat, fromLat) || other.fromLat == fromLat)&&(identical(other.fromLng, fromLng) || other.fromLng == fromLng)&&(identical(other.fromName, fromName) || other.fromName == fromName)&&(identical(other.toLat, toLat) || other.toLat == toLat)&&(identical(other.toLng, toLng) || other.toLng == toLng)&&(identical(other.toName, toName) || other.toName == toName)&&(identical(other.type, type) || other.type == type));
+}
+
+
+@override
+int get hashCode => Object.hash(runtimeType,fromLat,fromLng,fromName,toLat,toLng,toName,type);
+
+@override
+String toString() {
+  return 'ScheduleEvent.requestRoute(fromLat: $fromLat, fromLng: $fromLng, fromName: $fromName, toLat: $toLat, toLng: $toLng, toName: $toName, type: $type)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class $RequestRouteCopyWith<$Res> implements $ScheduleEventCopyWith<$Res> {
+  factory $RequestRouteCopyWith(RequestRoute value, $Res Function(RequestRoute) _then) = _$RequestRouteCopyWithImpl;
+@useResult
+$Res call({
+ double fromLat, double fromLng, String fromName, double toLat, double toLng, String toName, RouteType type
+});
+
+
+
+
+}
+/// @nodoc
+class _$RequestRouteCopyWithImpl<$Res>
+    implements $RequestRouteCopyWith<$Res> {
+  _$RequestRouteCopyWithImpl(this._self, this._then);
+
+  final RequestRoute _self;
+  final $Res Function(RequestRoute) _then;
+
+/// Create a copy of ScheduleEvent
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') $Res call({Object? fromLat = null,Object? fromLng = null,Object? fromName = null,Object? toLat = null,Object? toLng = null,Object? toName = null,Object? type = null,}) {
+  return _then(RequestRoute(
+fromLat: null == fromLat ? _self.fromLat : fromLat // ignore: cast_nullable_to_non_nullable
+as double,fromLng: null == fromLng ? _self.fromLng : fromLng // ignore: cast_nullable_to_non_nullable
+as double,fromName: null == fromName ? _self.fromName : fromName // ignore: cast_nullable_to_non_nullable
+as String,toLat: null == toLat ? _self.toLat : toLat // ignore: cast_nullable_to_non_nullable
+as double,toLng: null == toLng ? _self.toLng : toLng // ignore: cast_nullable_to_non_nullable
+as double,toName: null == toName ? _self.toName : toName // ignore: cast_nullable_to_non_nullable
+as String,type: null == type ? _self.type : type // ignore: cast_nullable_to_non_nullable
+as RouteType,
+  ));
+}
+
+
+}
+
+/// @nodoc
+
+
+class ClearRoute implements ScheduleEvent {
+  const ClearRoute();
+  
+
+
+
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ClearRoute);
+}
+
+
+@override
+int get hashCode => runtimeType.hashCode;
+
+@override
+String toString() {
+  return 'ScheduleEvent.clearRoute()';
 }
 
 

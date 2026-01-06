@@ -17,6 +17,7 @@ import '../../../../core/theme/app_icon.dart';
 import '../../../../core/widget/app_bar.dart';
 import '../../../../core/widget/button.dart';
 import '../../../../core/widget/pop_up_box.dart';
+import '../../../auth/domain/entities/user_entity.dart';
 
 class CreateTripScreen extends StatefulWidget {
   final int userId;
@@ -109,164 +110,174 @@ class _CreateTripScreenState extends State<CreateTripScreen> {
                       : null,
                   height: 36,
                   backgroundColor: Colors.transparent,
-                  contentColor: AppColors.primaryLight,
+                  contentColor: AppColors.light,
                   borderRadius: 18,
                   width: 36,
                 ),
               ],
             ),
-            body: Container(
-              color: isDark ? AppColors.navy : AppColors.darkGray,
-              child: SingleChildScrollView(
-                padding: const EdgeInsets.all(16),
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: colorScheme.surfaceContainerHighest,
-                      borderRadius: BorderRadius.all(Radius.circular(8.0)),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text("여행 제목", style: AppFont.regular),
-                          TextBox(
-                            controller: _titleController,
-                            hintText: "예: 제주도 힐링 여행",
-                            onChanged: (text) {
-                              bloc.add(
-                                CreateTripEvent.changeTitle(title: text),
-                              );
-                            },
-                          ),
-                          const SizedBox(height: 16),
-
-                          const Text("여행 장소", style: AppFont.regular),
-                          TextBox(
-                            controller: _placeController,
-                            hintText: "예: 전주 한옥마을",
-                            prefixIcon: const Icon(
-                              Icons.place,
-                              color: Colors.grey,
+            body: SafeArea(
+              bottom: true,
+              child: Container(
+                color: isDark ? AppColors.navy : AppColors.darkGray,
+                child: SingleChildScrollView(
+                  padding: const EdgeInsets.all(16),
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: colorScheme.surfaceContainerHighest,
+                        borderRadius: BorderRadius.all(Radius.circular(8.0)),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text("여행 제목", style: AppFont.regular),
+                            TextBox(
+                              controller: _titleController,
+                              hintText: "예: 제주도 힐링 여행",
+                              onChanged: (text) {
+                                bloc.add(
+                                  CreateTripEvent.changeTitle(title: text),
+                                );
+                              },
                             ),
-                            onChanged: (text) {
-                              bloc.add(
-                                CreateTripEvent.changePlace(place: text),
-                              );
-                            },
-                          ),
-                          const SizedBox(height: 16),
+                            const SizedBox(height: 16),
 
-                          const Text("여행 날짜", style: AppFont.regular),
-                          Row(
-                            children: [
-                              Expanded(
-                                child: DatePickerBox(
-                                  label: "시작일",
-                                  value: state.startAt,
-                                  // 시작일 선택
-                                  onTap: () async {
-                                    final bloc = context.read<CreateTripBloc>();
+                            const Text("여행 장소", style: AppFont.regular),
+                            TextBox(
+                              controller: _placeController,
+                              hintText: "예: 전주 한옥마을",
+                              prefixIcon: const Icon(
+                                Icons.place,
+                                color: Colors.grey,
+                              ),
+                              onChanged: (text) {
+                                bloc.add(
+                                  CreateTripEvent.changePlace(place: text),
+                                );
+                              },
+                            ),
+                            const SizedBox(height: 16),
 
-                                    final DateTime? picked =
-                                        await showDatePicker(
-                                          context: context,
-                                          initialDate: DateTime.now(),
-                                          firstDate: DateTime(2000),
-                                          lastDate: DateTime(2100),
+                            const Text("여행 날짜", style: AppFont.regular),
+                            Row(
+                              children: [
+                                Expanded(
+                                  child: DatePickerBox(
+                                    label: "시작일",
+                                    value: state.startAt,
+                                    // 시작일 선택
+                                    onTap: () async {
+                                      final bloc = context
+                                          .read<CreateTripBloc>();
+
+                                      final DateTime? picked =
+                                          await showDatePicker(
+                                            context: context,
+                                            initialDate: DateTime.now(),
+                                            firstDate: DateTime(2000),
+                                            lastDate: DateTime(2100),
+                                          );
+
+                                      if (picked != null) {
+                                        final formatted =
+                                            "${picked.year}-${_two(picked.month)}-${_two(picked.day)}";
+                                        bloc.add(
+                                          CreateTripEvent.changeStartAt(
+                                            startAt: formatted,
+                                          ),
                                         );
-
-                                    if (picked != null) {
-                                      final formatted =
-                                          "${picked.year}-${_two(picked.month)}-${_two(picked.day)}";
-                                      bloc.add(
-                                        CreateTripEvent.changeStartAt(
-                                          startAt: formatted,
-                                        ),
-                                      );
-                                    }
-                                  },
+                                      }
+                                    },
+                                  ),
                                 ),
-                              ),
-                              const SizedBox(width: 12),
-                              Expanded(
-                                child: DatePickerBox(
-                                  label: "종료일",
-                                  value: state.endAt,
-                                  // 종료일 선택
-                                  onTap: () async {
-                                    final bloc = context
-                                        .read<CreateTripBloc>(); // 캐싱
-                                    final startDate = state.startAt.isNotEmpty
-                                        ? DateTime.parse(state.startAt)
-                                        : DateTime.now();
+                                const SizedBox(width: 12),
+                                Expanded(
+                                  child: DatePickerBox(
+                                    label: "종료일",
+                                    value: state.endAt,
+                                    // 종료일 선택
+                                    onTap: () async {
+                                      final bloc = context
+                                          .read<CreateTripBloc>(); // 캐싱
+                                      final startDate = state.startAt.isNotEmpty
+                                          ? DateTime.parse(state.startAt)
+                                          : DateTime.now();
 
-                                    final DateTime? picked =
-                                        await showDatePicker(
-                                          context: context, // await 전에 호출됨 → OK
-                                          initialDate: startDate,
-                                          firstDate: startDate,
-                                          lastDate: DateTime(2100),
+                                      final DateTime? picked =
+                                          await showDatePicker(
+                                            context:
+                                                context, // await 전에 호출됨 → OK
+                                            initialDate: startDate,
+                                            firstDate: startDate,
+                                            lastDate: DateTime(2100),
+                                          );
+
+                                      if (picked != null) {
+                                        final formatted =
+                                            "${picked.year}-${_two(picked.month)}-${_two(picked.day)}";
+                                        bloc.add(
+                                          CreateTripEvent.changeEndAt(
+                                            endAt: formatted,
+                                          ),
                                         );
-
-                                    if (picked != null) {
-                                      final formatted =
-                                          "${picked.year}-${_two(picked.month)}-${_two(picked.day)}";
-                                      bloc.add(
-                                        CreateTripEvent.changeEndAt(
-                                          endAt: formatted,
-                                        ),
-                                      );
-                                    }
-                                  },
+                                      }
+                                    },
+                                  ),
                                 ),
-                              ),
-                            ],
-                          ),
-                          const SizedBox(height: 20),
-
-                          const Text("커버 타입", style: AppFont.regular),
-                          Row(
-                            children: [
-                              _typeTab(
-                                context,
-                                "COLOR",
-                                state.coverStyle == "COLOR",
-                              ),
-                              const SizedBox(width: 12),
-                              _typeTab(
-                                context,
-                                "IMAGE",
-                                state.coverStyle == "IMAGE",
-                              ),
-                            ],
-                          ),
-                          const SizedBox(height: 14),
-
-                          if (state.coverStyle == "COLOR") ...[
-                            const Text(
-                              "커버 색상",
-                              style: TextStyle(fontWeight: FontWeight.bold),
+                              ],
                             ),
-                            const SizedBox(height: 10),
-                            _colorPickSection(context),
-                          ],
+                            const SizedBox(height: 20),
 
-                          if (state.coverStyle == "IMAGE") ...[
-                            const Text(
-                              "커버 이미지",
-                              style: TextStyle(fontWeight: FontWeight.bold),
+                            const Text("커버 타입", style: AppFont.regular),
+                            Row(
+                              children: [
+                                _typeTab(
+                                  context,
+                                  "COLOR",
+                                  state.coverStyle == "COLOR",
+                                ),
+                                const SizedBox(width: 12),
+                                _typeTab(
+                                  context,
+                                  "IMAGE",
+                                  state.coverStyle == "IMAGE",
+                                ),
+                              ],
                             ),
-                            const SizedBox(height: 10),
-                            _imagePickSection(context, state),
+                            const SizedBox(height: 14),
+
+                            if (state.coverStyle == "COLOR") ...[
+                              const Text(
+                                "커버 색상",
+                                style: TextStyle(fontWeight: FontWeight.bold),
+                              ),
+                              const SizedBox(height: 10),
+                              _colorPickSection(context),
+                            ],
+
+                            if (state.coverStyle == "IMAGE") ...[
+                              const Text(
+                                "커버 이미지",
+                                style: TextStyle(fontWeight: FontWeight.bold),
+                              ),
+                              const SizedBox(height: 10),
+                              _imagePickSection(context, state),
+                            ],
+
+                            const SizedBox(height: 20),
+
+                            _InfoBox(),
+
+                            if (state.friendUser != null) ...[
+                              const SizedBox(height: 16),
+                              _InvitedCrewPreview(user: state.friendUser!),
+                            ],
                           ],
-
-                          const SizedBox(height: 20),
-
-                          _InfoBox(),
-                        ],
+                        ),
                       ),
                     ),
                   ),
@@ -565,4 +576,71 @@ Future<bool> _showExitConfirmDialog(BuildContext context) async {
   );
 
   return result == true;
+}
+
+class _InvitedCrewPreview extends StatelessWidget {
+  final UserEntity user;
+
+  const _InvitedCrewPreview({required this.user});
+
+  @override
+  Widget build(BuildContext context) {
+    final cs = Theme.of(context).colorScheme;
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text("함께하는 크루", style: AppFont.regularBold),
+        const SizedBox(height: 8),
+        Container(
+          padding: const EdgeInsets.all(12),
+          decoration: _cardDeco(cs),
+          child: Row(
+            children: [
+              CircleAvatar(
+                radius: 20,
+                backgroundImage:
+                    (user.profileImg != null && user.profileImg!.isNotEmpty)
+                    ? NetworkImage(user.profileImg!)
+                    : null,
+                child: (user.profileImg == null || user.profileImg!.isEmpty)
+                    ? const Icon(Icons.person)
+                    : null,
+              ),
+              const SizedBox(width: 12),
+              Expanded(child: Text(user.nickname ?? '')),
+              Container(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 12,
+                  vertical: 6,
+                ),
+                decoration: BoxDecoration(
+                  color: cs.primary,
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: Text(
+                  "초대됨",
+                  style: AppFont.small.copyWith(color: AppColors.light),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+BoxDecoration _cardDeco(ColorScheme colorScheme) {
+  return BoxDecoration(
+    color: colorScheme.surfaceContainerHighest,
+    borderRadius: BorderRadius.circular(16),
+    boxShadow: [
+      BoxShadow(
+        color: Colors.black.withOpacity(0.05),
+        blurRadius: 8,
+        offset: const Offset(0, 4),
+      ),
+    ],
+  );
 }

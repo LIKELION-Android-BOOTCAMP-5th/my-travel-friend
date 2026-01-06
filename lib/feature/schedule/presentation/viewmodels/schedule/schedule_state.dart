@@ -4,6 +4,7 @@ import '../../../../auth/domain/entities/user_entity.dart';
 import '../../../../trip/domain/entities/trip_entity.dart';
 import '../../../domain/entities/category_entity.dart';
 import '../../../domain/entities/schedule_entity.dart';
+import '../../widgets/route_type.dart';
 
 part 'schedule_state.freezed.dart';
 
@@ -56,6 +57,13 @@ abstract class ScheduleState with _$ScheduleState {
     TripEntity? trip,
 
     @Default(ScheduleFilterType.date) ScheduleFilterType viewMode,
+
+    String? routeUrl,
+    @Default(false) bool routeRequested,
+
+    RouteType? routeType,
+    String? routeFrom,
+    String? routeTo,
   }) = _ScheduleState;
 }
 

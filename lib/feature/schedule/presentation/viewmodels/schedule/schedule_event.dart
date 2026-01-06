@@ -1,6 +1,7 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 import '../../../domain/entities/schedule_entity.dart';
+import '../../widgets/route_type.dart';
 
 part 'schedule_event.freezed.dart';
 
@@ -53,4 +54,17 @@ abstract class ScheduleEvent with _$ScheduleEvent {
 
   // 메시지 초기화
   const factory ScheduleEvent.clearMessage() = ClearMessage;
+
+  //길찾기
+  const factory ScheduleEvent.requestRoute({
+    required double fromLat,
+    required double fromLng,
+    required String fromName,
+    required double toLat,
+    required double toLng,
+    required String toName,
+    required RouteType type,
+  }) = RequestRoute;
+
+  const factory ScheduleEvent.clearRoute() = ClearRoute;
 }

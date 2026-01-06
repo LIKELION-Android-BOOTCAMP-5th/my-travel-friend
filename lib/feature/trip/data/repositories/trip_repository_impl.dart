@@ -9,6 +9,7 @@ import 'package:my_travel_friend/feature/trip/domain/entities/useful_pharse_enti
 import 'package:my_travel_friend/feature/trip/domain/repositories/trip_repository.dart';
 
 import '../../../../core/result/failures.dart';
+import '../../../auth/domain/entities/user_entity.dart';
 
 //신강현
 //여행 레포지터리 임플리먼트
@@ -138,6 +139,16 @@ class TripRepositoryImpl implements TripRepository {
       failure: (failure) {
         return Result.failure(failure);
       },
+    );
+  }
+
+  @override
+  Future<Result<UserEntity>> getUserById(int userId) async {
+    final res = await _dataSource.getUserById(userId);
+
+    return res.when(
+      success: (dto) => Result.success(dto.toEntity()),
+      failure: (f) => Result.failure(f),
     );
   }
 }

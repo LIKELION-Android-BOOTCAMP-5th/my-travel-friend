@@ -3,6 +3,8 @@ import 'dart:io';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:my_travel_friend/feature/trip/domain/entities/trip_entity.dart';
 
+import '../../../../auth/domain/entities/user_entity.dart';
+
 part 'create_trip_state.freezed.dart';
 
 @freezed
@@ -15,7 +17,7 @@ abstract class CreateTripState with _$CreateTripState {
     @Default('') String place,
     @Default('') String startAt,
     @Default('') String endAt,
-    @Default('Blue') String coverType,
+    @Default('BLUE') String coverType,
     @Default('') String country,
     @Default('COLOR') String coverStyle,
     String? coverImg,
@@ -24,7 +26,7 @@ abstract class CreateTripState with _$CreateTripState {
     TripEntity? createTrip,
 
     int? friendId,
-
+    UserEntity? friendUser,
     // 메세지 (성공/에러)
     String? message,
     String? errorType,

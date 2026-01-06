@@ -33,8 +33,11 @@ import '../feature/friend/presentation/screen/friend_request_bloc_widget.dart';
 import '../feature/friend/presentation/screen/recevice_list_bloc_widget.dart';
 import '../feature/friend/presentation/screen/recevice_trip_bloc_widget.dart';
 import '../feature/onboarding/presentation/screens/onboarding_bloc_widget.dart';
+import '../feature/schedule/domain/entities/schedule_entity.dart';
 import '../feature/schedule/presentation/screens/create_schedule_bloc_widget.dart';
+import '../feature/schedule/presentation/screens/edit_schedule_bloc_widget.dart';
 import '../feature/schedule/presentation/screens/map_search_bloc_widget.dart';
+import '../feature/schedule/presentation/widgets/route_type.dart';
 import '../feature/setting/presentation/screens/alarm/alarm_setting_bloc_widget.dart';
 import '../feature/setting/presentation/screens/home_widget/widget_settings_bloc_widget.dart';
 import '../feature/setting/presentation/screens/profile/profile_bloc_widget.dart';
@@ -156,13 +159,19 @@ class AppRouter {
             path: 'trip/create',
             name: 'tripCreate',
             builder: (context, state) {
+              debugPrint('🔥 [Router] tripCreate entered');
+              debugPrint('🔥 [Router] extra = ${state.extra}');
               final authState = context.read<AuthProfileBloc>().state;
               final userId = (authState is AuthProfileAuthenticated)
                   ? authState.userInfo.id!
                   : 0;
+              final extra = state.extra as Map<String, dynamic>?;
+              final int? friendId = extra?['friendId'] as int?;
+
+              debugPrint('🔥 tripCreate friendId = $friendId');
               return BlocProvider(
                 create: (context) => GetIt.instance<CreateTripBloc>(),
-                child: CreateTripBlocWidget(userId: userId),
+                child: CreateTripBlocWidget(userId: userId, friendId: friendId),
               );
             },
           ),
@@ -350,8 +359,12 @@ class AppRouter {
 
               final extra = state.extra as Map<String, dynamic>?;
 
+              final mode =
+                  extra?['mode'] as MapSearchMode? ?? MapSearchMode.aiSearch;
+
               return MapSearchBlocWidget(
                 tripId: tripId,
+                mode: mode,
                 initialLat: extra?['lat'],
                 initialLng: extra?['lng'],
                 initialAddress: extra?['address'],
@@ -372,8 +385,9 @@ class AppRouter {
             name: 'ScheduleEdit',
             builder: (context, state) {
               final tripId = int.parse(state.pathParameters['tripId']!);
+              final schedule = state.extra as ScheduleEntity;
 
-              return CreateScheduleBlocWidget(tripId: tripId);
+              return EditScheduleBlocWidget(tripId: tripId, schedule: schedule);
             },
           ),
         ],

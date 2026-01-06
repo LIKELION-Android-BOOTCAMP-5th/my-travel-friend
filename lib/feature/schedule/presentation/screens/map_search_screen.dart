@@ -8,6 +8,8 @@ import 'package:my_travel_friend/feature/schedule/presentation/viewmodels/map_se
 import 'package:my_travel_friend/feature/schedule/presentation/viewmodels/map_search/map_search_event.dart';
 import 'package:my_travel_friend/feature/schedule/presentation/viewmodels/map_search/map_search_state.dart';
 
+import '../widgets/route_type.dart';
+
 class MapSearchScreen extends StatefulWidget {
   const MapSearchScreen({super.key});
 
@@ -325,6 +327,9 @@ class _PlaceItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final mode = context.watch<MapSearchBloc>().state.mode;
+
+    if (mode == MapSearchMode.aiSearch && place.aiReason.isNotEmpty) {}
     return GestureDetector(
       onTap: () {
         context.read<MapSearchBloc>().add(MapSearchEvent.placeFocused(place));
