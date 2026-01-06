@@ -73,7 +73,10 @@ Future<void> _initHomeWidget() async {
     final initialUri = await HomeWidget.initiallyLaunchedFromHomeWidget();
     if (initialUri != null) {
       debugPrint('Initial widget URI: $initialUri');
-      _handleWidgetUri(initialUri);
+      // GoRouter가 준비된 후에 처리
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        _handleWidgetUri(initialUri);
+      });
     }
   } catch (e) {
     debugPrint('Error getting initial widget URI: $e');
