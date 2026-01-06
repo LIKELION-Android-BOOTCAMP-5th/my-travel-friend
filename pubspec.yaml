@@ -70,11 +70,12 @@ dependencies:
   path_provider: ^2.1.5
   permission_handler: ^11.3.0
   shared_preferences: ^2.5.4
+  share_plus: ^12.0.1
   sign_in_with_apple: ^6.1.4
   supabase_flutter: ^2.6.0
   tutorial_coach_mark: ^1.2.11
   url_launcher: ^6.2.1
-
+  app_links: ^6.4.1
 
 
 dev_dependencies:

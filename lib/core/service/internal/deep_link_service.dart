@@ -54,4 +54,22 @@ class DeepLinkService extends ChangeNotifier {
         return '/home';
     }
   }
+
+  // 친구 초대 링크 처리
+  void navigateFromInviteLink(Uri uri) {
+    // mytravelfriend://invite/friend?from=123
+    final host = uri.host; // invite
+    final path = uri.path.replaceAll(RegExp(r'/$'), ''); // /friend
+    if (host != 'invite' || path != '/friend') return;
+    final fromId = int.tryParse(uri.queryParameters['from'] ?? '');
+
+    if (fromId == null) return;
+
+    final targetRoute = '/home/setting/friend-receive?from=$fromId';
+
+    print('[DeepLinkService] 친구 초대 딥링크 감지: $targetRoute');
+
+    _pendingPath = targetRoute;
+    notifyListeners();
+  }
 }

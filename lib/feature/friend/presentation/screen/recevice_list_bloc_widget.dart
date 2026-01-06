@@ -9,6 +9,7 @@ import '../viewmodel/friend_bloc.dart';
 import '../viewmodel/friend_event.dart';
 import '../viewmodel/friend_request_bloc.dart';
 import '../viewmodel/friend_request_state.dart';
+import '../widget/friend_recevice_invite.dart';
 
 /// [엄수빈] 받은 친구요청을 감싸는 위젯
 class ReceviceListBlocWidget extends StatelessWidget {
@@ -58,27 +59,29 @@ class ReceviceListBlocWidget extends StatelessWidget {
           }
         },
         builder: (context, state) {
-          final screen = ReceviceListScreen(
-            userId: userId,
-            state: state,
+          final screen = FriendReceviceInvite(
+            child: ReceviceListScreen(
+              userId: userId,
+              state: state,
 
-            onAccept: (requestRowId, requestId) {
-              context.read<FriendRequestBloc>().add(
-                FriendRequestEvent.acceptRequest(id: requestRowId),
-              );
-              context.read<FriendBloc>().add(
-                FriendEvent.createFriendRelation(
-                  userId1: requestId,
-                  userId2: userId,
-                ),
-              );
-            },
+              onAccept: (requestRowId, requestId) {
+                context.read<FriendRequestBloc>().add(
+                  FriendRequestEvent.acceptRequest(id: requestRowId),
+                );
+                context.read<FriendBloc>().add(
+                  FriendEvent.createFriendRelation(
+                    userId1: requestId,
+                    userId2: userId,
+                  ),
+                );
+              },
 
-            onDelete: (requestRowId) {
-              context.read<FriendRequestBloc>().add(
-                FriendRequestEvent.deleteRequest(id: requestRowId),
-              );
-            },
+              onDelete: (requestRowId) {
+                context.read<FriendRequestBloc>().add(
+                  FriendRequestEvent.deleteRequest(id: requestRowId),
+                );
+              },
+            ),
           );
 
           if (state.pageState == FriendRequestPageState.loading) {

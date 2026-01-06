@@ -49,6 +49,10 @@ void main() async {
 
   await _initHomeWidget();
 
+  // app_links 리스너 시작
+  // final appLinksService = AppLinkService();
+  // await appLinksService.init();
+
   runApp(
     MultiBlocProvider(
       providers: [
