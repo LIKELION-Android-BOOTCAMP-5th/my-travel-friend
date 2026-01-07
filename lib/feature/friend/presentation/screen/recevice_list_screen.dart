@@ -29,11 +29,13 @@ class ReceviceListScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final cs = Theme.of(context).colorScheme;
+    final isDark = cs.brightness == Brightness.dark;
 
     final users = state.requestProfiles;
     final requests = state.friendRequest;
 
     return Scaffold(
+      backgroundColor: isDark ? AppColors.navy : AppColors.darkGray,
       appBar: CustomButtonAppBar(
         title: "받은 친구 요청",
         leading: Button(
@@ -45,69 +47,79 @@ class ReceviceListScreen extends StatelessWidget {
           borderRadius: 20,
         ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text("받은 친구 요청: ${users.length}개"),
-            const SizedBox(height: 12),
-            Expanded(
-              child: users.isEmpty
-                  ? const EmptyCard(
-                      title: '받은 친구 요청이 없어요',
-                      subtitle: '새로운 친구 요청이 오면 여기에 표시됩니다',
-                      icon: AppIcon.okay,
-                    )
-                  : ListView.separated(
-                      itemCount: users.length,
-                      separatorBuilder: (_, __) => const Divider(),
-                      itemBuilder: (context, index) {
-                        final user = users[index];
+      body: SafeArea(
+        child: Container(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text("받은 친구 요청: ${users.length}개"),
+              const SizedBox(height: 12),
+              Expanded(
+                child: users.isEmpty
+                    ? const EmptyCard(
+                        title: '받은 친구 요청이 없어요',
+                        subtitle: '새로운 친구 요청이 오면 여기에 표시됩니다',
+                        icon: AppIcon.okay,
+                      )
+                    : Material(
+                        color: cs.surface,
+                        elevation: 3,
+                        borderRadius: BorderRadius.circular(24),
+                        clipBehavior: Clip.antiAlias,
+                        child: ListView.separated(
+                          itemCount: users.length,
+                          separatorBuilder: (_, __) => const Divider(),
+                          itemBuilder: (context, index) {
+                            final user = users[index];
 
-                        final req = requests
-                            .where((r) => r.requestId == user.id)
-                            .toList();
+                            final req = requests
+                                .where((r) => r.requestId == user.id)
+                                .toList();
 
-                        final requestRowId = req.isEmpty ? null : req.first.id;
-                        final createdAt = req.isEmpty
-                            ? ''
-                            : (req.first.createdAt ?? '');
+                            final requestRowId = req.isEmpty
+                                ? null
+                                : req.first.id;
+                            final createdAt = req.isEmpty
+                                ? ''
+                                : (req.first.createdAt ?? '');
 
-                        return FriendReceviceWidget(
-                          user: user,
-                          time: createdAt,
+                            return FriendReceviceWidget(
+                              user: user,
+                              time: createdAt,
 
-                          // 거절
-                          onLeft: requestRowId == null
-                              ? null
-                              : () {
-                                  showDialog(
-                                    context: context,
-                                    barrierDismissible: false,
-                                    builder: (_) => PopUpBox(
-                                      title: '친구 거절 확인',
-                                      message: '${user.nickname}님을 삭제할까요?',
-                                      leftText: '취소',
-                                      rightText: '삭제',
-                                      onRight: () {
-                                        onDelete(requestRowId);
-                                      },
-                                    ),
-                                  );
-                                },
+                              // 거절
+                              onLeft: requestRowId == null
+                                  ? null
+                                  : () {
+                                      showDialog(
+                                        context: context,
+                                        barrierDismissible: false,
+                                        builder: (_) => PopUpBox(
+                                          title: '친구 거절 확인',
+                                          message: '${user.nickname}님을 삭제할까요?',
+                                          leftText: '취소',
+                                          rightText: '삭제',
+                                          onRight: () {
+                                            onDelete(requestRowId);
+                                          },
+                                        ),
+                                      );
+                                    },
 
-                          // 수락
-                          onRight: requestRowId == null
-                              ? null
-                              : () {
-                                  onAccept(requestRowId, user.id ?? 0);
-                                },
-                        );
-                      },
-                    ),
-            ),
-          ],
+                              // 수락
+                              onRight: requestRowId == null
+                                  ? null
+                                  : () {
+                                      onAccept(requestRowId, user.id ?? 0);
+                                    },
+                            );
+                          },
+                        ),
+                      ),
+              ),
+            ],
+          ),
         ),
       ),
     );

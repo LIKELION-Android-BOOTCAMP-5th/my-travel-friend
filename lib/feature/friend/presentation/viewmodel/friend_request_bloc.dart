@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 import 'package:my_travel_friend/feature/friend/domain/usecases/accept_request_usecase.dart';
@@ -125,8 +126,7 @@ class FriendRequestBloc extends Bloc<FriendRequestEvent, FriendRequestState> {
       event.targetId,
     );
 
-    if (emit.isDone) return;
-
+    debugPrint('[Result] requestCreate success: $result');
     result.when(
       success: (request) {
         // 성공 → 최종 확정
@@ -134,6 +134,7 @@ class FriendRequestBloc extends Bloc<FriendRequestEvent, FriendRequestState> {
           state.copyWith(
             pageState: FriendRequestPageState.success,
             friendRequest: [...state.friendRequest, request],
+            actionType: 'request_create',
             message: '친구 요청을 보냈어요.',
             errorType: null,
           ),
