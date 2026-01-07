@@ -75,6 +75,11 @@ class DeepLinkService extends ChangeNotifier {
 
     final myId = authState.userInfo.id!;
 
+    if (fromId == myId) {
+      debugPrint('[Skip] 내 아이디 진입 제거 : fromId=$fromId myId=$myId');
+      return;
+    }
+
     GetIt.I<FriendRequestBloc>().add(
       FriendRequestEvent.requestCreate(requestId: myId, targetId: fromId),
     );
