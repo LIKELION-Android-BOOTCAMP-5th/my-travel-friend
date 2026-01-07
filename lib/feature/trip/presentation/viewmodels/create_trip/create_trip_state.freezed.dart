@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 mixin _$CreateTripState {
 
  int get userId; String get title; String get place; String get startAt; String get endAt; String get coverType; String get country; String get coverStyle; String? get coverImg; File? get localImgFile; TripEntity? get createTrip; int? get friendId; UserEntity? get friendUser;// 메세지 (성공/에러)
- String? get message; String? get errorType; String? get actionType; bool get isSameDay; bool get showSameDayDialog;// 이미지 업로드 상태 (추가)
+ String? get message; String? get errorType; String? get actionType; bool get isResolvingCountry; bool get isSameDay; bool get showSameDayDialog;// 이미지 업로드 상태 (추가)
  bool get isUploading;// 페이지 상태
  CreateTripPageState get pageState;
 /// Create a copy of CreateTripState
@@ -28,16 +28,16 @@ $CreateTripStateCopyWith<CreateTripState> get copyWith => _$CreateTripStateCopyW
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is CreateTripState&&(identical(other.userId, userId) || other.userId == userId)&&(identical(other.title, title) || other.title == title)&&(identical(other.place, place) || other.place == place)&&(identical(other.startAt, startAt) || other.startAt == startAt)&&(identical(other.endAt, endAt) || other.endAt == endAt)&&(identical(other.coverType, coverType) || other.coverType == coverType)&&(identical(other.country, country) || other.country == country)&&(identical(other.coverStyle, coverStyle) || other.coverStyle == coverStyle)&&(identical(other.coverImg, coverImg) || other.coverImg == coverImg)&&(identical(other.localImgFile, localImgFile) || other.localImgFile == localImgFile)&&(identical(other.createTrip, createTrip) || other.createTrip == createTrip)&&(identical(other.friendId, friendId) || other.friendId == friendId)&&(identical(other.friendUser, friendUser) || other.friendUser == friendUser)&&(identical(other.message, message) || other.message == message)&&(identical(other.errorType, errorType) || other.errorType == errorType)&&(identical(other.actionType, actionType) || other.actionType == actionType)&&(identical(other.isSameDay, isSameDay) || other.isSameDay == isSameDay)&&(identical(other.showSameDayDialog, showSameDayDialog) || other.showSameDayDialog == showSameDayDialog)&&(identical(other.isUploading, isUploading) || other.isUploading == isUploading)&&(identical(other.pageState, pageState) || other.pageState == pageState));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is CreateTripState&&(identical(other.userId, userId) || other.userId == userId)&&(identical(other.title, title) || other.title == title)&&(identical(other.place, place) || other.place == place)&&(identical(other.startAt, startAt) || other.startAt == startAt)&&(identical(other.endAt, endAt) || other.endAt == endAt)&&(identical(other.coverType, coverType) || other.coverType == coverType)&&(identical(other.country, country) || other.country == country)&&(identical(other.coverStyle, coverStyle) || other.coverStyle == coverStyle)&&(identical(other.coverImg, coverImg) || other.coverImg == coverImg)&&(identical(other.localImgFile, localImgFile) || other.localImgFile == localImgFile)&&(identical(other.createTrip, createTrip) || other.createTrip == createTrip)&&(identical(other.friendId, friendId) || other.friendId == friendId)&&(identical(other.friendUser, friendUser) || other.friendUser == friendUser)&&(identical(other.message, message) || other.message == message)&&(identical(other.errorType, errorType) || other.errorType == errorType)&&(identical(other.actionType, actionType) || other.actionType == actionType)&&(identical(other.isResolvingCountry, isResolvingCountry) || other.isResolvingCountry == isResolvingCountry)&&(identical(other.isSameDay, isSameDay) || other.isSameDay == isSameDay)&&(identical(other.showSameDayDialog, showSameDayDialog) || other.showSameDayDialog == showSameDayDialog)&&(identical(other.isUploading, isUploading) || other.isUploading == isUploading)&&(identical(other.pageState, pageState) || other.pageState == pageState));
 }
 
 
 @override
-int get hashCode => Object.hashAll([runtimeType,userId,title,place,startAt,endAt,coverType,country,coverStyle,coverImg,localImgFile,createTrip,friendId,friendUser,message,errorType,actionType,isSameDay,showSameDayDialog,isUploading,pageState]);
+int get hashCode => Object.hashAll([runtimeType,userId,title,place,startAt,endAt,coverType,country,coverStyle,coverImg,localImgFile,createTrip,friendId,friendUser,message,errorType,actionType,isResolvingCountry,isSameDay,showSameDayDialog,isUploading,pageState]);
 
 @override
 String toString() {
-  return 'CreateTripState(userId: $userId, title: $title, place: $place, startAt: $startAt, endAt: $endAt, coverType: $coverType, country: $country, coverStyle: $coverStyle, coverImg: $coverImg, localImgFile: $localImgFile, createTrip: $createTrip, friendId: $friendId, friendUser: $friendUser, message: $message, errorType: $errorType, actionType: $actionType, isSameDay: $isSameDay, showSameDayDialog: $showSameDayDialog, isUploading: $isUploading, pageState: $pageState)';
+  return 'CreateTripState(userId: $userId, title: $title, place: $place, startAt: $startAt, endAt: $endAt, coverType: $coverType, country: $country, coverStyle: $coverStyle, coverImg: $coverImg, localImgFile: $localImgFile, createTrip: $createTrip, friendId: $friendId, friendUser: $friendUser, message: $message, errorType: $errorType, actionType: $actionType, isResolvingCountry: $isResolvingCountry, isSameDay: $isSameDay, showSameDayDialog: $showSameDayDialog, isUploading: $isUploading, pageState: $pageState)';
 }
 
 
@@ -48,7 +48,7 @@ abstract mixin class $CreateTripStateCopyWith<$Res>  {
   factory $CreateTripStateCopyWith(CreateTripState value, $Res Function(CreateTripState) _then) = _$CreateTripStateCopyWithImpl;
 @useResult
 $Res call({
- int userId, String title, String place, String startAt, String endAt, String coverType, String country, String coverStyle, String? coverImg, File? localImgFile, TripEntity? createTrip, int? friendId, UserEntity? friendUser, String? message, String? errorType, String? actionType, bool isSameDay, bool showSameDayDialog, bool isUploading, CreateTripPageState pageState
+ int userId, String title, String place, String startAt, String endAt, String coverType, String country, String coverStyle, String? coverImg, File? localImgFile, TripEntity? createTrip, int? friendId, UserEntity? friendUser, String? message, String? errorType, String? actionType, bool isResolvingCountry, bool isSameDay, bool showSameDayDialog, bool isUploading, CreateTripPageState pageState
 });
 
 
@@ -65,7 +65,7 @@ class _$CreateTripStateCopyWithImpl<$Res>
 
 /// Create a copy of CreateTripState
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? userId = null,Object? title = null,Object? place = null,Object? startAt = null,Object? endAt = null,Object? coverType = null,Object? country = null,Object? coverStyle = null,Object? coverImg = freezed,Object? localImgFile = freezed,Object? createTrip = freezed,Object? friendId = freezed,Object? friendUser = freezed,Object? message = freezed,Object? errorType = freezed,Object? actionType = freezed,Object? isSameDay = null,Object? showSameDayDialog = null,Object? isUploading = null,Object? pageState = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? userId = null,Object? title = null,Object? place = null,Object? startAt = null,Object? endAt = null,Object? coverType = null,Object? country = null,Object? coverStyle = null,Object? coverImg = freezed,Object? localImgFile = freezed,Object? createTrip = freezed,Object? friendId = freezed,Object? friendUser = freezed,Object? message = freezed,Object? errorType = freezed,Object? actionType = freezed,Object? isResolvingCountry = null,Object? isSameDay = null,Object? showSameDayDialog = null,Object? isUploading = null,Object? pageState = null,}) {
   return _then(_self.copyWith(
 userId: null == userId ? _self.userId : userId // ignore: cast_nullable_to_non_nullable
 as int,title: null == title ? _self.title : title // ignore: cast_nullable_to_non_nullable
@@ -83,7 +83,8 @@ as int?,friendUser: freezed == friendUser ? _self.friendUser : friendUser // ign
 as UserEntity?,message: freezed == message ? _self.message : message // ignore: cast_nullable_to_non_nullable
 as String?,errorType: freezed == errorType ? _self.errorType : errorType // ignore: cast_nullable_to_non_nullable
 as String?,actionType: freezed == actionType ? _self.actionType : actionType // ignore: cast_nullable_to_non_nullable
-as String?,isSameDay: null == isSameDay ? _self.isSameDay : isSameDay // ignore: cast_nullable_to_non_nullable
+as String?,isResolvingCountry: null == isResolvingCountry ? _self.isResolvingCountry : isResolvingCountry // ignore: cast_nullable_to_non_nullable
+as bool,isSameDay: null == isSameDay ? _self.isSameDay : isSameDay // ignore: cast_nullable_to_non_nullable
 as bool,showSameDayDialog: null == showSameDayDialog ? _self.showSameDayDialog : showSameDayDialog // ignore: cast_nullable_to_non_nullable
 as bool,isUploading: null == isUploading ? _self.isUploading : isUploading // ignore: cast_nullable_to_non_nullable
 as bool,pageState: null == pageState ? _self.pageState : pageState // ignore: cast_nullable_to_non_nullable
@@ -196,10 +197,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int userId,  String title,  String place,  String startAt,  String endAt,  String coverType,  String country,  String coverStyle,  String? coverImg,  File? localImgFile,  TripEntity? createTrip,  int? friendId,  UserEntity? friendUser,  String? message,  String? errorType,  String? actionType,  bool isSameDay,  bool showSameDayDialog,  bool isUploading,  CreateTripPageState pageState)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int userId,  String title,  String place,  String startAt,  String endAt,  String coverType,  String country,  String coverStyle,  String? coverImg,  File? localImgFile,  TripEntity? createTrip,  int? friendId,  UserEntity? friendUser,  String? message,  String? errorType,  String? actionType,  bool isResolvingCountry,  bool isSameDay,  bool showSameDayDialog,  bool isUploading,  CreateTripPageState pageState)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _CreateTripState() when $default != null:
-return $default(_that.userId,_that.title,_that.place,_that.startAt,_that.endAt,_that.coverType,_that.country,_that.coverStyle,_that.coverImg,_that.localImgFile,_that.createTrip,_that.friendId,_that.friendUser,_that.message,_that.errorType,_that.actionType,_that.isSameDay,_that.showSameDayDialog,_that.isUploading,_that.pageState);case _:
+return $default(_that.userId,_that.title,_that.place,_that.startAt,_that.endAt,_that.coverType,_that.country,_that.coverStyle,_that.coverImg,_that.localImgFile,_that.createTrip,_that.friendId,_that.friendUser,_that.message,_that.errorType,_that.actionType,_that.isResolvingCountry,_that.isSameDay,_that.showSameDayDialog,_that.isUploading,_that.pageState);case _:
   return orElse();
 
 }
@@ -217,10 +218,10 @@ return $default(_that.userId,_that.title,_that.place,_that.startAt,_that.endAt,_
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int userId,  String title,  String place,  String startAt,  String endAt,  String coverType,  String country,  String coverStyle,  String? coverImg,  File? localImgFile,  TripEntity? createTrip,  int? friendId,  UserEntity? friendUser,  String? message,  String? errorType,  String? actionType,  bool isSameDay,  bool showSameDayDialog,  bool isUploading,  CreateTripPageState pageState)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int userId,  String title,  String place,  String startAt,  String endAt,  String coverType,  String country,  String coverStyle,  String? coverImg,  File? localImgFile,  TripEntity? createTrip,  int? friendId,  UserEntity? friendUser,  String? message,  String? errorType,  String? actionType,  bool isResolvingCountry,  bool isSameDay,  bool showSameDayDialog,  bool isUploading,  CreateTripPageState pageState)  $default,) {final _that = this;
 switch (_that) {
 case _CreateTripState():
-return $default(_that.userId,_that.title,_that.place,_that.startAt,_that.endAt,_that.coverType,_that.country,_that.coverStyle,_that.coverImg,_that.localImgFile,_that.createTrip,_that.friendId,_that.friendUser,_that.message,_that.errorType,_that.actionType,_that.isSameDay,_that.showSameDayDialog,_that.isUploading,_that.pageState);case _:
+return $default(_that.userId,_that.title,_that.place,_that.startAt,_that.endAt,_that.coverType,_that.country,_that.coverStyle,_that.coverImg,_that.localImgFile,_that.createTrip,_that.friendId,_that.friendUser,_that.message,_that.errorType,_that.actionType,_that.isResolvingCountry,_that.isSameDay,_that.showSameDayDialog,_that.isUploading,_that.pageState);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -237,10 +238,10 @@ return $default(_that.userId,_that.title,_that.place,_that.startAt,_that.endAt,_
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int userId,  String title,  String place,  String startAt,  String endAt,  String coverType,  String country,  String coverStyle,  String? coverImg,  File? localImgFile,  TripEntity? createTrip,  int? friendId,  UserEntity? friendUser,  String? message,  String? errorType,  String? actionType,  bool isSameDay,  bool showSameDayDialog,  bool isUploading,  CreateTripPageState pageState)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int userId,  String title,  String place,  String startAt,  String endAt,  String coverType,  String country,  String coverStyle,  String? coverImg,  File? localImgFile,  TripEntity? createTrip,  int? friendId,  UserEntity? friendUser,  String? message,  String? errorType,  String? actionType,  bool isResolvingCountry,  bool isSameDay,  bool showSameDayDialog,  bool isUploading,  CreateTripPageState pageState)?  $default,) {final _that = this;
 switch (_that) {
 case _CreateTripState() when $default != null:
-return $default(_that.userId,_that.title,_that.place,_that.startAt,_that.endAt,_that.coverType,_that.country,_that.coverStyle,_that.coverImg,_that.localImgFile,_that.createTrip,_that.friendId,_that.friendUser,_that.message,_that.errorType,_that.actionType,_that.isSameDay,_that.showSameDayDialog,_that.isUploading,_that.pageState);case _:
+return $default(_that.userId,_that.title,_that.place,_that.startAt,_that.endAt,_that.coverType,_that.country,_that.coverStyle,_that.coverImg,_that.localImgFile,_that.createTrip,_that.friendId,_that.friendUser,_that.message,_that.errorType,_that.actionType,_that.isResolvingCountry,_that.isSameDay,_that.showSameDayDialog,_that.isUploading,_that.pageState);case _:
   return null;
 
 }
@@ -252,7 +253,7 @@ return $default(_that.userId,_that.title,_that.place,_that.startAt,_that.endAt,_
 
 
 class _CreateTripState extends CreateTripState {
-  const _CreateTripState({this.userId = 0, this.title = '', this.place = '', this.startAt = '', this.endAt = '', this.coverType = 'BLUE', this.country = '', this.coverStyle = 'COLOR', this.coverImg, this.localImgFile, this.createTrip, this.friendId, this.friendUser, this.message, this.errorType, this.actionType, this.isSameDay = false, this.showSameDayDialog = false, this.isUploading = false, this.pageState = CreateTripPageState.init}): super._();
+  const _CreateTripState({this.userId = 0, this.title = '', this.place = '', this.startAt = '', this.endAt = '', this.coverType = 'BLUE', this.country = '', this.coverStyle = 'COLOR', this.coverImg, this.localImgFile, this.createTrip, this.friendId, this.friendUser, this.message, this.errorType, this.actionType, this.isResolvingCountry = false, this.isSameDay = false, this.showSameDayDialog = false, this.isUploading = false, this.pageState = CreateTripPageState.init}): super._();
   
 
 @override@JsonKey() final  int userId;
@@ -272,6 +273,7 @@ class _CreateTripState extends CreateTripState {
 @override final  String? message;
 @override final  String? errorType;
 @override final  String? actionType;
+@override@JsonKey() final  bool isResolvingCountry;
 @override@JsonKey() final  bool isSameDay;
 @override@JsonKey() final  bool showSameDayDialog;
 // 이미지 업로드 상태 (추가)
@@ -289,16 +291,16 @@ _$CreateTripStateCopyWith<_CreateTripState> get copyWith => __$CreateTripStateCo
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _CreateTripState&&(identical(other.userId, userId) || other.userId == userId)&&(identical(other.title, title) || other.title == title)&&(identical(other.place, place) || other.place == place)&&(identical(other.startAt, startAt) || other.startAt == startAt)&&(identical(other.endAt, endAt) || other.endAt == endAt)&&(identical(other.coverType, coverType) || other.coverType == coverType)&&(identical(other.country, country) || other.country == country)&&(identical(other.coverStyle, coverStyle) || other.coverStyle == coverStyle)&&(identical(other.coverImg, coverImg) || other.coverImg == coverImg)&&(identical(other.localImgFile, localImgFile) || other.localImgFile == localImgFile)&&(identical(other.createTrip, createTrip) || other.createTrip == createTrip)&&(identical(other.friendId, friendId) || other.friendId == friendId)&&(identical(other.friendUser, friendUser) || other.friendUser == friendUser)&&(identical(other.message, message) || other.message == message)&&(identical(other.errorType, errorType) || other.errorType == errorType)&&(identical(other.actionType, actionType) || other.actionType == actionType)&&(identical(other.isSameDay, isSameDay) || other.isSameDay == isSameDay)&&(identical(other.showSameDayDialog, showSameDayDialog) || other.showSameDayDialog == showSameDayDialog)&&(identical(other.isUploading, isUploading) || other.isUploading == isUploading)&&(identical(other.pageState, pageState) || other.pageState == pageState));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _CreateTripState&&(identical(other.userId, userId) || other.userId == userId)&&(identical(other.title, title) || other.title == title)&&(identical(other.place, place) || other.place == place)&&(identical(other.startAt, startAt) || other.startAt == startAt)&&(identical(other.endAt, endAt) || other.endAt == endAt)&&(identical(other.coverType, coverType) || other.coverType == coverType)&&(identical(other.country, country) || other.country == country)&&(identical(other.coverStyle, coverStyle) || other.coverStyle == coverStyle)&&(identical(other.coverImg, coverImg) || other.coverImg == coverImg)&&(identical(other.localImgFile, localImgFile) || other.localImgFile == localImgFile)&&(identical(other.createTrip, createTrip) || other.createTrip == createTrip)&&(identical(other.friendId, friendId) || other.friendId == friendId)&&(identical(other.friendUser, friendUser) || other.friendUser == friendUser)&&(identical(other.message, message) || other.message == message)&&(identical(other.errorType, errorType) || other.errorType == errorType)&&(identical(other.actionType, actionType) || other.actionType == actionType)&&(identical(other.isResolvingCountry, isResolvingCountry) || other.isResolvingCountry == isResolvingCountry)&&(identical(other.isSameDay, isSameDay) || other.isSameDay == isSameDay)&&(identical(other.showSameDayDialog, showSameDayDialog) || other.showSameDayDialog == showSameDayDialog)&&(identical(other.isUploading, isUploading) || other.isUploading == isUploading)&&(identical(other.pageState, pageState) || other.pageState == pageState));
 }
 
 
 @override
-int get hashCode => Object.hashAll([runtimeType,userId,title,place,startAt,endAt,coverType,country,coverStyle,coverImg,localImgFile,createTrip,friendId,friendUser,message,errorType,actionType,isSameDay,showSameDayDialog,isUploading,pageState]);
+int get hashCode => Object.hashAll([runtimeType,userId,title,place,startAt,endAt,coverType,country,coverStyle,coverImg,localImgFile,createTrip,friendId,friendUser,message,errorType,actionType,isResolvingCountry,isSameDay,showSameDayDialog,isUploading,pageState]);
 
 @override
 String toString() {
-  return 'CreateTripState(userId: $userId, title: $title, place: $place, startAt: $startAt, endAt: $endAt, coverType: $coverType, country: $country, coverStyle: $coverStyle, coverImg: $coverImg, localImgFile: $localImgFile, createTrip: $createTrip, friendId: $friendId, friendUser: $friendUser, message: $message, errorType: $errorType, actionType: $actionType, isSameDay: $isSameDay, showSameDayDialog: $showSameDayDialog, isUploading: $isUploading, pageState: $pageState)';
+  return 'CreateTripState(userId: $userId, title: $title, place: $place, startAt: $startAt, endAt: $endAt, coverType: $coverType, country: $country, coverStyle: $coverStyle, coverImg: $coverImg, localImgFile: $localImgFile, createTrip: $createTrip, friendId: $friendId, friendUser: $friendUser, message: $message, errorType: $errorType, actionType: $actionType, isResolvingCountry: $isResolvingCountry, isSameDay: $isSameDay, showSameDayDialog: $showSameDayDialog, isUploading: $isUploading, pageState: $pageState)';
 }
 
 
@@ -309,7 +311,7 @@ abstract mixin class _$CreateTripStateCopyWith<$Res> implements $CreateTripState
   factory _$CreateTripStateCopyWith(_CreateTripState value, $Res Function(_CreateTripState) _then) = __$CreateTripStateCopyWithImpl;
 @override @useResult
 $Res call({
- int userId, String title, String place, String startAt, String endAt, String coverType, String country, String coverStyle, String? coverImg, File? localImgFile, TripEntity? createTrip, int? friendId, UserEntity? friendUser, String? message, String? errorType, String? actionType, bool isSameDay, bool showSameDayDialog, bool isUploading, CreateTripPageState pageState
+ int userId, String title, String place, String startAt, String endAt, String coverType, String country, String coverStyle, String? coverImg, File? localImgFile, TripEntity? createTrip, int? friendId, UserEntity? friendUser, String? message, String? errorType, String? actionType, bool isResolvingCountry, bool isSameDay, bool showSameDayDialog, bool isUploading, CreateTripPageState pageState
 });
 
 
@@ -326,7 +328,7 @@ class __$CreateTripStateCopyWithImpl<$Res>
 
 /// Create a copy of CreateTripState
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? userId = null,Object? title = null,Object? place = null,Object? startAt = null,Object? endAt = null,Object? coverType = null,Object? country = null,Object? coverStyle = null,Object? coverImg = freezed,Object? localImgFile = freezed,Object? createTrip = freezed,Object? friendId = freezed,Object? friendUser = freezed,Object? message = freezed,Object? errorType = freezed,Object? actionType = freezed,Object? isSameDay = null,Object? showSameDayDialog = null,Object? isUploading = null,Object? pageState = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? userId = null,Object? title = null,Object? place = null,Object? startAt = null,Object? endAt = null,Object? coverType = null,Object? country = null,Object? coverStyle = null,Object? coverImg = freezed,Object? localImgFile = freezed,Object? createTrip = freezed,Object? friendId = freezed,Object? friendUser = freezed,Object? message = freezed,Object? errorType = freezed,Object? actionType = freezed,Object? isResolvingCountry = null,Object? isSameDay = null,Object? showSameDayDialog = null,Object? isUploading = null,Object? pageState = null,}) {
   return _then(_CreateTripState(
 userId: null == userId ? _self.userId : userId // ignore: cast_nullable_to_non_nullable
 as int,title: null == title ? _self.title : title // ignore: cast_nullable_to_non_nullable
@@ -344,7 +346,8 @@ as int?,friendUser: freezed == friendUser ? _self.friendUser : friendUser // ign
 as UserEntity?,message: freezed == message ? _self.message : message // ignore: cast_nullable_to_non_nullable
 as String?,errorType: freezed == errorType ? _self.errorType : errorType // ignore: cast_nullable_to_non_nullable
 as String?,actionType: freezed == actionType ? _self.actionType : actionType // ignore: cast_nullable_to_non_nullable
-as String?,isSameDay: null == isSameDay ? _self.isSameDay : isSameDay // ignore: cast_nullable_to_non_nullable
+as String?,isResolvingCountry: null == isResolvingCountry ? _self.isResolvingCountry : isResolvingCountry // ignore: cast_nullable_to_non_nullable
+as bool,isSameDay: null == isSameDay ? _self.isSameDay : isSameDay // ignore: cast_nullable_to_non_nullable
 as bool,showSameDayDialog: null == showSameDayDialog ? _self.showSameDayDialog : showSameDayDialog // ignore: cast_nullable_to_non_nullable
 as bool,isUploading: null == isUploading ? _self.isUploading : isUploading // ignore: cast_nullable_to_non_nullable
 as bool,pageState: null == pageState ? _self.pageState : pageState // ignore: cast_nullable_to_non_nullable

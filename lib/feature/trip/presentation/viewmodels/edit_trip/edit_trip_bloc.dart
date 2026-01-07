@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:firebase_ai/firebase_ai.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 import 'package:my_travel_friend/core/result/result.dart';
@@ -81,7 +82,7 @@ class EditTripBloc extends Bloc<EditTripEvent, EditTripState> {
 
   // 장소 변경 + Debounce + Gemini API 자동 호출
   void _onChangePlace(ChangePlace event, Emitter<EditTripState> emit) {
-    emit(state.copyWith(place: event.place));
+    emit(state.copyWith(place: event.place, isResolvingCountry: true));
 
     if (_debounce?.isActive ?? false) _debounce!.cancel();
     if (event.place.isEmpty) return;
@@ -90,15 +91,27 @@ class EditTripBloc extends Bloc<EditTripEvent, EditTripState> {
       try {
         final prompt =
             """
-"${event.place}"는 어느 나라에 있어?
-국가 이름만 한 단어로만 말해줘.
+사용자가 입력한 장소: "${event.place}"
+이 장소가 실제로 위치한 '국가'를 정확히 답변해줘. 
+이 장소의 주소를 보고 '국가'를 정확하게 답변해줘.
+예를 들어, 한국에 있는 일본 테마파크라면 '대한민국'이라고 답해야 해.
+국가 이름만 한 단어로 답변해.
+예시:
+- "니지모리 스튜디오" → 대한민국
+- "쁘띠프랑스" → 대한민국
+- "도쿄 디즈니랜드" → 일본
+- "오사카" → 일본
+- "다낭" → 베트남
 """;
+        debugPrint('enker[Gemini][PlacePrompt] $prompt');
         final response = await generativeModel.generateContent([
           Content.text(prompt),
         ]);
 
         final resultText = response.text?.trim() ?? "Unknown";
-
+        debugPrint(
+          'enker[Gemini][PlaceResult] input="${event.place}" result="$resultText"',
+        );
         add(
           EditTripEvent.placeAIResult(
             country: resultText.isEmpty ? "Unknown" : resultText,
@@ -111,7 +124,7 @@ class EditTripBloc extends Bloc<EditTripEvent, EditTripState> {
   }
 
   void _onPlaceAIResult(PlaceAIResult event, Emitter<EditTripState> emit) {
-    emit(state.copyWith(country: event.country));
+    emit(state.copyWith(country: event.country, isResolvingCountry: false));
   }
 
   void _onChangeStartAt(ChangeStartAt e, Emitter<EditTripState> emit) {
@@ -250,7 +263,7 @@ class EditTripBloc extends Bloc<EditTripEvent, EditTripState> {
     );
 
     final result = await _editTripUsecase(entity);
-
+    debugPrint('enker[EditTrip][Save] country=${state.country}');
     result.when(
       success: (updated) {
         emit(
