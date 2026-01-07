@@ -6,7 +6,6 @@ import 'package:get_it/get_it.dart';
 import 'package:home_widget/home_widget.dart';
 import 'package:my_travel_friend/config/router.dart';
 import 'package:my_travel_friend/core/DI/injection.dart';
-import 'package:my_travel_friend/core/service/internal/app_link_service.dart';
 import 'package:my_travel_friend/core/widget/toast_pop.dart';
 import 'package:my_travel_friend/feature/friend/presentation/viewmodel/friend_request_state.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -53,9 +52,9 @@ void main() async {
 
   await _initHomeWidget();
 
-  // app_links 리스너 시작
-  final appLinksService = AppLinkService();
-  await appLinksService.init();
+  // app link를 위한 리스너 시작
+  final deepLinkService = GetIt.I<DeepLinkService>();
+  await deepLinkService.init();
   final friendRequestBloc = GetIt.I<FriendRequestBloc>(); // 같은 블럭을 바라보게
 
   runApp(

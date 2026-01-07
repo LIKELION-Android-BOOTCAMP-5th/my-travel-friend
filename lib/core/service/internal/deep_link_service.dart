@@ -1,4 +1,7 @@
-import 'package:flutter/material.dart'; // ChangeNotifier를 위해 필요
+import 'dart:async';
+
+import 'package:app_links/app_links.dart';
+import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:injectable/injectable.dart';
 
@@ -9,33 +12,55 @@ import '../../../feature/friend/presentation/viewmodel/friend_request_event.dart
 
 @lazySingleton
 class DeepLinkService extends ChangeNotifier {
+  final AppLinks _appLinks = AppLinks();
+  StreamSubscription<Uri>? _sub;
+
   String? _pendingPath;
   String? get pendingPath => _pendingPath;
 
-  //저장된 딥링크 경로를 소모
+  Future<void> init() async {
+    // 1) 앱 완전 종료 상태에서 링크로 켜진 경우
+    final initialUri = await _appLinks.getInitialLink();
+    if (initialUri != null) {
+      debugPrint('[DeepLinkService] initial link = $initialUri');
+      _handleUri(initialUri);
+    }
+
+    // 2) 앱 실행 중 / 백그라운드에서 링크 클릭
+    _sub = _appLinks.uriLinkStream.listen((uri) {
+      debugPrint('[DeepLinkService] stream link = $uri');
+      _handleUri(uri);
+    });
+  }
+
+  void dispose() {
+    _sub?.cancel();
+  }
+
+  void _handleUri(Uri uri) {
+    // 친구 초대 링크
+    if (uri.scheme == 'mytravelfriend') {
+      navigateFromInviteLink(uri);
+      return;
+    }
+  }
+
   String? consumePendingPath() {
     if (_pendingPath == null) return null;
-
-    print("[DeepLinkService] 경로 소모됨: $_pendingPath");
     final path = _pendingPath;
     _pendingPath = null;
     return path;
   }
 
-  // 경로세팅 후 알림
   void navigateFromNotification(
     String alarmType,
     Map<String, dynamic> deeplinkData,
   ) {
     final String targetRoute = _generateRoute(alarmType, deeplinkData);
-    print("[DeepLinkService] 새로운 경로 감지: $targetRoute");
-
     _pendingPath = targetRoute;
-
     notifyListeners();
   }
 
-  //경로 지정
   String _generateRoute(String alarmType, Map<String, dynamic> deepLinkData) {
     switch (alarmType) {
       case 'TRIP_REQUEST':
@@ -51,7 +76,6 @@ class DeepLinkService extends ChangeNotifier {
       case 'TALK_MESSAGE':
         return "/home/trip/${deepLinkData["trip_id"]}/talk";
       case 'D_DAY':
-        return "/home/trip/${deepLinkData["trip_id"]}/trip_home";
       case 'WIDGET_TRIP':
         return "/home/trip/${deepLinkData["trip_id"]}/trip_home";
       case 'WIDGET_SCHEDULE':
@@ -61,19 +85,25 @@ class DeepLinkService extends ChangeNotifier {
     }
   }
 
-  // 친구 초대 링크 처리
+  /* ------------------------------------------------------------------
+   *  🔹 친구 초대 링크 처리
+   *    mytravelfriend://invite/friend?from=13
+   * ------------------------------------------------------------------ */
   void navigateFromInviteLink(Uri uri) {
     final fromId = int.tryParse(uri.queryParameters['from'] ?? '');
     if (fromId == null || fromId == 0) {
+      debugPrint('[DeepLinkService] invalid fromId');
       return;
     }
 
     final authState = GetIt.I<AuthProfileBloc>().state;
     if (authState is! AuthProfileAuthenticated) {
+      debugPrint('[DeepLinkService] not authenticated yet');
       return;
     }
 
     final myId = authState.userInfo.id!;
+    debugPrint('[DeepLinkService] send friend request $myId -> $fromId');
 
     GetIt.I<FriendRequestBloc>().add(
       FriendRequestEvent.requestCreate(requestId: myId, targetId: fromId),
