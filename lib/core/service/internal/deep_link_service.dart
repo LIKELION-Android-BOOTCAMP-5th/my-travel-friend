@@ -33,8 +33,10 @@ class DeepLinkService extends ChangeNotifier {
     });
   }
 
+  @override
   void dispose() {
     _sub?.cancel();
+    super.dispose();
   }
 
   void _handleUri(Uri uri) {
@@ -85,10 +87,6 @@ class DeepLinkService extends ChangeNotifier {
     }
   }
 
-  /* ------------------------------------------------------------------
-   *  🔹 친구 초대 링크 처리
-   *    mytravelfriend://invite/friend?from=13
-   * ------------------------------------------------------------------ */
   void navigateFromInviteLink(Uri uri) {
     final fromId = int.tryParse(uri.queryParameters['from'] ?? '');
     if (fromId == null || fromId == 0) {
