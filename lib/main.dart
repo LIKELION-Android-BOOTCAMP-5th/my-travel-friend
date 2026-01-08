@@ -56,6 +56,7 @@ void main() async {
   // app_links 리스너 시작
   final appLinksService = AppLinkService();
   await appLinksService.init();
+  final friendRequestBloc = GetIt.I<FriendRequestBloc>();
 
   runApp(
     MultiBlocProvider(
@@ -67,7 +68,7 @@ void main() async {
         ),
         BlocProvider(create: (context) => GetIt.instance<AlarmBloc>()),
         // 딥링크 요청 처리용
-        BlocProvider(create: (context) => GetIt.instance<FriendRequestBloc>()),
+        BlocProvider.value(value: friendRequestBloc),
       ],
       child: const MyApp(),
     ),
