@@ -365,6 +365,7 @@ import '../coachmark/presentations/targets/trip_home_coach_mark.dart' as _i629;
 import '../coachmark/presentations/targets/trip_list_coach_mark.dart' as _i78;
 import '../coachmark/presentations/targets/trip_shell_coach_mark.dart' as _i415;
 import '../coachmark/storage/coach_mark_storage.dart' as _i301;
+import '../service/internal/app_link_service.dart' as _i382;
 import '../service/internal/deep_link_service.dart' as _i507;
 import '../service/internal/permission_service.dart' as _i213;
 import '../service/internal/push_notification_service.dart' as _i737;
@@ -406,6 +407,7 @@ extension GetItInjectableX on _i174.GetIt {
       () => registerModule.initializeGoogleSignIn(),
       preResolve: true,
     );
+    gh.lazySingleton<_i382.AppLinkService>(() => _i382.AppLinkService());
     gh.lazySingleton<_i507.DeepLinkService>(() => _i507.DeepLinkService());
     gh.lazySingleton<_i213.PermissionService>(() => _i213.PermissionService());
     gh.lazySingleton<_i1026.ThemeService>(() => _i1026.ThemeService());
@@ -906,7 +908,7 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i277.GetTripByIdUseCase>(),
       ),
     );
-    gh.factory<_i69.FriendRequestBloc>(
+    gh.lazySingleton<_i69.FriendRequestBloc>(
       () => _i69.FriendRequestBloc(
         gh<_i611.CreateFriendRequestUsecase>(),
         gh<_i739.GetFriendRequestUsecase>(),

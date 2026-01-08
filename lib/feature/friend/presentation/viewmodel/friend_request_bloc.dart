@@ -15,7 +15,7 @@ import '../../../../core/result/failures.dart';
 import '../../../../core/result/result.dart';
 
 // [엄수빈] 친구 요청 블록
-@injectable
+@LazySingleton()
 class FriendRequestBloc extends Bloc<FriendRequestEvent, FriendRequestState> {
   final CreateFriendRequestUsecase _createFriendRequestUsecase;
   final GetFriendRequestUsecase _getFriendRequestUsecase;
