@@ -6,6 +6,9 @@ import 'package:get_it/get_it.dart';
 import 'package:home_widget/home_widget.dart';
 import 'package:my_travel_friend/config/router.dart';
 import 'package:my_travel_friend/core/DI/injection.dart';
+import 'package:my_travel_friend/core/service/internal/app_link_service.dart';
+import 'package:my_travel_friend/core/widget/toast_pop.dart';
+import 'package:my_travel_friend/feature/friend/presentation/viewmodel/friend_request_state.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 import 'core/result/result.dart';
@@ -16,6 +19,7 @@ import 'feature/alarm/presentation/viewmodels/alarm_bloc.dart';
 import 'feature/alarm/presentation/viewmodels/alarm_event.dart';
 import 'feature/auth/presentation/viewmodel/auth_profile/auth_profile_bloc.dart';
 import 'feature/auth/presentation/viewmodel/auth_profile/auth_profile_state.dart';
+import 'feature/friend/presentation/viewmodel/friend_request_bloc.dart';
 import 'feature/home_widget/service/home_widget_service.dart';
 import 'feature/schedule/domain/entities/schedule_entity.dart';
 import 'feature/schedule/domain/usecases/get_user_schudule_usecase.dart';
@@ -49,6 +53,10 @@ void main() async {
 
   await _initHomeWidget();
 
+  // app_links 리스너 시작
+  final appLinksService = AppLinkService();
+  await appLinksService.init();
+
   runApp(
     MultiBlocProvider(
       providers: [
@@ -58,6 +66,8 @@ void main() async {
               GetIt.instance<ThemeBloc>()..add(const LoadTheme()),
         ),
         BlocProvider(create: (context) => GetIt.instance<AlarmBloc>()),
+        // 딥링크 요청 처리용
+        BlocProvider(create: (context) => GetIt.instance<FriendRequestBloc>()),
       ],
       child: const MyApp(),
     ),
@@ -225,18 +235,38 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
       darkTheme: AppTheme.dark,
       themeMode: themeMode,
       builder: (context, child) {
-        return BlocListener<AuthProfileBloc, AuthProfileState>(
-          listenWhen: (prev, curr) => prev.runtimeType != curr.runtimeType,
-          listener: (context, state) {
-            if (state is AuthProfileAuthenticated) {
-              context.read<AlarmBloc>().add(
-                AlarmEvent.startWatching(userId: state.userInfo.id!),
-              );
-              _checkAndRefreshWidget();
-            } else if (state is AuthProfileUnauthenticated) {
-              context.read<AlarmBloc>().add(const AlarmEvent.stopWatching());
-            }
-          },
+        return MultiBlocListener(
+          listeners: [
+            BlocListener<AuthProfileBloc, AuthProfileState>(
+              listenWhen: (prev, curr) => prev.runtimeType != curr.runtimeType,
+              listener: (context, state) {
+                if (state is AuthProfileAuthenticated) {
+                  context.read<AlarmBloc>().add(
+                    AlarmEvent.startWatching(userId: state.userInfo.id!),
+                  );
+                  _checkAndRefreshWidget();
+                } else if (state is AuthProfileUnauthenticated) {
+                  context.read<AlarmBloc>().add(
+                    const AlarmEvent.stopWatching(),
+                  );
+                }
+              },
+            ),
+            BlocListener<FriendRequestBloc, FriendRequestState>(
+              listenWhen: (p, c) =>
+                  p.pageState != c.pageState || p.actionType != c.actionType,
+              listener: (context, state) {
+                debugPrint('[Listener] request success!!');
+                if (state.pageState == FriendRequestPageState.success) {
+                  ToastPop.show('친구 요청을 보냈어요');
+                }
+
+                if (state.pageState == FriendRequestPageState.error) {
+                  ToastPop.show(state.message ?? '요청 실패');
+                }
+              },
+            ),
+          ],
           child: BlocBuilder<AuthProfileBloc, AuthProfileState>(
             builder: (context, authState) {
               return Stack(

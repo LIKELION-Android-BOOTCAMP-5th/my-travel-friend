@@ -1,5 +1,11 @@
 import 'package:flutter/material.dart'; // ChangeNotifier를 위해 필요
+import 'package:get_it/get_it.dart';
 import 'package:injectable/injectable.dart';
+
+import '../../../feature/auth/presentation/viewmodel/auth_profile/auth_profile_bloc.dart';
+import '../../../feature/auth/presentation/viewmodel/auth_profile/auth_profile_state.dart';
+import '../../../feature/friend/presentation/viewmodel/friend_request_bloc.dart';
+import '../../../feature/friend/presentation/viewmodel/friend_request_event.dart';
 
 @lazySingleton
 class DeepLinkService extends ChangeNotifier {
@@ -53,5 +59,30 @@ class DeepLinkService extends ChangeNotifier {
       default:
         return '/home';
     }
+  }
+
+  // 친구 초대 링크 처리
+  void navigateFromInviteLink(Uri uri) {
+    final fromId = int.tryParse(uri.queryParameters['from'] ?? '');
+    if (fromId == null || fromId == 0) {
+      return;
+    }
+
+    final authState = GetIt.I<AuthProfileBloc>().state;
+    if (authState is! AuthProfileAuthenticated) {
+      return;
+    }
+
+    final myId = authState.userInfo.id!;
+
+    if (fromId == myId) {
+      debugPrint('[Skip] 내 아이디 진입 제거 : fromId=$fromId myId=$myId');
+      return;
+    }
+
+    GetIt.I<FriendRequestBloc>().add(
+      FriendRequestEvent.requestCreate(requestId: myId, targetId: fromId),
+    );
+    navigateFromNotification('NEW_FRIEND', {});
   }
 }
