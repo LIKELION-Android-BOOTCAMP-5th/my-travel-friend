@@ -140,7 +140,17 @@ class _EditScheduleScreenState extends State<EditScheduleScreen> {
                 ),
                 actions: [
                   Button(
-                    icon: const Icon(AppIcon.search),
+                    icon: SizedBox(
+                      width: 30,
+                      height: 31,
+                      child: Center(
+                        child: Image.asset(
+                          'assets/images/ai_search_icon.png',
+                          fit: BoxFit.contain,
+                          color: AppColors.light,
+                        ),
+                      ),
+                    ),
                     onTap: () async {
                       final result = await context.pushNamed<PlaceCandidate>(
                         'tripMapSearch',
@@ -168,7 +178,7 @@ class _EditScheduleScreenState extends State<EditScheduleScreen> {
                     height: 36,
                     backgroundColor: Colors.transparent,
                     contentColor: AppColors.light,
-                    borderRadius: 18,
+                    borderRadius: 0,
                   ),
                   Button(
                     text: '수정',
