@@ -14,7 +14,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$MapSearchState {
 
- int? get tripId; MapSearchMode get mode; double? get initialLat; double? get initialLng; String? get initialAddress; bool get hasInitialLocation; double? get selectedLat; double? get selectedLng; String get query; bool get isSearching; List<PlaceCandidate> get candidates; PlaceCandidate? get selectedPlace; PlaceCandidate? get focusedPlace; bool get showBottomSheet; String? get message;
+ int? get tripId; MapSearchMode get mode; String? get tripPlace; String? get tripCountry; double? get initialLat; double? get initialLng; String? get initialAddress; bool get hasInitialLocation; double? get selectedLat; double? get selectedLng; String get query; bool get isSearching; bool get isResolvingInitialLocation; bool get isMapReady; List<PlaceCandidate> get candidates; PlaceCandidate? get selectedPlace; PlaceCandidate? get focusedPlace; bool get showBottomSheet; String? get message;
 /// Create a copy of MapSearchState
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -25,16 +25,16 @@ $MapSearchStateCopyWith<MapSearchState> get copyWith => _$MapSearchStateCopyWith
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is MapSearchState&&(identical(other.tripId, tripId) || other.tripId == tripId)&&(identical(other.mode, mode) || other.mode == mode)&&(identical(other.initialLat, initialLat) || other.initialLat == initialLat)&&(identical(other.initialLng, initialLng) || other.initialLng == initialLng)&&(identical(other.initialAddress, initialAddress) || other.initialAddress == initialAddress)&&(identical(other.hasInitialLocation, hasInitialLocation) || other.hasInitialLocation == hasInitialLocation)&&(identical(other.selectedLat, selectedLat) || other.selectedLat == selectedLat)&&(identical(other.selectedLng, selectedLng) || other.selectedLng == selectedLng)&&(identical(other.query, query) || other.query == query)&&(identical(other.isSearching, isSearching) || other.isSearching == isSearching)&&const DeepCollectionEquality().equals(other.candidates, candidates)&&(identical(other.selectedPlace, selectedPlace) || other.selectedPlace == selectedPlace)&&(identical(other.focusedPlace, focusedPlace) || other.focusedPlace == focusedPlace)&&(identical(other.showBottomSheet, showBottomSheet) || other.showBottomSheet == showBottomSheet)&&(identical(other.message, message) || other.message == message));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is MapSearchState&&(identical(other.tripId, tripId) || other.tripId == tripId)&&(identical(other.mode, mode) || other.mode == mode)&&(identical(other.tripPlace, tripPlace) || other.tripPlace == tripPlace)&&(identical(other.tripCountry, tripCountry) || other.tripCountry == tripCountry)&&(identical(other.initialLat, initialLat) || other.initialLat == initialLat)&&(identical(other.initialLng, initialLng) || other.initialLng == initialLng)&&(identical(other.initialAddress, initialAddress) || other.initialAddress == initialAddress)&&(identical(other.hasInitialLocation, hasInitialLocation) || other.hasInitialLocation == hasInitialLocation)&&(identical(other.selectedLat, selectedLat) || other.selectedLat == selectedLat)&&(identical(other.selectedLng, selectedLng) || other.selectedLng == selectedLng)&&(identical(other.query, query) || other.query == query)&&(identical(other.isSearching, isSearching) || other.isSearching == isSearching)&&(identical(other.isResolvingInitialLocation, isResolvingInitialLocation) || other.isResolvingInitialLocation == isResolvingInitialLocation)&&(identical(other.isMapReady, isMapReady) || other.isMapReady == isMapReady)&&const DeepCollectionEquality().equals(other.candidates, candidates)&&(identical(other.selectedPlace, selectedPlace) || other.selectedPlace == selectedPlace)&&(identical(other.focusedPlace, focusedPlace) || other.focusedPlace == focusedPlace)&&(identical(other.showBottomSheet, showBottomSheet) || other.showBottomSheet == showBottomSheet)&&(identical(other.message, message) || other.message == message));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,tripId,mode,initialLat,initialLng,initialAddress,hasInitialLocation,selectedLat,selectedLng,query,isSearching,const DeepCollectionEquality().hash(candidates),selectedPlace,focusedPlace,showBottomSheet,message);
+int get hashCode => Object.hashAll([runtimeType,tripId,mode,tripPlace,tripCountry,initialLat,initialLng,initialAddress,hasInitialLocation,selectedLat,selectedLng,query,isSearching,isResolvingInitialLocation,isMapReady,const DeepCollectionEquality().hash(candidates),selectedPlace,focusedPlace,showBottomSheet,message]);
 
 @override
 String toString() {
-  return 'MapSearchState(tripId: $tripId, mode: $mode, initialLat: $initialLat, initialLng: $initialLng, initialAddress: $initialAddress, hasInitialLocation: $hasInitialLocation, selectedLat: $selectedLat, selectedLng: $selectedLng, query: $query, isSearching: $isSearching, candidates: $candidates, selectedPlace: $selectedPlace, focusedPlace: $focusedPlace, showBottomSheet: $showBottomSheet, message: $message)';
+  return 'MapSearchState(tripId: $tripId, mode: $mode, tripPlace: $tripPlace, tripCountry: $tripCountry, initialLat: $initialLat, initialLng: $initialLng, initialAddress: $initialAddress, hasInitialLocation: $hasInitialLocation, selectedLat: $selectedLat, selectedLng: $selectedLng, query: $query, isSearching: $isSearching, isResolvingInitialLocation: $isResolvingInitialLocation, isMapReady: $isMapReady, candidates: $candidates, selectedPlace: $selectedPlace, focusedPlace: $focusedPlace, showBottomSheet: $showBottomSheet, message: $message)';
 }
 
 
@@ -45,7 +45,7 @@ abstract mixin class $MapSearchStateCopyWith<$Res>  {
   factory $MapSearchStateCopyWith(MapSearchState value, $Res Function(MapSearchState) _then) = _$MapSearchStateCopyWithImpl;
 @useResult
 $Res call({
- int? tripId, MapSearchMode mode, double? initialLat, double? initialLng, String? initialAddress, bool hasInitialLocation, double? selectedLat, double? selectedLng, String query, bool isSearching, List<PlaceCandidate> candidates, PlaceCandidate? selectedPlace, PlaceCandidate? focusedPlace, bool showBottomSheet, String? message
+ int? tripId, MapSearchMode mode, String? tripPlace, String? tripCountry, double? initialLat, double? initialLng, String? initialAddress, bool hasInitialLocation, double? selectedLat, double? selectedLng, String query, bool isSearching, bool isResolvingInitialLocation, bool isMapReady, List<PlaceCandidate> candidates, PlaceCandidate? selectedPlace, PlaceCandidate? focusedPlace, bool showBottomSheet, String? message
 });
 
 
@@ -62,11 +62,13 @@ class _$MapSearchStateCopyWithImpl<$Res>
 
 /// Create a copy of MapSearchState
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? tripId = freezed,Object? mode = null,Object? initialLat = freezed,Object? initialLng = freezed,Object? initialAddress = freezed,Object? hasInitialLocation = null,Object? selectedLat = freezed,Object? selectedLng = freezed,Object? query = null,Object? isSearching = null,Object? candidates = null,Object? selectedPlace = freezed,Object? focusedPlace = freezed,Object? showBottomSheet = null,Object? message = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? tripId = freezed,Object? mode = null,Object? tripPlace = freezed,Object? tripCountry = freezed,Object? initialLat = freezed,Object? initialLng = freezed,Object? initialAddress = freezed,Object? hasInitialLocation = null,Object? selectedLat = freezed,Object? selectedLng = freezed,Object? query = null,Object? isSearching = null,Object? isResolvingInitialLocation = null,Object? isMapReady = null,Object? candidates = null,Object? selectedPlace = freezed,Object? focusedPlace = freezed,Object? showBottomSheet = null,Object? message = freezed,}) {
   return _then(_self.copyWith(
 tripId: freezed == tripId ? _self.tripId : tripId // ignore: cast_nullable_to_non_nullable
 as int?,mode: null == mode ? _self.mode : mode // ignore: cast_nullable_to_non_nullable
-as MapSearchMode,initialLat: freezed == initialLat ? _self.initialLat : initialLat // ignore: cast_nullable_to_non_nullable
+as MapSearchMode,tripPlace: freezed == tripPlace ? _self.tripPlace : tripPlace // ignore: cast_nullable_to_non_nullable
+as String?,tripCountry: freezed == tripCountry ? _self.tripCountry : tripCountry // ignore: cast_nullable_to_non_nullable
+as String?,initialLat: freezed == initialLat ? _self.initialLat : initialLat // ignore: cast_nullable_to_non_nullable
 as double?,initialLng: freezed == initialLng ? _self.initialLng : initialLng // ignore: cast_nullable_to_non_nullable
 as double?,initialAddress: freezed == initialAddress ? _self.initialAddress : initialAddress // ignore: cast_nullable_to_non_nullable
 as String?,hasInitialLocation: null == hasInitialLocation ? _self.hasInitialLocation : hasInitialLocation // ignore: cast_nullable_to_non_nullable
@@ -74,6 +76,8 @@ as bool,selectedLat: freezed == selectedLat ? _self.selectedLat : selectedLat //
 as double?,selectedLng: freezed == selectedLng ? _self.selectedLng : selectedLng // ignore: cast_nullable_to_non_nullable
 as double?,query: null == query ? _self.query : query // ignore: cast_nullable_to_non_nullable
 as String,isSearching: null == isSearching ? _self.isSearching : isSearching // ignore: cast_nullable_to_non_nullable
+as bool,isResolvingInitialLocation: null == isResolvingInitialLocation ? _self.isResolvingInitialLocation : isResolvingInitialLocation // ignore: cast_nullable_to_non_nullable
+as bool,isMapReady: null == isMapReady ? _self.isMapReady : isMapReady // ignore: cast_nullable_to_non_nullable
 as bool,candidates: null == candidates ? _self.candidates : candidates // ignore: cast_nullable_to_non_nullable
 as List<PlaceCandidate>,selectedPlace: freezed == selectedPlace ? _self.selectedPlace : selectedPlace // ignore: cast_nullable_to_non_nullable
 as PlaceCandidate?,focusedPlace: freezed == focusedPlace ? _self.focusedPlace : focusedPlace // ignore: cast_nullable_to_non_nullable
@@ -164,10 +168,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int? tripId,  MapSearchMode mode,  double? initialLat,  double? initialLng,  String? initialAddress,  bool hasInitialLocation,  double? selectedLat,  double? selectedLng,  String query,  bool isSearching,  List<PlaceCandidate> candidates,  PlaceCandidate? selectedPlace,  PlaceCandidate? focusedPlace,  bool showBottomSheet,  String? message)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int? tripId,  MapSearchMode mode,  String? tripPlace,  String? tripCountry,  double? initialLat,  double? initialLng,  String? initialAddress,  bool hasInitialLocation,  double? selectedLat,  double? selectedLng,  String query,  bool isSearching,  bool isResolvingInitialLocation,  bool isMapReady,  List<PlaceCandidate> candidates,  PlaceCandidate? selectedPlace,  PlaceCandidate? focusedPlace,  bool showBottomSheet,  String? message)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _MapSearchState() when $default != null:
-return $default(_that.tripId,_that.mode,_that.initialLat,_that.initialLng,_that.initialAddress,_that.hasInitialLocation,_that.selectedLat,_that.selectedLng,_that.query,_that.isSearching,_that.candidates,_that.selectedPlace,_that.focusedPlace,_that.showBottomSheet,_that.message);case _:
+return $default(_that.tripId,_that.mode,_that.tripPlace,_that.tripCountry,_that.initialLat,_that.initialLng,_that.initialAddress,_that.hasInitialLocation,_that.selectedLat,_that.selectedLng,_that.query,_that.isSearching,_that.isResolvingInitialLocation,_that.isMapReady,_that.candidates,_that.selectedPlace,_that.focusedPlace,_that.showBottomSheet,_that.message);case _:
   return orElse();
 
 }
@@ -185,10 +189,10 @@ return $default(_that.tripId,_that.mode,_that.initialLat,_that.initialLng,_that.
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int? tripId,  MapSearchMode mode,  double? initialLat,  double? initialLng,  String? initialAddress,  bool hasInitialLocation,  double? selectedLat,  double? selectedLng,  String query,  bool isSearching,  List<PlaceCandidate> candidates,  PlaceCandidate? selectedPlace,  PlaceCandidate? focusedPlace,  bool showBottomSheet,  String? message)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int? tripId,  MapSearchMode mode,  String? tripPlace,  String? tripCountry,  double? initialLat,  double? initialLng,  String? initialAddress,  bool hasInitialLocation,  double? selectedLat,  double? selectedLng,  String query,  bool isSearching,  bool isResolvingInitialLocation,  bool isMapReady,  List<PlaceCandidate> candidates,  PlaceCandidate? selectedPlace,  PlaceCandidate? focusedPlace,  bool showBottomSheet,  String? message)  $default,) {final _that = this;
 switch (_that) {
 case _MapSearchState():
-return $default(_that.tripId,_that.mode,_that.initialLat,_that.initialLng,_that.initialAddress,_that.hasInitialLocation,_that.selectedLat,_that.selectedLng,_that.query,_that.isSearching,_that.candidates,_that.selectedPlace,_that.focusedPlace,_that.showBottomSheet,_that.message);case _:
+return $default(_that.tripId,_that.mode,_that.tripPlace,_that.tripCountry,_that.initialLat,_that.initialLng,_that.initialAddress,_that.hasInitialLocation,_that.selectedLat,_that.selectedLng,_that.query,_that.isSearching,_that.isResolvingInitialLocation,_that.isMapReady,_that.candidates,_that.selectedPlace,_that.focusedPlace,_that.showBottomSheet,_that.message);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -205,10 +209,10 @@ return $default(_that.tripId,_that.mode,_that.initialLat,_that.initialLng,_that.
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int? tripId,  MapSearchMode mode,  double? initialLat,  double? initialLng,  String? initialAddress,  bool hasInitialLocation,  double? selectedLat,  double? selectedLng,  String query,  bool isSearching,  List<PlaceCandidate> candidates,  PlaceCandidate? selectedPlace,  PlaceCandidate? focusedPlace,  bool showBottomSheet,  String? message)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int? tripId,  MapSearchMode mode,  String? tripPlace,  String? tripCountry,  double? initialLat,  double? initialLng,  String? initialAddress,  bool hasInitialLocation,  double? selectedLat,  double? selectedLng,  String query,  bool isSearching,  bool isResolvingInitialLocation,  bool isMapReady,  List<PlaceCandidate> candidates,  PlaceCandidate? selectedPlace,  PlaceCandidate? focusedPlace,  bool showBottomSheet,  String? message)?  $default,) {final _that = this;
 switch (_that) {
 case _MapSearchState() when $default != null:
-return $default(_that.tripId,_that.mode,_that.initialLat,_that.initialLng,_that.initialAddress,_that.hasInitialLocation,_that.selectedLat,_that.selectedLng,_that.query,_that.isSearching,_that.candidates,_that.selectedPlace,_that.focusedPlace,_that.showBottomSheet,_that.message);case _:
+return $default(_that.tripId,_that.mode,_that.tripPlace,_that.tripCountry,_that.initialLat,_that.initialLng,_that.initialAddress,_that.hasInitialLocation,_that.selectedLat,_that.selectedLng,_that.query,_that.isSearching,_that.isResolvingInitialLocation,_that.isMapReady,_that.candidates,_that.selectedPlace,_that.focusedPlace,_that.showBottomSheet,_that.message);case _:
   return null;
 
 }
@@ -220,11 +224,13 @@ return $default(_that.tripId,_that.mode,_that.initialLat,_that.initialLng,_that.
 
 
 class _MapSearchState implements MapSearchState {
-  const _MapSearchState({this.tripId, this.mode = MapSearchMode.aiSearch, this.initialLat, this.initialLng, this.initialAddress, this.hasInitialLocation = false, this.selectedLat, this.selectedLng, this.query = '', this.isSearching = false, final  List<PlaceCandidate> candidates = const [], this.selectedPlace, this.focusedPlace, this.showBottomSheet = false, this.message}): _candidates = candidates;
+  const _MapSearchState({this.tripId, this.mode = MapSearchMode.aiSearch, this.tripPlace, this.tripCountry, this.initialLat, this.initialLng, this.initialAddress, this.hasInitialLocation = false, this.selectedLat, this.selectedLng, this.query = '', this.isSearching = false, this.isResolvingInitialLocation = false, this.isMapReady = false, final  List<PlaceCandidate> candidates = const [], this.selectedPlace, this.focusedPlace, this.showBottomSheet = false, this.message}): _candidates = candidates;
   
 
 @override final  int? tripId;
 @override@JsonKey() final  MapSearchMode mode;
+@override final  String? tripPlace;
+@override final  String? tripCountry;
 @override final  double? initialLat;
 @override final  double? initialLng;
 @override final  String? initialAddress;
@@ -233,6 +239,8 @@ class _MapSearchState implements MapSearchState {
 @override final  double? selectedLng;
 @override@JsonKey() final  String query;
 @override@JsonKey() final  bool isSearching;
+@override@JsonKey() final  bool isResolvingInitialLocation;
+@override@JsonKey() final  bool isMapReady;
  final  List<PlaceCandidate> _candidates;
 @override@JsonKey() List<PlaceCandidate> get candidates {
   if (_candidates is EqualUnmodifiableListView) return _candidates;
@@ -255,16 +263,16 @@ _$MapSearchStateCopyWith<_MapSearchState> get copyWith => __$MapSearchStateCopyW
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _MapSearchState&&(identical(other.tripId, tripId) || other.tripId == tripId)&&(identical(other.mode, mode) || other.mode == mode)&&(identical(other.initialLat, initialLat) || other.initialLat == initialLat)&&(identical(other.initialLng, initialLng) || other.initialLng == initialLng)&&(identical(other.initialAddress, initialAddress) || other.initialAddress == initialAddress)&&(identical(other.hasInitialLocation, hasInitialLocation) || other.hasInitialLocation == hasInitialLocation)&&(identical(other.selectedLat, selectedLat) || other.selectedLat == selectedLat)&&(identical(other.selectedLng, selectedLng) || other.selectedLng == selectedLng)&&(identical(other.query, query) || other.query == query)&&(identical(other.isSearching, isSearching) || other.isSearching == isSearching)&&const DeepCollectionEquality().equals(other._candidates, _candidates)&&(identical(other.selectedPlace, selectedPlace) || other.selectedPlace == selectedPlace)&&(identical(other.focusedPlace, focusedPlace) || other.focusedPlace == focusedPlace)&&(identical(other.showBottomSheet, showBottomSheet) || other.showBottomSheet == showBottomSheet)&&(identical(other.message, message) || other.message == message));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _MapSearchState&&(identical(other.tripId, tripId) || other.tripId == tripId)&&(identical(other.mode, mode) || other.mode == mode)&&(identical(other.tripPlace, tripPlace) || other.tripPlace == tripPlace)&&(identical(other.tripCountry, tripCountry) || other.tripCountry == tripCountry)&&(identical(other.initialLat, initialLat) || other.initialLat == initialLat)&&(identical(other.initialLng, initialLng) || other.initialLng == initialLng)&&(identical(other.initialAddress, initialAddress) || other.initialAddress == initialAddress)&&(identical(other.hasInitialLocation, hasInitialLocation) || other.hasInitialLocation == hasInitialLocation)&&(identical(other.selectedLat, selectedLat) || other.selectedLat == selectedLat)&&(identical(other.selectedLng, selectedLng) || other.selectedLng == selectedLng)&&(identical(other.query, query) || other.query == query)&&(identical(other.isSearching, isSearching) || other.isSearching == isSearching)&&(identical(other.isResolvingInitialLocation, isResolvingInitialLocation) || other.isResolvingInitialLocation == isResolvingInitialLocation)&&(identical(other.isMapReady, isMapReady) || other.isMapReady == isMapReady)&&const DeepCollectionEquality().equals(other._candidates, _candidates)&&(identical(other.selectedPlace, selectedPlace) || other.selectedPlace == selectedPlace)&&(identical(other.focusedPlace, focusedPlace) || other.focusedPlace == focusedPlace)&&(identical(other.showBottomSheet, showBottomSheet) || other.showBottomSheet == showBottomSheet)&&(identical(other.message, message) || other.message == message));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,tripId,mode,initialLat,initialLng,initialAddress,hasInitialLocation,selectedLat,selectedLng,query,isSearching,const DeepCollectionEquality().hash(_candidates),selectedPlace,focusedPlace,showBottomSheet,message);
+int get hashCode => Object.hashAll([runtimeType,tripId,mode,tripPlace,tripCountry,initialLat,initialLng,initialAddress,hasInitialLocation,selectedLat,selectedLng,query,isSearching,isResolvingInitialLocation,isMapReady,const DeepCollectionEquality().hash(_candidates),selectedPlace,focusedPlace,showBottomSheet,message]);
 
 @override
 String toString() {
-  return 'MapSearchState(tripId: $tripId, mode: $mode, initialLat: $initialLat, initialLng: $initialLng, initialAddress: $initialAddress, hasInitialLocation: $hasInitialLocation, selectedLat: $selectedLat, selectedLng: $selectedLng, query: $query, isSearching: $isSearching, candidates: $candidates, selectedPlace: $selectedPlace, focusedPlace: $focusedPlace, showBottomSheet: $showBottomSheet, message: $message)';
+  return 'MapSearchState(tripId: $tripId, mode: $mode, tripPlace: $tripPlace, tripCountry: $tripCountry, initialLat: $initialLat, initialLng: $initialLng, initialAddress: $initialAddress, hasInitialLocation: $hasInitialLocation, selectedLat: $selectedLat, selectedLng: $selectedLng, query: $query, isSearching: $isSearching, isResolvingInitialLocation: $isResolvingInitialLocation, isMapReady: $isMapReady, candidates: $candidates, selectedPlace: $selectedPlace, focusedPlace: $focusedPlace, showBottomSheet: $showBottomSheet, message: $message)';
 }
 
 
@@ -275,7 +283,7 @@ abstract mixin class _$MapSearchStateCopyWith<$Res> implements $MapSearchStateCo
   factory _$MapSearchStateCopyWith(_MapSearchState value, $Res Function(_MapSearchState) _then) = __$MapSearchStateCopyWithImpl;
 @override @useResult
 $Res call({
- int? tripId, MapSearchMode mode, double? initialLat, double? initialLng, String? initialAddress, bool hasInitialLocation, double? selectedLat, double? selectedLng, String query, bool isSearching, List<PlaceCandidate> candidates, PlaceCandidate? selectedPlace, PlaceCandidate? focusedPlace, bool showBottomSheet, String? message
+ int? tripId, MapSearchMode mode, String? tripPlace, String? tripCountry, double? initialLat, double? initialLng, String? initialAddress, bool hasInitialLocation, double? selectedLat, double? selectedLng, String query, bool isSearching, bool isResolvingInitialLocation, bool isMapReady, List<PlaceCandidate> candidates, PlaceCandidate? selectedPlace, PlaceCandidate? focusedPlace, bool showBottomSheet, String? message
 });
 
 
@@ -292,11 +300,13 @@ class __$MapSearchStateCopyWithImpl<$Res>
 
 /// Create a copy of MapSearchState
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? tripId = freezed,Object? mode = null,Object? initialLat = freezed,Object? initialLng = freezed,Object? initialAddress = freezed,Object? hasInitialLocation = null,Object? selectedLat = freezed,Object? selectedLng = freezed,Object? query = null,Object? isSearching = null,Object? candidates = null,Object? selectedPlace = freezed,Object? focusedPlace = freezed,Object? showBottomSheet = null,Object? message = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? tripId = freezed,Object? mode = null,Object? tripPlace = freezed,Object? tripCountry = freezed,Object? initialLat = freezed,Object? initialLng = freezed,Object? initialAddress = freezed,Object? hasInitialLocation = null,Object? selectedLat = freezed,Object? selectedLng = freezed,Object? query = null,Object? isSearching = null,Object? isResolvingInitialLocation = null,Object? isMapReady = null,Object? candidates = null,Object? selectedPlace = freezed,Object? focusedPlace = freezed,Object? showBottomSheet = null,Object? message = freezed,}) {
   return _then(_MapSearchState(
 tripId: freezed == tripId ? _self.tripId : tripId // ignore: cast_nullable_to_non_nullable
 as int?,mode: null == mode ? _self.mode : mode // ignore: cast_nullable_to_non_nullable
-as MapSearchMode,initialLat: freezed == initialLat ? _self.initialLat : initialLat // ignore: cast_nullable_to_non_nullable
+as MapSearchMode,tripPlace: freezed == tripPlace ? _self.tripPlace : tripPlace // ignore: cast_nullable_to_non_nullable
+as String?,tripCountry: freezed == tripCountry ? _self.tripCountry : tripCountry // ignore: cast_nullable_to_non_nullable
+as String?,initialLat: freezed == initialLat ? _self.initialLat : initialLat // ignore: cast_nullable_to_non_nullable
 as double?,initialLng: freezed == initialLng ? _self.initialLng : initialLng // ignore: cast_nullable_to_non_nullable
 as double?,initialAddress: freezed == initialAddress ? _self.initialAddress : initialAddress // ignore: cast_nullable_to_non_nullable
 as String?,hasInitialLocation: null == hasInitialLocation ? _self.hasInitialLocation : hasInitialLocation // ignore: cast_nullable_to_non_nullable
@@ -304,6 +314,8 @@ as bool,selectedLat: freezed == selectedLat ? _self.selectedLat : selectedLat //
 as double?,selectedLng: freezed == selectedLng ? _self.selectedLng : selectedLng // ignore: cast_nullable_to_non_nullable
 as double?,query: null == query ? _self.query : query // ignore: cast_nullable_to_non_nullable
 as String,isSearching: null == isSearching ? _self.isSearching : isSearching // ignore: cast_nullable_to_non_nullable
+as bool,isResolvingInitialLocation: null == isResolvingInitialLocation ? _self.isResolvingInitialLocation : isResolvingInitialLocation // ignore: cast_nullable_to_non_nullable
+as bool,isMapReady: null == isMapReady ? _self.isMapReady : isMapReady // ignore: cast_nullable_to_non_nullable
 as bool,candidates: null == candidates ? _self._candidates : candidates // ignore: cast_nullable_to_non_nullable
 as List<PlaceCandidate>,selectedPlace: freezed == selectedPlace ? _self.selectedPlace : selectedPlace // ignore: cast_nullable_to_non_nullable
 as PlaceCandidate?,focusedPlace: freezed == focusedPlace ? _self.focusedPlace : focusedPlace // ignore: cast_nullable_to_non_nullable

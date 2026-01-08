@@ -168,7 +168,17 @@ class _CreateScheduleScreenState extends State<CreateScheduleScreen> {
                 actions: [
                   Button(
                     key: _searchButtonKey,
-                    icon: const Icon(AppIcon.search),
+                    icon: SizedBox(
+                      width: 30,
+                      height: 31,
+                      child: Center(
+                        child: Image.asset(
+                          'assets/images/ai_search_icon.png',
+                          fit: BoxFit.contain,
+                          color: AppColors.light,
+                        ),
+                      ),
+                    ),
                     onTap: () async {
                       final result = await context.pushNamed<PlaceCandidate>(
                         'tripMapSearch',

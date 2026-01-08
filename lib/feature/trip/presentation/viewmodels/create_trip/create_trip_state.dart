@@ -31,7 +31,7 @@ abstract class CreateTripState with _$CreateTripState {
     String? message,
     String? errorType,
     String? actionType,
-
+    @Default(false) bool isResolvingCountry,
     @Default(false) bool isSameDay,
     @Default(false) bool showSameDayDialog,
 

@@ -387,7 +387,6 @@ extension GetItInjectableX on _i174.GetIt {
       () => themeModule.prefs,
       preResolve: true,
     );
-    gh.factory<_i196.MapSearchBloc>(() => _i196.MapSearchBloc());
     gh.factory<_i70.MenuBloc>(() => _i70.MenuBloc());
     gh.lazySingleton<_i892.FirebaseMessaging>(
       () => registerModule.firebaseMessaging,
@@ -702,6 +701,9 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i196.GetOnboardingPagesUseCase>(),
         gh<_i471.CompleteOnboardingUseCase>(),
       ),
+    );
+    gh.factory<_i196.MapSearchBloc>(
+      () => _i196.MapSearchBloc(gh<_i277.GetTripByIdUseCase>()),
     );
     gh.lazySingleton<_i91.GetChatUseCase>(
       () => _i91.GetChatUseCase(gh<_i167.ChatRepository>()),

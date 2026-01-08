@@ -424,7 +424,7 @@ class _TripListScreenState extends State<TripListScreen> {
                   vertical: 6,
                 ),
                 decoration: BoxDecoration(
-                  color: AppColors.light,
+                  color: AppColors.primaryLight,
                   borderRadius: BorderRadius.circular(20),
                   boxShadow: [
                     BoxShadow(
@@ -436,9 +436,7 @@ class _TripListScreenState extends State<TripListScreen> {
                 ),
                 child: Text(
                   sorting == SortingTrip.recent ? '오래된순' : '최신순',
-                  style: AppFont.regular.copyWith(
-                    color: AppColors.primaryLight,
-                  ),
+                  style: AppFont.regular.copyWith(color: AppColors.light),
                 ),
               ),
             ),

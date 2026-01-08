@@ -37,11 +37,10 @@ class _EditTripScreenState extends State<EditTripScreen> {
   @override
   void initState() {
     super.initState();
+    final t = widget.trip;
 
-    final state = context.read<EditTripBloc>().state;
-
-    _titleController = TextEditingController(text: state.title);
-    _placeController = TextEditingController(text: state.place);
+    _titleController = TextEditingController(text: t.title);
+    _placeController = TextEditingController(text: t.place);
   }
 
   @override
@@ -102,7 +101,7 @@ class _EditTripScreenState extends State<EditTripScreen> {
               actions: [
                 Button(
                   text: '저장',
-                  onTap: state.isValid
+                  onTap: state.isValid && !state.isResolvingCountry
                       ? () => context.read<EditTripBloc>().add(
                           const EditTripEvent.saveTrip(),
                         )

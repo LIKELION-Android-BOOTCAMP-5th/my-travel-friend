@@ -19,7 +19,7 @@ mixin _$EditTripState {
  int get userId; String get title; String get place; String get startAt; String get endAt; String get coverType; String get country; String get coverStyle; String? get coverImg; File? get localImgFile;// 삭제 예정 이미지 url 목록
  List<String> get deletedImages;// 수정 완료된 Trip 반환
  TripEntity? get updatedTrip;// State Info
- String? get message; String? get errorType; String? get actionType; bool get isSameDay; bool get showSameDayDialog; bool get isUploading; EditTripPageState get pageState;
+ String? get message; String? get errorType; String? get actionType; bool get isSameDay; bool get showSameDayDialog; bool get isResolvingCountry; bool get isUploading; EditTripPageState get pageState;
 /// Create a copy of EditTripState
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -30,16 +30,16 @@ $EditTripStateCopyWith<EditTripState> get copyWith => _$EditTripStateCopyWithImp
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is EditTripState&&(identical(other.originalTrip, originalTrip) || other.originalTrip == originalTrip)&&(identical(other.tripId, tripId) || other.tripId == tripId)&&(identical(other.userId, userId) || other.userId == userId)&&(identical(other.title, title) || other.title == title)&&(identical(other.place, place) || other.place == place)&&(identical(other.startAt, startAt) || other.startAt == startAt)&&(identical(other.endAt, endAt) || other.endAt == endAt)&&(identical(other.coverType, coverType) || other.coverType == coverType)&&(identical(other.country, country) || other.country == country)&&(identical(other.coverStyle, coverStyle) || other.coverStyle == coverStyle)&&(identical(other.coverImg, coverImg) || other.coverImg == coverImg)&&(identical(other.localImgFile, localImgFile) || other.localImgFile == localImgFile)&&const DeepCollectionEquality().equals(other.deletedImages, deletedImages)&&(identical(other.updatedTrip, updatedTrip) || other.updatedTrip == updatedTrip)&&(identical(other.message, message) || other.message == message)&&(identical(other.errorType, errorType) || other.errorType == errorType)&&(identical(other.actionType, actionType) || other.actionType == actionType)&&(identical(other.isSameDay, isSameDay) || other.isSameDay == isSameDay)&&(identical(other.showSameDayDialog, showSameDayDialog) || other.showSameDayDialog == showSameDayDialog)&&(identical(other.isUploading, isUploading) || other.isUploading == isUploading)&&(identical(other.pageState, pageState) || other.pageState == pageState));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is EditTripState&&(identical(other.originalTrip, originalTrip) || other.originalTrip == originalTrip)&&(identical(other.tripId, tripId) || other.tripId == tripId)&&(identical(other.userId, userId) || other.userId == userId)&&(identical(other.title, title) || other.title == title)&&(identical(other.place, place) || other.place == place)&&(identical(other.startAt, startAt) || other.startAt == startAt)&&(identical(other.endAt, endAt) || other.endAt == endAt)&&(identical(other.coverType, coverType) || other.coverType == coverType)&&(identical(other.country, country) || other.country == country)&&(identical(other.coverStyle, coverStyle) || other.coverStyle == coverStyle)&&(identical(other.coverImg, coverImg) || other.coverImg == coverImg)&&(identical(other.localImgFile, localImgFile) || other.localImgFile == localImgFile)&&const DeepCollectionEquality().equals(other.deletedImages, deletedImages)&&(identical(other.updatedTrip, updatedTrip) || other.updatedTrip == updatedTrip)&&(identical(other.message, message) || other.message == message)&&(identical(other.errorType, errorType) || other.errorType == errorType)&&(identical(other.actionType, actionType) || other.actionType == actionType)&&(identical(other.isSameDay, isSameDay) || other.isSameDay == isSameDay)&&(identical(other.showSameDayDialog, showSameDayDialog) || other.showSameDayDialog == showSameDayDialog)&&(identical(other.isResolvingCountry, isResolvingCountry) || other.isResolvingCountry == isResolvingCountry)&&(identical(other.isUploading, isUploading) || other.isUploading == isUploading)&&(identical(other.pageState, pageState) || other.pageState == pageState));
 }
 
 
 @override
-int get hashCode => Object.hashAll([runtimeType,originalTrip,tripId,userId,title,place,startAt,endAt,coverType,country,coverStyle,coverImg,localImgFile,const DeepCollectionEquality().hash(deletedImages),updatedTrip,message,errorType,actionType,isSameDay,showSameDayDialog,isUploading,pageState]);
+int get hashCode => Object.hashAll([runtimeType,originalTrip,tripId,userId,title,place,startAt,endAt,coverType,country,coverStyle,coverImg,localImgFile,const DeepCollectionEquality().hash(deletedImages),updatedTrip,message,errorType,actionType,isSameDay,showSameDayDialog,isResolvingCountry,isUploading,pageState]);
 
 @override
 String toString() {
-  return 'EditTripState(originalTrip: $originalTrip, tripId: $tripId, userId: $userId, title: $title, place: $place, startAt: $startAt, endAt: $endAt, coverType: $coverType, country: $country, coverStyle: $coverStyle, coverImg: $coverImg, localImgFile: $localImgFile, deletedImages: $deletedImages, updatedTrip: $updatedTrip, message: $message, errorType: $errorType, actionType: $actionType, isSameDay: $isSameDay, showSameDayDialog: $showSameDayDialog, isUploading: $isUploading, pageState: $pageState)';
+  return 'EditTripState(originalTrip: $originalTrip, tripId: $tripId, userId: $userId, title: $title, place: $place, startAt: $startAt, endAt: $endAt, coverType: $coverType, country: $country, coverStyle: $coverStyle, coverImg: $coverImg, localImgFile: $localImgFile, deletedImages: $deletedImages, updatedTrip: $updatedTrip, message: $message, errorType: $errorType, actionType: $actionType, isSameDay: $isSameDay, showSameDayDialog: $showSameDayDialog, isResolvingCountry: $isResolvingCountry, isUploading: $isUploading, pageState: $pageState)';
 }
 
 
@@ -50,7 +50,7 @@ abstract mixin class $EditTripStateCopyWith<$Res>  {
   factory $EditTripStateCopyWith(EditTripState value, $Res Function(EditTripState) _then) = _$EditTripStateCopyWithImpl;
 @useResult
 $Res call({
- TripEntity? originalTrip, int? tripId, int userId, String title, String place, String startAt, String endAt, String coverType, String country, String coverStyle, String? coverImg, File? localImgFile, List<String> deletedImages, TripEntity? updatedTrip, String? message, String? errorType, String? actionType, bool isSameDay, bool showSameDayDialog, bool isUploading, EditTripPageState pageState
+ TripEntity? originalTrip, int? tripId, int userId, String title, String place, String startAt, String endAt, String coverType, String country, String coverStyle, String? coverImg, File? localImgFile, List<String> deletedImages, TripEntity? updatedTrip, String? message, String? errorType, String? actionType, bool isSameDay, bool showSameDayDialog, bool isResolvingCountry, bool isUploading, EditTripPageState pageState
 });
 
 
@@ -67,7 +67,7 @@ class _$EditTripStateCopyWithImpl<$Res>
 
 /// Create a copy of EditTripState
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? originalTrip = freezed,Object? tripId = freezed,Object? userId = null,Object? title = null,Object? place = null,Object? startAt = null,Object? endAt = null,Object? coverType = null,Object? country = null,Object? coverStyle = null,Object? coverImg = freezed,Object? localImgFile = freezed,Object? deletedImages = null,Object? updatedTrip = freezed,Object? message = freezed,Object? errorType = freezed,Object? actionType = freezed,Object? isSameDay = null,Object? showSameDayDialog = null,Object? isUploading = null,Object? pageState = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? originalTrip = freezed,Object? tripId = freezed,Object? userId = null,Object? title = null,Object? place = null,Object? startAt = null,Object? endAt = null,Object? coverType = null,Object? country = null,Object? coverStyle = null,Object? coverImg = freezed,Object? localImgFile = freezed,Object? deletedImages = null,Object? updatedTrip = freezed,Object? message = freezed,Object? errorType = freezed,Object? actionType = freezed,Object? isSameDay = null,Object? showSameDayDialog = null,Object? isResolvingCountry = null,Object? isUploading = null,Object? pageState = null,}) {
   return _then(_self.copyWith(
 originalTrip: freezed == originalTrip ? _self.originalTrip : originalTrip // ignore: cast_nullable_to_non_nullable
 as TripEntity?,tripId: freezed == tripId ? _self.tripId : tripId // ignore: cast_nullable_to_non_nullable
@@ -88,6 +88,7 @@ as String?,errorType: freezed == errorType ? _self.errorType : errorType // igno
 as String?,actionType: freezed == actionType ? _self.actionType : actionType // ignore: cast_nullable_to_non_nullable
 as String?,isSameDay: null == isSameDay ? _self.isSameDay : isSameDay // ignore: cast_nullable_to_non_nullable
 as bool,showSameDayDialog: null == showSameDayDialog ? _self.showSameDayDialog : showSameDayDialog // ignore: cast_nullable_to_non_nullable
+as bool,isResolvingCountry: null == isResolvingCountry ? _self.isResolvingCountry : isResolvingCountry // ignore: cast_nullable_to_non_nullable
 as bool,isUploading: null == isUploading ? _self.isUploading : isUploading // ignore: cast_nullable_to_non_nullable
 as bool,pageState: null == pageState ? _self.pageState : pageState // ignore: cast_nullable_to_non_nullable
 as EditTripPageState,
@@ -199,10 +200,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( TripEntity? originalTrip,  int? tripId,  int userId,  String title,  String place,  String startAt,  String endAt,  String coverType,  String country,  String coverStyle,  String? coverImg,  File? localImgFile,  List<String> deletedImages,  TripEntity? updatedTrip,  String? message,  String? errorType,  String? actionType,  bool isSameDay,  bool showSameDayDialog,  bool isUploading,  EditTripPageState pageState)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( TripEntity? originalTrip,  int? tripId,  int userId,  String title,  String place,  String startAt,  String endAt,  String coverType,  String country,  String coverStyle,  String? coverImg,  File? localImgFile,  List<String> deletedImages,  TripEntity? updatedTrip,  String? message,  String? errorType,  String? actionType,  bool isSameDay,  bool showSameDayDialog,  bool isResolvingCountry,  bool isUploading,  EditTripPageState pageState)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _EditTripState() when $default != null:
-return $default(_that.originalTrip,_that.tripId,_that.userId,_that.title,_that.place,_that.startAt,_that.endAt,_that.coverType,_that.country,_that.coverStyle,_that.coverImg,_that.localImgFile,_that.deletedImages,_that.updatedTrip,_that.message,_that.errorType,_that.actionType,_that.isSameDay,_that.showSameDayDialog,_that.isUploading,_that.pageState);case _:
+return $default(_that.originalTrip,_that.tripId,_that.userId,_that.title,_that.place,_that.startAt,_that.endAt,_that.coverType,_that.country,_that.coverStyle,_that.coverImg,_that.localImgFile,_that.deletedImages,_that.updatedTrip,_that.message,_that.errorType,_that.actionType,_that.isSameDay,_that.showSameDayDialog,_that.isResolvingCountry,_that.isUploading,_that.pageState);case _:
   return orElse();
 
 }
@@ -220,10 +221,10 @@ return $default(_that.originalTrip,_that.tripId,_that.userId,_that.title,_that.p
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( TripEntity? originalTrip,  int? tripId,  int userId,  String title,  String place,  String startAt,  String endAt,  String coverType,  String country,  String coverStyle,  String? coverImg,  File? localImgFile,  List<String> deletedImages,  TripEntity? updatedTrip,  String? message,  String? errorType,  String? actionType,  bool isSameDay,  bool showSameDayDialog,  bool isUploading,  EditTripPageState pageState)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( TripEntity? originalTrip,  int? tripId,  int userId,  String title,  String place,  String startAt,  String endAt,  String coverType,  String country,  String coverStyle,  String? coverImg,  File? localImgFile,  List<String> deletedImages,  TripEntity? updatedTrip,  String? message,  String? errorType,  String? actionType,  bool isSameDay,  bool showSameDayDialog,  bool isResolvingCountry,  bool isUploading,  EditTripPageState pageState)  $default,) {final _that = this;
 switch (_that) {
 case _EditTripState():
-return $default(_that.originalTrip,_that.tripId,_that.userId,_that.title,_that.place,_that.startAt,_that.endAt,_that.coverType,_that.country,_that.coverStyle,_that.coverImg,_that.localImgFile,_that.deletedImages,_that.updatedTrip,_that.message,_that.errorType,_that.actionType,_that.isSameDay,_that.showSameDayDialog,_that.isUploading,_that.pageState);case _:
+return $default(_that.originalTrip,_that.tripId,_that.userId,_that.title,_that.place,_that.startAt,_that.endAt,_that.coverType,_that.country,_that.coverStyle,_that.coverImg,_that.localImgFile,_that.deletedImages,_that.updatedTrip,_that.message,_that.errorType,_that.actionType,_that.isSameDay,_that.showSameDayDialog,_that.isResolvingCountry,_that.isUploading,_that.pageState);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -240,10 +241,10 @@ return $default(_that.originalTrip,_that.tripId,_that.userId,_that.title,_that.p
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( TripEntity? originalTrip,  int? tripId,  int userId,  String title,  String place,  String startAt,  String endAt,  String coverType,  String country,  String coverStyle,  String? coverImg,  File? localImgFile,  List<String> deletedImages,  TripEntity? updatedTrip,  String? message,  String? errorType,  String? actionType,  bool isSameDay,  bool showSameDayDialog,  bool isUploading,  EditTripPageState pageState)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( TripEntity? originalTrip,  int? tripId,  int userId,  String title,  String place,  String startAt,  String endAt,  String coverType,  String country,  String coverStyle,  String? coverImg,  File? localImgFile,  List<String> deletedImages,  TripEntity? updatedTrip,  String? message,  String? errorType,  String? actionType,  bool isSameDay,  bool showSameDayDialog,  bool isResolvingCountry,  bool isUploading,  EditTripPageState pageState)?  $default,) {final _that = this;
 switch (_that) {
 case _EditTripState() when $default != null:
-return $default(_that.originalTrip,_that.tripId,_that.userId,_that.title,_that.place,_that.startAt,_that.endAt,_that.coverType,_that.country,_that.coverStyle,_that.coverImg,_that.localImgFile,_that.deletedImages,_that.updatedTrip,_that.message,_that.errorType,_that.actionType,_that.isSameDay,_that.showSameDayDialog,_that.isUploading,_that.pageState);case _:
+return $default(_that.originalTrip,_that.tripId,_that.userId,_that.title,_that.place,_that.startAt,_that.endAt,_that.coverType,_that.country,_that.coverStyle,_that.coverImg,_that.localImgFile,_that.deletedImages,_that.updatedTrip,_that.message,_that.errorType,_that.actionType,_that.isSameDay,_that.showSameDayDialog,_that.isResolvingCountry,_that.isUploading,_that.pageState);case _:
   return null;
 
 }
@@ -255,7 +256,7 @@ return $default(_that.originalTrip,_that.tripId,_that.userId,_that.title,_that.p
 
 
 class _EditTripState extends EditTripState {
-  const _EditTripState({this.originalTrip, this.tripId, this.userId = 0, this.title = '', this.place = '', this.startAt = '', this.endAt = '', this.coverType = 'BLUE', this.country = '', this.coverStyle = 'COLOR', this.coverImg, this.localImgFile, final  List<String> deletedImages = const [], this.updatedTrip, this.message, this.errorType, this.actionType, this.isSameDay = false, this.showSameDayDialog = false, this.isUploading = false, this.pageState = EditTripPageState.init}): _deletedImages = deletedImages,super._();
+  const _EditTripState({this.originalTrip, this.tripId, this.userId = 0, this.title = '', this.place = '', this.startAt = '', this.endAt = '', this.coverType = 'BLUE', this.country = '', this.coverStyle = 'COLOR', this.coverImg, this.localImgFile, final  List<String> deletedImages = const [], this.updatedTrip, this.message, this.errorType, this.actionType, this.isSameDay = false, this.showSameDayDialog = false, this.isResolvingCountry = false, this.isUploading = false, this.pageState = EditTripPageState.init}): _deletedImages = deletedImages,super._();
   
 
 // 기존 trip 로드된 값
@@ -289,6 +290,7 @@ class _EditTripState extends EditTripState {
 @override final  String? actionType;
 @override@JsonKey() final  bool isSameDay;
 @override@JsonKey() final  bool showSameDayDialog;
+@override@JsonKey() final  bool isResolvingCountry;
 @override@JsonKey() final  bool isUploading;
 @override@JsonKey() final  EditTripPageState pageState;
 
@@ -302,16 +304,16 @@ _$EditTripStateCopyWith<_EditTripState> get copyWith => __$EditTripStateCopyWith
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _EditTripState&&(identical(other.originalTrip, originalTrip) || other.originalTrip == originalTrip)&&(identical(other.tripId, tripId) || other.tripId == tripId)&&(identical(other.userId, userId) || other.userId == userId)&&(identical(other.title, title) || other.title == title)&&(identical(other.place, place) || other.place == place)&&(identical(other.startAt, startAt) || other.startAt == startAt)&&(identical(other.endAt, endAt) || other.endAt == endAt)&&(identical(other.coverType, coverType) || other.coverType == coverType)&&(identical(other.country, country) || other.country == country)&&(identical(other.coverStyle, coverStyle) || other.coverStyle == coverStyle)&&(identical(other.coverImg, coverImg) || other.coverImg == coverImg)&&(identical(other.localImgFile, localImgFile) || other.localImgFile == localImgFile)&&const DeepCollectionEquality().equals(other._deletedImages, _deletedImages)&&(identical(other.updatedTrip, updatedTrip) || other.updatedTrip == updatedTrip)&&(identical(other.message, message) || other.message == message)&&(identical(other.errorType, errorType) || other.errorType == errorType)&&(identical(other.actionType, actionType) || other.actionType == actionType)&&(identical(other.isSameDay, isSameDay) || other.isSameDay == isSameDay)&&(identical(other.showSameDayDialog, showSameDayDialog) || other.showSameDayDialog == showSameDayDialog)&&(identical(other.isUploading, isUploading) || other.isUploading == isUploading)&&(identical(other.pageState, pageState) || other.pageState == pageState));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _EditTripState&&(identical(other.originalTrip, originalTrip) || other.originalTrip == originalTrip)&&(identical(other.tripId, tripId) || other.tripId == tripId)&&(identical(other.userId, userId) || other.userId == userId)&&(identical(other.title, title) || other.title == title)&&(identical(other.place, place) || other.place == place)&&(identical(other.startAt, startAt) || other.startAt == startAt)&&(identical(other.endAt, endAt) || other.endAt == endAt)&&(identical(other.coverType, coverType) || other.coverType == coverType)&&(identical(other.country, country) || other.country == country)&&(identical(other.coverStyle, coverStyle) || other.coverStyle == coverStyle)&&(identical(other.coverImg, coverImg) || other.coverImg == coverImg)&&(identical(other.localImgFile, localImgFile) || other.localImgFile == localImgFile)&&const DeepCollectionEquality().equals(other._deletedImages, _deletedImages)&&(identical(other.updatedTrip, updatedTrip) || other.updatedTrip == updatedTrip)&&(identical(other.message, message) || other.message == message)&&(identical(other.errorType, errorType) || other.errorType == errorType)&&(identical(other.actionType, actionType) || other.actionType == actionType)&&(identical(other.isSameDay, isSameDay) || other.isSameDay == isSameDay)&&(identical(other.showSameDayDialog, showSameDayDialog) || other.showSameDayDialog == showSameDayDialog)&&(identical(other.isResolvingCountry, isResolvingCountry) || other.isResolvingCountry == isResolvingCountry)&&(identical(other.isUploading, isUploading) || other.isUploading == isUploading)&&(identical(other.pageState, pageState) || other.pageState == pageState));
 }
 
 
 @override
-int get hashCode => Object.hashAll([runtimeType,originalTrip,tripId,userId,title,place,startAt,endAt,coverType,country,coverStyle,coverImg,localImgFile,const DeepCollectionEquality().hash(_deletedImages),updatedTrip,message,errorType,actionType,isSameDay,showSameDayDialog,isUploading,pageState]);
+int get hashCode => Object.hashAll([runtimeType,originalTrip,tripId,userId,title,place,startAt,endAt,coverType,country,coverStyle,coverImg,localImgFile,const DeepCollectionEquality().hash(_deletedImages),updatedTrip,message,errorType,actionType,isSameDay,showSameDayDialog,isResolvingCountry,isUploading,pageState]);
 
 @override
 String toString() {
-  return 'EditTripState(originalTrip: $originalTrip, tripId: $tripId, userId: $userId, title: $title, place: $place, startAt: $startAt, endAt: $endAt, coverType: $coverType, country: $country, coverStyle: $coverStyle, coverImg: $coverImg, localImgFile: $localImgFile, deletedImages: $deletedImages, updatedTrip: $updatedTrip, message: $message, errorType: $errorType, actionType: $actionType, isSameDay: $isSameDay, showSameDayDialog: $showSameDayDialog, isUploading: $isUploading, pageState: $pageState)';
+  return 'EditTripState(originalTrip: $originalTrip, tripId: $tripId, userId: $userId, title: $title, place: $place, startAt: $startAt, endAt: $endAt, coverType: $coverType, country: $country, coverStyle: $coverStyle, coverImg: $coverImg, localImgFile: $localImgFile, deletedImages: $deletedImages, updatedTrip: $updatedTrip, message: $message, errorType: $errorType, actionType: $actionType, isSameDay: $isSameDay, showSameDayDialog: $showSameDayDialog, isResolvingCountry: $isResolvingCountry, isUploading: $isUploading, pageState: $pageState)';
 }
 
 
@@ -322,7 +324,7 @@ abstract mixin class _$EditTripStateCopyWith<$Res> implements $EditTripStateCopy
   factory _$EditTripStateCopyWith(_EditTripState value, $Res Function(_EditTripState) _then) = __$EditTripStateCopyWithImpl;
 @override @useResult
 $Res call({
- TripEntity? originalTrip, int? tripId, int userId, String title, String place, String startAt, String endAt, String coverType, String country, String coverStyle, String? coverImg, File? localImgFile, List<String> deletedImages, TripEntity? updatedTrip, String? message, String? errorType, String? actionType, bool isSameDay, bool showSameDayDialog, bool isUploading, EditTripPageState pageState
+ TripEntity? originalTrip, int? tripId, int userId, String title, String place, String startAt, String endAt, String coverType, String country, String coverStyle, String? coverImg, File? localImgFile, List<String> deletedImages, TripEntity? updatedTrip, String? message, String? errorType, String? actionType, bool isSameDay, bool showSameDayDialog, bool isResolvingCountry, bool isUploading, EditTripPageState pageState
 });
 
 
@@ -339,7 +341,7 @@ class __$EditTripStateCopyWithImpl<$Res>
 
 /// Create a copy of EditTripState
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? originalTrip = freezed,Object? tripId = freezed,Object? userId = null,Object? title = null,Object? place = null,Object? startAt = null,Object? endAt = null,Object? coverType = null,Object? country = null,Object? coverStyle = null,Object? coverImg = freezed,Object? localImgFile = freezed,Object? deletedImages = null,Object? updatedTrip = freezed,Object? message = freezed,Object? errorType = freezed,Object? actionType = freezed,Object? isSameDay = null,Object? showSameDayDialog = null,Object? isUploading = null,Object? pageState = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? originalTrip = freezed,Object? tripId = freezed,Object? userId = null,Object? title = null,Object? place = null,Object? startAt = null,Object? endAt = null,Object? coverType = null,Object? country = null,Object? coverStyle = null,Object? coverImg = freezed,Object? localImgFile = freezed,Object? deletedImages = null,Object? updatedTrip = freezed,Object? message = freezed,Object? errorType = freezed,Object? actionType = freezed,Object? isSameDay = null,Object? showSameDayDialog = null,Object? isResolvingCountry = null,Object? isUploading = null,Object? pageState = null,}) {
   return _then(_EditTripState(
 originalTrip: freezed == originalTrip ? _self.originalTrip : originalTrip // ignore: cast_nullable_to_non_nullable
 as TripEntity?,tripId: freezed == tripId ? _self.tripId : tripId // ignore: cast_nullable_to_non_nullable
@@ -360,6 +362,7 @@ as String?,errorType: freezed == errorType ? _self.errorType : errorType // igno
 as String?,actionType: freezed == actionType ? _self.actionType : actionType // ignore: cast_nullable_to_non_nullable
 as String?,isSameDay: null == isSameDay ? _self.isSameDay : isSameDay // ignore: cast_nullable_to_non_nullable
 as bool,showSameDayDialog: null == showSameDayDialog ? _self.showSameDayDialog : showSameDayDialog // ignore: cast_nullable_to_non_nullable
+as bool,isResolvingCountry: null == isResolvingCountry ? _self.isResolvingCountry : isResolvingCountry // ignore: cast_nullable_to_non_nullable
 as bool,isUploading: null == isUploading ? _self.isUploading : isUploading // ignore: cast_nullable_to_non_nullable
 as bool,pageState: null == pageState ? _self.pageState : pageState // ignore: cast_nullable_to_non_nullable
 as EditTripPageState,

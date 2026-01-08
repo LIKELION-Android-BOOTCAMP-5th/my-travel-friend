@@ -38,6 +38,7 @@ abstract class EditTripState with _$EditTripState {
 
     @Default(false) bool isSameDay,
     @Default(false) bool showSameDayDialog,
+    @Default(false) bool isResolvingCountry,
 
     @Default(false) bool isUploading,
 
