@@ -9,7 +9,8 @@ abstract class MapSearchState with _$MapSearchState {
   const factory MapSearchState({
     int? tripId,
     @Default(MapSearchMode.aiSearch) MapSearchMode mode,
-
+    String? tripPlace,
+    String? tripCountry,
     double? initialLat,
     double? initialLng,
     String? initialAddress,
