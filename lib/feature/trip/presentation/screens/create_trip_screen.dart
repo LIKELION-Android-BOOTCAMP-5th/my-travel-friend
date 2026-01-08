@@ -103,7 +103,7 @@ class _CreateTripScreenState extends State<CreateTripScreen> {
               actions: [
                 Button(
                   text: '저장',
-                  onTap: state.isValid && !state.isResolvingCountry
+                  onTap: state.isValid
                       ? () => context.read<CreateTripBloc>().add(
                           const CreateTripEvent.createTrip(),
                         )

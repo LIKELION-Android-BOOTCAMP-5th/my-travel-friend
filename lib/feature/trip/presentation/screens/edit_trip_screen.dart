@@ -101,7 +101,7 @@ class _EditTripScreenState extends State<EditTripScreen> {
               actions: [
                 Button(
                   text: '저장',
-                  onTap: state.isValid && !state.isResolvingCountry
+                  onTap: state.isValid
                       ? () => context.read<EditTripBloc>().add(
                           const EditTripEvent.saveTrip(),
                         )
