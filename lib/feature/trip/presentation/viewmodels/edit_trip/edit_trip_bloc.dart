@@ -85,7 +85,10 @@ class EditTripBloc extends Bloc<EditTripEvent, EditTripState> {
     emit(state.copyWith(place: event.place, isResolvingCountry: true));
 
     if (_debounce?.isActive ?? false) _debounce!.cancel();
-    if (event.place.isEmpty) return;
+    if (event.place.isEmpty) {
+      emit(state.copyWith(isResolvingCountry: false, country: ''));
+      return;
+    }
 
     _debounce = Timer(const Duration(milliseconds: 600), () async {
       try {
