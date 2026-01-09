@@ -24,7 +24,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     super.initState();
     _pageController = PageController();
 
-    context.read<OnboardingBloc>().add(const OnboardingEvent.initialize());
+    //context.read<OnboardingBloc>().add(const OnboardingEvent.initialize());
   }
 
   @override

@@ -33,6 +33,8 @@ import '../feature/friend/presentation/screen/friend_request_bloc_widget.dart';
 import '../feature/friend/presentation/screen/recevice_list_bloc_widget.dart';
 import '../feature/friend/presentation/screen/recevice_trip_bloc_widget.dart';
 import '../feature/onboarding/presentation/screens/onboarding_bloc_widget.dart';
+import '../feature/onboarding/presentation/viewmodels/onboarding_bloc.dart';
+import '../feature/onboarding/presentation/viewmodels/onboarding_state.dart';
 import '../feature/schedule/domain/entities/schedule_entity.dart';
 import '../feature/schedule/presentation/screens/create_schedule_bloc_widget.dart';
 import '../feature/schedule/presentation/screens/edit_schedule_bloc_widget.dart';
@@ -90,9 +92,15 @@ class AppRouter {
     redirect: (context, state) {
       final authState = GetIt.I<AuthProfileBloc>().state;
       final deepLinkService = GetIt.I<DeepLinkService>();
-
+      final onboardingState = GetIt.I<OnboardingBloc>().state;
       // 1. 비인증 사용자 처리
       if (authState is AuthProfileUnauthenticated) {
+        // 1. 비로그인인데 온보딩도 안 봤다면? -> 무조건 온보딩이 1순위
+        if (onboardingState.pageState != OnboardingPageState.completed) {
+          return state.matchedLocation == '/onboarding' ? null : '/onboarding';
+        }
+
+        // 2. 비로그인인데 온보딩은 이미 봤다면? -> 로그인으로
         return state.matchedLocation == '/login' ? null : '/login';
       }
 
@@ -103,6 +111,11 @@ class AppRouter {
 
       // 3. 인증 완료 사용자
       if (authState is AuthProfileAuthenticated) {
+        // 혹시라도 로그인은 됐는데 온보딩 기록이 없는 기기라면? (예외 처리)
+        if (onboardingState.pageState != OnboardingPageState.completed) {
+          return state.matchedLocation == '/onboarding' ? null : '/onboarding';
+        }
+
         // 초기 진입로(/, /login, /splash)에 있을 때만 홈으로 보냄
         final initialPaths = ['/', '/login', '/splash'];
         final target = deepLinkService.pendingPath;
