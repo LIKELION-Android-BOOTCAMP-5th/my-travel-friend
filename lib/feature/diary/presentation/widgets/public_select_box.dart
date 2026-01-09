@@ -43,7 +43,7 @@ class PublicSelectBox extends StatelessWidget {
                   children: [
                     Text(
                       isPublic ? '공개' : '비공개',
-                      style: AppFont.regular.copyWith(
+                      style: AppFont.small.copyWith(
                         color: colorScheme.onSurface,
                       ),
                       textAlign: TextAlign.left,
@@ -51,7 +51,7 @@ class PublicSelectBox extends StatelessWidget {
                     SizedBox(height: 2.0),
                     Text(
                       isPublic ? '다이어리를 다같이 볼 수 있어요' : '다이어리를 나만 볼 수 있어요',
-                      style: AppFont.small.copyWith(
+                      style: AppFont.tiny.copyWith(
                         color: colorScheme.onSurfaceVariant,
                       ),
                       textAlign: TextAlign.left,
