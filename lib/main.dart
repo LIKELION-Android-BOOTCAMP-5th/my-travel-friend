@@ -236,51 +236,57 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
       darkTheme: AppTheme.dark,
       themeMode: themeMode,
       builder: (context, child) {
-        return MultiBlocListener(
-          listeners: [
-            BlocListener<AuthProfileBloc, AuthProfileState>(
-              listenWhen: (prev, curr) => prev.runtimeType != curr.runtimeType,
-              listener: (context, state) {
-                if (state is AuthProfileAuthenticated) {
-                  context.read<AlarmBloc>().add(
-                    AlarmEvent.startWatching(userId: state.userInfo.id!),
-                  );
-                  _checkAndRefreshWidget();
-                } else if (state is AuthProfileUnauthenticated) {
-                  context.read<AlarmBloc>().add(
-                    const AlarmEvent.stopWatching(),
-                  );
-                }
-              },
-            ),
-            BlocListener<FriendRequestBloc, FriendRequestState>(
-              listenWhen: (p, c) =>
-                  p.pageState != c.pageState || p.actionType != c.actionType,
-              listener: (context, state) {
-                debugPrint('[Listener] request success!!');
-                if (state.pageState == FriendRequestPageState.success) {
-                  ToastPop.show('친구 요청을 보냈어요');
-                }
+        final mediaQuery = MediaQuery.of(context);
 
-                if (state.pageState == FriendRequestPageState.error) {
-                  ToastPop.show(state.message ?? '요청 실패');
-                }
+        return MediaQuery(
+          data: mediaQuery.copyWith(textScaler: TextScaler.linear(1.0)),
+          child: MultiBlocListener(
+            listeners: [
+              BlocListener<AuthProfileBloc, AuthProfileState>(
+                listenWhen: (prev, curr) =>
+                    prev.runtimeType != curr.runtimeType,
+                listener: (context, state) {
+                  if (state is AuthProfileAuthenticated) {
+                    context.read<AlarmBloc>().add(
+                      AlarmEvent.startWatching(userId: state.userInfo.id!),
+                    );
+                    _checkAndRefreshWidget();
+                  } else if (state is AuthProfileUnauthenticated) {
+                    context.read<AlarmBloc>().add(
+                      const AlarmEvent.stopWatching(),
+                    );
+                  }
+                },
+              ),
+              BlocListener<FriendRequestBloc, FriendRequestState>(
+                listenWhen: (p, c) =>
+                    p.pageState != c.pageState || p.actionType != c.actionType,
+                listener: (context, state) {
+                  debugPrint('[Listener] request success!!');
+                  if (state.pageState == FriendRequestPageState.success) {
+                    ToastPop.show('친구 요청을 보냈어요');
+                  }
+
+                  if (state.pageState == FriendRequestPageState.error) {
+                    ToastPop.show(state.message ?? '요청 실패');
+                  }
+                },
+              ),
+            ],
+            child: BlocBuilder<AuthProfileBloc, AuthProfileState>(
+              builder: (context, authState) {
+                return Stack(
+                  children: [
+                    child ?? const SizedBox.shrink(),
+                    if (authState is AuthProfileLoading)
+                      Container(
+                        color: Colors.black.withOpacity(0.3),
+                        child: const Center(child: CircularProgressIndicator()),
+                      ),
+                  ],
+                );
               },
             ),
-          ],
-          child: BlocBuilder<AuthProfileBloc, AuthProfileState>(
-            builder: (context, authState) {
-              return Stack(
-                children: [
-                  child ?? const SizedBox.shrink(),
-                  if (authState is AuthProfileLoading)
-                    Container(
-                      color: Colors.black.withOpacity(0.3),
-                      child: const Center(child: CircularProgressIndicator()),
-                    ),
-                ],
-              );
-            },
           ),
         );
       },

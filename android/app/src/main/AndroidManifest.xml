@@ -1,4 +1,5 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <!--flutter_local_notification용 안드로이드 퍼미션-->
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/><!--재부팅후 알림-->
@@ -18,6 +19,12 @@
         android:maxSdkVersion="32"/>
 
     <uses-permission android:name="android.permission.INTERNET"/>
+
+    <!-- 패키지가 자동 추가하는 권한 강제 제거 -->
+    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" tools:node="remove"/>
+    <uses-permission android:name="android.permission.READ_MEDIA_VIDEO" tools:node="remove"/>
+    <uses-permission android:name="android.permission.READ_MEDIA_AUDIO" tools:node="remove"/>
+    <uses-permission android:name="android.permission.READ_MEDIA_VISUAL_USER_SELECTED" tools:node="remove"/>
 
 
 
