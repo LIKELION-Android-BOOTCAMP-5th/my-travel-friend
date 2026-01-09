@@ -29,7 +29,7 @@ class ProfileBox extends StatelessWidget {
                 radius: 20,
                 backgroundImage: AssetImage('assets/images/profile_hearty.png'),
               ),
-        SizedBox(width: 16.0),
+        SizedBox(width: 5.0),
         Expanded(
           child: Column(
             children: [
@@ -43,7 +43,7 @@ class ProfileBox extends StatelessWidget {
                       color: colorScheme.onSurface,
                     ),
                   ),
-                  SizedBox(width: 16),
+                  SizedBox(width: 5),
                   TypeTag(diary: diary),
                 ],
               ),

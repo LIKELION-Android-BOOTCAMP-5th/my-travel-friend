@@ -42,7 +42,7 @@ class DiaryBox extends StatelessWidget {
           ),
           width: MediaQuery.of(context).size.width * 0.85,
           child: Padding(
-            padding: const EdgeInsets.all(16.0),
+            padding: const EdgeInsets.all(14.0),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               mainAxisSize: MainAxisSize.min,
@@ -60,7 +60,6 @@ class DiaryBox extends StatelessWidget {
                           size: 20,
                           color: colorScheme.onSurface,
                         ),
-                        padding: EdgeInsets.all(8),
                         constraints: const BoxConstraints(),
                       ),
                   ],
