@@ -1,20 +1,23 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../../../core/result/result.dart';
+import '../../domain/usecases/check_onboarding_completed_usecase.dart';
 import '../../domain/usecases/complete_onboarding_usecase.dart';
 import '../../domain/usecases/get_onboarding_pages_usecase.dart';
 import 'onboarding_event.dart';
 import 'onboarding_state.dart';
 
-@injectable
+@LazySingleton()
 class OnboardingBloc extends Bloc<OnboardingEvent, OnboardingState> {
   final GetOnboardingPagesUseCase _getOnboardingPagesUseCase;
   final CompleteOnboardingUseCase _completeOnboardingUseCase;
-
+  final CheckOnboardingCompletedUseCase _checkOnboardingCompletedUseCase;
   OnboardingBloc(
     this._getOnboardingPagesUseCase,
     this._completeOnboardingUseCase,
+    this._checkOnboardingCompletedUseCase,
   ) : super(const OnboardingState()) {
     on<Initialize>(_onInitialize);
     on<NextPage>(_onNextPage);
@@ -30,6 +33,24 @@ class OnboardingBloc extends Bloc<OnboardingEvent, OnboardingState> {
     Emitter<OnboardingState> emit,
   ) async {
     emit(state.copyWith(pageState: OnboardingPageState.loading));
+    print("온보딩 초기화 블록 시작");
+    // 온보딩 완료 여부 체크
+    final checkRes = await _checkOnboardingCompletedUseCase();
+
+    final bool isAlreadyCompleted = checkRes.when(
+      success: (success) {
+        return success;
+      },
+      failure: (failure) {
+        return false;
+      },
+    );
+
+    //이미 완료했다면 바로 completed 상태로 넘기고 종료
+    if (isAlreadyCompleted) {
+      emit(state.copyWith(pageState: OnboardingPageState.completed));
+      return;
+    }
 
     final res = await _getOnboardingPagesUseCase();
 
@@ -116,6 +137,23 @@ class OnboardingBloc extends Bloc<OnboardingEvent, OnboardingState> {
             errorMessage: failure.message ?? '온보딩 완료 저장에 실패했습니다',
           ),
         );
+      },
+    );
+  }
+
+  // 온보딩 체크
+  Future<bool> checkOnboardingCompleted(
+    Complete event,
+    Emitter<OnboardingState> emit,
+  ) async {
+    final res = await _checkOnboardingCompletedUseCase();
+    debugPrint("checkOnboardingCompleted res: $res");
+    return res.when(
+      success: (success) {
+        return success;
+      },
+      failure: (failure) {
+        return false;
       },
     );
   }

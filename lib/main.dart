@@ -9,6 +9,8 @@ import 'package:my_travel_friend/core/DI/injection.dart';
 import 'package:my_travel_friend/core/service/internal/app_link_service.dart';
 import 'package:my_travel_friend/core/widget/toast_pop.dart';
 import 'package:my_travel_friend/feature/friend/presentation/viewmodel/friend_request_state.dart';
+import 'package:my_travel_friend/feature/onboarding/presentation/viewmodels/onboarding_bloc.dart';
+import 'package:my_travel_friend/feature/onboarding/presentation/viewmodels/onboarding_event.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 import 'core/result/result.dart';
@@ -69,6 +71,11 @@ void main() async {
         BlocProvider(create: (context) => GetIt.instance<AlarmBloc>()),
         // 딥링크 요청 처리용
         BlocProvider.value(value: friendRequestBloc),
+        BlocProvider(
+          lazy: false,
+          create: (context) =>
+              GetIt.instance<OnboardingBloc>()..add(const Initialize()),
+        ),
       ],
       child: const MyApp(),
     ),

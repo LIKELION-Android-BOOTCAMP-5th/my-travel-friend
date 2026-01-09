@@ -696,12 +696,6 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i818.GetUserScheduleUseCase>(),
       ),
     );
-    gh.factory<_i135.OnboardingBloc>(
-      () => _i135.OnboardingBloc(
-        gh<_i196.GetOnboardingPagesUseCase>(),
-        gh<_i471.CompleteOnboardingUseCase>(),
-      ),
-    );
     gh.factory<_i196.MapSearchBloc>(
       () => _i196.MapSearchBloc(gh<_i277.GetTripByIdUseCase>()),
     );
@@ -731,6 +725,13 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i415.GetScheduleMembersUseCase>(),
         gh<_i379.GetCategoryUsecase>(),
         gh<_i277.GetTripByIdUseCase>(),
+      ),
+    );
+    gh.lazySingleton<_i135.OnboardingBloc>(
+      () => _i135.OnboardingBloc(
+        gh<_i196.GetOnboardingPagesUseCase>(),
+        gh<_i471.CompleteOnboardingUseCase>(),
+        gh<_i322.CheckOnboardingCompletedUseCase>(),
       ),
     );
     gh.lazySingleton<_i715.DeleteImgUseCase>(
@@ -910,7 +911,7 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i277.GetTripByIdUseCase>(),
       ),
     );
-    gh.lazySingleton<_i69.FriendRequestBloc>(
+    gh.factory<_i69.FriendRequestBloc>(
       () => _i69.FriendRequestBloc(
         gh<_i611.CreateFriendRequestUsecase>(),
         gh<_i739.GetFriendRequestUsecase>(),
