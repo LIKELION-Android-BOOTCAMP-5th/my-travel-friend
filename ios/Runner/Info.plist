@@ -76,7 +76,15 @@
 	</array>
 	<key>io.flutter.embedded_views_preview</key>
     <true/>
+    <key>NSLocationWhenInUseUsageDescription</key>
+    <string>여행 일정의 위치 정보를 표시하기 위해 위치 권한이 필요합니다.</string>
+
     <key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-    <string>지도 기능을 위해 위치 권한이 필요합니다.</string>
+    <string>여행 일정의 위치 정보를 표시하기 위해 위치 권한이 필요합니다.</string>
+    <key>NSAppTransportSecurity</key>
+    <dict>
+        <key>NSAllowsArbitraryLoads</key>
+        <true/>
+    </dict>
 </dict>
 </plist>
