@@ -1,0 +1,414 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get_it/get_it.dart';
+import 'package:my_travel_friend/core/theme/app_colors.dart';
+import 'package:my_travel_friend/feature/schedule/presentation/viewmodels/schedule/schedule_state.dart';
+import 'package:my_travel_friend/feature/schedule/presentation/widgets/schedule_card.dart';
+import 'package:my_travel_friend/feature/schedule/presentation/widgets/schedule_tap_button.dart';
+
+import '../../../../core/coachmark/presentations/targets/schedule_coach_mark.dart';
+import '../../../../core/theme/app_icon.dart';
+import '../../../../core/widget/bottom_sheat.dart';
+import '../../../../core/widget/floating_button.dart';
+import '../../../../core/widget/toast_pop.dart';
+import '../../../trip/domain/entities/trip_entity.dart';
+import '../viewmodels/schedule/schedule_bloc.dart';
+import '../viewmodels/schedule/schedule_event.dart';
+import '../widgets/empty_schedule_care.dart';
+import '../widgets/route_type.dart';
+
+class ScheduleScreen extends StatefulWidget {
+  final int tripId;
+
+  const ScheduleScreen({super.key, required this.tripId});
+
+  @override
+  State<ScheduleScreen> createState() => _ScheduleScreenState();
+}
+
+class _ScheduleScreenState extends State<ScheduleScreen> {
+  final ScrollController _scroll = ScrollController();
+
+  late final GlobalKey _dateTabKey;
+  late final GlobalKey _categoryTabKey;
+  late final GlobalKey _filterKey;
+  late final GlobalKey _listKey;
+  late final GlobalKey _fabKey;
+
+  late final ScheduleCoachMark _coachMark;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _dateTabKey = GlobalKey();
+    _categoryTabKey = GlobalKey();
+    _filterKey = GlobalKey();
+    _listKey = GlobalKey();
+    _fabKey = GlobalKey();
+
+    // 무한스크롤
+    _scroll.addListener(() {
+      if (_scroll.position.pixels >= _scroll.position.maxScrollExtent - 100) {
+        context.read<ScheduleBloc>().add(
+          ScheduleEvent.loadMore(tripId: widget.tripId),
+        );
+      }
+    });
+
+    _coachMark = GetIt.instance<ScheduleCoachMark>();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Future.delayed(const Duration(milliseconds: 500), () {
+        if (mounted) {
+          _coachMark.show(
+            context,
+            dateTabKey: _dateTabKey,
+            categoryTabKey: _categoryTabKey,
+            filterKey: _filterKey,
+            listKey: _listKey,
+            fabKey: _fabKey,
+          );
+        }
+      });
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    final isDark = colorScheme.brightness == Brightness.dark;
+    return Scaffold(
+      backgroundColor: isDark ? AppColors.navy : AppColors.darkGray,
+      floatingActionButton: FloatingButton(
+        key: _fabKey,
+        icon: const Icon(AppIcon.plus),
+        onPressed: () {
+          context.read<ScheduleBloc>().add(
+            const ScheduleEvent.navigateToCreate(),
+          );
+        },
+      ),
+
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+
+      body: BlocBuilder<ScheduleBloc, ScheduleState>(
+        builder: (context, state) {
+          final bloc = context.read<ScheduleBloc>();
+
+          final isDateTab = state.viewMode == ScheduleFilterType.date;
+
+          return Padding(
+            padding: const EdgeInsets.all(4.0),
+            child: Column(
+              children: [
+                // 1) 상단 모드 탭 (일자별 / 카테고리별)
+                Padding(
+                  padding: const EdgeInsets.all(4.0),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: ScheduleTapButton(
+                          key: _dateTabKey,
+                          label: "일자별",
+                          isSelected: isDateTab,
+                          onTap: () =>
+                              bloc.add(const ScheduleEvent.switchToDateMode()),
+                          height: 40,
+                          horizontalPadding: 22,
+                        ),
+                      ),
+                      const SizedBox(width: 8),
+                      Expanded(
+                        child: ScheduleTapButton(
+                          key: _categoryTabKey,
+                          label: "카테고리별",
+                          isSelected: !isDateTab,
+                          onTap: () => bloc.add(
+                            const ScheduleEvent.switchToCategoryMode(),
+                          ),
+                          height: 40,
+                          horizontalPadding: 22,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+
+                const SizedBox(height: 4),
+
+                // 2) 하위 탭 (전체 / 날짜 목록 / 카테고리 목록)
+                SizedBox(
+                  key: _filterKey,
+                  height: 40,
+
+                  child: ListView(
+                    scrollDirection: Axis.horizontal,
+                    children: [
+                      const SizedBox(width: 8),
+
+                      ScheduleTapButton(
+                        label: "전체",
+                        isSelected:
+                            state.selectedDate == null &&
+                            state.selectedCategoryId == null,
+                        onTap: () =>
+                            bloc.add(const ScheduleEvent.clearFilter()),
+                        height: 30,
+                        horizontalPadding: 20,
+                      ),
+
+                      const SizedBox(width: 8),
+
+                      if (state.viewMode == ScheduleFilterType.date &&
+                          state.trip != null)
+                        ...buildTripDates(state.trip!).map(
+                          (date) => Padding(
+                            padding: const EdgeInsets.only(right: 12),
+                            child: ScheduleTapButton(
+                              label: formatDateLabel(date), // 2월 10일
+                              isSelected: state.selectedDate == date,
+                              onTap: () => bloc.add(
+                                ScheduleEvent.selectDate(date: date),
+                              ),
+                              height: 30,
+                              horizontalPadding: 20,
+                            ),
+                          ),
+                        ),
+
+                      if (state.viewMode == ScheduleFilterType.category)
+                        ...state.categories.map(
+                          (category) => Padding(
+                            padding: const EdgeInsets.only(right: 12),
+                            child: ScheduleTapButton(
+                              label: category.content,
+                              isSelected:
+                                  state.selectedCategoryId == category.id,
+                              onTap: () => bloc.add(
+                                ScheduleEvent.selectCategory(
+                                  categoryId: category.id,
+                                ),
+                              ),
+                              height: 32,
+                              horizontalPadding: 20,
+                            ),
+                          ),
+                        ),
+                    ],
+                  ),
+                ),
+
+                const SizedBox(height: 12),
+
+                // 3) 본문 내용
+                Expanded(
+                  key: _listKey,
+                  child: state.visibleSchedules.isEmpty
+                      ? Center(
+                          child: EmptyScheduleCard(
+                            onAdd: () => bloc.add(
+                              const ScheduleEvent.navigateToCreate(),
+                            ),
+                          ),
+                        )
+                      : ListView.builder(
+                          controller: _scroll,
+                          padding: const EdgeInsets.only(bottom: 80),
+                          itemCount: state.visibleSchedules.length,
+                          itemBuilder: (context, index) {
+                            final s = state.visibleSchedules[index];
+                            final members =
+                                state.scheduleMembersMap[s.id] ?? [];
+
+                            final profileImages = members
+                                .map((u) => u.profileImg)
+                                .whereType<String>()
+                                .where((img) => img.isNotEmpty && img != 'null')
+                                .toList();
+
+                            final category = state.categoryMap[s.categoryId];
+
+                            final isDateMode =
+                                state.viewMode == ScheduleFilterType.date;
+
+                            final hasPrev = index > 0;
+                            final prev = hasPrev
+                                ? state.visibleSchedules[index - 1]
+                                : null;
+
+                            final canShowRouteButton =
+                                state.viewMode == ScheduleFilterType.date &&
+                                state.selectedDate != null &&
+                                prev != null;
+
+                            return Column(
+                              children: [
+                                if (canShowRouteButton)
+                                  Padding(
+                                    padding: const EdgeInsets.only(bottom: 12),
+                                    child: _RouteBetweenSchedulesButton(
+                                      fromLat: prev!.lat,
+                                      fromLng: prev.lng,
+                                      fromName: prev.place,
+                                      toLat: s.lat,
+                                      toLng: s.lng,
+                                      toName: s.place,
+                                    ),
+                                  ),
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 12,
+                                    vertical: 8,
+                                  ),
+                                  child: ScheduleCard(
+                                    title: s.title,
+                                    dateTime: formatScheduleDateTime(s.date),
+                                    place: s.place ?? "",
+                                    tagName: category!.content,
+                                    profileImages: profileImages,
+                                    memo: s.description,
+                                    onEdit: () => bloc.add(
+                                      ScheduleEvent.navigateToEdit(schedule: s),
+                                    ),
+                                    onDelete: () => bloc.add(
+                                      ScheduleEvent.deleteSchedule(s.id!),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            );
+                          },
+                        ),
+                ),
+              ],
+            ),
+          );
+        },
+      ),
+    );
+  }
+}
+
+List<String> buildTripDates(TripEntity trip) {
+  final start = DateTime.parse(trip.startAt);
+  final end = DateTime.parse(trip.endAt);
+
+  final dates = <String>[];
+  var current = start;
+
+  while (!current.isAfter(end)) {
+    dates.add(
+      current.toIso8601String().substring(0, 10), // yyyy-MM-dd
+    );
+    current = current.add(const Duration(days: 1));
+  }
+
+  return dates;
+}
+
+String formatDateLabel(String date) {
+  final dt = DateTime.parse(date);
+  return '${dt.month}월 ${dt.day}일';
+}
+
+class _RouteBetweenSchedulesButton extends StatelessWidget {
+  final double? fromLat;
+  final double? fromLng;
+  final String? fromName;
+
+  final double? toLat;
+  final double? toLng;
+  final String? toName;
+
+  const _RouteBetweenSchedulesButton({
+    this.fromLat,
+    this.fromLng,
+    this.fromName,
+    this.toLat,
+    this.toLng,
+    this.toName,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final canExecute =
+        fromLat != null &&
+        fromLng != null &&
+        toLat != null &&
+        toLng != null &&
+        fromName != null &&
+        toName != null;
+
+    return TextButton.icon(
+      icon: const Icon(Icons.alt_route),
+      label: const Text('길찾기'),
+      onPressed: () {
+        if (!canExecute) {
+          ToastPop.show('위치 정보가 부족해요. 잠시 후 다시 시도해주세요.');
+          return;
+        }
+        CommonBottomSheet.show(
+          context,
+          sheetTitle: '이동 수단 선택',
+          actions: [
+            BottomSheetAction(
+              icon: const Icon(Icons.directions_walk),
+              iconBgColor: AppColors.secondary,
+              title: '도보',
+              onTap: () {
+                context.read<ScheduleBloc>().add(
+                  ScheduleEvent.requestRoute(
+                    fromLat: fromLat!,
+                    fromLng: fromLng!,
+                    fromName: fromName!,
+                    toLat: toLat!,
+                    toLng: toLng!,
+                    toName: toName!,
+                    type: RouteType.walk,
+                  ),
+                );
+              },
+            ),
+            BottomSheetAction(
+              icon: const Icon(Icons.directions_car),
+              iconBgColor: AppColors.primaryLight,
+              title: '자동차',
+              onTap: () {
+                context.read<ScheduleBloc>().add(
+                  ScheduleEvent.requestRoute(
+                    fromLat: fromLat!,
+                    fromLng: fromLng!,
+                    fromName: fromName!,
+                    toLat: toLat!,
+                    toLng: toLng!,
+                    toName: toName!,
+                    type: RouteType.car,
+                  ),
+                );
+              },
+            ),
+            BottomSheetAction(
+              icon: const Icon(Icons.directions_transit),
+              iconBgColor: AppColors.lightGreen,
+              title: '대중교통',
+              onTap: () {
+                context.read<ScheduleBloc>().add(
+                  ScheduleEvent.requestRoute(
+                    fromLat: fromLat!,
+                    fromLng: fromLng!,
+                    fromName: fromName!,
+                    toLat: toLat!,
+                    toLng: toLng!,
+                    toName: toName!,
+                    type: RouteType.transit,
+                  ),
+                );
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+}

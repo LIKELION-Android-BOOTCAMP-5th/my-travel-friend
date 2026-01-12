@@ -1,0 +1,353 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get_it/get_it.dart';
+import 'package:go_router/go_router.dart';
+
+import '../../../../core/coachmark/presentations/targets/trip_home_coach_mark.dart';
+import '../../../../core/coachmark/presentations/targets/trip_shell_coach_mark.dart';
+import '../../../../core/theme/app_colors.dart';
+import '../../../../core/theme/app_icon.dart';
+import '../../../../core/widget/app_bar.dart';
+import '../../../../core/widget/bottom_navigation.dart';
+import '../../../../core/widget/bottom_sheat.dart';
+import '../../../../core/widget/button.dart';
+import '../../../../core/widget/pop_up_box.dart';
+import '../../../../core/widget/toast_pop.dart';
+import '../../../auth/presentation/viewmodel/auth_profile/auth_profile_bloc.dart';
+import '../../../auth/presentation/viewmodel/auth_profile/auth_profile_state.dart';
+import '../../../chat/presentation/viewmodels/chat_unread/chat_unread_bloc.dart';
+import '../../../chat/presentation/viewmodels/chat_unread/chat_unread_event.dart';
+import '../../../chat/presentation/viewmodels/chat_unread/chat_unread_state.dart';
+import '../../domain/entities/trip_entity.dart';
+import '../viewmodels/trip_detail/trip_detail_bloc.dart';
+import '../viewmodels/trip_detail/trip_detail_event.dart';
+import '../viewmodels/trip_detail/trip_detail_state.dart';
+import 'edit_trip_screen.dart';
+
+// [이재은] Trip 공통 Shell (AppBar + BottomNav)
+class TripShellScaffold extends StatefulWidget {
+  final Widget child;
+
+  const TripShellScaffold({super.key, required this.child});
+
+  @override
+  State<TripShellScaffold> createState() => TripShellScaffoldState();
+}
+
+class TripShellScaffoldState extends State<TripShellScaffold> {
+  // Globalkey 생성
+  late final GlobalKey _menuButtonKey;
+  late final GlobalKey _homeTabKey;
+  late final GlobalKey _scheduleTabKey;
+  late final GlobalKey _checklistTabKey;
+  late final GlobalKey _diaryTabKey;
+  late final GlobalKey _talkTabKey;
+
+  // TripHome 용 GlobalKey
+  late final GlobalKey _crewKey;
+  late final GlobalKey _inviteKey;
+  late final GlobalKey _calendarKey;
+  late final GlobalKey _scheduleKey;
+
+  late final TripShellCoachMark _coachMark;
+  late final TripHomeCoachMark _homeCoachMark;
+  late bool _coachMarkShown = false;
+
+  // TripHomeScreen에서 접근 가능하도록 getter
+  GlobalKey get crewKey => _crewKey;
+  GlobalKey get inviteKey => _inviteKey;
+  GlobalKey get calendarKey => _calendarKey;
+  GlobalKey get scheduleKey => _scheduleKey;
+
+  late final ChatUnreadBloc _chatUnreadBloc;
+
+  @override
+  void initState() {
+    super.initState();
+
+    // GlobalKey 생성 (initState에서!)
+    _menuButtonKey = GlobalKey();
+    _homeTabKey = GlobalKey();
+    _scheduleTabKey = GlobalKey();
+    _checklistTabKey = GlobalKey();
+    _diaryTabKey = GlobalKey();
+    _talkTabKey = GlobalKey();
+
+    _crewKey = GlobalKey();
+    _inviteKey = GlobalKey();
+    _calendarKey = GlobalKey();
+    _scheduleKey = GlobalKey();
+
+    _coachMark = GetIt.instance<TripShellCoachMark>();
+    _homeCoachMark = GetIt.instance<TripHomeCoachMark>();
+
+    _chatUnreadBloc = GetIt.instance<ChatUnreadBloc>();
+  }
+
+  void showCoachMarkIfNeeded() {
+    if (_coachMarkShown) return;
+    _coachMarkShown = true;
+
+    Future.delayed(const Duration(milliseconds: 800), () {
+      if (mounted) {
+        _coachMark.show(
+          context,
+          menuButtonKey: _menuButtonKey,
+          homeTabKey: _homeTabKey,
+          scheduleTabKey: _scheduleTabKey,
+          checklistTabKey: _checklistTabKey,
+          diaryTabKey: _diaryTabKey,
+          talkTabKey: _talkTabKey,
+          onFinish: () {
+            Future.delayed(const Duration(milliseconds: 500), () {
+              if (mounted) {
+                _homeCoachMark.show(
+                  context,
+                  crewKey: _crewKey,
+                  inviteKey: _inviteKey,
+                  calendarKey: _calendarKey,
+                  scheduleKey: _scheduleKey,
+                );
+              }
+            });
+          },
+        );
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _chatUnreadBloc.add(const StopUnreadSubscription());
+    _chatUnreadBloc.close();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    final isDark = colorScheme.brightness == Brightness.dark;
+
+    return BlocProvider.value(
+      value: _chatUnreadBloc,
+      child: BlocConsumer<TripDetailBloc, TripDetailState>(
+        listenWhen: (prev, curr) => prev.pageState != curr.pageState,
+        listener: (context, state) {
+          // 여행 포기 성공 시
+          if (state.pageState == TripDetailPageState.left) {
+            _chatUnreadBloc.add(const StopUnreadSubscription());
+            ToastPop.show('여행을 포기했습니다');
+            context.goNamed('/home');
+          }
+
+          // trip 로드 완료 시 구독 시작
+          if (state.pageState == TripDetailPageState.loaded &&
+              state.trip != null) {
+            final authState = context.read<AuthProfileBloc>().state;
+            if (authState is AuthProfileAuthenticated) {
+              _chatUnreadBloc.add(
+                StartUnreadSubscription(
+                  tripId: state.trip!.id!,
+                  userId: authState.userInfo.id!,
+                ),
+              );
+            }
+            showCoachMarkIfNeeded();
+          }
+        },
+        builder: (context, state) {
+          // 로딩 중
+          if (state.pageState == TripDetailPageState.loading ||
+              state.pageState == TripDetailPageState.initial) {
+            return const Scaffold(
+              body: Center(child: CircularProgressIndicator()),
+            );
+          }
+
+          // 에러
+          if (state.pageState == TripDetailPageState.error) {
+            return Scaffold(
+              appBar: const CustomButtonAppBar(title: '오류'),
+              body: Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text('오류: ${state.errorMessage}'),
+                    const SizedBox(height: 16),
+                    ElevatedButton(
+                      onPressed: () => context.goNamed('home'),
+                      child: const Text('홈으로 돌아가기'),
+                    ),
+                  ],
+                ),
+              ),
+            );
+          }
+
+          // trip 없으면 로딩
+          final trip = state.trip;
+          if (trip == null) {
+            return const Scaffold(
+              body: Center(child: CircularProgressIndicator()),
+            );
+          }
+
+          // 정상
+          final tripId = trip.id!;
+          final currentIndex = _getSelectedIndex(context);
+
+          return BlocBuilder<ChatUnreadBloc, ChatUnreadState>(
+            builder: (context, unreadState) {
+              // 채팅 탭에 있으면 배지 숨기기
+              final showBadge = currentIndex != 4;
+
+              return Scaffold(
+                appBar: CustomButtonAppBar(
+                  title: trip.title ?? '여행',
+                  subtitle:
+                      "${formatDate(trip.startAt)} - ${formatDate(trip.endAt)}",
+                  leading: Button(
+                    width: 40,
+                    height: 40,
+                    icon: Icon(AppIcon.back),
+                    contentColor: isDark
+                        ? colorScheme.onSurface
+                        : AppColors.light,
+                    borderRadius: 20,
+                    onTap: () {
+                      _chatUnreadBloc.add(const StopUnreadSubscription());
+                      context.goNamed('home');
+                    },
+                  ),
+                  actions: [
+                    Button(
+                      key: _menuButtonKey,
+                      icon: Icon(AppIcon.threeDots),
+                      contentColor: isDark
+                          ? colorScheme.onSurface
+                          : AppColors.light,
+                      onTap: () => _showBottomSheet(context, trip),
+                      width: 40,
+                      height: 40,
+                      borderRadius: 20,
+                    ),
+                  ],
+                ),
+                body: widget.child,
+                bottomNavigationBar: BottomNavigation(
+                  currentIndex: currentIndex,
+                  onTap: (index) => _onNavTap(context, index, tripId),
+                  chatUnreadCount: showBadge ? unreadState.unreadCount : 0,
+                  homeKey: _homeTabKey,
+                  scheduleKey: _scheduleTabKey,
+                  checklistKey: _checklistTabKey,
+                  diaryKey: _diaryTabKey,
+                  talkKey: _talkTabKey,
+                ),
+              );
+            },
+          );
+        },
+      ),
+    );
+  }
+
+  // 현재 경로에서 선택된 인덱스 계산
+  int _getSelectedIndex(BuildContext context) {
+    final path = GoRouterState.of(context).matchedLocation;
+
+    if (path.contains('/trip_home')) return 0;
+    if (path.contains('/schedule')) return 1;
+    if (path.contains('/checklist')) return 2;
+    if (path.contains('/diary')) return 3;
+    if (path.contains('/talk')) return 4;
+
+    return 0;
+  }
+
+  // 네비게이션 탭 클릭 처리
+  void _onNavTap(BuildContext context, int index, int tripId) {
+    /*final routes = [
+      '/trip/$tripId/trip_home',
+      '/trip/$tripId/schedule',
+      '/trip/$tripId/checklist',
+      '/trip/$tripId/diary',
+      '/trip/$tripId/talk',
+    ];*/
+    final routes = [
+      'tripHome',
+      'tripSchedule',
+      'tripChecklist',
+      'tripDiary',
+      'tripTalk',
+    ];
+    if (index < routes.length) {
+      // 채팅 탭으로 이동하면 카운트 초기화
+      if (index == 4) {
+        _chatUnreadBloc.add(const ResetUnreadCount());
+      }
+      context.goNamed(routes[index], pathParameters: {"tripId": "$tripId"});
+    }
+  }
+
+  // 바텀시트 오픈
+  void _showBottomSheet(BuildContext context, TripEntity trip) {
+    final authState = context.read<AuthProfileBloc>().state;
+
+    if (authState is! AuthProfileAuthenticated) return;
+
+    final userId = authState.userInfo.id!;
+
+    CommonBottomSheet.show(
+      context,
+      sheetTitle: "여행 관리",
+      actions: [
+        BottomSheetAction(
+          icon: Icon(AppIcon.edit),
+          iconBgColor: AppColors.primaryLight,
+          title: "여행계획 수정하기",
+          onTap: () async {
+            // push 결과로 받기
+            final result = await context.pushNamed(
+              'tripEdit',
+              extra: {"trip": trip},
+            );
+
+            // 수정 완료 시 새로고침
+            if (result == true && context.mounted) {
+              context.read<TripDetailBloc>().add(
+                const TripDetailEvent.refreshTripDetail(),
+              );
+            }
+          },
+        ),
+        BottomSheetAction(
+          icon: Icon(AppIcon.delete),
+          iconBgColor: AppColors.secondary,
+          title: "여행 포기하기",
+          onTap: () {
+            _showLeavePopUp(context, trip, userId);
+          },
+        ),
+      ],
+    );
+  }
+
+  // 여행 포기 PopUp
+  void _showLeavePopUp(BuildContext context, TripEntity trip, int userId) {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (_) => PopUpBox(
+        title: "여행을 포기하시겠어요?",
+        message: "참여 중인 여행에서 제외됩니다.",
+        rightText: "포기하기",
+        onRight: () {
+          context.read<TripDetailBloc>().add(
+            TripDetailEvent.leaveTrip(tripId: trip.id!, userId: userId),
+          );
+        },
+      ),
+    );
+  }
+}

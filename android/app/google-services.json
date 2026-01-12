@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "712204814478",
+    "project_id": "my-trip-firend",
+    "storage_bucket": "my-trip-firend.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:712204814478:android:b50ebf6c7b44ef670de1df",
+        "android_client_info": {
+          "package_name": "com.example.my_travel_friend"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB2AAnj3Z4JdFNDpEbNcLPPdiFjHwr5h-o"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:712204814478:android:94c4ab9d0d016d0d0de1df",
+        "android_client_info": {
+          "package_name": "com.team1113.mytravelfriend"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB2AAnj3Z4JdFNDpEbNcLPPdiFjHwr5h-o"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
